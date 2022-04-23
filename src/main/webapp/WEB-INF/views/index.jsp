@@ -49,45 +49,9 @@
 		<jsp:include page="layout/header.jsp"/>
 		
 		<!-- 여행 검색 -->
-		<section class="banner-one" style="background-image: url(<c:url value="/resources/images/banner_main/${BannerRespectivelyView1.getS_file_name()}"/>);">
-			<div class="container">
-				<h2>
-					Carefin <span>Tour</span>
-				</h2>
-				<p>여행지를 선택 해보세요</p>
-				<form class="tour-search-one" action="travelSearch">
-					<div class="tour-search-one__inner">
-						<div class="tour-search-one__inputs">
-							<div class="tour-search-one__input-box">
-								<label for="place">여행지</label>
-								<select class="selectpicker" id="searchArea" name="searchArea">
-									<option value="미주/중남미/하와이">미주/중남미/하와이</option>
-									<option value="대만/동남아/서남아">대만/동남아/서남아</option>
-									<option value="중국/홍콩/러시아">중국/홍콩/러시아</option>
-									<option value="유럽/아프리카">유럽/아프리카</option>
-									<option value="일본">일본</option>
-								</select>
-							</div>
-							<div class="tour-search-one__input-box">
-								<label for="when">여행시작일</label>
-								<input type="date" class="form-control" value="<%=beginMonth %>" id="searchStartDate" name="searchStartDate" placeholder="여행출발일" >
-							</div>
-							<div class="tour-search-one__input-box">
-								<label for="type">여행 테마</label> <select class="selectpicker" id="searchTheme" name="searchTheme">
-									<option value="낚시">낚시</option>
-									<option value="허니문">허니문</option>
-									<option value="골프">골프</option>
-									<option value="해외">해외</option>
-								</select>
-							</div>
-						</div>
-						<div class="tour-search-one__btn-wrap">
-							<button type="submit" class="thm-btn tour-search-one__btn">검색</button>
-						</div>
-					</div>
-				</form>
-			</div>
-		</section>
+		<div class="container-flue">
+			<iframe width="100%" height="700px" src="https://www.youtube.com/embed/pvjr0h2-HnE?autoplay=1&mute=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+		</div>
 		<!-- 여행 검색 -->
 		
 		<!-- 간단한 회사 소개 및 연혁 -->
@@ -298,8 +262,8 @@
 			
 		</section>
 		<section class="video-one" style="background-image: url(<c:url value="/resources/images/banner_main/${BannerRespectivelyView2.getS_file_name()}"/>);">
-			<div class="container text-center">
-				<a href="${BannerRespectivelyView22.getS_file_name()}" class="video-one__btn video-popup"><i class="fa fa-play"></i></a>
+			<div class="container text-center">embed
+				<a href="https://www.youtube.com/embed/k7NRCUU5qqQ&t=7s" class="video-one__btn video-popup"><i class="fa fa-play"></i></a>
 				<p>Love where you're going</p>
 				<h3>
 					<span>케어핀투어</span>는 세계적인  <br> 
