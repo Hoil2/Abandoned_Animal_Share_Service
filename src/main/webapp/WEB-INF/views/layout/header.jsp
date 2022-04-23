@@ -19,20 +19,6 @@
 	<link rel="stylesheet" href='<c:url value="/resources/css/nouislider.pips.css"/>'>
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-	<!-- Tocplus 15.1 -->
-	<script type="text/javascript">
-	tocplusTop=1150;
-	tocplusLeft=5;
-	tocplusMinimizedImage='http://kr03.tocplus007.com/img/minimized_ko.gif';
-	tocplusHAlign='right';
-	tocplusWidth=180;
-	tocplusHeight=220;
-	tocplusUserName='손님';
-	tocplusFrameColor='#FFA500';
-	tocplusFloatingWindow=true;
-	var tocplusHost = (("https:" == document.location.protocol) ? "https://" : "http://");
-	document.write(unescape("%"+"3Cscript src='" + tocplusHost + "kr03.tocplus007.com/chatLoader.do?userId=wjsrlxo500' type='text/javascript'"+"%"+"3E"+"%"+"3C/script"+"%"+"3E"));
-	</script>
 	<!-- End of Tocplus -->
 	
 	<!-- Template Styles -->
@@ -127,7 +113,6 @@
 										<ul>
 											<li><a href="#" id="twayFont" data-toggle="modal" data-target="#loginModal">로그인</a></li>
 											<li><a href="#" id="twayFont" data-toggle="modal" data-target="#registerModal">회원가입</a></li>
-											<li><a href="#" id="twayFont" data-toggle="modal" data-target="#ReservationModal">예약확인</a></li>
 											<li><a href="support" id="twayFont">고객센터</a></li>
 										</ul>
 									</c:when>
