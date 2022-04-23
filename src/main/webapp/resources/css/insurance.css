@@ -1,0 +1,10 @@
+@charset "UTF-8";
+
+table, th, td {
+	border:solid 1px #e2e2e2;
+	border-collapse:collapse;
+}
+
+.tbl.tbl_datasty_1.type_num td {
+	text-align:right;
+}

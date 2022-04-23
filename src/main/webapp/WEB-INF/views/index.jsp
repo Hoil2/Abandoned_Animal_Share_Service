@@ -1,551 +1,387 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
-<!doctype html>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ page import="java.time.format.DateTimeFormatter"%>
+<%@ page import="java.time.LocalDateTime"%>
+<%
+	//현재시간 구해서 String으로 formating
+	LocalDateTime nowTime = LocalDateTime.now();
+	
+	DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+	DateTimeFormatter dateTimeFormatter2 = DateTimeFormatter.ofPattern("yyyy-MM");
+	String now = nowTime.format(dateTimeFormatter);
+	String beginMonth = nowTime.format(dateTimeFormatter2);
+%>
+<!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title> 인강인강 </title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="shortcut icon" type="image/x-icon" href="<c:url value='/resources/img/favicon.ico'/>">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<link rel="apple-touch-icon" sizes="180x180" href='<c:url value="/resources/favicons/apple-touch-icon.png"/>'>
+<link rel="icon" type="image/png" sizes="32x32" href='<c:url value="/resources/images/favicons/favicon-32x32.png"/>'>
+<link rel="icon" type="image/png" sizes="16x16" href='<c:url value="/resources/images/favicons/favicon-16x16.png"/>'>
+<link rel="manifest" href='<c:url value="/resources/images/favicons/site.webmanifest"/>'>
+<title>멍멍냥냥</title>
+
+<style type="text/css">
+.preloader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #301e4e;
+}
+</style>
+</head>
+<body link="red">
+	<!-- 페이지 로딩 이미지 -->
+	<%-- Preloader --%>
+	<div class="preloader">
+		<img src='<c:url value="/resources/images/loader3.png"/>' class="preloader__image" alt="">
+	</div>
+	
+	<!-- 페이지 로딩 이미지 -->
+	
+	<!-- 메인 영역 -->
+	<div class="page-wrapper">
+		<jsp:include page="layout/header.jsp"/>
 		
-		<!-- CSS here -->
-        <link rel="stylesheet" href="<c:url value='/resources/css/bootstrap.min.css'/>">
-        <link rel="stylesheet" href="<c:url value='/resources/css/owl.carousel.min.css'/>">
-        <link rel="stylesheet" href="<c:url value='/resources/css/flaticon.css'/>">
-        <link rel="stylesheet" href="<c:url value='/resources/css/price_rangs.css'/>">
-        <link rel="stylesheet" href="<c:url value='/resources/css/slicknav.css'/>">
-        <link rel="stylesheet" href="<c:url value='/resources/css/animate.min.css'/>">
-        <link rel="stylesheet" href="<c:url value='/resources/css/magnific-popup.css'/>">
-        <link rel="stylesheet" href="<c:url value='/resources/css/fontawesome-all.min.css'/>">
-        <link rel="stylesheet" href="<c:url value='/resources/css/themify-icons.css'/>">
-        <link rel="stylesheet" href="<c:url value='/resources/css/slick.css'/>">
-        <link rel="stylesheet" href="<c:url value='/resources/css/nice-select.css'/>">
-        <link rel="stylesheet" href="<c:url value='/resources/css/style.css'/>">
-   </head>
-
-   <body>
-	   	<%-- Preloader --%>
-	    <jsp:include page="./fix/preloader.jsp" />
-	   
-	    <%------------ header section  ------------%>
-	    <jsp:include page="./fix/header.jsp" />
-     	
-     	<%------------ main section  ------------%>
-     	<main>
-        <!-- slider Area Start-->
-        <div class="slider-area ">
-            <!-- Mobile Menu -->
-            <div class="slider-active">
-                <div class="single-slider slider-height d-flex align-items-center" data-background="<c:url value='/resources/img/hero/h1_hero.jpg'/>">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-xl-6 col-lg-9 col-md-10">
-                                <div class="hero__caption">
-                                    <h1>Find the most exciting startup jobs</h1>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Search Box -->
-                        <div class="row">
-                            <div class="col-xl-8">
-                                <!-- form -->
-                                <form action="#" class="search-box">
-                                    <div class="input-form">
-                                        <input type="text" placeholder="Job Tittle or keyword">
-                                    </div>
-                                    <div class="select-form">
-                                        <div class="select-itms">
-                                            <select name="select" id="select1">
-                                                <option value="">Location BD</option>
-                                                <option value="">Location PK</option>
-                                                <option value="">Location US</option>
-                                                <option value="">Location UK</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="search-form">
-                                        <a href="#">Find job</a>
-                                    </div>	
-                                </form>	
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- slider Area End-->
-        <!-- Our Services Start -->
-        <div class="our-services section-pad-t30">
-            <div class="container">
-                <!-- Section Tittle -->
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="section-tittle text-center">
-                            <span>FEATURED TOURS Packages</span>
-                            <h2>Browse Top Categories </h2>
-                        </div>
-                    </div>
-                </div>
-                <div class="row d-flex justify-contnet-center">
-                    <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-                        <div class="single-services text-center mb-30">
-                            <div class="services-ion">
-                                <span class="flaticon-tour"></span>
-                            </div>
-                            <div class="services-cap">
-                               <h5><a href="job_listing.html">Design & Creative</a></h5>
-                                <span>(653)</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-                        <div class="single-services text-center mb-30">
-                            <div class="services-ion">
-                                <span class="flaticon-cms"></span>
-                            </div>
-                            <div class="services-cap">
-                               <h5><a href="job_listing.html">Design & Development</a></h5>
-                                <span>(658)</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-                        <div class="single-services text-center mb-30">
-                            <div class="services-ion">
-                                <span class="flaticon-report"></span>
-                            </div>
-                            <div class="services-cap">
-                               <h5><a href="job_listing.html">Sales & Marketing</a></h5>
-                                <span>(658)</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-                        <div class="single-services text-center mb-30">
-                            <div class="services-ion">
-                                <span class="flaticon-app"></span>
-                            </div>
-                            <div class="services-cap">
-                               <h5><a href="job_listing.html">Mobile Application</a></h5>
-                                <span>(658)</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-                        <div class="single-services text-center mb-30">
-                            <div class="services-ion">
-                                <span class="flaticon-helmet"></span>
-                            </div>
-                            <div class="services-cap">
-                               <h5><a href="job_listing.html">Construction</a></h5>
-                                <span>(658)</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-                        <div class="single-services text-center mb-30">
-                            <div class="services-ion">
-                                <span class="flaticon-high-tech"></span>
-                            </div>
-                            <div class="services-cap">
-                               <h5><a href="job_listing.html">Information Technology</a></h5>
-                                <span>(658)</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-                        <div class="single-services text-center mb-30">
-                            <div class="services-ion">
-                                <span class="flaticon-real-estate"></span>
-                            </div>
-                            <div class="services-cap">
-                               <h5><a href="job_listing.html">Real Estate</a></h5>
-                                <span>(658)</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-                        <div class="single-services text-center mb-30">
-                            <div class="services-ion">
-                                <span class="flaticon-content"></span>
-                            </div>
-                            <div class="services-cap">
-                               <h5><a href="job_listing.html">Content Writer</a></h5>
-                                <span>(658)</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- More Btn -->
-                <!-- Section Button -->
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="browse-btn2 text-center mt-50">
-                            <a href="job_listing.html" class="border-btn2">Browse All Sectors</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Our Services End -->
-        <!-- Online CV Area Start -->
-         <div class="online-cv cv-bg section-overly pt-90 pb-120"  data-background="<c:url value='/resources/img/gallery/cv_bg.jpg'/>">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-xl-10">
-                        <div class="cv-caption text-center">
-                            <p class="pera1">FEATURED TOURS Packages</p>
-                            <p class="pera2"> Make a Difference with Your Online Resume!</p>
-                            <a href="#" class="border-btn2 border-btn4">Upload your cv</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Online CV Area End-->
-        <!-- Featured_job_start -->
-        <section class="featured-job-area feature-padding">
-            <div class="container">
-                <!-- Section Tittle -->
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="section-tittle text-center">
-                            <span>Recent Job</span>
-                            <h2>Featured Jobs</h2>
-                        </div>
-                    </div>
-                </div>
-                <div class="row justify-content-center">
-                    <div class="col-xl-10">
-                        <!-- single-job-content -->
-                        <div class="single-job-items mb-30">
-                            <div class="job-items">
-                                <div class="company-img">
-                                    <a href="job_details.html"><img src="<c:url value='/resources/img/icon/job-list1.png'/>" alt=""></a>
-                                </div>
-                                <div class="job-tittle">
-                                    <a href="job_details.html"><h4>Digital Marketer</h4></a>
-                                    <ul>
-                                        <li>Creative Agency</li>
-                                        <li><i class="fas fa-map-marker-alt"></i>Athens, Greece</li>
-                                        <li>$3500 - $4000</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="items-link f-right">
-                                <a href="job_details.html">Full Time</a>
-                                <span>7 hours ago</span>
-                            </div>
-                        </div>
-                        <!-- single-job-content -->
-                        <div class="single-job-items mb-30">
-                            <div class="job-items">
-                                <div class="company-img">
-                                    <a href="job_details.html"><img src="<c:url value='/resources/img/icon/job-list2.png'/>" alt=""></a>
-                                </div>
-                                <div class="job-tittle">
-                                    <a href="job_details.html"><h4>Digital Marketer</h4></a>
-                                    <ul>
-                                        <li>Creative Agency</li>
-                                        <li><i class="fas fa-map-marker-alt"></i>Athens, Greece</li>
-                                        <li>$3500 - $4000</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="items-link f-right">
-                                <a href="job_details.html">Full Time</a>
-                                <span>7 hours ago</span>
-                            </div>
-                        </div>
-                         <!-- single-job-content -->
-                        <div class="single-job-items mb-30">
-                            <div class="job-items">
-                                <div class="company-img">
-                                    <a href="job_details.html"><img src="<c:url value='/resources/img/icon/job-list3.png'/>" alt=""></a>
-                                </div>
-                                <div class="job-tittle">
-                                    <a href="job_details.html"><h4>Digital Marketer</h4></a>
-                                    <ul>
-                                        <li>Creative Agency</li>
-                                        <li><i class="fas fa-map-marker-alt"></i>Athens, Greece</li>
-                                        <li>$3500 - $4000</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="items-link f-right">
-                                <a href="job_details.html">Full Time</a>
-                                <span>7 hours ago</span>
-                            </div>
-                        </div>
-                         <!-- single-job-content -->
-                        <div class="single-job-items mb-30">
-                            <div class="job-items">
-                                <div class="company-img">
-                                    <a href="job_details.html"><img src="<c:url value='/resources/img/icon/job-list4.png'/>" alt=""></a>
-                                </div>
-                                <div class="job-tittle">
-                                    <a href="job_details.html"><h4>Digital Marketer</h4></a>
-                                    <ul>
-                                        <li>Creative Agency</li>
-                                        <li><i class="fas fa-map-marker-alt"></i>Athens, Greece</li>
-                                        <li>$3500 - $4000</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="items-link f-right">
-                                <a href="job_details.html">Full Time</a>
-                                <span>7 hours ago</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- Featured_job_end -->
-        <!-- How  Apply Process Start-->
-        <div class="apply-process-area apply-bg pt-150 pb-150" data-background="<c:url value='/resources/img/gallery/how-applybg.png'/>">
-            <div class="container">
-                <!-- Section Tittle -->
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="section-tittle white-text text-center">
-                            <span>Apply process</span>
-                            <h2> How it works</h2>
-                        </div>
-                    </div>
-                </div>
-                <!-- Apply Process Caption -->
-                <div class="row">
-                    <div class="col-lg-4 col-md-6">
-                        <div class="single-process text-center mb-30">
-                            <div class="process-ion">
-                                <span class="flaticon-search"></span>
-                            </div>
-                            <div class="process-cap">
-                               <h5>1. Search a job</h5>
-                               <p>Sorem spsum dolor sit amsectetur adipisclit, seddo eiusmod tempor incididunt ut laborea.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="single-process text-center mb-30">
-                            <div class="process-ion">
-                                <span class="flaticon-curriculum-vitae"></span>
-                            </div>
-                            <div class="process-cap">
-                               <h5>2. Apply for job</h5>
-                               <p>Sorem spsum dolor sit amsectetur adipisclit, seddo eiusmod tempor incididunt ut laborea.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="single-process text-center mb-30">
-                            <div class="process-ion">
-                                <span class="flaticon-tour"></span>
-                            </div>
-                            <div class="process-cap">
-                               <h5>3. Get your job</h5>
-                               <p>Sorem spsum dolor sit amsectetur adipisclit, seddo eiusmod tempor incididunt ut laborea.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-             </div>
-        </div>
-        <!-- How  Apply Process End-->
-        <!-- Testimonial Start -->
-        <div class="testimonial-area testimonial-padding">
-            <div class="container">
-                <!-- Testimonial contents -->
-                <div class="row d-flex justify-content-center">
-                    <div class="col-xl-8 col-lg-8 col-md-10">
-                        <div class="h1-testimonial-active dot-style">
-                            <!-- Single Testimonial -->
-                            <div class="single-testimonial text-center">
-                                <!-- Testimonial Content -->
-                                <div class="testimonial-caption ">
-                                    <!-- founder -->
-                                    <div class="testimonial-founder  ">
-                                        <div class="founder-img mb-30">
-                                            <img src="<c:url value='/resources/img/testmonial/testimonial-founder.png'/>" alt="">
-                                            <span>Margaret Lawson</span>
-                                            <p>Creative Director</p>
-                                        </div>
-                                    </div>
-                                    <div class="testimonial-top-cap">
-                                        <p>“I am at an age where I just want to be fit and healthy our bodies are our responsibility! So start caring for your body and it will care for you. Eat clean it will care for you and workout hard.”</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Single Testimonial -->
-                            <div class="single-testimonial text-center">
-                                <!-- Testimonial Content -->
-                                <div class="testimonial-caption ">
-                                    <!-- founder -->
-                                    <div class="testimonial-founder  ">
-                                        <div class="founder-img mb-30">
-                                            <img src="<c:url value='/resources/img/testmonial/testimonial-founder.png'/>" alt="">
-                                            <span>Margaret Lawson</span>
-                                            <p>Creative Director</p>
-                                        </div>
-                                    </div>
-                                    <div class="testimonial-top-cap">
-                                        <p>“I am at an age where I just want to be fit and healthy our bodies are our responsibility! So start caring for your body and it will care for you. Eat clean it will care for you and workout hard.”</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Single Testimonial -->
-                            <div class="single-testimonial text-center">
-                                <!-- Testimonial Content -->
-                                <div class="testimonial-caption ">
-                                    <!-- founder -->
-                                    <div class="testimonial-founder  ">
-                                        <div class="founder-img mb-30">
-                                            <img src="<c:url value='/resources/img/testmonial/testimonial-founder.png'/>" alt="">
-                                            <span>Margaret Lawson</span>
-                                            <p>Creative Director</p>
-                                        </div>
-                                    </div>
-                                    <div class="testimonial-top-cap">
-                                        <p>“I am at an age where I just want to be fit and healthy our bodies are our responsibility! So start caring for your body and it will care for you. Eat clean it will care for you and workout hard.”</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Testimonial End -->
-         <!-- Support Company Start-->
-         <div class="support-company-area support-padding fix">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-xl-6 col-lg-6">
-                        <div class="right-caption">
-                            <!-- Section Tittle -->
-                            <div class="section-tittle section-tittle2">
-                                <span>What we are doing</span>
-                                <h2>24k Talented people are getting Jobs</h2>
-                            </div>
-                            <div class="support-caption">
-                                <p class="pera-top">Mollit anim laborum duis au dolor in voluptate velit ess cillum dolore eu lore dsu quality mollit anim laborumuis au dolor in voluptate velit cillum.</p>
-                                <p>Mollit anim laborum.Duis aute irufg dhjkolohr in re voluptate velit esscillumlore eu quife nrulla parihatur. Excghcepteur signjnt occa cupidatat non inulpadeserunt mollit aboru. temnthp incididbnt ut labore mollit anim laborum suis aute.</p>
-                                <a href="about.html" class="btn post-btn">Post a job</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-6 col-lg-6">
-                        <div class="support-location-img">
-                            <img src="<c:url value='/resources/img/service/support-img.jpg'/>" alt="">
-                            <div class="support-img-cap text-center">
-                                <p>Since</p>
-                                <span>1994</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Support Company End-->
-        <!-- Blog Area Start -->
-        <div class="home-blog-area blog-h-padding">
-            <div class="container">
-                <!-- Section Tittle -->
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="section-tittle text-center">
-                            <span>Our latest blog</span>
-                            <h2>Our recent news</h2>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xl-6 col-lg-6 col-md-6">
-                        <div class="home-blog-single mb-30">
-                            <div class="blog-img-cap">
-                                <div class="blog-img">
-                                    <img src="<c:url value='/resources/img/blog/home-blog1.jpg'/>" alt="">
-                                    <!-- Blog date -->
-                                    <div class="blog-date text-center">
-                                        <span>24</span>
-                                        <p>Now</p>
-                                    </div>
-                                </div>
-                                <div class="blog-cap">
-                                    <p>|   Properties</p>
-                                    <h3><a href="single-blog.html">Footprints in Time is perfect House in Kurashiki</a></h3>
-                                    <a href="#" class="more-btn">Read more »</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-6 col-lg-6 col-md-6">
-                        <div class="home-blog-single mb-30">
-                            <div class="blog-img-cap">
-                                <div class="blog-img">
-                                    <img src="<c:url value='/resources/img/blog/home-blog2.jpg'/>" alt="">
-                                    <!-- Blog date -->
-                                    <div class="blog-date text-center">
-                                        <span>24</span>
-                                        <p>Now</p>
-                                    </div>
-                                </div>
-                                <div class="blog-cap">
-                                    <p>|   Properties</p>
-                                    <h3><a href="single-blog.html">Footprints in Time is perfect House in Kurashiki</a></h3>
-                                    <a href="#" class="more-btn">Read more »</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Blog Area End -->
-
-        </main>
-     	
-     	<%------------ footer section  ------------%>
-     	<jsp:include page="./fix/footer.jsp" />
-     
-     	<%------------ All JS Custom Plugins Link Here here -----------%>
-        <script src="<c:url value='/resources/js/vendor/modernizr-3.5.0.min.js'/>"></script>
-		<%-- Jquery, Popper, Bootstrap --%>
-		<script src="<c:url value='/resources/js/vendor/jquery-1.12.4.min.js'/>"></script>
-        <script src="<c:url value='/resources/js/popper.min.js'/>"></script>
-        <script src="<c:url value='/resources/js/bootstrap.min.js'/>"></script>
-	    <%-- Jquery Mobile Menu --%>
-        <script src="<c:url value='/resources/js/jquery.slicknav.min.js'/>"></script>
-
-		<%-- Jquery Slick , Owl-Carousel Plugins --%>
-        <script src="<c:url value='/resources/js/owl.carousel.min.js'/>"></script>
-        <script src="<c:url value='/resources/js/slick.min.js'/>"></script>
-        <script src="<c:url value='/resources/js/price_rangs.js'/>"></script>
-        
-		<%-- One Page, Animated-HeadLin --%>
-        <script src="<c:url value='/resources/js/wow.min.js'/>"></script>
-		<script src="<c:url value='/resources/js/animated.headline.js'/>"></script>
-        <script src="<c:url value='/resources/js/jquery.magnific-popup.js'/>"></script>
-
-		<%-- Scrollup, nice-select, sticky --%>
-        <script src="<c:url value='/resources/js/jquery.scrollUp.min.js'/>"></script>
-        <script src="<c:url value='/resources/js/jquery.nice-select.min.js'/>"></script>
-		<script src="<c:url value='/resources/js/jquery.sticky.js'/>"></script>
-        
-        <%-- contact js --%>
-        <script src="<c:url value='/resources/js/contact.js'/>"></script>
-        <script src="<c:url value='/resources/js/jquery.form.js'/>"></script>
-        <script src="<c:url value='/resources/js/jquery.validate.min.js'/>"></script>
-        <script src="<c:url value='/resources/js/mail-script.js'/>"></script>
-        <script src="<c:url value='/resources/js/jquery.ajaxchimp.min.js'/>"></script>
-        
-		<%-- Jquery Plugins, main Jquery --%>
-        <script src="<c:url value='/resources/js/plugins.js'/>"></script>
-        <script src="<c:url value='/resources/js/main.js'/>"></script>
-    </body>
+		<!-- 여행 검색 -->
+		<section class="banner-one" style="background-image: url(<c:url value="/resources/images/banner_main/${BannerRespectivelyView1.getS_file_name()}"/>);">
+			<div class="container">
+				<h2>
+					Carefin <span>Tour</span>
+				</h2>
+				<p>여행지를 선택 해보세요</p>
+				<form class="tour-search-one" action="travelSearch">
+					<div class="tour-search-one__inner">
+						<div class="tour-search-one__inputs">
+							<div class="tour-search-one__input-box">
+								<label for="place">여행지</label>
+								<select class="selectpicker" id="searchArea" name="searchArea">
+									<option value="미주/중남미/하와이">미주/중남미/하와이</option>
+									<option value="대만/동남아/서남아">대만/동남아/서남아</option>
+									<option value="중국/홍콩/러시아">중국/홍콩/러시아</option>
+									<option value="유럽/아프리카">유럽/아프리카</option>
+									<option value="일본">일본</option>
+								</select>
+							</div>
+							<div class="tour-search-one__input-box">
+								<label for="when">여행시작일</label>
+								<input type="date" class="form-control" value="<%=beginMonth %>" id="searchStartDate" name="searchStartDate" placeholder="여행출발일" >
+							</div>
+							<div class="tour-search-one__input-box">
+								<label for="type">여행 테마</label> <select class="selectpicker" id="searchTheme" name="searchTheme">
+									<option value="낚시">낚시</option>
+									<option value="허니문">허니문</option>
+									<option value="골프">골프</option>
+									<option value="해외">해외</option>
+								</select>
+							</div>
+						</div>
+						<div class="tour-search-one__btn-wrap">
+							<button type="submit" class="thm-btn tour-search-one__btn">검색</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</section>
+		<!-- 여행 검색 -->
+		
+		<!-- 간단한 회사 소개 및 연혁 -->
+		<section class="features-one__title">
+			<div class="container">
+				<div class="block-title text-center">
+					<p>높은 퀄리티에 만족도 높은 여행!</p>
+					<h3>
+						업계최고 여행사 <br> 원하시는 여행패키지를 골라보세요!
+					</h3>
+				</div>
+			</div>
+		</section>
+		<!-- 간단한 회사 소개 및 연혁 -->
+	
+		<!-- 패키지 목록 -->
+		<section class="features-one__content">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-duration="1500ms" data-wow-delay="000ms">
+						<div class="features-one__single">
+							<i class=" tripo-icon-tour-guide"></i>
+							<h3>
+								800명 이상의 현지 가이드
+							</h3>
+						</div>
+					</div>
+					<div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-duration="1500ms" data-wow-delay="100ms">
+						<div class="features-one__single">
+							<i class=" tripo-icon-reliability"></i>
+							<h3>
+								100% 믿을수 있는 여행사
+							</h3>
+						</div>
+					</div>
+					<div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-duration="1500ms" data-wow-delay="200ms">
+						<div class="features-one__single">
+							<i class=" tripo-icon-user-experience"></i>
+							<h3>
+								오랜 경험이 있는 여행사
+							</h3>
+						</div>
+					</div>
+					<div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-duration="1500ms" data-wow-delay="300ms">
+						<div class="features-one__single">
+							<i class=" tripo-icon-feedback"></i>
+							<h3>
+								98%이상의 만족도
+							</h3>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- 패키지 목록 -->
+	
+		<!-- 여행 영상 -->
+		<section class="tour-one">
+			<div class="container">
+				<div class="block-title text-center">
+					<p>패키지 여행</p>
+					<h3>추천하는 패키지 여행</h3>
+				</div>
+				<!-- /.block-title -->
+				<div class="row">
+				<c:forEach items="${UsaPackageViewList }" var="UsaPackageViewList">
+					<div class="col-xl-4 col-lg-6">
+						<div class="tour-one__single">
+							<div class="tour-one__image">
+								<img src='<c:url value="/resources/images/product_package/${UsaPackageViewList.s_file_name }"/>' alt=""  width="379" height="292" >
+								<a href="detailInfo?PID=${UsaPackageViewList.pid}"><i class="fa fa-heart"></i></a>
+							</div>
+							<div class="tour-one__content">			
+								<h3>
+									<a href="detailInfo?PID=${UsaPackageViewList.pid}">${UsaPackageViewList.productname}</a>
+								</h3>
+								<p>
+									<span><fmt:formatNumber value="${UsaPackageViewList.adultprice }" pattern="###,###,###"/>~</span> / 1인 기준
+								</p>
+								<ul class="tour-one__meta list-unstyled">
+									<li><i class="far fa-clock">2박3일 </i></li>
+									<li><i class="far fa-user-circle"><c:out value="${UsaPackageViewList.hit}"/></i> </li>
+									<li><i class="far fa-map"> ${UsaPackageViewList.area}</i> </li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					</c:forEach>
+					<c:forEach items="${ChinaPackageViewList }" var="ChinaPackageViewList">
+					<div class="col-xl-4 col-lg-6">
+						<div class="tour-one__single">
+							<div class="tour-one__image">
+								<img src='<c:url value="/resources/images/product_package/${ChinaPackageViewList.s_file_name }"/>' alt=""  width="379" height="292" >
+								<a href="detailInfo?PID=${ChinaPackageViewList.pid}"><i class="fa fa-heart"></i></a>
+							</div>
+							<div class="tour-one__content">
+								<h3>
+									<a href="detailInfo?PID=${ChinaPackageViewList.pid}">${ChinaPackageViewList.productname }</a>
+								</h3>
+								<p>
+									<span><fmt:formatNumber value="${ChinaPackageViewList.adultprice }" pattern="###,###,###"/>~</span> / 1인 기준
+								</p>
+								<ul class="tour-one__meta list-unstyled">
+									<li><i class="far fa-clock">3박 4일</i></li>
+									<li><i class="far fa-user-circle"><c:out value="${ChinaPackageViewList.hit}"/></i></li>
+									<li><i class="far fa-map"> ${ChinaPackageViewList.area}</i></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					</c:forEach>
+					<c:forEach items="${MylPackageViewList }" var="MylPackageViewList">
+					<div class="col-xl-4 col-lg-6">
+						<div class="tour-one__single">	
+							<div class="tour-one__image">
+								<img src='<c:url value="/resources/images/product_package/${MylPackageViewList.s_file_name }"/>' alt=""  width="379" height="292">
+								<a href="detailInfo?PID=${MylPackageViewList.pid}"><i class="fa fa-heart"></i></a>
+							</div>
+							<div class="tour-one__content">
+								<h3>
+									<a href="detailInfo?PID=${MylPackageViewList.pid}">${MylPackageViewList.productname }</a>
+								</h3>
+								<p>
+									<span><fmt:formatNumber value="${MylPackageViewList.adultprice }" pattern="###,###,###"/>~</span> / 1인 기준
+								</p>
+								<ul class="tour-one__meta list-unstyled">
+									<li><i class="far fa-clock">4박 5일</i></li>
+									<li><i class="far fa-user-circle"><c:out value="${MylPackageViewList.hit}"/></i></li>
+									<li><i class="far fa-map">${MylPackageViewList.area}</i></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					</c:forEach>
+					<c:forEach items="${JapanPackageViewList }" var="JapanPackageViewList">
+					<div class="col-xl-4 col-lg-6">
+						<div class="tour-one__single">
+							<div class="tour-one__image">
+								<img src='<c:url value="/resources/images/product_package/${JapanPackageViewList.s_file_name }"/>' alt=""  width="379" height="292">
+								<a href="detailInfo?PID=${JapanPackageViewList.pid}"><i class="fa fa-heart"></i></a>
+							</div>
+							<div class="tour-one__content">
+								<h3>
+									<a href="detailInfo?PID=${JapanPackageViewList.pid}">${JapanPackageViewList.productname }</a>
+								</h3>
+								<p>
+									<span><fmt:formatNumber value="${JapanPackageViewList.adultprice }" pattern="###,###,###"/>~</span> / 1인 기준
+								</p>
+								<ul class="tour-one__meta list-unstyled">
+									<li><i class="far fa-clock">2박 3일</i></li>
+									<li><i class="far fa-user-circle"><c:out value="${JapanPackageViewList.hit}"/></i></li>
+									<li><i class="far fa-map">${JapanPackageViewList.area}</i></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</c:forEach>
+				<c:forEach items="${SurfingPackageViewList }" var="SurfingPackageViewList">
+					<div class="col-xl-4 col-lg-6">
+						<div class="tour-one__single">
+							<div class="tour-one__image">
+								<img src='<c:url value="/resources/images/product_package/${SurfingPackageViewList.s_file_name }"/>' alt=""  width="379" height="292">
+								<a href="detailInfo?PID=${SurfingPackageViewList.pid}"><i class="fa fa-heart"></i></a>
+							</div>
+							<div class="tour-one__content">
+								
+								<h3>
+									<a href="detailInfo?PID=${SurfingPackageViewList.pid}">${SurfingPackageViewList.productname }</a>
+								</h3>
+								<p>
+									<span><fmt:formatNumber value="${SurfingPackageViewList.adultprice }" pattern="###,###,###"/>~</span> / 1인 기준
+								</p>
+								<ul class="tour-one__meta list-unstyled">
+									<li><i class="far fa-clock">6박 7일</i></li>
+									<li><i class="far fa-user-circle"> <c:out value="${SurfingPackageViewList.hit}"/></i></li>
+									<li><i class="far fa-map"> ${SurfingPackageViewList.area}</i></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					</c:forEach>
+					<c:forEach items="${EuPackageViewList }" var="EuPackageViewList">
+					<div class="col-xl-4 col-lg-6">
+						<div class="tour-one__single">
+							<div class="tour-one__image">
+								<img src='<c:url value="/resources/images/product_package/${EuPackageViewList.s_file_name }"/>' alt=""  width="379" height="292">
+								<a href="detailInfo?PID=${EuPackageViewList.pid}"><i class="fa fa-heart"></i></a>
+							</div>
+							<div class="tour-one__content">
+								<h3>
+									<a href="detailInfo?PID=${EuPackageViewList.pid}">${EuPackageViewList.productname }</a>
+								</h3>
+								<p>
+									<span><fmt:formatNumber value="${EuPackageViewList.adultprice }" pattern="###,###,###"/>~</span> / 1인 기준
+								</p>
+								<ul class="tour-one__meta list-unstyled">
+									<li><i class="far fa-clock">6박 7일</i></li>
+									<li><i class="far fa-user-circle"> ${EuPackageViewList.hit }</i></li>
+									<li><i class="far fa-map">${EuPackageViewList.area }</i></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					</c:forEach>
+				</div>
+				
+			</div>
+			
+		</section>
+		<section class="video-one" style="background-image: url(<c:url value="/resources/images/banner_main/${BannerRespectivelyView2.getS_file_name()}"/>);">
+			<div class="container text-center">
+				<a href="${BannerRespectivelyView22.getS_file_name()}" class="video-one__btn video-popup"><i class="fa fa-play"></i></a>
+				<p>Love where you're going</p>
+				<h3>
+					<span>케어핀투어</span>는 세계적인  <br> 
+					<span>낚시 전문 여행사 입니다.</span>
+				</h3>
+			</div>
+		</section>
+		<!-- 여행 영상 -->
+	
+		<!-- 여행 리뷰 -->
+		<section class="testimonials-one">
+			<div class="container">
+				<div class="block-title text-center">
+					<p>여행 리뷰</p>
+					<h3>소중한 여행 리뷰</h3>
+				</div>
+				<div class="testimonials-one__carousel thm__owl-carousel light-dots owl-carousel owl-theme" data-options='{"nav": false, "autoplay": true, "autoplayTimeout": 5000, "smartSpeed": 700, "dots": true, "margin": 30, "loop": true, "responsive": { "0": { "items": 1, "nav": true, "navText": ["Prev", "Next"], "dots": false }, "767": { "items": 1, "nav": true, "navText": ["Prev", "Next"], "dots": false }, "991": { "items": 2 }, "1199": { "items": 2 }, "1200": { "items": 3 } }}'>
+				<c:forEach items="${LineReview }" var="LineReview">
+					<div class="item">
+						<div class="testimonials-one__single">
+							<div class="testimonials-one__content">	
+								<p>${fn:substring(LineReview.content, 0 ,70)}</p>
+							</div>
+							<div class="testimonials-one__info">									
+							<c:choose>
+									<c:when test="${LineReview.sex eq 1}">
+										<img src='<c:url value="/resources/images/testimonials/4w.png"/>' alt="">
+									</c:when>
+									<c:otherwise>
+										<img src='<c:url value="/resources/images/testimonials/7.png"/>' alt="">
+									</c:otherwise>
+								</c:choose>				
+								<h3>${LineReview.userId }</h3>
+							</div>
+						</div>
+					</div>
+			</c:forEach>
+				</div>
+			</div>
+		</section>
+		<!-- 여행 리뷰 -->
+	
+		<!-- 여행 포토 -->
+		<section class="blog-one">
+			<div class="container">
+				<div class="block-title text-center">
+					<p>TRAVEL PHOTO REVIEW</p>
+					<h3>최신 인기 여행 사진</h3>
+				</div>
+				<div class="row">
+					<c:forEach items="${NewTravelPhotoList }" var="NewTravelPhotoList">
+					<div class="col-lg-4 wow fadeInUp" data-wow-duration="1500ms" data-wow-delay="000ms">
+						<div class="blog-one__single">
+							<div class="blog-one__image">
+								<c:choose>
+									<c:when test="${NewTravelPhotoList.s_file_name eq null}">
+										<img src='<c:url value="/resources/images/noImage.png"/>' width="200" height="200">
+									</c:when>
+									<c:otherwise>
+										<img src='<c:url value="/resources/images/TravelPhotoReview/${NewTravelPhotoList.s_file_name}"/>' alt="" width="200" height="200">
+									</c:otherwise>
+								</c:choose>
+								<a href="travelphotoView?prid=${NewTravelPhotoList.prid}"><i class="fa fa-long-arrow-alt-right"></i></a>
+							</div>
+							<div class="blog-one__content">
+								<ul class="list-unstyled blog-one__meta">
+									<li><a href="travelphotoView?prid=${NewTravelPhotoList.prid}"><i class="far fa-user-circle"></i>${NewTravelPhotoList.userId }</a></li>
+									<li><a href="travelphotoView?prid=${NewTravelPhotoList.prid}"><i class="far fa-eye"></i><c:out value="${NewTravelPhotoList.hit}" /></a></li>
+								</ul>
+								<h3 style="font-size: 15px;">
+									<a href="travelphotoView?prid=${NewTravelPhotoList.prid}">${fn:substring(NewTravelPhotoList.title, 0 ,40)}</a>
+								</h3>
+							</div>
+						</div>
+					</div>
+					</c:forEach>
+				</div>
+			</div>
+		</section>
+		<!-- 여행 포토 -->
+		<jsp:include page="layout/footer.jsp"/>
+	</div>
+	<!-- 메인 영역 -->
+</body>
 </html>
