@@ -42,310 +42,105 @@
 		<img src='<c:url value="/resources/images/loader3.png"/>' class="preloader__image" alt="">
 	</div>
 	
-	<!-- 페이지 로딩 이미지 -->
 	
 	<!-- 메인 영역 -->
 	<div class="page-wrapper">
 		<jsp:include page="layout/header.jsp"/>
 		
-		<!-- 여행 검색 -->
+		<!-- 유튜브 영상 -->
 		<div class="container-flue">
 			<iframe width="100%" height="700px" src="https://www.youtube.com/embed/pvjr0h2-HnE?autoplay=1&mute=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 		</div>
-		<!-- 여행 검색 -->
 		
-		<!-- 간단한 회사 소개 및 연혁 -->
+		<!-- 분양홍보 문구 -->
 		<section class="features-one__title">
 			<div class="container">
 				<div class="block-title text-center">
-					<p>높은 퀄리티에 만족도 높은 여행!</p>
+					<p>가족이 되어주세요!</p>
 					<h3>
-						업계최고 여행사 <br> 원하시는 여행패키지를 골라보세요!
+						반려동물 사지마세요, <br> 입양 하세요!
 					</h3>
 				</div>
 			</div>
 		</section>
-		<!-- 간단한 회사 소개 및 연혁 -->
 	
-		<!-- 패키지 목록 -->
+		<!-- 분양홍보 문구 이유 -->
 		<section class="features-one__content">
 			<div class="container">
 				<div class="row">
 					<div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-duration="1500ms" data-wow-delay="000ms">
 						<div class="features-one__single">
 							<i class=" tripo-icon-tour-guide"></i>
-							<h3>
-								800명 이상의 현지 가이드
-							</h3>
+							<h6>
+								한 해 버려지는 <br>유기동물 서울만 8900마리
+							</h6>
 						</div>
 					</div>
 					<div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-duration="1500ms" data-wow-delay="100ms">
 						<div class="features-one__single">
 							<i class=" tripo-icon-reliability"></i>
-							<h3>
-								100% 믿을수 있는 여행사
-							</h3>
+							<h6>
+								구매를 한다면 자신도 모르는 사이 <br>번식농장을 지지하게 됩니다
+							</h6>
 						</div>
 					</div>
 					<div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-duration="1500ms" data-wow-delay="200ms">
 						<div class="features-one__single">
 							<i class=" tripo-icon-user-experience"></i>
-							<h3>
-								오랜 경험이 있는 여행사
-							</h3>
+							<h6>
+								주변 지역이나 <br>관심 지역에서 찾아보세요!
+							</h6>
 						</div>
 					</div>
 					<div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-duration="1500ms" data-wow-delay="300ms">
 						<div class="features-one__single">
 							<i class=" tripo-icon-feedback"></i>
-							<h3>
-								98%이상의 만족도
-							</h3>
+							<h6>
+								친구들에 대한<br>작은 관심으로 시작해보세요!
+							</h6>
 						</div>
 					</div>
 				</div>
 			</div>
 		</section>
-		<!-- 패키지 목록 -->
 	
-		<!-- 여행 영상 -->
+		<!-- 관심 많이 받은 유기동물-->
 		<section class="tour-one">
 			<div class="container">
 				<div class="block-title text-center">
-					<p>패키지 여행</p>
-					<h3>추천하는 패키지 여행</h3>
+					<p>이번 달 가장 많은 </p>
+					<h3>관심을 받은 친구</h3>
 				</div>
 				<!-- /.block-title -->
 				<div class="row">
-				<c:forEach items="${UsaPackageViewList }" var="UsaPackageViewList">
-					<div class="col-xl-4 col-lg-6">
-						<div class="tour-one__single">
-							<div class="tour-one__image">
-								<img src='<c:url value="/resources/images/product_package/${UsaPackageViewList.s_file_name }"/>' alt=""  width="379" height="292" >
-								<a href="detailInfo?PID=${UsaPackageViewList.pid}"><i class="fa fa-heart"></i></a>
-							</div>
-							<div class="tour-one__content">			
-								<h3>
-									<a href="detailInfo?PID=${UsaPackageViewList.pid}">${UsaPackageViewList.productname}</a>
-								</h3>
-								<p>
-									<span><fmt:formatNumber value="${UsaPackageViewList.adultprice }" pattern="###,###,###"/>~</span> / 1인 기준
-								</p>
-								<ul class="tour-one__meta list-unstyled">
-									<li><i class="far fa-clock">2박3일 </i></li>
-									<li><i class="far fa-user-circle"><c:out value="${UsaPackageViewList.hit}"/></i> </li>
-									<li><i class="far fa-map"> ${UsaPackageViewList.area}</i> </li>
-								</ul>
-							</div>
-						</div>
-					</div>
-					</c:forEach>
-					<c:forEach items="${ChinaPackageViewList }" var="ChinaPackageViewList">
-					<div class="col-xl-4 col-lg-6">
-						<div class="tour-one__single">
-							<div class="tour-one__image">
-								<img src='<c:url value="/resources/images/product_package/${ChinaPackageViewList.s_file_name }"/>' alt=""  width="379" height="292" >
-								<a href="detailInfo?PID=${ChinaPackageViewList.pid}"><i class="fa fa-heart"></i></a>
-							</div>
-							<div class="tour-one__content">
-								<h3>
-									<a href="detailInfo?PID=${ChinaPackageViewList.pid}">${ChinaPackageViewList.productname }</a>
-								</h3>
-								<p>
-									<span><fmt:formatNumber value="${ChinaPackageViewList.adultprice }" pattern="###,###,###"/>~</span> / 1인 기준
-								</p>
-								<ul class="tour-one__meta list-unstyled">
-									<li><i class="far fa-clock">3박 4일</i></li>
-									<li><i class="far fa-user-circle"><c:out value="${ChinaPackageViewList.hit}"/></i></li>
-									<li><i class="far fa-map"> ${ChinaPackageViewList.area}</i></li>
-								</ul>
-							</div>
-						</div>
-					</div>
-					</c:forEach>
-					<c:forEach items="${MylPackageViewList }" var="MylPackageViewList">
-					<div class="col-xl-4 col-lg-6">
-						<div class="tour-one__single">	
-							<div class="tour-one__image">
-								<img src='<c:url value="/resources/images/product_package/${MylPackageViewList.s_file_name }"/>' alt=""  width="379" height="292">
-								<a href="detailInfo?PID=${MylPackageViewList.pid}"><i class="fa fa-heart"></i></a>
-							</div>
-							<div class="tour-one__content">
-								<h3>
-									<a href="detailInfo?PID=${MylPackageViewList.pid}">${MylPackageViewList.productname }</a>
-								</h3>
-								<p>
-									<span><fmt:formatNumber value="${MylPackageViewList.adultprice }" pattern="###,###,###"/>~</span> / 1인 기준
-								</p>
-								<ul class="tour-one__meta list-unstyled">
-									<li><i class="far fa-clock">4박 5일</i></li>
-									<li><i class="far fa-user-circle"><c:out value="${MylPackageViewList.hit}"/></i></li>
-									<li><i class="far fa-map">${MylPackageViewList.area}</i></li>
-								</ul>
-							</div>
-						</div>
-					</div>
-					</c:forEach>
-					<c:forEach items="${JapanPackageViewList }" var="JapanPackageViewList">
-					<div class="col-xl-4 col-lg-6">
-						<div class="tour-one__single">
-							<div class="tour-one__image">
-								<img src='<c:url value="/resources/images/product_package/${JapanPackageViewList.s_file_name }"/>' alt=""  width="379" height="292">
-								<a href="detailInfo?PID=${JapanPackageViewList.pid}"><i class="fa fa-heart"></i></a>
-							</div>
-							<div class="tour-one__content">
-								<h3>
-									<a href="detailInfo?PID=${JapanPackageViewList.pid}">${JapanPackageViewList.productname }</a>
-								</h3>
-								<p>
-									<span><fmt:formatNumber value="${JapanPackageViewList.adultprice }" pattern="###,###,###"/>~</span> / 1인 기준
-								</p>
-								<ul class="tour-one__meta list-unstyled">
-									<li><i class="far fa-clock">2박 3일</i></li>
-									<li><i class="far fa-user-circle"><c:out value="${JapanPackageViewList.hit}"/></i></li>
-									<li><i class="far fa-map">${JapanPackageViewList.area}</i></li>
-								</ul>
-							</div>
-						</div>
-					</div>
-				</c:forEach>
-				<c:forEach items="${SurfingPackageViewList }" var="SurfingPackageViewList">
-					<div class="col-xl-4 col-lg-6">
-						<div class="tour-one__single">
-							<div class="tour-one__image">
-								<img src='<c:url value="/resources/images/product_package/${SurfingPackageViewList.s_file_name }"/>' alt=""  width="379" height="292">
-								<a href="detailInfo?PID=${SurfingPackageViewList.pid}"><i class="fa fa-heart"></i></a>
-							</div>
-							<div class="tour-one__content">
-								
-								<h3>
-									<a href="detailInfo?PID=${SurfingPackageViewList.pid}">${SurfingPackageViewList.productname }</a>
-								</h3>
-								<p>
-									<span><fmt:formatNumber value="${SurfingPackageViewList.adultprice }" pattern="###,###,###"/>~</span> / 1인 기준
-								</p>
-								<ul class="tour-one__meta list-unstyled">
-									<li><i class="far fa-clock">6박 7일</i></li>
-									<li><i class="far fa-user-circle"> <c:out value="${SurfingPackageViewList.hit}"/></i></li>
-									<li><i class="far fa-map"> ${SurfingPackageViewList.area}</i></li>
-								</ul>
-							</div>
-						</div>
-					</div>
-					</c:forEach>
-					<c:forEach items="${EuPackageViewList }" var="EuPackageViewList">
-					<div class="col-xl-4 col-lg-6">
-						<div class="tour-one__single">
-							<div class="tour-one__image">
-								<img src='<c:url value="/resources/images/product_package/${EuPackageViewList.s_file_name }"/>' alt=""  width="379" height="292">
-								<a href="detailInfo?PID=${EuPackageViewList.pid}"><i class="fa fa-heart"></i></a>
-							</div>
-							<div class="tour-one__content">
-								<h3>
-									<a href="detailInfo?PID=${EuPackageViewList.pid}">${EuPackageViewList.productname }</a>
-								</h3>
-								<p>
-									<span><fmt:formatNumber value="${EuPackageViewList.adultprice }" pattern="###,###,###"/>~</span> / 1인 기준
-								</p>
-								<ul class="tour-one__meta list-unstyled">
-									<li><i class="far fa-clock">6박 7일</i></li>
-									<li><i class="far fa-user-circle"> ${EuPackageViewList.hit }</i></li>
-									<li><i class="far fa-map">${EuPackageViewList.area }</i></li>
-								</ul>
-							</div>
-						</div>
-					</div>
-					</c:forEach>
 				</div>
-				
 			</div>
 			
 		</section>
-		<section class="video-one" style="background-image: url(<c:url value="/resources/images/banner_main/${BannerRespectivelyView2.getS_file_name()}"/>);">
-			<div class="container text-center">embed
-				<a href="https://www.youtube.com/embed/k7NRCUU5qqQ&t=7s" class="video-one__btn video-popup"><i class="fa fa-play"></i></a>
-				<p>Love where you're going</p>
-				<h3>
-					<span>케어핀투어</span>는 세계적인  <br> 
-					<span>낚시 전문 여행사 입니다.</span>
-				</h3>
-			</div>
-		</section>
-		<!-- 여행 영상 -->
 	
-		<!-- 여행 리뷰 -->
+		<!-- 분양후기 -->
 		<section class="testimonials-one">
 			<div class="container">
 				<div class="block-title text-center">
-					<p>여행 리뷰</p>
-					<h3>소중한 여행 리뷰</h3>
-				</div>
-				<div class="testimonials-one__carousel thm__owl-carousel light-dots owl-carousel owl-theme" data-options='{"nav": false, "autoplay": true, "autoplayTimeout": 5000, "smartSpeed": 700, "dots": true, "margin": 30, "loop": true, "responsive": { "0": { "items": 1, "nav": true, "navText": ["Prev", "Next"], "dots": false }, "767": { "items": 1, "nav": true, "navText": ["Prev", "Next"], "dots": false }, "991": { "items": 2 }, "1199": { "items": 2 }, "1200": { "items": 3 } }}'>
-				<c:forEach items="${LineReview }" var="LineReview">
-					<div class="item">
-						<div class="testimonials-one__single">
-							<div class="testimonials-one__content">	
-								<p>${fn:substring(LineReview.content, 0 ,70)}</p>
-							</div>
-							<div class="testimonials-one__info">									
-							<c:choose>
-									<c:when test="${LineReview.sex eq 1}">
-										<img src='<c:url value="/resources/images/testimonials/4w.png"/>' alt="">
-									</c:when>
-									<c:otherwise>
-										<img src='<c:url value="/resources/images/testimonials/7.png"/>' alt="">
-									</c:otherwise>
-								</c:choose>				
-								<h3>${LineReview.userId }</h3>
-							</div>
-						</div>
-					</div>
-			</c:forEach>
+					<p>함께 해요</p>
+					<h3>소중한 분양 후기</h3>
 				</div>
 			</div>
 		</section>
-		<!-- 여행 리뷰 -->
 	
-		<!-- 여행 포토 -->
+		<!-- 실종 동물 -->
 		<section class="blog-one">
 			<div class="container">
 				<div class="block-title text-center">
-					<p>TRAVEL PHOTO REVIEW</p>
-					<h3>최신 인기 여행 사진</h3>
+					<p>하나 밖에 없는</p>
+					<h3>실종동물을 찾고 있어요</h3>
 				</div>
 				<div class="row">
-					<c:forEach items="${NewTravelPhotoList }" var="NewTravelPhotoList">
-					<div class="col-lg-4 wow fadeInUp" data-wow-duration="1500ms" data-wow-delay="000ms">
-						<div class="blog-one__single">
-							<div class="blog-one__image">
-								<c:choose>
-									<c:when test="${NewTravelPhotoList.s_file_name eq null}">
-										<img src='<c:url value="/resources/images/noImage.png"/>' width="200" height="200">
-									</c:when>
-									<c:otherwise>
-										<img src='<c:url value="/resources/images/TravelPhotoReview/${NewTravelPhotoList.s_file_name}"/>' alt="" width="200" height="200">
-									</c:otherwise>
-								</c:choose>
-								<a href="travelphotoView?prid=${NewTravelPhotoList.prid}"><i class="fa fa-long-arrow-alt-right"></i></a>
-							</div>
-							<div class="blog-one__content">
-								<ul class="list-unstyled blog-one__meta">
-									<li><a href="travelphotoView?prid=${NewTravelPhotoList.prid}"><i class="far fa-user-circle"></i>${NewTravelPhotoList.userId }</a></li>
-									<li><a href="travelphotoView?prid=${NewTravelPhotoList.prid}"><i class="far fa-eye"></i><c:out value="${NewTravelPhotoList.hit}" /></a></li>
-								</ul>
-								<h3 style="font-size: 15px;">
-									<a href="travelphotoView?prid=${NewTravelPhotoList.prid}">${fn:substring(NewTravelPhotoList.title, 0 ,40)}</a>
-								</h3>
-							</div>
-						</div>
-					</div>
-					</c:forEach>
 				</div>
 			</div>
 		</section>
-		<!-- 여행 포토 -->
+		
 		<jsp:include page="layout/footer.jsp"/>
 	</div>
-	<!-- 메인 영역 -->
 </body>
 </html>
