@@ -17,16 +17,15 @@
 						<a href="main" class="footer-widget__logo">
 							<img src='<c:url value="/resources/images/bottom_Logo.png"/>' width="100" alt="">
 						</a>
-						<p>대한민국 최고의 여행사!<br>당신의 여행 지킴이 케어핀투어</p>
-						<a href="mailto:ljpk@kyungmin.ac.kr">ljpk@kyungmin.ac.kr</a><br>
+						<p>함께 유기동물 친구들의<br>새로운 가족이 되어주세요!</p>
+						<a href="mailto:ljpk@kyungmin.ac.kr">choum9797@kyungmin.ac.kr</a><br>
 						<a href="tel:031-828-7700">031-828-7700</a>
 					</div>
 					<div class="footer-widget__column">
 						<h3 class="footer-widget__title">Company</h3>
 						<ul class="footer-widget__links-list list-unstyled">
 							<li><a href="javascript:void(0)">사업자등록번호 : 123-45-67890</a></li>
-							<li><a href="javascript:void(0)">관광사업자등록번호 : 제2021-123456호</a></li>
-							<li><a href="javascript:void(0)">E-mail : ljpk@gmail.com</a></li>
+							<li><a href="javascript:void(0)">E-mail : hoil20707@gmail.com</a></li>
 							<li><a href="javascript:void(0)">주소 : 경기도 의정부시 서부로 545 효행관 401호</a></li>
 						</ul>
 					</div>
@@ -36,8 +35,6 @@
 							<li><a href="company">회사개요</a></li>
 							<li><a href="#" data-toggle="modal" data-target="#privacypolicy">개인정보처리방침</a></li>
 							<li><a href="#" data-toggle="modal" data-target="#useservice">이용약관</a></li>
-							<li><a href="domestictttac">여행약관</a></li>
-							<li><a href="insurance">여행자보험</a></li>
 							<li><a href="support">고객센터</a></li>
 						</ul>
 					</div>
@@ -76,9 +73,10 @@
 				<nav class="mobile-nav__container"></nav>
 				<div class="side-menu__sep"></div>
 				<div class="side-menu__content">
-					<p>대한민국 최고의 여행사!<br>당신의 여행 지킴이 케어핀투어</p>
+					<p>함께 유기동물 친구들의 <br>
+					새로운 가족이 되어주세요!</p>
 					<p>
-						<a href="mailto:ljpk@kyungmin.ac.kr">ljpk@kyungmin.ac.kr</a><br>
+						<a href="mailto:ljpk@kyungmin.ac.kr">choum9797@kyungmin.ac.kr</a><br>
 						<a href="tel:031-828-7700">031-828-7700</a>
 					</p>
 					<div class="side-menu__social">

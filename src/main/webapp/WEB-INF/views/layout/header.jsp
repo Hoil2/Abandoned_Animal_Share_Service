@@ -65,39 +65,15 @@
 								<a href="main" id="twayFont">홈</a>
 							</li>
 							<li class="dropdown"><a href="countrytravel1" id="twayFont">분양센터</a>
-								<ul>
-									<li><a href="countrytravel1" id="twayFont">미주/중남미/하와이</a></li>
-									<li><a href="countrytravel2" id="twayFont">대만/동남아/서남아</a></li>
-									<li><a href="countrytravel3" id="twayFont">중국/홍콩/러시아</a></li>
-									<li><a href="countrytravel4" id="twayFont">유럽/아프리카</a></li>
-									<li><a href="countrytravel5" id="twayFont">일본</a></li>
-								</ul>
 							</li>
 							<li class="dropdown"><a href="fishing" id="twayFont">실종동물</a>
-								<ul>
-									<li><a href="fishing" id="twayFont">낚시</a></li>
-									<li><a href="golf" id="twayFont">골프</a></li>
-									<li><a href="honeymoon" id="twayFont">허니문</a></li>
-								</ul>
 							</li>
 							<li class="dropdown"><a href="hotelreservation" id="twayFont">지식백과</a>
-								<ul>
-									<li><a href="hotelreservation" id="twayFont">국내호텔</a></li>
-								</ul>
 							</li>
 							<li class="dropdown"><a href="weatherinfo" id="twayFont">소통해요</a>
 								<ul>
-									<li><a href="weatherinfo" id="twayFont">날씨</a></li>
-									<li><a href="exchangeinfo" id="twayFont">환율</a></li>
-									<li><a href="timedifferenceinfo" id="twayFont">시차</a></li>
-									<li><a href="visainfo" id="twayFont">비자정보</a></li>
-									<li><a href="supplies" id="twayFont">여행준비물</a></li>
-								</ul>
-							</li>
-							<li class="dropdown"><a href="topangler" id="twayFont">펫도우미</a>
-								<ul>
-									<li><a href="topangler" id="twayFont">탑앵글러</a></li>
-									<li><a href="travelphoto" id="twayFont">여행포토</a></li>
+									<li><a href="weatherinfo" id="twayFont">일상공유</a></li>
+									<li><a href="exchangeinfo" id="twayFont">정보공유</a></li>
 								</ul>
 							</li>
 						</ul>
