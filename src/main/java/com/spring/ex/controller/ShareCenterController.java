@@ -4,9 +4,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/shereCenter")
 public class ShareCenterController {
-	@RequestMapping("/cneterView")
+	@RequestMapping("/shereCenterPageView")
 	public String chats() {
 		return "shereCenter";
 	}
