@@ -61,7 +61,7 @@
 					</div>
 					<div class="main-nav__main-navigation">
 						<ul class=" main-nav__navigation-box">
-							<li class="current">
+							<li class="dropdown">
 								<a href="main" id="twayFont">홈</a>
 							</li>
 							<li class="dropdown"><a href="shereCenterPageView" id="twayFont">분양센터</a>
