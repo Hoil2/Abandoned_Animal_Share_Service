@@ -4,7 +4,7 @@
 <mapper namespace="com.spring.ex.ShareCenterMapper">
 
 	<!-- 여행패키지 출력 -->
-	<select id="getShareCenterBoardView" resultType="ShareCenterDTO">
+	<select id="getShareCenterBoardPage" resultType="ShareCenterDTO">
 		SELECT * FROM abandoned_animal_info LIMIT #{Page}, #{PageSize}
 	</select>
 	
