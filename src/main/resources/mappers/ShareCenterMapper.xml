@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spring.ex.ShareCenterMapper">
+
+	<!-- 여행패키지 출력 -->
+	<select id="getShareCenterBoardView" resultType="ShareCenterDTO">
+		SELECT * FROM abandoned_animal_info LIMIT #{Page}, #{PageSize}
+	</select>
+	
+	<!-- 여행패키지 총 갯수 -->
+	<select id="getShareCenterBoardViewTotalCount" resultType="int">
+		SELECT COUNT(*) FROM abandoned_animal_info
+	</select>
+	
+</mapper>
