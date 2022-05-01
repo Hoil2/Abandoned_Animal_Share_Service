@@ -27,7 +27,6 @@
 			<div class="container">
 				<h2>분양센터</h2>
 				<ul class="thm-breadcrumb list-unstyled">
-					<li><a>CarefinTour</a></li>
 				</ul>
 			</div>
 		</section>
@@ -58,7 +57,7 @@
 							</div>
 							<div class="tour-one__content">
 								<h3 style="font-size: 19px;">
-									<a href="travelphotoView?prid=${TravelPhotoList.prid}"><c:out value="${fn:substring(slist.desertion_no, 0 ,35)}" /></a>
+									<a href="travelphotoView?prid=${TravelPhotoList.prid}">품종 : <c:out value="${fn:substring(slist.kind_cd, 0 ,35)}" /></a>
 								</h3>
 							</div>
 						</div>
