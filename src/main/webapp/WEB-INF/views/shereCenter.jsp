@@ -25,7 +25,7 @@
 		
 		<section class="page-header" style="background-image: url(<c:url value="/resources/images/banner_main/${BannerRespectivelyView.getS_file_name()}"/>);">
 			<div class="container">
-				<h2>여행 포토</h2>
+				<h2>분양센터</h2>
 				<ul class="thm-breadcrumb list-unstyled">
 					<li><a>CarefinTour</a></li>
 				</ul>
@@ -43,50 +43,27 @@
 				</div>
 				<br>
 				<div class="row">
+					<c:forEach var="slist" items="${slist}">
 					<div class="col-lg-3 col-md-6">
 						<div class="tour-one__single">
 							<div class="tour-one__image">
-								<img src='<c:url value="/resources/images/noImage.png"/>' width="200" height="200">
+								<c:choose>
+									<c:when test="${slist.filename eq null}">
+										<img src='<c:url value="/resources/images/noImage.png"/>' width="200" height="200">
+									</c:when>
+									<c:otherwise>
+										<img src='<c:url value="${slist.filename}"/>' alt="" width="200" height="200">
+									</c:otherwise>
+								</c:choose>
 							</div>
-						</div>
-						
-											<div>
-						<p align="right"><font size="1px"> 조회수 : ${photoBoardList.b_hit}</font></p>
-						<h3 style="font-size: 19px;">
-						 	<c:if test="${member == null}">
-						 		<a href="PhotoBoardDetailView?b_no=${photoBoardList.b_no}"><c:out value="${fn:substring(photoBoardList.b_title, 0 ,20)}" /></a>
-							</c:if>
-						 	<c:if test="${member != null}">
-						 		<a href="PhotoBoardDetailView?b_no=${photoBoardList.b_no}&m_userId=${member.getM_userId()}"><c:out value="${fn:substring(photoBoardList.b_title, 0 ,20)}" /></a>
-							</c:if>
-						</h3>
-						<p><c:out value="${fn:substring(photoBoardList.b_content,0,20)}" /></p>
-						<ul class="tour-one__meta list-unstyled">
-							<li><font size="1px">작성자 : ${photoBoardList.b_userId}&emsp;&emsp; 작성일 : ${photoBoardList.b_writing_date} </font> </li>
-						</ul>
-					</div>
-					</div>
-										<div class="col-lg-3 col-md-6">
-						<div class="tour-one__single">
-							<div class="tour-one__image">
-								<img src='<c:url value="/resources/images/noImage.png"/>' width="200" height="200">
+							<div class="tour-one__content">
+								<h3 style="font-size: 19px;">
+									<a href="travelphotoView?prid=${TravelPhotoList.prid}"><c:out value="${fn:substring(slist.desertion_no, 0 ,35)}" /></a>
+								</h3>
 							</div>
 						</div>
 					</div>
-										<div class="col-lg-3 col-md-6">
-						<div class="tour-one__single">
-							<div class="tour-one__image">
-								<img src='<c:url value="/resources/images/noImage.png"/>' width="200" height="200">
-							</div>
-						</div>
-					</div>
-										<div class="col-lg-3 col-md-6">
-						<div class="tour-one__single">
-							<div class="tour-one__image">
-								<img src='<c:url value="/resources/images/noImage.png"/>' width="200" height="200">
-							</div>
-						</div>
-					</div>
+					</c:forEach>
 				</div>
 			</div>
 		</section>
