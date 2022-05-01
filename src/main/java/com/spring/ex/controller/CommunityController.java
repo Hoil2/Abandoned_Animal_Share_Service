@@ -6,23 +6,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/community")
 public class CommunityController {
-	@RequestMapping("/chats")
+	@RequestMapping("/daily")
 	public String chats() {
-		return "community_chats";
+		return "community/community_daily";
 	}
 	
-	@RequestMapping("/questions")
+	@RequestMapping("/info")
 	public String questions() {
-		return "community_questions";
-	}
-	
-	@RequestMapping("/reviews")
-	public String reviews() {
-		return "community_reviews";
-	}
-	
-	@RequestMapping("/studies")
-	public String studies() {
-		return "community_studies";
+		return "community/community_info";
 	}
 }
