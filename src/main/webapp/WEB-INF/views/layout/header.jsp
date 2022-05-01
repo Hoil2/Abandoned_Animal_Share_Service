@@ -62,18 +62,18 @@
 					<div class="main-nav__main-navigation">
 						<ul class=" main-nav__navigation-box">
 							<li class="dropdown">
-								<a href="main" id="twayFont">홈</a>
+								<a href="/main" id="twayFont">홈</a>
 							</li>
-							<li class="dropdown"><a href="shereCenterPage" id="twayFont">분양센터</a>
+							<li class="dropdown"><a href="/shereCenterPage" id="twayFont">분양센터</a>
 							</li>
-							<li class="dropdown"><a href="fishing" id="twayFont">실종동물</a>
+							<li class="dropdown"><a href="/fishing" id="twayFont">실종동물</a>
 							</li>
-							<li class="dropdown"><a href="hotelreservation" id="twayFont">지식백과</a>
+							<li class="dropdown"><a href="/hotelreservation" id="twayFont">지식백과</a>
 							</li>
-							<li class="dropdown"><a href="weatherinfo" id="twayFont">소통해요</a>
+							<li class="dropdown"><a href="/community/daily" id="twayFont">소통해요</a>
 								<ul>
-									<li><a href="weatherinfo" id="twayFont">일상공유</a></li>
-									<li><a href="exchangeinfo" id="twayFont">정보공유</a></li>
+									<li><a href="/community/daily" id="twayFont">일상공유</a></li>
+									<li><a href="/community/info" id="twayFont">정보공유</a></li>
 								</ul>
 							</li>
 						</ul>
