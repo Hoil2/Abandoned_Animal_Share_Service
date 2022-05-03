@@ -10,10 +10,6 @@
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <title>멍멍냥냥</title>
 
-<script type="text/javascript">
-	locati
-</script>
-
 </head>
 <body link="red">
 	<!-- 페이지 로딩 이미지 -->
@@ -21,7 +17,6 @@
 	<div class="preloader">
 		<img src='<c:url value="/resources/images/loader3.png"/>' class="preloader__image" alt="">
 	</div>
-	
 	
 	<!-- 메인 영역 -->
 	<div class="page-wrapper">
@@ -63,11 +58,10 @@
 							</div>
 							<div class="tour-one__content">
 								<h3 style="font-size: 19px;">
-									<a href="#">품종 : <c:out value="${fn:substring(slist.kind_cd, 0 ,35)}" /></a>
+									<a href="#">품종 : <c:out value="${slist.kind_cd}" /></a>
 								</h3>
 							</div>
 						</div>
-						
 					</div>
 					</c:forEach>
 				</div>
@@ -107,8 +101,6 @@
 			</c:choose>
 		</div>
 		<br>
-		
-		
 		<jsp:include page="layout/footer.jsp"/>
 	</div>
 </body>
