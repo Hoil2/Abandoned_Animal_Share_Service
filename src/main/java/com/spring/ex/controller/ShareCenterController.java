@@ -30,9 +30,9 @@ public class ShareCenterController {
 		
 		PagingDTO paging = new PagingDTO();
 		paging.setPageNo(page);
-		paging.setPageSize(10);
+		paging.setPageSize(12);
 		paging.setTotalCount(totalCount);
-		page = (page - 1) * 10;
+		page = (page - 1) * 12;
 		
 		HashMap<String, Integer> map = new HashMap<String, Integer>();
 		map.put("Page", page);
@@ -46,7 +46,9 @@ public class ShareCenterController {
 	}
 	
 	@RequestMapping("/sTestPage")
-	public String shereCenterPageView2() {
+	public String shereCenterPageView2() throws Exception {
+		service.getShareCenterTest();
+		//System.out.println(service.getShareCenterTest().get);
 		return "shereCenterTest";
 	}
 	
@@ -57,7 +59,6 @@ public class ShareCenterController {
 		int res = service.getShareCenterBoardViewTotalCount();
 		
 		System.out.println("res :" + res);
-		
 		return "shereCenter"; 
 	}
 	
