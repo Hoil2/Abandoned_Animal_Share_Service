@@ -59,7 +59,6 @@ public class ShareCenterController {
 		int res = service.getShareCenterBoardViewTotalCount();
 		
 		System.out.println("res :" + res);
-		
 		return "shereCenter"; 
 	}
 	

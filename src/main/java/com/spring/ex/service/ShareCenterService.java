@@ -17,5 +17,5 @@ public interface ShareCenterService {
 	public int getShareCenterBoardViewTotalCount() throws Exception;
 	
 	//공공데이터 api 요청
-	public ShareCenterDTO getShareCenterTest() throws Exception;
+	public void getShareCenterTest() throws Exception;
 }

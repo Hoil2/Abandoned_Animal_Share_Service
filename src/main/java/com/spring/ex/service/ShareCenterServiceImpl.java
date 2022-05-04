@@ -36,7 +36,7 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 	}
 
 	@Override
-	public ShareCenterDTO getShareCenterTest() throws Exception {
+	public void getShareCenterTest() throws Exception {
 		
 		
 		StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1543061/abandonmentPublicSrvc/abandonmentPublic"); /*URL*/
@@ -64,13 +64,14 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 		} else {
 		    rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
 		}
-		String result = rd.readLine();
-		
-		ObjectMapper mapper = new ObjectMapper(); 
-		ShareCenterDTO dto = mapper.readValue(rd, ShareCenterDTO.class);
-		
-		System.out.println("tset : "+dto.getDesertion_no());
-		
+		/*
+		 * String result = rd.readLine();
+		 * 
+		 * ObjectMapper mapper = new ObjectMapper(); ShareCenterDTO dto =
+		 * mapper.readValue(rd, ShareCenterDTO.class);
+		 * 
+		 * System.out.println("tset : "+dto.getDesertion_no());
+		 */		
 		StringBuilder sb = new StringBuilder();
 		String line;
 		while ((line = rd.readLine()) != null) {
@@ -80,11 +81,9 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 		    sb.append(line + "\n");
 		}
 		
-		
 		rd.close();
 		conn.disconnect();
 		System.out.println(sb.toString());
-		return dto;			
 		
 	}
 }
