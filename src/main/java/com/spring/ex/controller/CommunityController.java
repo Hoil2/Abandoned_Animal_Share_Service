@@ -26,16 +26,6 @@ public class CommunityController {
 	
 	@RequestMapping("/daily")
 	public String chats(Model model, HttpServletRequest request) {
-		int totalCount = service.getCommunityInfoBoardPostTotalCount();
-		int pageSize = 10;
-		
-		pagingService = new PagingService(request, totalCount, pageSize);
-		
-		List<CommunityDTO> communityList = service.getCommunityInfoBoardPage(pagingService.getMap());
-		
-		model.addAttribute("Paging", pagingService.getPaging());
-		model.addAttribute("clist", communityList);
-		
 		return "community/community_daily";
 	}
 	
