@@ -40,6 +40,7 @@
 	<div class="container">
 		<a class="btn border border-2 float-right">글쓰기</a>
 		
+		<%-- 게시물 영역 --%>
 		<table class="table table-hover text-center">
 			<thead>
 				<tr>
@@ -48,24 +49,51 @@
 			</thead>
 			
 			<tbody>
-				<%for(int i = 5; i >= 1; i--) {%>
-				<tr>
-					<td><%=i%></td> <td><a href="#">안녕하세요</a></td> <td>김홍<%=i%></td> <td>2022.05.01</td> <td>0</td> <td>0</td>
-				</tr>
-				<%}%>
+				<c:forEach var="list" items="${clist}"> 
+					<tr>
+						<td>${list.cb_id}</td> <td><a href="#">${list.title}</a></td> <td>${list.m_id}</td> <td>${list.reg_date}</td> <td>${list.hit}</td> <td>0</td>
+					</tr>
+				</c:forEach>
 			</tbody>
 		</table>
 	
-		
-		<div class="d-flex mb-3">
-			<ul class="pagination m-auto">
-				<li class="page-item"><a class="page-link" href="#">1</a></li>
-				<li class="page-item"><a class="page-link" href="#">2</a></li>
-				<li class="page-item"><a class="page-link" href="#">3</a></li>
-				<li class="page-item"><a class="page-link" href="#">4</a></li>
-				<li class="page-item"><a class="page-link" href="#">5</a></li>
-			</ul>
+		<!-- Pagination 영역 -->
+		<div class="post-pagination">
+			<!-- 첫 페이지면 Disabled 아니라면 Enabled -->
+			<c:choose>
+				<c:when test="${Paging.pageNo == Paging.firstPageNo }">
+					<a class="disabledLink" href="/community/info?page=${Paging.prevPageNo}"><i class="fa fa-angle-left"></i></a>
+				</c:when>
+				<c:otherwise>
+					<a class="page-link" href="/community/info?page=${Paging.prevPageNo}"><i class="fa fa-angle-left"></i></a>
+				</c:otherwise>
+			</c:choose>
+			
+			<!-- 페이지 갯수만큼 버튼 생성 -->
+			<c:forEach var="i" begin="${Paging.startPageNo }" end="${Paging.endPageNo }" step="1">
+				<c:choose>
+					<c:when test="${i == Paging.pageNo }">
+						<a class="active disabledLink" href="/community/info?page=${i}"><c:out value="${i}"/></a>
+					</c:when>
+					
+					<c:otherwise>
+						<a href="/community/info?page=${i}"><c:out value="${i}"/></a>
+					</c:otherwise>
+				</c:choose>
+			</c:forEach>
+			
+			<!-- 마지막 페이지면 Disabled 아니라면 Enabled -->
+			<c:choose>
+				<c:when test="${Paging.pageNo == Paging.finalPageNo }">
+					<a class="disabledLink" href="/community/info?page=${Paging.nextPageNo}"><i class="fa fa-angle-right"></i></a>
+				</c:when>
+				<c:otherwise>
+					<a href="/community/info?page=${Paging.nextPageNo}"><i class="fa fa-angle-right"></i></a>
+				</c:otherwise>
+			</c:choose>
 		</div>
+		<br/>
+		<%-- Pagination 끝 --%>
 	</div>
 	<%-- footer 영역 --%>
 	<jsp:include page="../layout/footer.jsp"/>

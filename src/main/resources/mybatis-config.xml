@@ -4,5 +4,6 @@
 	<typeAliases>
 			<!-- <typeAlias type="com.spring.ex.dto.BoardDTO" alias="BoardDTO"/> -->
 		<typeAlias type="com.spring.ex.dto.ShareCenterDTO" alias="ShareCenterDTO"/>
+		<typeAlias type="com.spring.ex.dto.CommunityDTO" alias="CommunityDTO"/>
 	</typeAliases>
 </configuration>
