@@ -1,22 +1,24 @@
 package com.spring.ex.dao;
 
+import java.util.HashMap;
+
 import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import com.spring.ex.dto.MemberDTO;
 
-@Service
+@Repository
 public class MemberDAOImpl implements MemberDAO {
 
-	//mybatis
 	@Inject
 	private SqlSession sql;
 	
-	//mapper
-	private static String namespcae = "com.spring.mappers.memberMapper";
+	private static String namespcae = "com.spring.ex.memberMapper";
 	
+	/*
 	//회원가입
 	@Override
 	public void signUp(MemberDTO dto) throws Exception {
@@ -27,5 +29,12 @@ public class MemberDAOImpl implements MemberDAO {
 	@Override
 	public MemberDTO login(MemberDTO dto) throws Exception {
 		return sql.selectOne(namespcae + ".login", dto);
+	}
+	*/
+	
+	// 회원 아이디 찾기
+	@Override
+	public int findUserId(HashMap<String, String> map) throws Exception {
+		return sql.selectOne(namespcae + ".findUserId", map);
 	}
 }

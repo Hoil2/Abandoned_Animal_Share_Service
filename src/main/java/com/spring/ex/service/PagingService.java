@@ -17,10 +17,10 @@ public class PagingService {
 		paging.setPageNo(page);
 		paging.setPageSize(pageSize);
 		paging.setTotalCount(totalCount);
-		int endPage = (page - 1) * pageSize;
+		int nowPage = (page - 1) * pageSize;
 		
 		map = new HashMap<String, Integer>();
-		map.put("Page", endPage);
+		map.put("Page", nowPage);
 		map.put("PageSize", pageSize);
 	}
 	

@@ -1,18 +1,29 @@
 package com.spring.ex.dto;
 
+import java.sql.Date;
+
 public class MemberDTO {
-	private String m_id;
+	private int m_id;
+	private String email;
 	private String m_pw;
-	private String m_name;
-	private String m_birth;
-	private String m_sex;
-	private String m_phone;
+	private String name;
+	private String region;
+	private String phone;
+	private String grade;
+	private String comment;
+	private Date signup_date;
 	
-	public String getM_id() {
+	public int getM_id() {
 		return m_id;
 	}
-	public void setM_id(String m_id) {
+	public void setM_id(int m_id) {
 		this.m_id = m_id;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	public String getM_pw() {
 		return m_pw;
@@ -20,28 +31,40 @@ public class MemberDTO {
 	public void setM_pw(String m_pw) {
 		this.m_pw = m_pw;
 	}
-	public String getM_name() {
-		return m_name;
+	public String getName() {
+		return name;
 	}
-	public void setM_name(String m_name) {
-		this.m_name = m_name;
+	public void setName(String name) {
+		this.name = name;
 	}
-	public String getM_birth() {
-		return m_birth;
+	public String getRegion() {
+		return region;
 	}
-	public void setM_birth(String m_birth) {
-		this.m_birth = m_birth;
+	public void setRegion(String region) {
+		this.region = region;
 	}
-	public String getM_sex() {
-		return m_sex;
+	public String getPhone() {
+		return phone;
 	}
-	public void setM_sex(String m_sex) {
-		this.m_sex = m_sex;
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
-	public String getM_phone() {
-		return m_phone;
+	public String getGrade() {
+		return grade;
 	}
-	public void setM_phone(String m_phone) {
-		this.m_phone = m_phone;
+	public void setGrade(String grade) {
+		this.grade = grade;
+	}
+	public String getComment() {
+		return comment;
+	}
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+	public Date getSignup_date() {
+		return signup_date;
+	}
+	public void setSignup_date(Date signup_date) {
+		this.signup_date = signup_date;
 	}
 }

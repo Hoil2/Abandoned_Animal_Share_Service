@@ -100,6 +100,7 @@ public class PagingDTO {
 		boolean isNowFirst = pageNo == 1 ? true : false;				//시작 페이지 (전체)
 		boolean isNowFinal = pageNo == finalPage ? true : false;		//마지막 페이지 (전체)
 		
+		// 이부분 startPage = pageNo 로 바꿔도 될 것 같음
 		int startPage = ((pageNo - 1) / 10) * 10 + 1;					//시작 페이지 (페이징 네비 기준)
 		int endPage = startPage + 10 - 1;								//끝 페이지 (페이징 네비 기준)
 

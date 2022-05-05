@@ -27,7 +27,6 @@
 </style>
 </head>
 <body link="red">
-	<!-- 페이지 로딩 이미지 -->
 	<%-- Preloader --%>
 	<div class="preloader">
 		<img src='<c:url value="/resources/images/loader3.png"/>' class="preloader__image" alt="">
@@ -38,7 +37,7 @@
 		
 	<%-- main 영역 --%>
 	<div class="container">
-		<a class="btn border border-2 float-right">글쓰기</a>
+		<a class="btn border border-2 float-right" href="/community/write?classify=3">글쓰기</a>
 		
 		<%-- 게시물 영역 --%>
 		<table class="table table-hover text-center">
@@ -51,7 +50,7 @@
 			<tbody>
 				<c:forEach var="list" items="${clist}"> 
 					<tr>
-						<td>${list.cb_id}</td> <td><a href="#">${list.title}</a></td> <td>${list.m_id}</td> <td>${list.reg_date}</td> <td>${list.hit}</td> <td>0</td>
+						<td>${list.cb_id}</td> <td><a href="/community/info/${list.cb_id}">${list.title}</a></td> <td>${list.name}</td> <td>${list.reg_date}</td> <td>${list.hit}</td> <td>0</td>
 					</tr>
 				</c:forEach>
 			</tbody>
