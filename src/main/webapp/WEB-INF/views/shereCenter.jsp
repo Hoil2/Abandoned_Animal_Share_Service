@@ -58,6 +58,7 @@
 							</div>
 							<div class="tour-one__content">
 								<h3 style="font-size: 19px;">
+									<c:out value="${slist.ani_id}" />
 									<a href="#">품종 : <c:out value="${slist.kind_cd}" /></a>
 								</h3>
 							</div>
