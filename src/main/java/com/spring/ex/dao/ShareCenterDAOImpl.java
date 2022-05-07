@@ -21,13 +21,17 @@ public class ShareCenterDAOImpl implements ShareCenterDAO{
 	//분양센터페이지 유기동물 목록 출력
 	@Override
 	public List<ShareCenterDTO> getShareCenterBoardPage(HashMap<String, Integer> map) throws Exception {
-		return sqlSession.selectList(namespace + ".getShareCenterBoardPage", map) ;
+		return sqlSession.selectList(namespace + ".getShareCenterBoardPage", map);
 	}
 
 	
 	@Override
 	public int getShareCenterBoardViewTotalCount() throws Exception {
-		return sqlSession.selectOne(namespace + ".getShareCenterBoardViewTotalCount") ;
+		return sqlSession.selectOne(namespace + ".getShareCenterBoardViewTotalCount");
 	}
 
+	// 공공데이터 유기동물 API DB에 저장
+	public void setDbShareCenterApiResponse() throws Exception {
+		sqlSession.insert(namespace + ".setDbShareCenterApiResponse");
+	}
 }

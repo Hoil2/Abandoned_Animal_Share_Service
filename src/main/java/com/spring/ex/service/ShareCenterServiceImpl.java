@@ -5,15 +5,18 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spring.ex.dao.ShareCenterDAO;
 import com.spring.ex.dto.ShareCenterDTO;
 
@@ -36,10 +39,13 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 	}
 
 	@Override
-	public void getShareCenterTest() throws Exception {
+	public void getShareCenterTest(ShareCenterDTO dto) throws Exception {
 		
 		
+		// 1. URL을 만들기 위한 StringBuilder.
 		StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1543061/abandonmentPublicSrvc/abandonmentPublic"); /*URL*/
+		
+		// 2. 오픈 API의요청 규격에 맞는 파라미터 생성, 발급받은 인증키.
 		urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=Q84iTs0OivxYSzXgMqJWORyolBgT87Mu5lXE6sSWgEFI%2BhLRrMmdyfML5z3g6HYBCfWqS0YiGkrXpzfT07XhJg%3D%3D"); /*Service Key*/
 		urlBuilder.append("&" + URLEncoder.encode("bgnde","UTF-8") + "=" + URLEncoder.encode("20220425", "UTF-8")); /*유기날짜(검색 시작일) (YYYYMMDD)*/
 		urlBuilder.append("&" + URLEncoder.encode("endde","UTF-8") + "=" + URLEncoder.encode("20220502", "UTF-8")); /*유기날짜(검색 종료일) (YYYYMMDD)*/
@@ -53,37 +59,83 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 		urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지 번호 (기본값 : 1)*/
 		urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("3", "UTF-8")); /*페이지당 보여줄 개수 (1,000 이하), 기본값 : 10*/
 		urlBuilder.append("&" + URLEncoder.encode("_type","UTF-8") + "=" + URLEncoder.encode("json", "UTF-8")); /*xml(기본값) 또는 json*/
+		
+		// 3. URL 객체 생성.
 		URL url = new URL(urlBuilder.toString());
+		// 4. 요청하고자 하는 URL과 통신하기 위한 Connection 객체 생성.
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		// 5. 통신을 위한 메소드 SET.
 		conn.setRequestMethod("GET");
+		// 6. 통신을 위한 Content-type SET. 
 		conn.setRequestProperty("Content-type", "application/json");
+		// 7. 통신 응답 코드 확인.
 		System.out.println("Response code: " + conn.getResponseCode());
+		// 8. 전달받은 데이터를 BufferedReader 객체로 저장
 		BufferedReader rd;
 		if(conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
 		    rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 		} else {
 		    rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
 		}
-		/*
-		 * String result = rd.readLine();
-		 * 
-		 * ObjectMapper mapper = new ObjectMapper(); ShareCenterDTO dto =
-		 * mapper.readValue(rd, ShareCenterDTO.class);
-		 * 
-		 * System.out.println("tset : "+dto.getDesertion_no());
-		 */		
+		
+		// 9. 저장된 데이터를 라인별로 읽어 StringBuilder 객체로 저장.
 		StringBuilder sb = new StringBuilder();
 		String line;
 		while ((line = rd.readLine()) != null) {
-			//dto.setDesertion_no(line);
-			
-			
-		    sb.append(line + "\n");
+			sb.append(line + "\n");
 		}
 		
+		// 10. 객체 해제.
 		rd.close();
 		conn.disconnect();
-		System.out.println(sb.toString());
+		
+		// json data parsing 
+		JSONParser parser	= new JSONParser(); 
+		JSONObject obj 		= (JSONObject)parser.parse(sb.toString());
+		JSONObject response = (JSONObject)obj.get("response");
+		JSONObject body 	= (JSONObject)response.get("body");
+		JSONObject items 	= (JSONObject)body.get("items");
+		JSONArray  item 	= (JSONArray) items.get("item");
+		System.out.println("JSON(obj) : " + obj);
+		System.out.println("JSON(response) : " + response);
+		System.out.println("JSON(body) : " + body);
+		System.out.println("JSON(items) : " + items);
+		System.out.println("JSON(item[]) : " + item);
+
+		// 조회 데이터 크기만큼 for문 + 테이블저장 
+		for (int i=0;i< item.size();i++) {
+			JSONObject eqData = (JSONObject) item.get(i);
+			System.out.println("eqData : " + eqData);
+			dto.setDesertion_no((String) eqData.get("desertionNo").toString());
+			dto.setFilename((String) eqData.get("").toString());
+			dto.setHappen_dt((Date) eqData.get(""));
+			dto.setHappen_place((String) eqData.get("").toString());
+			dto.setKind_cd((String) eqData.get("").toString());
+			dto.setColor_cd((String) eqData.get("").toString());
+			dto.setAge((String) eqData.get("").toString());
+			dto.setWeight((String) eqData.get("").toString());
+			dto.setNotice_no((String) eqData.get("").toString());
+			dto.setNotice_sdt((Date) eqData.get(""));
+			dto.setNotice_edt((Date) eqData.get(""));
+			dto.setPopfile((String) eqData.get("").toString());
+			dto.setProcess_state((String) eqData.get("").toString());
+			dto.setSex_cd((String) eqData.get("").toString());
+			dto.setNeuter_yn((String) eqData.get("").toString());
+			dto.setSpecial_mark((String) eqData.get("").toString());
+			
+			
+			String eqPoint 		= (String) eqData.get("filename").toString();	
+			System.out.println("eqSeq : " + dto.getDesertion_no() );
+			// EarthquakeDAO dao = sqlSession.getMapper(EarthquakeDAO.class);
+			// cd = dao.saveEarthquake(eqSeq,eqPoint,noticeType,img,noticeTime,refSeq,eqTime,miSeq,lat,lng,addr,scale,intensity,deep,remarks,flagYN,issueID);
+			//System.out.println("cd : "+ cd);
+		}
 		
 	}
+	
+	@Override
+	public void getTest() throws Exception {
+		
+	}
+	
 }

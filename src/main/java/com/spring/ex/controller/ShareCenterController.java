@@ -34,8 +34,8 @@ public class ShareCenterController {
 	}
 	
 	@RequestMapping("/sTestPage")
-	public String shereCenterPageView2() throws Exception {
-		service.getShareCenterTest();
+	public String shereCenterPageView2( ShareCenterDTO dto) throws Exception {
+		service.getShareCenterTest(dto);
 		//System.out.println(service.getShareCenterTest().get);
 		return "shereCenterTest";
 	}

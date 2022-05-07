@@ -15,6 +15,7 @@ public class ShareCenterDTO {
 	private String notice_no;
 	private Date notice_sdt;
 	private Date notice_edt;
+	private String popfile;
 	private String process_state;
 	private String sex_cd;
 	private String neuter_yn;
@@ -122,6 +123,12 @@ public class ShareCenterDTO {
 	}
 	public void setHit(int hit) {
 		this.hit = hit;
+	}
+	public String getPopfile() {
+		return popfile;
+	}
+	public void setPopfile(String popfile) {
+		this.popfile = popfile;
 	}
 	
 }

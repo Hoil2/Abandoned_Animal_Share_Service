@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import com.spring.ex.dto.ShareCenterDTO;
 
@@ -17,5 +18,8 @@ public interface ShareCenterService {
 	public int getShareCenterBoardViewTotalCount() throws Exception;
 	
 	//공공데이터 api 요청
-	public void getShareCenterTest() throws Exception;
+	public void getShareCenterTest(ShareCenterDTO dto) throws Exception;
+	
+	//공공데이터 test
+	public void getTest() throws Exception;
 }

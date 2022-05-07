@@ -28,6 +28,34 @@
 		<jsp:include page="layout/header.jsp"/>
 		
 		
+		<section class="tour-one tour-grid">
+			<div class="container">
+		test
+				<c:forEach var="data" items="${data}">
+					<div class="col-lg-3 col-md-6">
+						<div class="tour-one__single">
+							<div class="tour-one__image">
+								<c:choose>
+									<c:when test="${data.filename eq null}">
+										<a href="#">
+											<img src='<c:url value="/resources/images/noImage.png"/>' width="200" height="200">
+										</a>
+									</c:when>
+									<c:otherwise>
+										<img src='<c:url value="${data.filename}"/>' alt="" width="200" height="200" onclick="location.href='main'" >
+									</c:otherwise>
+								</c:choose>
+							</div>
+							<div class="tour-one__content">
+								<h3 style="font-size: 19px;">
+									<c:out value="${data.desertionNo}" />
+								</h3>
+							</div>
+						</div>
+					</div>
+				</c:forEach>
+			</div>
+		</section>
 		
 		
 		<jsp:include page="layout/footer.jsp"/>
