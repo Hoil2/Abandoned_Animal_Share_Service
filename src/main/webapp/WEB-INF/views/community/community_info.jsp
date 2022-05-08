@@ -37,26 +37,34 @@
 		
 	<%-- main 영역 --%>
 	<div class="container">
-		<a class="btn border border-2 float-right" href="/community/write?classify=3">글쓰기</a>
+		<section class="page-header mb-3" style="background-image: url(<c:url value="/resources/images/banner_main/${BannerRespectivelyView.getS_file_name()}"/>);">
+			<div class="container">
+				<h2>정보 공유 게시판</h2>
+			</div>
+		</section>
 		
 		<%-- 게시물 영역 --%>
 		<table class="table table-hover text-center">
 			<thead>
 				<tr>
-					<th>번호</th> <th>제목</th> <th>작성자</th> <th>날짜</th> <th>조회수</th> <th>댓글수</th>
+					<th>번호</th> <th>제목</th> <th>작성자</th> <th>날짜</th> <th>조회수</th>
 				</tr>
 			</thead>
 			
 			<tbody>
 				<c:forEach var="list" items="${clist}"> 
 					<tr>
-						<td>${list.cb_id}</td> <td><a href="/community/info/${list.cb_id}">${list.title}</a></td> <td>${list.name}</td> <td>${list.reg_date}</td> <td>${list.hit}</td> <td>0</td>
+						<td>${list.cb_id}</td> <td><a href="/community/info/${list.cb_id}">${list.title}</a></td> <td>${list.name}</td> <td>${list.reg_date}</td> <td>${list.hit}</td>
 					</tr>
 				</c:forEach>
 			</tbody>
 		</table>
 	
-		<!-- Pagination 영역 -->
+		<div class="d-flex flex-row-reverse pb-3">
+			<a class="btn border border-2" href="/community/write?classify=3">글쓰기</a>
+		</div>		
+		
+		<%-- Pagination 영역 --%>
 		<div class="post-pagination">
 			<!-- 첫 페이지면 Disabled 아니라면 Enabled -->
 			<c:choose>

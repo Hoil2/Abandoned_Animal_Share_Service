@@ -37,21 +37,30 @@
 		
 	<%-- main 영역 --%>
 	<div class="container">
-	  	<div class="row pt-5 pb-1">
-		    <p class="fs-2">${pageDetail.title}</p>
-		    <div class="fs-4">${pageDetail.name}</div>
-		    <div class="fs-4">조회수 ${pageDetail.hit}</div>
+	  	<div class="pt-5 pb-1">
+		    <p class="fs-2 fw-bold">${pageDetail.title}</p>
+		    <span class="fs-4 pr-3">${pageDetail.name}</span>
+		    <span class="fs-4">조회수 ${pageDetail.hit}</span>
 		    
 		</div>
 		<hr>
 	    <div class="pt-3 pb-3">
-		    <div class="fs-5">${pageDetail.content}</div>
+    		<c:if test="${pageDetail.img_path != null}">
+				<img style="max-width:800px;" src="<c:url value='${pageDetail.img_path}'/>"/>	    		
+    		</c:if>
+		    <textarea readonly class="fs-5 form-control" style="overflow:hidden; resize:none;">${pageDetail.content}</textarea>
 	    </div>
 	</div>
 	<%-- main 끝 --%>
 	
 	<%-- footer 영역 --%>
 	<jsp:include page="../layout/footer.jsp"/>
-	
+	<script>
+		$(function() {
+		    $('textarea').each(function() {
+		        $(this).height($(this).prop('scrollHeight'));
+		    });
+		});
+	</script>
 </body>
 </html>

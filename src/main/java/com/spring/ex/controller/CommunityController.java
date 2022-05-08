@@ -20,6 +20,9 @@ import com.spring.ex.service.PagingService;
 @Controller
 @RequestMapping("/community")
 public class CommunityController {
+	private final int dictBoard = 1;
+	private final int dailyBoard = 2;
+	private final int infoBoard = 3;
 	
 	@Inject
 	CommunityService communityService;
@@ -31,15 +34,33 @@ public class CommunityController {
 	
 	// 일상 공유 게시판 페이지
 	@RequestMapping("/daily")
-	public String daily(Model model, HttpServletRequest request) {
+	public String daily(Model model, HttpServletRequest request) throws Exception {
+		int totalCount = communityService.getCommunityBoardPostTotalCount(dailyBoard);
+		int pageSize = 10;
+		
+		pagingService = new PagingService(request, totalCount, pageSize);
+		
+		List<HashMap<String, Object>> communityList = communityService.getCommunityDailyBoardPage(pagingService.getMap());
+		
+		model.addAttribute("Paging", pagingService.getPaging());
+		model.addAttribute("clist", communityList);
+		
 		return "community/community_daily";
 	}
 	
+	@RequestMapping("/daily/{pageNo}")
+	public String dailyDetail(Model model, @PathVariable("pageNo") int pageNo) throws Exception {
+		HashMap<String, Object> pageDetail = communityService.getPageDetail(pageNo);
+		
+		model.addAttribute("pageDetail", pageDetail);
+		
+		return "community/community_read";
+	}
 	
 	// 정보 공유 게시판 페이지
 	@RequestMapping("/info")
-	public String info(Model model, HttpServletRequest request) throws Exception {
-		int totalCount = communityService.getCommunityInfoBoardPostTotalCount();
+	public String infoDetail(Model model, HttpServletRequest request) throws Exception {
+		int totalCount = communityService.getCommunityBoardPostTotalCount(infoBoard);
 		int pageSize = 10;
 		
 		pagingService = new PagingService(request, totalCount, pageSize);

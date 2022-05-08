@@ -16,6 +16,11 @@ public class CommunityServiceImpl implements CommunityService {
 	@Inject
 	private CommunityDAO dao;
 	
+	@Override
+	public List<HashMap<String, Object>> getCommunityDailyBoardPage(HashMap<String, Integer> map) throws Exception {
+		return dao.getCommunityDailyBoardPage(map);
+	}
+	
 	// 정보 공유 게시판 페이지 가져오기
 	@Override
 	public List<HashMap<String, Object>> getCommunityInfoBoardPage(HashMap<String, Integer> map) throws Exception {
@@ -24,8 +29,8 @@ public class CommunityServiceImpl implements CommunityService {
 
 	// 정보 공유 게시판의 게시물 총 개수
 	@Override
-	public int getCommunityInfoBoardPostTotalCount() throws Exception {
-		return dao.getCommunityInfoBoardPostTotalCount();
+	public int getCommunityBoardPostTotalCount(int classify) throws Exception {
+		return dao.getCommunityBoardPostTotalCount(classify);
 	}
 	
 	// 정보 공유 게시판에 등록
