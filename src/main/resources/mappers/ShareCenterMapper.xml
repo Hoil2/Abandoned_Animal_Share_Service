@@ -14,7 +14,7 @@
 	</select>
 	
 	<!-- 공공데이터 유기동물 API DB에 저장 -->
-	<sql id="setDbShareCenterApiResponse">
+	<insert id="setDbShareCenterApiResponse">
 		INSERT INTO abandoned_animal_info(desertion_no, filename, happen_dt, happen_place, kind_cd, color_cd, age, weight, notice_no, notice_sdt, notice_edt, popfile, process_state, sex_cd, neuter_yn, special_mark, hit) 
 		VALUES(
 			desertion_no=#{desertion_no}, 
@@ -35,7 +35,7 @@
 			special_mark=#{special_mark},
 			0)
 		ON DUPLICATE KEY UPDATE
-			desertion_no=#{desertion_no}, 
+			desertion_no=#{desertion_no},
 			filename=#{filename}, 
 			happen_dt=#{happen_dt}, 
 			happen_place= #{happen_place}, 
@@ -51,5 +51,5 @@
 			sex_cd=#{sex_cd}, 
 			neuter_yn=#{neuter_yn}, 
 			special_mark=#{special_mark}
-	</sql>
+	</insert>
 </mapper>

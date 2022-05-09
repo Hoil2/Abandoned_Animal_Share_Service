@@ -1,20 +1,27 @@
 package com.spring.ex.dto;
 
-import java.sql.Date;
-
 public class ShareCenterDTO {
+	@Override
+	public String toString() {
+		return "ShareCenterDTO [ani_id=" + ani_id + ", desertion_no=" + desertion_no + ", filename=" + filename
+				+ ", happen_dt=" + happen_dt + ", happen_place=" + happen_place + ", kind_cd=" + kind_cd + ", color_cd="
+				+ color_cd + ", age=" + age + ", weight=" + weight + ", notice_no=" + notice_no + ", notice_sdt="
+				+ notice_sdt + ", notice_edt=" + notice_edt + ", popfile=" + popfile + ", process_state="
+				+ process_state + ", sex_cd=" + sex_cd + ", neuter_yn=" + neuter_yn + ", special_mark=" + special_mark
+				+ ", hit=" + hit + "]";
+	}
 	private int ani_id;
 	private String desertion_no;
 	private String filename;
-	private Date happen_dt;
+	private Object happen_dt;
 	private String happen_place;
 	private String kind_cd;
 	private String color_cd;
 	private String age;
 	private String weight;
 	private String notice_no;
-	private Date notice_sdt;
-	private Date notice_edt;
+	private Object notice_sdt;
+	private Object notice_edt;
 	private String popfile;
 	private String process_state;
 	private String sex_cd;
@@ -40,10 +47,10 @@ public class ShareCenterDTO {
 	public void setFilename(String filename) {
 		this.filename = filename;
 	}
-	public Date getHappen_dt() {
+	public Object getHappen_dt() {
 		return happen_dt;
 	}
-	public void setHappen_dt(Date happen_dt) {
+	public void setHappen_dt(Object happen_dt) {
 		this.happen_dt = happen_dt;
 	}
 	public String getHappen_place() {
@@ -82,17 +89,23 @@ public class ShareCenterDTO {
 	public void setNotice_no(String notice_no) {
 		this.notice_no = notice_no;
 	}
-	public Date getNotice_sdt() {
+	public Object getNotice_sdt() {
 		return notice_sdt;
 	}
-	public void setNotice_sdt(Date notice_sdt) {
+	public void setNotice_sdt(Object notice_sdt) {
 		this.notice_sdt = notice_sdt;
 	}
-	public Date getNotice_edt() {
+	public Object getNotice_edt() {
 		return notice_edt;
 	}
-	public void setNotice_edt(Date notice_edt) {
+	public void setNotice_edt(Object notice_edt) {
 		this.notice_edt = notice_edt;
+	}
+	public String getPopfile() {
+		return popfile;
+	}
+	public void setPopfile(String popfile) {
+		this.popfile = popfile;
 	}
 	public String getProcess_state() {
 		return process_state;
@@ -124,11 +137,4 @@ public class ShareCenterDTO {
 	public void setHit(int hit) {
 		this.hit = hit;
 	}
-	public String getPopfile() {
-		return popfile;
-	}
-	public void setPopfile(String popfile) {
-		this.popfile = popfile;
-	}
-	
 }

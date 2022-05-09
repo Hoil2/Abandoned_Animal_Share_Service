@@ -10,7 +10,6 @@ import com.spring.ex.dto.ShareCenterDTO;
 
 @Repository
 public interface ShareCenterDAO {
-	
 	//분양센터페이지 유기동물 목록 출력
 	public List<ShareCenterDTO> getShareCenterBoardPage(HashMap<String, Integer> map) throws Exception;
 	
@@ -18,6 +17,6 @@ public interface ShareCenterDAO {
 	public int getShareCenterBoardViewTotalCount() throws Exception;
 	
 	// 공공데이터 유기동물 API DB에 저장
-	public void setDbShareCenterApiResponse() throws Exception;
+	public void setDbShareCenterApiResponse(ShareCenterDTO dto) throws Exception;
 
 }

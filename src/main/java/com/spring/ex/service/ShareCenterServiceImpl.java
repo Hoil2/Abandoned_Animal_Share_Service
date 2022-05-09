@@ -40,8 +40,6 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 
 	@Override
 	public void getShareCenterTest(ShareCenterDTO dto) throws Exception {
-		
-		
 		// 1. URL을 만들기 위한 StringBuilder.
 		StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1543061/abandonmentPublicSrvc/abandonmentPublic"); /*URL*/
 		
@@ -57,7 +55,7 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 		urlBuilder.append("&" + URLEncoder.encode("state","UTF-8") + "=" + URLEncoder.encode("", "UTF-8")); /*상태(전체 : null(빈값), 공고중 : notice, 보호중 : protect)*/
 		urlBuilder.append("&" + URLEncoder.encode("neuter_yn","UTF-8") + "=" + URLEncoder.encode("", "UTF-8")); /*상태 (전체 : null(빈값), 예 : Y, 아니오 : N, 미상 : U)*/
 		urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지 번호 (기본값 : 1)*/
-		urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("3", "UTF-8")); /*페이지당 보여줄 개수 (1,000 이하), 기본값 : 10*/
+		urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("10", "UTF-8")); /*페이지당 보여줄 개수 (1,000 이하), 기본값 : 10*/
 		urlBuilder.append("&" + URLEncoder.encode("_type","UTF-8") + "=" + URLEncoder.encode("json", "UTF-8")); /*xml(기본값) 또는 json*/
 		
 		// 3. URL 객체 생성.
@@ -104,32 +102,36 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 
 		// 조회 데이터 크기만큼 for문 + 테이블저장 
 		for (int i=0;i< item.size();i++) {
+			
 			JSONObject eqData = (JSONObject) item.get(i);
-			System.out.println("eqData : " + eqData);
+			
 			dto.setDesertion_no((String) eqData.get("desertionNo").toString());
-			dto.setFilename((String) eqData.get("").toString());
-			dto.setHappen_dt((Date) eqData.get(""));
-			dto.setHappen_place((String) eqData.get("").toString());
-			dto.setKind_cd((String) eqData.get("").toString());
-			dto.setColor_cd((String) eqData.get("").toString());
-			dto.setAge((String) eqData.get("").toString());
-			dto.setWeight((String) eqData.get("").toString());
-			dto.setNotice_no((String) eqData.get("").toString());
-			dto.setNotice_sdt((Date) eqData.get(""));
-			dto.setNotice_edt((Date) eqData.get(""));
-			dto.setPopfile((String) eqData.get("").toString());
-			dto.setProcess_state((String) eqData.get("").toString());
-			dto.setSex_cd((String) eqData.get("").toString());
-			dto.setNeuter_yn((String) eqData.get("").toString());
-			dto.setSpecial_mark((String) eqData.get("").toString());
-			
-			
-			String eqPoint 		= (String) eqData.get("filename").toString();	
-			System.out.println("eqSeq : " + dto.getDesertion_no() );
+			dto.setFilename((String) eqData.get("filename").toString());
+			dto.setHappen_dt((Object) eqData.get("happenDt"));
+			dto.setHappen_place((String) eqData.get("happenPlace").toString());
+			dto.setKind_cd((String) eqData.get("kindCd").toString());
+			dto.setColor_cd((String) eqData.get("colorCd").toString());
+			dto.setAge((String) eqData.get("age").toString());
+			dto.setWeight((String) eqData.get("weight").toString());
+			dto.setNotice_no((String) eqData.get("noticeNo").toString());
+			dto.setNotice_sdt((Object) eqData.get("noticeSdt"));
+			dto.setNotice_edt((Object) eqData.get("noticeEdt"));
+			dto.setPopfile((String) eqData.get("popfile").toString());
+			dto.setProcess_state((String) eqData.get("processState").toString());
+			dto.setSex_cd((String) eqData.get("sexCd").toString());
+			dto.setNeuter_yn((String) eqData.get("neuterYn").toString());
+			dto.setSpecial_mark((String) eqData.get("specialMark").toString());
+			/*
+			System.out.println("서비스 for : " +dto.toString());
+			System.out.println(dto.getDesertion_no());
+			System.out.println(dto.getHappen_place());*/
+			dao.setDbShareCenterApiResponse(dto);
 			// EarthquakeDAO dao = sqlSession.getMapper(EarthquakeDAO.class);
 			// cd = dao.saveEarthquake(eqSeq,eqPoint,noticeType,img,noticeTime,refSeq,eqTime,miSeq,lat,lng,addr,scale,intensity,deep,remarks,flagYN,issueID);
 			//System.out.println("cd : "+ cd);
 		}
+		
+		
 		
 	}
 	
