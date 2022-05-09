@@ -1,15 +1,6 @@
 package com.spring.ex.dto;
 
 public class ShareCenterDTO {
-	@Override
-	public String toString() {
-		return "ShareCenterDTO [ani_id=" + ani_id + ", desertion_no=" + desertion_no + ", filename=" + filename
-				+ ", happen_dt=" + happen_dt + ", happen_place=" + happen_place + ", kind_cd=" + kind_cd + ", color_cd="
-				+ color_cd + ", age=" + age + ", weight=" + weight + ", notice_no=" + notice_no + ", notice_sdt="
-				+ notice_sdt + ", notice_edt=" + notice_edt + ", popfile=" + popfile + ", process_state="
-				+ process_state + ", sex_cd=" + sex_cd + ", neuter_yn=" + neuter_yn + ", special_mark=" + special_mark
-				+ ", hit=" + hit + "]";
-	}
 	private int ani_id;
 	private String desertion_no;
 	private String filename;
