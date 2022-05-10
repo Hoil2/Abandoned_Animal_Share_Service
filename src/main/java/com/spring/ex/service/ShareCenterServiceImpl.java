@@ -46,7 +46,7 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 		// 2. 오픈 API의요청 규격에 맞는 파라미터 생성, 발급받은 인증키.
 		urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=Q84iTs0OivxYSzXgMqJWORyolBgT87Mu5lXE6sSWgEFI%2BhLRrMmdyfML5z3g6HYBCfWqS0YiGkrXpzfT07XhJg%3D%3D"); /*Service Key*/
 		urlBuilder.append("&" + URLEncoder.encode("bgnde","UTF-8") + "=" + URLEncoder.encode("20220425", "UTF-8")); /*유기날짜(검색 시작일) (YYYYMMDD)*/
-		urlBuilder.append("&" + URLEncoder.encode("endde","UTF-8") + "=" + URLEncoder.encode("20220502", "UTF-8")); /*유기날짜(검색 종료일) (YYYYMMDD)*/
+		urlBuilder.append("&" + URLEncoder.encode("endde","UTF-8") + "=" + URLEncoder.encode("20220510", "UTF-8")); /*유기날짜(검색 종료일) (YYYYMMDD)*/
 		urlBuilder.append("&" + URLEncoder.encode("upkind","UTF-8") + "=" + URLEncoder.encode("", "UTF-8")); /*축종코드 (개 : 417000, 고양이 : 422400, 기타 : 429900)*/
 		urlBuilder.append("&" + URLEncoder.encode("kind","UTF-8") + "=" + URLEncoder.encode("", "UTF-8")); /*품종코드 (품종 조회 OPEN API 참조)*/
 		urlBuilder.append("&" + URLEncoder.encode("upr_cd","UTF-8") + "=" + URLEncoder.encode("", "UTF-8")); /*시도코드 (시도 조회 OPEN API 참조)*/
@@ -55,7 +55,7 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 		urlBuilder.append("&" + URLEncoder.encode("state","UTF-8") + "=" + URLEncoder.encode("", "UTF-8")); /*상태(전체 : null(빈값), 공고중 : notice, 보호중 : protect)*/
 		urlBuilder.append("&" + URLEncoder.encode("neuter_yn","UTF-8") + "=" + URLEncoder.encode("", "UTF-8")); /*상태 (전체 : null(빈값), 예 : Y, 아니오 : N, 미상 : U)*/
 		urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지 번호 (기본값 : 1)*/
-		urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("4", "UTF-8")); /*페이지당 보여줄 개수 (1,000 이하), 기본값 : 10*/
+		urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("500", "UTF-8")); /*페이지당 보여줄 개수 (1,000 이하), 기본값 : 10*/
 		urlBuilder.append("&" + URLEncoder.encode("_type","UTF-8") + "=" + URLEncoder.encode("json", "UTF-8")); /*xml(기본값) 또는 json*/
 		
 		// 3. URL 객체 생성.
@@ -94,11 +94,12 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 		JSONObject body 	= (JSONObject)response.get("body");
 		JSONObject items 	= (JSONObject)body.get("items");
 		JSONArray  item 	= (JSONArray) items.get("item");
+		/*
 		System.out.println("JSON(obj) : " + obj);
 		System.out.println("JSON(response) : " + response);
 		System.out.println("JSON(body) : " + body);
 		System.out.println("JSON(items) : " + items);
-		System.out.println("JSON(item[]) : " + item);
+		System.out.println("JSON(item[]) : " + item);*/
 
 		// 조회 데이터 크기만큼 for문 + 테이블저장 
 		for (int i=0;i< item.size();i++) {
