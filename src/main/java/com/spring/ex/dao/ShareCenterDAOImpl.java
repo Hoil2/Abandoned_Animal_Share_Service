@@ -31,7 +31,7 @@ public class ShareCenterDAOImpl implements ShareCenterDAO{
 	}
 
 	// 공공데이터 유기동물 API DB에 저장
-	public void setDbShareCenterApiResponse() throws Exception {
-		sqlSession.insert(namespace + ".setDbShareCenterApiResponse");
+	public void setDbShareCenterApiResponse(ShareCenterDTO dto) throws Exception {
+		sqlSession.insert(namespace + ".setDbShareCenterApiResponse", dto);
 	}
 }
