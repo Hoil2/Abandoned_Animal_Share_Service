@@ -17,6 +17,11 @@ public class CommunityServiceImpl implements CommunityService {
 	private CommunityDAO dao;
 	
 	@Override
+	public List<HashMap<String, Object>> getDictionaryBoardPage(HashMap<String, Integer> map) throws Exception {
+		return dao.getDictionaryBoardPage(map);
+	}
+	
+	@Override
 	public List<HashMap<String, Object>> getCommunityDailyBoardPage(HashMap<String, Integer> map) throws Exception {
 		return dao.getCommunityDailyBoardPage(map);
 	}
@@ -43,5 +48,11 @@ public class CommunityServiceImpl implements CommunityService {
 	@Override
 	public HashMap<String, Object> getPageDetail(int pageNo) throws Exception {
 		return dao.getPageDetail(pageNo);
+	}
+	
+	// 게시물에 조회수 1 추가
+	@Override
+	public int addHitToBoardPage(int pageNo) throws Exception {
+		return dao.addHitToBoardPage(pageNo);
 	}
 }

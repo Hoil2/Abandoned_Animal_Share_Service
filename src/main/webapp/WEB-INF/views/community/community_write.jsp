@@ -37,7 +37,7 @@
 		
 	<%-- main 영역 --%>
 	<div class="container">
-		<form action="/community/submitPost">
+		<form action="/submitPost">
 			<div class="form-group row">
 				<label for="email" class="col-sm-2 col-form-label">Email</label>
 			    <div class="col-sm-10">

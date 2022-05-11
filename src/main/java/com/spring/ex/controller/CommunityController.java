@@ -12,13 +12,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.spring.ex.dto.CommunityDTO;
 import com.spring.ex.service.CommunityService;
 import com.spring.ex.service.MemberService;
 import com.spring.ex.service.PagingService;
 
 @Controller
-@RequestMapping("/community")
 public class CommunityController {
 	private final int dictBoard = 1;
 	private final int dailyBoard = 2;
@@ -32,8 +30,35 @@ public class CommunityController {
 	
 	PagingService pagingService;
 	
+	// 지식백과 페이지
+	@RequestMapping("/dictionary")
+	public String dictionary(Model model, HttpServletRequest request) throws Exception {
+		int totalCount = communityService.getCommunityBoardPostTotalCount(dictBoard);
+		int pageSize = 10;
+		  
+		pagingService = new PagingService(request, totalCount, pageSize);
+		  
+		List<HashMap<String, Object>> communityList = communityService.getDictionaryBoardPage(pagingService.getMap());
+		  
+		model.addAttribute("Paging", pagingService.getPaging());
+		model.addAttribute("clist", communityList);
+		
+		return "community/dictionary";
+	}
+	
+	// 지식백과 상세 페이지
+	@RequestMapping("/dictionary/{pageNo}")
+	public String dictionaryDetail(Model model, @PathVariable("pageNo") int pageNo) throws Exception {
+		HashMap<String, Object> pageDetail = communityService.getPageDetail(pageNo);
+		communityService.addHitToBoardPage(pageNo);
+		
+		model.addAttribute("pageDetail", pageDetail);
+		
+		return "community/community_read";
+	}
+	
 	// 일상 공유 게시판 페이지
-	@RequestMapping("/daily")
+	@RequestMapping("/community/daily")
 	public String daily(Model model, HttpServletRequest request) throws Exception {
 		int totalCount = communityService.getCommunityBoardPostTotalCount(dailyBoard);
 		int pageSize = 10;
@@ -48,9 +73,11 @@ public class CommunityController {
 		return "community/community_daily";
 	}
 	
-	@RequestMapping("/daily/{pageNo}")
+	// 일상 공유 상세 페이지
+	@RequestMapping("/community/daily/{pageNo}")
 	public String dailyDetail(Model model, @PathVariable("pageNo") int pageNo) throws Exception {
 		HashMap<String, Object> pageDetail = communityService.getPageDetail(pageNo);
+		communityService.addHitToBoardPage(pageNo);
 		
 		model.addAttribute("pageDetail", pageDetail);
 		
@@ -58,7 +85,7 @@ public class CommunityController {
 	}
 	
 	// 정보 공유 게시판 페이지
-	@RequestMapping("/info")
+	@RequestMapping("/community/info")
 	public String infoDetail(Model model, HttpServletRequest request) throws Exception {
 		int totalCount = communityService.getCommunityBoardPostTotalCount(infoBoard);
 		int pageSize = 10;
@@ -73,9 +100,11 @@ public class CommunityController {
 		return "community/community_info";
 	}
 	
-	@RequestMapping("/info/{pageNo}")
+	// 정보 공유 상세 페이지
+	@RequestMapping("/community/info/{pageNo}")
 	public String read(Model model, @PathVariable("pageNo") int pageNo) throws Exception {
 		HashMap<String, Object> pageDetail = communityService.getPageDetail(pageNo);
+		communityService.addHitToBoardPage(pageNo);
 		
 		model.addAttribute("pageDetail", pageDetail);
 		

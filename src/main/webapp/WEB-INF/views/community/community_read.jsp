@@ -37,6 +37,7 @@
 		
 	<%-- main 영역 --%>
 	<div class="container">
+		<%-- 게시물 제목 부분 --%>
 	  	<div class="pt-5 pb-1">
 		    <p class="fs-2 fw-bold">${pageDetail.title}</p>
 		    <span class="fs-4 pr-3">${pageDetail.name}</span>
@@ -44,11 +45,33 @@
 		    
 		</div>
 		<hr>
+		<%-- 게시물 내용 부분 --%>
 	    <div class="pt-3 pb-3">
     		<c:if test="${pageDetail.img_path != null}">
 				<img style="max-width:800px;" src="<c:url value='${pageDetail.img_path}'/>"/>	    		
     		</c:if>
 		    <textarea readonly class="fs-5 form-control" style="overflow:hidden; resize:none;">${pageDetail.content}</textarea>
+	    </div>
+	    <hr>
+	    <%-- 댓글 부분 --%>
+	    
+	    <c:if test="${pageDetail.classify == 2}">
+	    <div class="border border-1 my-3">
+	    	<div class="form-group p-3">
+	    		<label>댓글 달기</label>
+	    		<textarea class="form-control" rows="3"></textarea>
+	    		<div class="d-flex flex-row-reverse">
+    				<button type="submit" class="btn btn-dark mt-2 px-2">등록</button>
+	    		</div>
+	    	</div>
+	    </div>
+	    
+	   
+	    
+	    </c:if>
+	    
+	    <div class="d-flex justify-content-center mb-3">
+	    	<button type="submit" class="btn btn-dark mt-2 px-2">목록으로</button>
 	    </div>
 	</div>
 	<%-- main 끝 --%>

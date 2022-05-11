@@ -8,14 +8,17 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
-import com.spring.ex.dto.CommunityDTO;
-
 @Repository
 public class CommunityDAOImpl implements CommunityDAO {
 	
 	@Inject
 	private SqlSession sqlSession;
 	private static final String namespace = "com.spring.ex.CommunityMapper";
+	
+	@Override
+	public List<HashMap<String, Object>> getDictionaryBoardPage(HashMap<String, Integer> map) throws Exception {
+		return sqlSession.selectList(namespace + ".getDictionaryBoardPage", map);
+	}
 	
 	@Override
 	public List<HashMap<String, Object>> getCommunityDailyBoardPage(HashMap<String, Integer> map) throws Exception {
@@ -37,9 +40,13 @@ public class CommunityDAOImpl implements CommunityDAO {
 		return sqlSession.insert(namespace + ".submitInfoPost", map);
 	}
 	
-	//게시물 상세 페이지 가져오기 
 	@Override
 	public HashMap<String, Object> getPageDetail(int pageNo) throws Exception {
 		return sqlSession.selectOne(namespace + ".getPageDetail", pageNo);
+	}
+
+	@Override
+	public int addHitToBoardPage(int pageNo) throws Exception {
+		return sqlSession.update(namespace + ".addHitToBoardPage", pageNo);
 	}
 }

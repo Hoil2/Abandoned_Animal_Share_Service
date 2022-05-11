@@ -14,7 +14,7 @@
 <!-- bootstrap CSS only -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
-<title>정보 공유 게시판</title>
+<title>지식백과</title>
 
 <style type="text/css">
 .preloader {
@@ -39,7 +39,7 @@
 	<div class="container">
 		<section class="page-header mb-3" style="background-image: url(<c:url value="/resources/images/banner_main/${BannerRespectivelyView.getS_file_name()}"/>);">
 			<div class="container">
-				<h2>정보 공유 게시판</h2>
+				<h2>반려동물 지식백과</h2>
 			</div>
 		</section>
 		
@@ -54,14 +54,14 @@
 			<tbody>
 				<c:forEach var="list" items="${clist}"> 
 					<tr>
-						<td><a href="/community/info/${list.cb_id}">${list.title}</a></td> <td>${list.name}</td> <td>${list.reg_date}</td> <td>${list.hit}</td>
+						<td><a href="/dictionary/${list.cb_id}">${list.title}</a></td> <td>${list.name}</td> <td>${list.reg_date}</td> <td>${list.hit}</td>
 					</tr>
 				</c:forEach>
 			</tbody>
 		</table>
 	
 		<div class="d-flex flex-row-reverse pb-3">
-			<a class="btn border border-2" href="/write?classify=3">글쓰기</a>
+			<a class="btn border border-2" href="/write?classify=1">글쓰기</a>
 		</div>		
 		
 		<%-- Pagination 영역 --%>
@@ -69,10 +69,10 @@
 			<!-- 첫 페이지면 Disabled 아니라면 Enabled -->
 			<c:choose>
 				<c:when test="${Paging.pageNo == Paging.firstPageNo }">
-					<a class="disabledLink" href="/community/info?page=${Paging.prevPageNo}"><i class="fa fa-angle-left"></i></a>
+					<a class="disabledLink" href="/dictionary?page=${Paging.prevPageNo}"><i class="fa fa-angle-left"></i></a>
 				</c:when>
 				<c:otherwise>
-					<a class="page-link" href="/community/info?page=${Paging.prevPageNo}"><i class="fa fa-angle-left"></i></a>
+					<a class="page-link" href="/dictionary?page=${Paging.prevPageNo}"><i class="fa fa-angle-left"></i></a>
 				</c:otherwise>
 			</c:choose>
 			
@@ -80,11 +80,11 @@
 			<c:forEach var="i" begin="${Paging.startPageNo }" end="${Paging.endPageNo }" step="1">
 				<c:choose>
 					<c:when test="${i == Paging.pageNo }">
-						<a class="active disabledLink" href="/community/info?page=${i}"><c:out value="${i}"/></a>
+						<a class="active disabledLink" href="/dictionary?page=${i}"><c:out value="${i}"/></a>
 					</c:when>
 					
 					<c:otherwise>
-						<a href="/community/info?page=${i}"><c:out value="${i}"/></a>
+						<a href="/dictionary?page=${i}"><c:out value="${i}"/></a>
 					</c:otherwise>
 				</c:choose>
 			</c:forEach>
@@ -92,10 +92,10 @@
 			<!-- 마지막 페이지면 Disabled 아니라면 Enabled -->
 			<c:choose>
 				<c:when test="${Paging.pageNo == Paging.finalPageNo }">
-					<a class="disabledLink" href="/community/info?page=${Paging.nextPageNo}"><i class="fa fa-angle-right"></i></a>
+					<a class="disabledLink" href="/dictionary?page=${Paging.nextPageNo}"><i class="fa fa-angle-right"></i></a>
 				</c:when>
 				<c:otherwise>
-					<a href="/community/info?page=${Paging.nextPageNo}"><i class="fa fa-angle-right"></i></a>
+					<a href="/dictionary?page=${Paging.nextPageNo}"><i class="fa fa-angle-right"></i></a>
 				</c:otherwise>
 			</c:choose>
 		</div>

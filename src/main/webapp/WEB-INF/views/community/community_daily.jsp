@@ -60,7 +60,7 @@
 		</table>
 		
 		<div class="d-flex flex-row-reverse pb-3">
-			<a class="btn border border-2" href="/community/write?classify=2">글쓰기</a>
+			<a class="btn border border-2" href="/write?classify=2">글쓰기</a>
 		</div>		
 	
 		<%-- Pagination 영역 --%>
