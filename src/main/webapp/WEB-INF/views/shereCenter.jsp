@@ -30,7 +30,7 @@
 			</div>
 		</section>
 
-		<section class="tour-one tour-grid">
+		<section class="tour-one tour-grid" style="padding: 0px;">
 			<div class="container">
 				<div class="d-flex">
 					<div class="ml-auto">
@@ -43,24 +43,35 @@
 				<div class="row">
 					<c:forEach var="slist" items="${slist}">
 					<div class="col-lg-3 col-md-6">
-						<div class="tour-one__single">
+						<div class="tour-one__single" >
 							<div class="tour-one__image">
 								<c:choose>
-									<c:when test="${slist.filename eq null}">
+									<c:when test="${slist.popfile eq null}">
 										<a href="#">
 											<img src='<c:url value="/resources/images/noImage.png"/>' width="200" height="200">
 										</a>
 									</c:when>
 									<c:otherwise>
-										<img src='<c:url value="${slist.filename}"/>' alt="" width="200" height="200" onclick="location.href='main'" >
+										<img src='<c:url value="${slist.popfile}"/>' alt="" width="200" height="200" onclick="location.href='main'" >
 									</c:otherwise>
 								</c:choose>
 							</div>
-							<div class="tour-one__content">
-								<h3 style="font-size: 19px;">
-									<c:out value="${slist.ani_id}" />
-									<a href="#">품종 : <c:out value="${slist.kind_cd}" /></a>
-								</h3>
+							<div class="tour-one__content" style="padding: 10px; ">
+									<div class="row" >
+										<div class="col-lg-12" align="center"><font size="2px;"><c:out value="${slist.kind_cd}" /></font></div>
+									</div>
+									<div class="row">https://kr.piliapp.com/emoji/list/symbols/
+										<div class="col-lg-5">
+											<font size="1px;" >
+												&#x2764; 💕 <c:out value="${slist.good}" />&nbsp;
+												조회 <c:out value="${slist.hit}"/>
+											</font>
+										
+										</div>
+										<div class="col-lg-7" align="right">
+											<font size="1px;">발견일 : <c:out value="${slist.happen_dt}"/></font>
+										</div>
+									</div>
 							</div>
 						</div>
 					</div>

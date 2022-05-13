@@ -4,8 +4,10 @@
 <mapper namespace="com.spring.ex.ShareCenterMapper">
 
 	<!-- 분양센터 게시판 출력 -->
-	<select id="getShareCenterBoardPage" resultType="ShareCenterDTO">
-		SELECT * FROM abandoned_animal_info LIMIT #{Page}, #{PageSize}
+	<select id="getShareCenterBoardPage" resultType="hashMap">
+		SELECT aai.desertion_no, aai.happen_dt, aai.sex_cd , aai.popfile, aai.hit, aai.kind_cd,
+		 (SELECT COUNT(*) FROM abandoned_animal_good aag WHERE aai.desertion_no = aag.desertion_no) good
+		FROM abandoned_animal_info aai LIMIT #{Page}, #{PageSize};
 	</select>
 	
 	<!-- 분양센터 게시글 총 갯수 -->
