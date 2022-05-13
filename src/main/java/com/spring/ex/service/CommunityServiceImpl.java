@@ -40,8 +40,8 @@ public class CommunityServiceImpl implements CommunityService {
 	
 	// 정보 공유 게시판에 등록
 	@Override
-	public int submitInfoPost(HashMap<String, Object> map) throws Exception {
-		return dao.submitInfoPost(map);
+	public int submitPost(HashMap<String, Object> map) throws Exception {
+		return dao.submitPost(map);
 	}
 	
 	//게시물 상세 페이지 가져오기
@@ -54,5 +54,16 @@ public class CommunityServiceImpl implements CommunityService {
 	@Override
 	public int addHitToBoardPage(int pageNo) throws Exception {
 		return dao.addHitToBoardPage(pageNo);
+	}
+	
+	// 댓글 달기
+	@Override
+	public int submitComment(HashMap<String, Object> map) throws Exception {
+		return dao.submitComment(map);
+	}
+
+	@Override
+	public List<HashMap<String, Object>> getComment(int pageNo) throws Exception {
+		return dao.getComment(pageNo);
 	}
 }

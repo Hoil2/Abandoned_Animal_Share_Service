@@ -50,28 +50,41 @@
     		<c:if test="${pageDetail.img_path != null}">
 				<img style="max-width:800px;" src="<c:url value='${pageDetail.img_path}'/>"/>	    		
     		</c:if>
-		    <textarea readonly class="fs-5 form-control" style="overflow:hidden; resize:none;">${pageDetail.content}</textarea>
+    		<div class="row">
+		    	<textarea readonly class="fs-5" style="overflow:hidden; resize:none; border-style: none; outline: none;">${pageDetail.content}</textarea>
+		    </div>
 	    </div>
 	    <hr>
+	    
+	    <%-- 댓글 출력 --%>
+	    <c:forEach var="list" items="${clist}">
+	    	<div class="">
+		    	<div class="px-3 pt-3">
+		    		<span class="fw-bold">${list.name}</span> <span>(${list.reg_date})</span>
+		    		<p>${list.cbr_content}</p>
+		    	</div>
+		    </div>
+	    </c:forEach>
+	    
+	    
 	    <%-- 댓글 부분 --%>
-	    
 	    <c:if test="${pageDetail.classify == 2}">
-	    <div class="border border-1 my-3">
-	    	<div class="form-group p-3">
-	    		<label>댓글 달기</label>
-	    		<textarea class="form-control" rows="3"></textarea>
-	    		<div class="d-flex flex-row-reverse">
-    				<button type="submit" class="btn btn-dark mt-2 px-2">등록</button>
-	    		</div>
-	    	</div>
-	    </div>
-	    
-	   
-	    
+		    <div class="bg-light my-4">
+		    	<form action="/submitComment">
+			    	<div class="form-group p-3">
+			    		<label>댓글 달기</label>
+			    		<input type="hidden" name="pageNo" value="${pageNo}" />
+			    		<textarea name="content" class="form-control" rows="3"></textarea>
+			    		<div class="d-flex flex-row-reverse">
+		    				<button type="submit" class="btn btn-dark mt-2 px-2">등록</button>
+			    		</div>
+			    	</div>
+		    	</form>
+		    </div>
 	    </c:if>
 	    
 	    <div class="d-flex justify-content-center mb-3">
-	    	<button type="submit" class="btn btn-dark mt-2 px-2">목록으로</button>
+	    	<button class="btn btn-dark mt-2 px-2" onclick="location.href='./';">목록으로</button>
 	    </div>
 	</div>
 	<%-- main 끝 --%>

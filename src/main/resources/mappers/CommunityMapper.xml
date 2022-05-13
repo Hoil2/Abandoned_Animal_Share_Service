@@ -47,11 +47,21 @@
 		WHERE m.m_id=c.m_id AND cb_id=#{pageNo}
 	</select>
 	
-	<insert id="submitInfoPost">
+	<select id="getComment" resultType="HashMap">
+		SELECT name, cbr_content, reg_date
+		FROM member m, community_board_reply cbr
+		WHERE m.m_id = cbr.m_id and cb_id = #{pageNo}
+	</select>
+	
+	<insert id="submitPost">
 		INSERT INTO community_board(m_id, title, content, reg_date, classify) 
 		VALUES(#{m_id}, #{title}, #{content}, #{reg_date}, #{classify})
 	</insert>
 	
+	<insert id="submitComment">
+		INSERT INTO community_board_reply(cb_id, m_id, cbr_content, reg_date) 
+		VALUES(#{cb_id}, #{m_id}, #{content}, #{reg_date})
+	</insert>
 	
 	<update id="addHitToBoardPage">
 		UPDATE community_board

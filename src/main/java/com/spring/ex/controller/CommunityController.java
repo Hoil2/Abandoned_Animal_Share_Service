@@ -79,7 +79,11 @@ public class CommunityController {
 		HashMap<String, Object> pageDetail = communityService.getPageDetail(pageNo);
 		communityService.addHitToBoardPage(pageNo);
 		
+		List<HashMap<String, Object>> commentList = communityService.getComment(pageNo);
+		
 		model.addAttribute("pageDetail", pageDetail);
+		model.addAttribute("pageNo", pageNo);
+		model.addAttribute("clist", commentList);
 		
 		return "community/community_read";
 	}
@@ -159,9 +163,23 @@ public class CommunityController {
 		map.put("classify", Integer.parseInt(classify));
 		map.put("reg_date", reg_date);
 		
-		communityService.submitInfoPost(map);
+		communityService.submitPost(map);
 		System.out.println("게시물 등록 성공");
 		
 		return "redirect:/community/info";
+	}
+	
+	// 댓글 달기
+	@RequestMapping("/submitComment")
+	public String submitComment(HttpServletRequest request) throws Exception {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("cb_id", request.getParameter("pageNo"));
+		map.put("m_id", 2);
+		map.put("content", request.getParameter("content"));
+		map.put("reg_date", new Date(System.currentTimeMillis()));
+		
+		communityService.submitComment(map);
+		
+		return "redirect:"+request.getHeader("Referer");
 	}
 }

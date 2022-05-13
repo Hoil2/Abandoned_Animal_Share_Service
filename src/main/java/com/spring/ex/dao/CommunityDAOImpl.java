@@ -36,8 +36,8 @@ public class CommunityDAOImpl implements CommunityDAO {
 	}
 	
 	@Override
-	public int submitInfoPost(HashMap<String, Object> map) throws Exception {
-		return sqlSession.insert(namespace + ".submitInfoPost", map);
+	public int submitPost(HashMap<String, Object> map) throws Exception {
+		return sqlSession.insert(namespace + ".submitPost", map);
 	}
 	
 	@Override
@@ -48,5 +48,15 @@ public class CommunityDAOImpl implements CommunityDAO {
 	@Override
 	public int addHitToBoardPage(int pageNo) throws Exception {
 		return sqlSession.update(namespace + ".addHitToBoardPage", pageNo);
+	}
+
+	@Override
+	public int submitComment(HashMap<String, Object> map) throws Exception {
+		return sqlSession.insert(namespace + ".submitComment", map);
+	}
+
+	@Override
+	public List<HashMap<String, Object>> getComment(int pageNo) throws Exception {
+		return sqlSession.selectList(namespace + ".getComment", pageNo);
 	}
 }

@@ -34,15 +34,14 @@
 	
 	<%-- header 영역 --%>
 	<jsp:include page="../layout/header.jsp"/>
-		
+	
+	<section class="page-header mb-3" style="background-image: url(<c:url value="/resources/images/banner_main/${BannerRespectivelyView.getS_file_name()}"/>);">
+		<div class="container">
+			<h2>정보 공유 게시판</h2>
+		</div>
+	</section>
 	<%-- main 영역 --%>
 	<div class="container">
-		<section class="page-header mb-3" style="background-image: url(<c:url value="/resources/images/banner_main/${BannerRespectivelyView.getS_file_name()}"/>);">
-			<div class="container">
-				<h2>정보 공유 게시판</h2>
-			</div>
-		</section>
-		
 		<%-- 게시물 영역 --%>
 		<table class="table table-hover text-center">
 			<thead>
