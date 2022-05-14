@@ -16,20 +16,25 @@ public class CommunityDAOImpl implements CommunityDAO {
 	private static final String namespace = "com.spring.ex.CommunityMapper";
 	
 	@Override
-	public List<HashMap<String, Object>> getDictionaryBoardPage(HashMap<String, Integer> map) throws Exception {
-		return sqlSession.selectList(namespace + ".getDictionaryBoardPage", map);
-	}
-	
-	@Override
-	public List<HashMap<String, Object>> getCommunityDailyBoardPage(HashMap<String, Integer> map) throws Exception {
-		return sqlSession.selectList(namespace + ".getCommunityDailyBoardPage", map);
-	}
-	
-	@Override
-	public List<HashMap<String, Object>> getCommunityInfoBoardPage(HashMap<String, Integer> map) throws Exception {
-		return sqlSession.selectList(namespace + ".getCommunityInfoBoardPage", map);
+	public List<HashMap<String, Object>> getBoardPage(HashMap<String, Object> map) throws Exception {
+		return sqlSession.selectList(namespace + ".getBoardPage", map);
 	}
 
+	@Override
+	public List<HashMap<String, Object>> getBoardPageWithTitle(HashMap<String, Object> map) throws Exception {
+		return sqlSession.selectList(namespace + ".getBoardPageWithTitle", map);
+	}
+	
+	@Override
+	public List<HashMap<String, Object>> getBoardPageWithContent(HashMap<String, Object> map) throws Exception {
+		return sqlSession.selectList(namespace + ".getBoardPageWithContent", map);
+	}
+	
+	@Override
+	public List<HashMap<String, Object>> getBoardPageWithTitleOrContent(HashMap<String, Object> map) throws Exception {
+		return sqlSession.selectList(namespace + ".getBoardPageWithTitleOrContent", map);
+	}
+	
 	@Override
 	public int getCommunityBoardPostTotalCount(int classify) throws Exception {
 		return sqlSession.selectOne(namespace + ".getCommunityBoardPostTotalCount", classify);

@@ -101,6 +101,33 @@
 		</div>
 		<br/>
 		<%-- Pagination 끝 --%>
+		
+		<%-- 검색창 --%>
+		<form action="dictionary">
+			<div class="d-flex justify-content-center mb-3">
+				<div class="">
+					<select class="form-select form-select-sm border border-dark" style="height:40px;" name="filter" aria-label=".form-select-sm example">
+					  <option selected value="title">제목</option>
+					  <option value="content">내용</option>
+					  <option value="title+content">제목+내용</option>
+					</select>
+				</div>
+				<div class="col-xs-4">
+					<div class="form-group">
+						<input class="form-contorl" size=35 name="keyword" style="height:40px;"/>
+					</div>
+				</div>
+				
+				<div class="">
+					<button class="btn btn-outline-dark" type="submit" style="height:40px;">
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+					  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+					</svg>
+					</button>
+				</div>
+			</div>
+		</form>
+		<%-- 검색창 끝 --%>
 	</div>
 	<%-- footer 영역 --%>
 	<jsp:include page="../layout/footer.jsp"/>

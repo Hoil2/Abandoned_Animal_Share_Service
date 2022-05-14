@@ -9,14 +9,17 @@ import com.spring.ex.dto.CommunityDTO;
 
 @Repository
 public interface CommunityDAO {
-	// 지식백과 게시판 페이지 가져오기
-	public List<HashMap<String, Object>> getDictionaryBoardPage(HashMap<String, Integer> map) throws Exception;
-		
-	// 일상 공유 게시판 페이지 가져오기
-	public List<HashMap<String, Object>> getCommunityDailyBoardPage(HashMap<String, Integer> map) throws Exception;
+	// 게시판 페이지 가져오기
+	public List<HashMap<String, Object>> getBoardPage(HashMap<String, Object> map) throws Exception;
 	
-	// 정보 공유 게시판 페이지 가져오기
-	public List<HashMap<String, Object>> getCommunityInfoBoardPage(HashMap<String, Integer> map) throws Exception;
+	// 게시판 페이지 가져오기, 제목 필터
+	public List<HashMap<String, Object>> getBoardPageWithTitle(HashMap<String, Object> map) throws Exception;
+	
+	// 게시판 페이지 가져오기, 내용 필터
+	public List<HashMap<String, Object>> getBoardPageWithContent(HashMap<String, Object> map) throws Exception;
+	
+	// 게시판 페이지 가져오기, 제목 or 내용 필터
+	public List<HashMap<String, Object>> getBoardPageWithTitleOrContent(HashMap<String, Object> map) throws Exception;
 	
 	// 게시판의 게시물 총 개수
 	public int getCommunityBoardPostTotalCount(int classify) throws Exception;
