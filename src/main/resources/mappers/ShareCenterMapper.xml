@@ -7,7 +7,9 @@
 	<select id="getShareCenterBoardPage" resultType="hashMap">
 		SELECT aai.desertion_no, aai.happen_dt, aai.sex_cd , aai.popfile, aai.hit, aai.kind_cd,
 		 (SELECT COUNT(*) FROM abandoned_animal_good aag WHERE aai.desertion_no = aag.desertion_no) good
-		FROM abandoned_animal_info aai LIMIT #{Page}, #{PageSize};
+		FROM abandoned_animal_info aai 
+		WHERE process_state = '보호중' 
+		ORDER BY happen_dt DESC LIMIT #{Page}, #{PageSize};
 	</select>
 	
 	<!-- 분양센터 게시글 총 갯수 -->

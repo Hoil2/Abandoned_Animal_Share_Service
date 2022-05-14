@@ -28,18 +28,48 @@
 				<ul class="thm-breadcrumb list-unstyled">
 				</ul>
 			</div>
-		</section>
+		</section><br>
 
 		<section class="tour-one tour-grid" style="padding: 0px;">
+			
 			<div class="container">
-				<div class="d-flex">
-					<div class="ml-auto">
-						<c:if test="${sessionScope.member ne null && sessionScope.member.getGrade() ne 'User'}">
-							<button class="thm-btn-psd" onclick="location.href='travelphotoWrite'">등록</button>
-						</c:if>
+				<div class="d-flex flex-row justify-content-end" style="margin: 10px;">
+					<div class="col-lg-1 col-md-1" align="right" style="padding: 0px 0px;"> 분류</div>
+					<div class="col-lg-3 col-md-3">
+						분류
+						<select class="form-control">
+							<option>전체</option>
+							<option>개</option>
+							<option>고양이</option>
+							<option>기타</option>
+						</select>
+						지역
+						<select class="form-control">
+							<option>서울</option>
+						</select>
+					</div>
+					
+					<div class="col-lg-1 col-md-1" align="right" style="padding: 0px 0px;">지역 </div>
+					<div class="col-lg-3 col-md-3" align="left">
+						<select class="form-control">
+							<option>서울</option>
+						</select>
+					</div>
+					
+					<div  class="col-lg-2 col-md-2" align="center">
+						<button class="thm-btn-psd" onclick="location.href='travelphotoWrite'" >검색</button>
 					</div>
 				</div>
-				<br>
+				<hr style="margin: 0px;">
+				<div class="d-flex flex-row justify-content-end"  style="margin: 10px 0px;">
+					<div class="col-lg-2 col-md-2" align="right" style="padding: 0px 0px;">
+						<select class="form-control">
+							<option>최신순</option>
+							<option>조회순</option>
+							<option>좋아요순</option>
+						</select>
+					</div>
+				</div>
 				<div class="row">
 					<c:forEach var="slist" items="${slist}">
 					<div class="col-lg-3 col-md-6">
@@ -60,11 +90,11 @@
 									<div class="row" >
 										<div class="col-lg-12" align="center"><font size="2px;"><c:out value="${slist.kind_cd}" /></font></div>
 									</div>
-									<div class="row">https://kr.piliapp.com/emoji/list/symbols/
+									<div class="row">
 										<div class="col-lg-5">
 											<font size="1px;" >
-												&#x2764; 💕 <c:out value="${slist.good}" />&nbsp;
-												조회 <c:out value="${slist.hit}"/>
+												💕 <c:out value="${slist.good}" />&nbsp;
+												👁‍🗨 <c:out value="${slist.hit}"/>
 											</font>
 										
 										</div>
