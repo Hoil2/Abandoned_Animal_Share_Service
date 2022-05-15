@@ -10,7 +10,7 @@ import com.spring.ex.dto.ShareCenterDTO;
 
 @Repository
 public interface ShareCenterDAO {
-	//분양센터페이지 유기동물 목록 출력
+	//분양센터 게시판 최신순 출력
 	public List<ShareCenterDTO> getShareCenterBoardPage(HashMap<String, Integer> map) throws Exception;
 	
 	//분양센터페이지 유기동물 목록 총 갯수 - 페이징

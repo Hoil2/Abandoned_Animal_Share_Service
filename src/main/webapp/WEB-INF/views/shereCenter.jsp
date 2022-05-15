@@ -8,15 +8,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 <title>멍멍냥냥</title>
 <script>
 function 함수이름(){  
 	$("#div의 id").load(window.location.href + "#div의 id");
 }
 
+
 $(document).ready(function() {
-	$("#category2").on("change", function({
-		alert(this.value);
+	$("#category2").on("change", function() {
 		console.log(this.value);
 	});
 });
