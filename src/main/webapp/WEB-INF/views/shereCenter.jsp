@@ -9,6 +9,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <title>멍멍냥냥</title>
+<script>
+function 함수이름(){  
+	$("#div의 id").load(window.location.href + "#div의 id");
+}
+
+$(document).ready(function() {
+	$("#category2").on("change", function({
+		alert(this.value);
+		console.log(this.value);
+	});
+});
+</script>
+
 
 </head>
 <body link="red">
@@ -36,16 +49,11 @@
 				<div class="d-flex flex-row justify-content-end" style="margin: 10px;">
 					<div class="col-lg-1 col-md-1" align="right" style="padding: 0px 0px;"> 분류</div>
 					<div class="col-lg-3 col-md-3">
-						분류
 						<select class="form-control">
 							<option>전체</option>
 							<option>개</option>
 							<option>고양이</option>
 							<option>기타</option>
-						</select>
-						지역
-						<select class="form-control">
-							<option>서울</option>
 						</select>
 					</div>
 					
@@ -63,10 +71,10 @@
 				<hr style="margin: 0px;">
 				<div class="d-flex flex-row justify-content-end"  style="margin: 10px 0px;">
 					<div class="col-lg-2 col-md-2" align="right" style="padding: 0px 0px;">
-						<select class="form-control">
-							<option>최신순</option>
-							<option>조회순</option>
-							<option>좋아요순</option>
+						<select class="form-control" id="category2">
+							<option value="인기순">최신순</option>
+							<option value="조회순">조회순</option>
+							<option value="좋아요순">좋아요순</option>
 						</select>
 					</div>
 				</div>
