@@ -27,9 +27,11 @@ public class ShareCenterController {
 		pagingService = new PagingService(request, service.getShareCenterBoardViewTotalCount(), 12);
 		List<ShareCenterDTO> shareCenterList = service.getShareCenterBoardPage(pagingService.getMap());
 		
+		String alignment = request.getParameter("alignment");
+		System.out.println(alignment);
+		
 		model.addAttribute("slist", shareCenterList);
 		model.addAttribute("Paging", pagingService.getPaging());
-		
 		return "shereCenter";
 	}
 	

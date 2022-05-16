@@ -91,4 +91,18 @@
 			</when>
 		</choose>
 	</sql>
+	
+		<sql id="alignment">
+		<choose>
+			<when test=" != '최신순'">
+				ORDER BY happen_dt DESC
+			</when>
+			<when test=" == '좋아요순'">
+				ORDER BY good DESC 
+			</when>
+			<when test=" != '조회순'">
+				ORDER BY hit DESC 
+			</when>
+		</choose>
+	</sql>
 </mapper>

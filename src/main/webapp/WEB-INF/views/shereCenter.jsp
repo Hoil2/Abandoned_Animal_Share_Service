@@ -13,14 +13,10 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 <title>멍멍냥냥</title>
 <script>
-function 함수이름(){  
-	$("#div의 id").load(window.location.href + "#div의 id");
-}
-
-
 $(document).ready(function() {
 	$("#category2").on("change", function() {
-		console.log(this.value);
+		
+		$("#slistDiv").load(window.location.href + " #slistDiv");
 	});
 });
 </script>
@@ -59,11 +55,11 @@ $(document).ready(function() {
 							<option>기타</option>
 						</select>
 					</div>
-					
 					<div class="col-lg-1 col-md-1" align="right" style="padding: 0px 0px;">지역 </div>
 					<div class="col-lg-3 col-md-3" align="left">
-						<select class="form-control">
-							<option>서울</option>
+						<select class="form-control" id="searchArea" name="searchArea">
+							<option value="noArea">전체</option>
+							<option value="서울">서울</option>
 						</select>
 					</div>
 					
@@ -75,13 +71,13 @@ $(document).ready(function() {
 				<div class="d-flex flex-row justify-content-end"  style="margin: 10px 0px;">
 					<div class="col-lg-2 col-md-2" align="right" style="padding: 0px 0px;">
 						<select class="form-control" id="category2">
-							<option value="인기순">최신순</option>
+							<option value="최신순" >최신순</option>
 							<option value="조회순">조회순</option>
 							<option value="좋아요순">좋아요순</option>
 						</select>
 					</div>
 				</div>
-				<div class="row">
+				<div class="row" id="slistDiv">
 					<c:forEach var="slist" items="${slist}">
 					<div class="col-lg-3 col-md-6">
 						<div class="tour-one__single" >
