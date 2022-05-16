@@ -69,10 +69,10 @@
 			<!-- 첫 페이지면 Disabled 아니라면 Enabled -->
 			<c:choose>
 				<c:when test="${Paging.pageNo == Paging.firstPageNo }">
-					<a class="disabledLink" href="/community/daily?page=${Paging.prevPageNo}"><i class="fa fa-angle-left"></i></a>
+					<a class="disabledLink" href="/community/daily?filter=${filter}&keyword=${keyword}&page=${Paging.prevPageNo}"><i class="fa fa-angle-left"></i></a>
 				</c:when>
 				<c:otherwise>
-					<a class="page-link" href="/community/daily?page=${Paging.prevPageNo}"><i class="fa fa-angle-left"></i></a>
+					<a class="page-link" href="/community/daily?filter=${filter}&keyword=${keyword}&page=${Paging.prevPageNo}"><i class="fa fa-angle-left"></i></a>
 				</c:otherwise>
 			</c:choose>
 			
@@ -80,11 +80,11 @@
 			<c:forEach var="i" begin="${Paging.startPageNo }" end="${Paging.endPageNo }" step="1">
 				<c:choose>
 					<c:when test="${i == Paging.pageNo }">
-						<a class="active disabledLink" href="/community/daily?page=${i}"><c:out value="${i}"/></a>
+						<a class="active disabledLink" href="/community/daily?filter=${filter}&keyword=${keyword}&page=${i}"><c:out value="${i}"/></a>
 					</c:when>
 					
 					<c:otherwise>
-						<a href="/community/daily?page=${i}"><c:out value="${i}"/></a>
+						<a href="/community/daily?filter=${filter}&keyword=${keyword}&page=${i}"><c:out value="${i}"/></a>
 					</c:otherwise>
 				</c:choose>
 			</c:forEach>
@@ -92,10 +92,10 @@
 			<!-- 마지막 페이지면 Disabled 아니라면 Enabled -->
 			<c:choose>
 				<c:when test="${Paging.pageNo == Paging.finalPageNo }">
-					<a class="disabledLink" href="/community/daily?page=${Paging.nextPageNo}"><i class="fa fa-angle-right"></i></a>
+					<a class="disabledLink" href="/community/daily?filter=${filter}&keyword=${keyword}&page=${Paging.nextPageNo}"><i class="fa fa-angle-right"></i></a>
 				</c:when>
 				<c:otherwise>
-					<a href="/community/daily?page=${Paging.nextPageNo}"><i class="fa fa-angle-right"></i></a>
+					<a href="/community/daily?filter=${filter}&keyword=${keyword}&page=${Paging.nextPageNo}"><i class="fa fa-angle-right"></i></a>
 				</c:otherwise>
 			</c:choose>
 		</div>
@@ -107,7 +107,8 @@
 			<div class="d-flex justify-content-center mb-3">
 				<div class="">
 					<select class="form-select form-select-sm border border-dark" style="height:40px;" name="filter" aria-label=".form-select-sm example">
-					  <option selected value="title">제목</option>
+					  <option selected value="total">전체</option>
+					  <option value="title">제목</option>
 					  <option value="content">내용</option>
 					  <option value="title+content">제목+내용</option>
 					</select>

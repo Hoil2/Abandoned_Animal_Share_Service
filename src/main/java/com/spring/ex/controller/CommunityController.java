@@ -46,60 +46,44 @@ public class CommunityController {
 	@Inject
 	FileUploadService fileUploadService;
 	
-	// 지식백과 페이지
-	/*@RequestMapping(value="/dictionary", method=RequestMethod.POST)
-	public String dictionaryPost(Model model, HttpServletRequest request) throws Exception {
-		int totalCount = communityService.getCommunityBoardPostTotalCount(dictBoard);
-		int pageSize = 10;  
-		pagingService = new PagingService(request, totalCount, pageSize);
-		
-		HashMap<String, Integer> map = new HashMap<String, Integer>();
-		map.put("Page", pagingService.getNowPage());
-		map.put("PageSize", pageSize);
-		map.put("classify", dictBoard);
-		
-		model.addAttribute("Paging", pagingService.getPaging());
-		model.addAttribute("clist", communityService.getBoardPage(map));
-		
-		return "community/dictionary";
-	}*/
-	
 	@RequestMapping("/dictionary")
 	public String dictionaryGet(Model model, HttpServletRequest request) throws Exception {
-		int totalCount = communityService.getCommunityBoardPostTotalCount(dictBoard);
-		int pageSize = 10;  
-		pagingService = new PagingService(request, totalCount, pageSize);
-		List<HashMap<String, Object>> communityList = null;
+		// null 값으로 mybatis에 들어가면 문자열과 비교하게 되므로 오류남. 따라서 null이면 ""으로 변환
 		String filter = request.getParameter("filter");
 		String keyword = request.getParameter("keyword");
-		
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("Page", pagingService.getNowPage());
-		map.put("PageSize", pageSize);
-		map.put("classify", dictBoard);
-		
+		filter = filter == null ? "" : filter;
+		keyword = keyword == null ? "" : keyword;
 		System.out.println("filter : " + filter + ", keyword : " + keyword);
 		
-		if(keyword == null) {
-			System.out.println("노멀 실행");
-			communityList = communityService.getBoardPage(map);
-		}
-		else {
-			System.out.println("쿼리 실행");
-			map.put("keyword", keyword);
-			if(filter.equals("title"))
-				communityList = communityService.getBoardPageWithTitle(map);
-			else if(filter.equals("content"))
-				communityList = communityService.getBoardPageWithContent(map);
-			else if(filter.equals("title+content"))
-				communityList = communityService.getBoardPageWithTitleOrContent(map);
-		}
+		// 게시물 총 개수를 가져오기 위한 조건 맵
+		HashMap<String, Object> postCountMap = new HashMap<String, Object>();
+		postCountMap.put("classify", dictBoard);
+		postCountMap.put("filter", filter);
+		postCountMap.put("keyword", keyword);
 		
+		// 게시물 개수 가져오기
+		int totalCount = communityService.getCommunityBoardPostTotalCount(postCountMap);
+		System.out.println("게시물 개수 : " + totalCount);
 		
-		System.out.println(communityList);
+		// 게시물 개수를 바탕으로 페이지 설정
+		int pageSize = 10;  
+		pagingService = new PagingService(request, totalCount, pageSize);
+		
+		// 게시물 가져오기 위한 조건 맵
+		HashMap<String, Object> postMap = new HashMap<String, Object>();
+		postMap.put("Page", pagingService.getNowPage());
+		postMap.put("PageSize", pageSize);
+		postMap.put("classify", dictBoard);
+		postMap.put("filter", filter);
+		postMap.put("keyword", keyword);
+		
+		// 게시물 가져오기
+		List<HashMap<String, Object>> communityList = communityService.getBoardPage(postMap);
 		
 		model.addAttribute("Paging", pagingService.getPaging());
 		model.addAttribute("clist", communityList);
+		model.addAttribute("filter", filter);
+		model.addAttribute("keyword", keyword);
 		
 		return "community/dictionary";
 	}
@@ -119,17 +103,42 @@ public class CommunityController {
 	// 일상 공유 게시판 페이지
 	@RequestMapping("/community/daily")
 	public String daily(Model model, HttpServletRequest request) throws Exception {
-		int totalCount = communityService.getCommunityBoardPostTotalCount(dictBoard);
+		// null 값으로 mybatis에 들어가면 문자열과 비교하게 되므로 오류남. 따라서 null이면 ""으로 변환
+		String filter = request.getParameter("filter");
+		String keyword = request.getParameter("keyword");
+		filter = filter == null ? "" : filter;
+		keyword = keyword == null ? "" : keyword;
+		System.out.println("filter : " + filter + ", keyword : " + keyword);
+		
+		// 게시물 총 개수를 가져오기 위한 조건 맵
+		HashMap<String, Object> postCountMap = new HashMap<String, Object>();
+		postCountMap.put("classify", dailyBoard);
+		postCountMap.put("filter", filter);
+		postCountMap.put("keyword", keyword);
+		
+		// 게시물 개수 가져오기
+		int totalCount = communityService.getCommunityBoardPostTotalCount(postCountMap);
+		System.out.println("게시물 개수 : " + totalCount);
+		
+		// 게시물 개수를 바탕으로 페이지 설정
 		int pageSize = 10;  
 		pagingService = new PagingService(request, totalCount, pageSize);
 		
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("Page", pagingService.getNowPage());
-		map.put("PageSize", pageSize);
-		map.put("classify", dailyBoard);
+		// 게시물 가져오기 위한 조건 맵
+		HashMap<String, Object> postMap = new HashMap<String, Object>();
+		postMap.put("Page", pagingService.getNowPage());
+		postMap.put("PageSize", pageSize);
+		postMap.put("classify", dailyBoard);
+		postMap.put("filter", filter);
+		postMap.put("keyword", keyword);
+		
+		// 게시물 가져오기
+		List<HashMap<String, Object>> communityList = communityService.getBoardPage(postMap);
 		
 		model.addAttribute("Paging", pagingService.getPaging());
-		model.addAttribute("clist", communityService.getBoardPage(map));
+		model.addAttribute("clist", communityList);
+		model.addAttribute("filter", filter);
+		model.addAttribute("keyword", keyword);
 		
 		return "community/community_daily";
 	}
@@ -152,17 +161,42 @@ public class CommunityController {
 	// 정보 공유 게시판 페이지
 	@RequestMapping("/community/info")
 	public String infoDetail(Model model, HttpServletRequest request) throws Exception {
-		int totalCount = communityService.getCommunityBoardPostTotalCount(infoBoard);
-		int pageSize = 10;
+		// null 값으로 mybatis에 들어가면 문자열과 비교하게 되므로 오류남. 따라서 null이면 ""으로 변환
+		String filter = request.getParameter("filter");
+		String keyword = request.getParameter("keyword");
+		filter = filter == null ? "" : filter;
+		keyword = keyword == null ? "" : keyword;
+		System.out.println("filter : " + filter + ", keyword : " + keyword);
+		
+		// 게시물 총 개수를 가져오기 위한 조건 맵
+		HashMap<String, Object> postCountMap = new HashMap<String, Object>();
+		postCountMap.put("classify", infoBoard);
+		postCountMap.put("filter", filter);
+		postCountMap.put("keyword", keyword);
+		
+		// 게시물 개수 가져오기
+		int totalCount = communityService.getCommunityBoardPostTotalCount(postCountMap);
+		System.out.println("게시물 개수 : " + totalCount);
+		
+		// 게시물 개수를 바탕으로 페이지 설정
+		int pageSize = 10;  
 		pagingService = new PagingService(request, totalCount, pageSize);
 		
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("Page", pagingService.getNowPage());
-		map.put("PageSize", pageSize);
-		map.put("classify", infoBoard);
+		// 게시물 가져오기 위한 조건 맵
+		HashMap<String, Object> postMap = new HashMap<String, Object>();
+		postMap.put("Page", pagingService.getNowPage());
+		postMap.put("PageSize", pageSize);
+		postMap.put("classify", infoBoard);
+		postMap.put("filter", filter);
+		postMap.put("keyword", keyword);
+		
+		// 게시물 가져오기
+		List<HashMap<String, Object>> communityList = communityService.getBoardPage(postMap);
 		
 		model.addAttribute("Paging", pagingService.getPaging());
-		model.addAttribute("clist", communityService.getBoardPage(map));
+		model.addAttribute("clist", communityList);
+		model.addAttribute("filter", filter);
+		model.addAttribute("keyword", keyword);
 		
 		return "community/community_info";
 	}

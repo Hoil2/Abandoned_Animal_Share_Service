@@ -21,25 +21,10 @@ public class CommunityServiceImpl implements CommunityService {
 		return dao.getBoardPage(map);
 	}
 
-	@Override
-	public List<HashMap<String, Object>> getBoardPageWithTitle(HashMap<String, Object> map) throws Exception {
-		return dao.getBoardPageWithTitle(map);
-	}
-
-	@Override
-	public List<HashMap<String, Object>> getBoardPageWithContent(HashMap<String, Object> map) throws Exception {
-		return dao.getBoardPageWithContent(map);
-	}
-
-	@Override
-	public List<HashMap<String, Object>> getBoardPageWithTitleOrContent(HashMap<String, Object> map) throws Exception {
-		return dao.getBoardPageWithTitleOrContent(map);
-	}
-	
 	// 정보 공유 게시판의 게시물 총 개수
 	@Override
-	public int getCommunityBoardPostTotalCount(int classify) throws Exception {
-		return dao.getCommunityBoardPostTotalCount(classify);
+	public int getCommunityBoardPostTotalCount(HashMap<String, Object> map) throws Exception {
+		return dao.getCommunityBoardPostTotalCount(map);
 	}
 	
 	// 정보 공유 게시판에 등록

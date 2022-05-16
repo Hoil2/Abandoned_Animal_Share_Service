@@ -19,25 +19,10 @@ public class CommunityDAOImpl implements CommunityDAO {
 	public List<HashMap<String, Object>> getBoardPage(HashMap<String, Object> map) throws Exception {
 		return sqlSession.selectList(namespace + ".getBoardPage", map);
 	}
-
-	@Override
-	public List<HashMap<String, Object>> getBoardPageWithTitle(HashMap<String, Object> map) throws Exception {
-		return sqlSession.selectList(namespace + ".getBoardPageWithTitle", map);
-	}
 	
 	@Override
-	public List<HashMap<String, Object>> getBoardPageWithContent(HashMap<String, Object> map) throws Exception {
-		return sqlSession.selectList(namespace + ".getBoardPageWithContent", map);
-	}
-	
-	@Override
-	public List<HashMap<String, Object>> getBoardPageWithTitleOrContent(HashMap<String, Object> map) throws Exception {
-		return sqlSession.selectList(namespace + ".getBoardPageWithTitleOrContent", map);
-	}
-	
-	@Override
-	public int getCommunityBoardPostTotalCount(int classify) throws Exception {
-		return sqlSession.selectOne(namespace + ".getCommunityBoardPostTotalCount", classify);
+	public int getCommunityBoardPostTotalCount(HashMap<String, Object> map) throws Exception {
+		return sqlSession.selectOne(namespace + ".getCommunityBoardPostTotalCount", map);
 	}
 	
 	@Override

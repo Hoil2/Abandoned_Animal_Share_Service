@@ -12,17 +12,8 @@ public interface CommunityService {
 	// 게시판 페이지 가져오기
 	public List<HashMap<String, Object>> getBoardPage(HashMap<String, Object> map) throws Exception;
 	
-	// 게시판 페이지 가져오기, 제목 필터
-	public List<HashMap<String, Object>> getBoardPageWithTitle(HashMap<String, Object> map) throws Exception;
-	
-	// 게시판 페이지 가져오기, 내용 필터
-	public List<HashMap<String, Object>> getBoardPageWithContent(HashMap<String, Object> map) throws Exception;
-	
-	// 게시판 페이지 가져오기, 제목 or 내용 필터
-	public List<HashMap<String, Object>> getBoardPageWithTitleOrContent(HashMap<String, Object> map) throws Exception;
-	
 	// 게시판의 게시물 총 개수
-	public int getCommunityBoardPostTotalCount(int classify) throws Exception;
+	public int getCommunityBoardPostTotalCount(HashMap<String, Object> map) throws Exception;
 	
 	// 정보 공유 게시판에 등록
 	public int submitPost(HashMap<String, Object> map) throws Exception;

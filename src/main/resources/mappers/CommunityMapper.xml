@@ -7,45 +7,46 @@
 	<select id="getBoardPage" resultType="HashMap">
 		SELECT cb_id, title, content, hit, reg_date, name, img_path
 		FROM community_board c, member m
-		WHERE m.m_id = c.m_id AND classify = #{classify} AND enable = 1
+		<include refid="search"></include>
 		ORDER BY cb_id DESC
 		LIMIT #{Page}, #{PageSize}
 	</select>
-	
-	<select id="getBoardPageWithTitle" resultType="HashMap">
-		SELECT cb_id, title, content, hit, reg_date, name, img_path
-		FROM community_board c, member m
-		WHERE m.m_id = c.m_id AND classify = #{classify} AND enable = 1 AND
-			title LIKE '%${keyword}%'
-		ORDER BY cb_id DESC
-		LIMIT #{Page}, #{PageSize}
-	</select>
-	
-	<select id="getBoardPageWithContent" resultType="HashMap">
-		SELECT cb_id, title, content, hit, reg_date, name, img_path
-		FROM community_board c, member m
-		WHERE m.m_id = c.m_id AND classify = #{classify} AND enable = 1 AND
-			content LIKE '%${keyword}%'
-		ORDER BY cb_id DESC
-		LIMIT #{Page}, #{PageSize}
-	</select>
-	
-	<select id="getBoardPageWithTitleOrContent" resultType="HashMap">
-		SELECT cb_id, title, content, hit, reg_date, name, img_path
-		FROM community_board c, member m
-		WHERE m.m_id = c.m_id AND classify = ${classify} AND enable = 1 AND
-			(title LIKE '%${keyword}%' OR content LIKE '%${keyword}%')
-		ORDER BY cb_id DESC
-		LIMIT #{Page}, #{PageSize}
-	</select>
-	
-	<!-- 공용 -->
 	
 	<select id="getCommunityBoardPostTotalCount" resultType="int">
 		SELECT count(*) 
-		FROM community_board 
-		WHERE classify = #{classify} AND enable = 1
+		FROM community_board c, member m 
+		<include refid="search"></include>
 	</select>
+	
+	<sql id="search">
+		<choose>
+			<when test='filter.equals("total")'>
+				WHERE m.m_id = c.m_id AND classify = ${classify} AND enable = 1 AND
+				(title LIKE '%${keyword}%' OR content LIKE '%${keyword}%')
+			</when>
+		
+			<when test='filter.equals("title")'>
+				WHERE m.m_id = c.m_id AND classify = #{classify} AND enable = 1 AND
+				title LIKE '%${keyword}%'
+			</when>
+			
+			<when test='filter.equals("content")'>
+				WHERE m.m_id = c.m_id AND classify = #{classify} AND enable = 1 AND
+				content LIKE '%${keyword}%'
+			</when>
+			
+			<when test='filter.equals("title+content")'>
+				WHERE m.m_id = c.m_id AND classify = ${classify} AND enable = 1 AND
+				(title LIKE '%${keyword}%' OR content LIKE '%${keyword}%')
+			</when>
+			
+			<otherwise>
+				WHERE m.m_id = c.m_id AND classify = #{classify} AND enable = 1
+			</otherwise>
+		</choose>
+	</sql>
+	
+	<!-- 공용 -->
 	
 	<select id="getPageDetail" resultType="HashMap">
 		SELECT * 
