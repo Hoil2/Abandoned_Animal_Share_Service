@@ -45,9 +45,9 @@ $(document).ready(function() {
 		<section class="tour-one tour-grid" style="padding: 0px;">
 			
 			<div class="container">
-				<div class="d-flex flex-row justify-content-end" style="margin: 10px;">
-					<div class="col-lg-1 col-md-1" align="right" style="padding: 0px 0px;"> 분류</div>
-					<div class="col-lg-3 col-md-3">
+				<div class="d-flex flex-row" style="margin: 10px;">
+					<div class="col-lg-1 col-md-1" align="left" style="padding: 0px 0px;"> 분류</div>
+					<div class="col-lg-2 col-md-2">
 						<select class="form-control">
 							<option>전체</option>
 							<option>개</option>
@@ -56,16 +56,13 @@ $(document).ready(function() {
 						</select>
 					</div>
 					<div class="col-lg-1 col-md-1" align="right" style="padding: 0px 0px;">지역 </div>
-					<div class="col-lg-3 col-md-3" align="left">
+					<div class="col-lg-2 col-md-2" align="left">
 						<select class="form-control" id="searchArea" name="searchArea">
 							<option value="noArea">전체</option>
 							<option value="서울">서울</option>
 						</select>
 					</div>
 					
-					<div  class="col-lg-2 col-md-2" align="center">
-						<button class="thm-btn-psd" onclick="location.href='travelphotoWrite'" >검색</button>
-					</div>
 				</div>
 				<hr style="margin: 0px;">
 				<div class="d-flex flex-row justify-content-end"  style="margin: 10px 0px;">
