@@ -68,7 +68,7 @@
 	    
 	    
 	    <%-- 댓글 부분 --%>
-	    <c:if test="${pageDetail.classify == 2}">
+	    <c:if test="${member != null && pageDetail.classify != 1}">
 		    <div class="bg-light my-4">
 		    	<form action="/submitComment">
 			    	<div class="form-group p-3">

@@ -18,7 +18,6 @@ public class MemberDAOImpl implements MemberDAO {
 	
 	private static String namespcae = "com.spring.ex.memberMapper";
 	
-	/*
 	//회원가입
 	@Override
 	public void signUp(MemberDTO dto) throws Exception {
@@ -27,10 +26,10 @@ public class MemberDAOImpl implements MemberDAO {
 
 	//로그인
 	@Override
-	public MemberDTO login(MemberDTO dto) throws Exception {
-		return sql.selectOne(namespcae + ".login", dto);
+	public MemberDTO signIn(HashMap<String, String> map) throws Exception {
+		return sql.selectOne(namespcae + ".signIn", map);
 	}
-	*/
+	
 	
 	// 회원 아이디 찾기
 	@Override
