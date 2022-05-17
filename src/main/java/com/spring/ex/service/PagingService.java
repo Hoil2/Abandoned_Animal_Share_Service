@@ -32,4 +32,5 @@ public class PagingService {
 	public HashMap<String, Integer> getMap() {
 		return map;
 	}
+	
 }

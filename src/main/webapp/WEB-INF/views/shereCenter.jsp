@@ -14,10 +14,42 @@
 <title>멍멍냥냥</title>
 <script>
 $(document).ready(function() {
+	
+
+		
+	//$("#category1").val(sessionStorage.getItem("category1")).prop("selected", true);
+	//$("#category2").val(sessionStorage.getItem("category2")).prop("selected", true);
+	
 	$("#category2").on("change", function() {
 		
-		$("#slistDiv").load(window.location.href + " #slistDiv");
+		console.log($("#category2").val());
+		
+		//sessionStorage.setItem("category2", $(this).val());
+		//var alignment = sessionStorage.setItem("category2", $(this).val());
+		//var param = {'alignment':$("#category2").val(), 'alignment2': $("#category1").val()};
+		
+		$.ajax({
+			//url: "shereCenterPage?alignment=" + sessionStorage.getItem("category2"),
+			url: "shereCenterPage",
+			type: "GET",
+			data: {'alignment':$("#category2").val()},
+			success: function(data) {
+				//location.href = "shereCenterPage?alignment="+$("#category2").val();
+					$("#slistDiv").load("shereCenterPage?page=&alignment="+$("#category2").val() + " #slistDiv");
+					$("#pagination").load(window.location.href+$("#category2").val() + " #pagination");
+			}
+		});
+		//sessionStorage.setItem("category2", $(this).val()); 
+		//sessionStorage.setItem("category3", null); 
+		console.log("2"+sessionStorage.getItem("category2"));
 	});
+	/*
+	$("#category1").on("change", function() {
+		console.log("1")
+		//sessionStorage.setItem("category1", $(this).val()); 
+		$("#slistDiv").load(window.location.href + "&asd" + " #slistDiv");
+	});*/
+	
 });
 </script>
 
@@ -36,7 +68,7 @@ $(document).ready(function() {
 		
 		<section class="page-header" style="background-image: url(<c:url value="/resources/images/banner_main/${BannerRespectivelyView.getS_file_name()}"/>);">
 			<div class="container">
-				<h2>분양센터</h2>
+				<h2>분양센터 asd <c:url value="${searchAlignment}"/></h2> <%= request.getAttribute("alignment") %>
 				<ul class="thm-breadcrumb list-unstyled">
 				</ul>
 			</div>
@@ -48,11 +80,11 @@ $(document).ready(function() {
 				<div class="d-flex flex-row" style="margin: 10px;">
 					<div class="col-lg-1 col-md-1" align="left" style="padding: 0px 0px;"> 분류</div>
 					<div class="col-lg-2 col-md-2">
-						<select class="form-control">
-							<option>전체</option>
-							<option>개</option>
-							<option>고양이</option>
-							<option>기타</option>
+						<select class="form-control" id="category1">
+							<option value="전체">전체</option>
+							<option value="개">개</option>
+							<option value="고양이">고양이</option>
+							<option value="기타축종">기타</option>
 						</select>
 					</div>
 					<div class="col-lg-1 col-md-1" align="right" style="padding: 0px 0px;">지역 </div>
@@ -68,9 +100,9 @@ $(document).ready(function() {
 				<div class="d-flex flex-row justify-content-end"  style="margin: 10px 0px;">
 					<div class="col-lg-2 col-md-2" align="right" style="padding: 0px 0px;">
 						<select class="form-control" id="category2">
-							<option value="최신순" >최신순</option>
-							<option value="조회순">조회순</option>
-							<option value="좋아요순">좋아요순</option>
+							<option value="alignmentDay" <c:if test="${searchAlignment eq 'alignmentDay'}"> selected </c:if>>최신순</option>
+							<option value="alignmentHit" <c:if test="${searchAlignment eq 'alignmentHit'}"> selected </c:if>>조회순</option>
+							<option value="alignmentGood" <c:if test="${searchAlignment eq 'alignmentGood'}"> selected </c:if>>좋아요순</option>
 						</select>
 					</div>
 				</div>
@@ -115,7 +147,7 @@ $(document).ready(function() {
 		</section>
 		
 		<!-- 게시글 페이징 처리(기준 10개) -->
-		<div class="post-pagination">
+		<div class="post-pagination" id="pagination">
 			<!-- 첫 페이지면 Disabled 아니라면 Enabled -->
 			<c:choose>
 				<c:when test="${Paging.pageNo eq Paging.firstPageNo }">
@@ -132,7 +164,7 @@ $(document).ready(function() {
 						<a class="active disabledLink" href="shereCenterPage?page=${i}"><c:out value="${i }"/></a>
 					</c:when>
 					<c:otherwise>
-						<a href="shereCenterPage?page=${i}"><c:out value="${i }"/></a>
+						<a href="shereCenterPage?page=${i}&alignment=${searchAlignment}"><c:out value="${i }"/></a>
 					</c:otherwise>
 				</c:choose>
 			</c:forEach>

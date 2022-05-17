@@ -9,12 +9,12 @@
 		 (SELECT COUNT(*) FROM abandoned_animal_good aag WHERE aai.desertion_no = aag.desertion_no) good
 		FROM abandoned_animal_info aai 
 		<!-- WHERE process_state = '보호중'  -->
-		ORDER BY happen_dt DESC LIMIT #{Page}, #{PageSize};
+		<include refid="Search"></include> LIMIT #{Page}, #{PageSize};
 	</select>
 	
 	<!-- 분양센터 게시글 총 갯수 -->
 	<select id="getShareCenterBoardViewTotalCount" resultType="int">
-		SELECT COUNT(*) FROM abandoned_animal_info
+		SELECT COUNT(*) FROM abandoned_animal_info <include refid="Search"></include> 
 	</select>
 	
 	<!-- 공공데이터 유기동물 API DB에 저장 -->
@@ -57,51 +57,49 @@
 			special_mark=#{special_mark}
 	</insert>
 	
-	<!-- 유기동물분양 페이지 검색 -->
-	<select id="getShareCenterSearch" resultType="hashMap">
-		SELECT aai.desertion_no, aai.happen_dt, aai.sex_cd , aai.popfile, aai.hit, aai.kind_cd,
-			(SELECT COUNT(*) FROM abandoned_animal_good aag WHERE aai.desertion_no = aag.desertion_no) good
-		FROM abandoned_animal_info aai 
-		<include refid="Search"></include> LIMIT #{Page}, #{PageSize}
-	</select>
-	
-	<!--유기동물분양 페이지 검색된 결과 총 갯수, 페이징위해서 사용 -->
-	<select id="gethareCenterSearchTotalCount" resultType="int">
-		SELECT COUNT(aai.desertion_no, aai.happen_dt, aai.sex_cd , aai.popfile, aai.hit, aai.kind_cd,
-			(SELECT COUNT(*) FROM abandoned_animal_good aag WHERE aai.desertion_no = aag.desertion_no) good)
-		FROM abandoned_animal_info aai 
-		<include refid="Search"></include>
-	</select>
-	
 	<!--WHERE kind_cd LIKE '[개]%' AND process_state = '보호중'  -->
 	
 	<sql id="Search">
 		<choose>
-			<when test="searchTheme != 'noTheme' and searchArea == 'noArea'">
-				WHERE kind_cd LIKE CONCAT('%', #{searchKeyword}, '%') AND process_state LIKE CONCAT('%', #{searchKeyword}, '%')
-			</when>
-			<when test="searchTheme == 'noTheme' and searchArea != 'noArea'">
-				WHERE Area = #{searchArea} AND  ProductName LIKE CONCAT('%', #{searchKeyword}, '%')
-			</when>
-			<when test="searchTheme != 'noTheme' and searchArea != 'noArea'">
-				WHERE Theme = #{searchTheme} AND Area = #{searchArea} AND ProductName LIKE CONCAT('%', #{searchKeyword}, '%')
-			</when>
-			<when test="searchTheme == 'noTheme' and searchArea == 'noArea'">
-				WHERE ProductName LIKE CONCAT('%', #{searchKeyword}, '%')
-			</when>
-		</choose>
-	</sql>
-	
-		<sql id="alignment">
-		<choose>
-			<when test=" != '최신순'">
+			<!--전체, 전체, 정렬 -->
+			<when test="searchTheme == 'allTheme' and searchArea == 'allArea' and searchAlignment == alignmentDay">
 				ORDER BY happen_dt DESC
 			</when>
-			<when test=" == '좋아요순'">
-				ORDER BY good DESC 
+			<when test="searchTheme == 'allTheme' and searchArea == 'allArea' and searchAlignment == alignmentHit">
+				ORDER BY hit DESC
 			</when>
-			<when test=" != '조회순'">
-				ORDER BY hit DESC 
+			<when test="searchTheme == 'allTheme' and searchArea == 'allArea' and searchAlignment == alignmentGood">
+				ORDER BY good DESC
+			</when>
+			<!--선택, 전체, 정렬 -->
+			<when test="searchTheme == 'allTheme' and searchArea == 'allArea' and searchAlignment == alignmentDay">
+				WHERE kind_cd LIKE CONCAT('%', #{searchTheme}, '%') ORDER BY happen_dt DESC
+			</when>
+			<when test="searchTheme == 'allTheme' and searchArea == 'allArea' and searchAlignment == alignmentDay">
+				WHERE kind_cd LIKE CONCAT('%', #{searchTheme}, '%') ORDER BY ORDER BY hit DESC
+			</when>
+			<when test="searchTheme == 'allTheme' and searchArea == 'allArea' and searchAlignment == alignmentDay">
+				WHERE kind_cd LIKE CONCAT('%', #{searchTheme}, '%') ORDER BY good DESC
+			</when>
+			<!--전체, 선택, 정렬 -->
+			<when test="searchTheme == 'allTheme' and searchArea == 'allArea' and searchAlignment == alignmentDay">
+				WHERE notice_no LIKE CONCAT('%', #{searchArea}, '%') ORDER BY happen_dt DESC
+			</when>
+			<when test="searchTheme == 'allTheme' and searchArea == 'allArea' and searchAlignment == alignmentHit">
+				WHERE notice_no LIKE CONCAT('%', #{searchArea}, '%') ORDER BY ORDER BY hit DESC
+			</when>
+			<when test="searchTheme == 'allTheme' and searchArea == 'allArea' and searchAlignment == alignmentGood">
+				WHERE notice_no LIKE CONCAT('%', #{searchArea}, '%') ORDER BY good DESC
+			</when>
+			<!--선택, 선택, 정렬 -->
+			<when test="searchTheme == 'allTheme' and searchArea == 'allArea' and searchAlignment == alignmentDay">
+				WHERE kind_cd LIKE CONCAT('%', #{searchTheme}, '%') AND notice_no LIKE CONCAT('%', #{searchArea}, '%') ORDER BY happen_dt DESC
+			</when>
+			<when test="searchTheme == 'allTheme' and searchArea == 'allArea' and searchAlignment == alignmentHit">
+				WHERE kind_cd LIKE CONCAT('%', #{searchTheme}, '%') AND notice_no LIKE CONCAT('%', #{searchArea}, '%') ORDER BY ORDER BY hit DESC
+			</when>
+			<when test="searchTheme == 'allTheme' and searchArea == 'allArea' and searchAlignment == alignmentGood">
+				WHERE kind_cd LIKE CONCAT('%', #{searchTheme}, '%') AND notice_no LIKE CONCAT('%', #{searchArea}, '%') ORDER BY good DESC
 			</when>
 		</choose>
 	</sql>
