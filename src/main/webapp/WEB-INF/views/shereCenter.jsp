@@ -18,25 +18,21 @@ $(document).ready(function() {
 
 		
 	//$("#category1").val(sessionStorage.getItem("category1")).prop("selected", true);
-	//$("#category2").val(sessionStorage.getItem("category2")).prop("selected", true);
+	$("#category2").val(sessionStorage.getItem("category2")).prop("selected", true);
 	
 	$("#category2").on("change", function() {
-		
+		var loadHref = "";
 		console.log($("#category2").val());
 		
-		//sessionStorage.setItem("category2", $(this).val());
-		//var alignment = sessionStorage.setItem("category2", $(this).val());
-		//var param = {'alignment':$("#category2").val(), 'alignment2': $("#category1").val()};
-		
 		$.ajax({
-			//url: "shereCenterPage?alignment=" + sessionStorage.getItem("category2"),
 			url: "shereCenterPage",
 			type: "GET",
 			data: {'alignment':$("#category2").val()},
 			success: function(data) {
+				sessionStorage.setItem("category2", $(this).val()); 
 				//location.href = "shereCenterPage?alignment="+$("#category2").val();
-					$("#slistDiv").load("shereCenterPage?page=&alignment="+$("#category2").val() + " #slistDiv");
-					$("#pagination").load(window.location.href+$("#category2").val() + " #pagination");
+					$("#slistDiv").load("shereCenterPage?alignment="+ sessionStorage.getItem("category2") + " #slistDiv");
+					$("#pagination").load("shereCenterPage?alignment="+sessionStorage.getItem("category2") + " #pagination");
 			}
 		});
 		//sessionStorage.setItem("category2", $(this).val()); 
@@ -68,7 +64,7 @@ $(document).ready(function() {
 		
 		<section class="page-header" style="background-image: url(<c:url value="/resources/images/banner_main/${BannerRespectivelyView.getS_file_name()}"/>);">
 			<div class="container">
-				<h2>분양센터 asd <c:url value="${searchAlignment}"/></h2> <%= request.getAttribute("alignment") %>
+				<h2>분양센터 asd <c:url value="${searchAlignment}"/> <c:url value="${page}"/></h2>
 				<ul class="thm-breadcrumb list-unstyled">
 				</ul>
 			</div>
