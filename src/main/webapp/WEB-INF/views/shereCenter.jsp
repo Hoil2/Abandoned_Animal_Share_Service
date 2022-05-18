@@ -18,8 +18,11 @@ $(document).ready(function() {
 
 		
 	//$("#category1").val(sessionStorage.getItem("category1")).prop("selected", true);
-	$("#category2").val(sessionStorage.getItem("category2")).prop("selected", true);
-	
+	if(sessionStorage.getItem("category2")==null){
+		$("#category2").val("alignmentDay").prop("selected", true);
+	}else{
+		$("#category2").val(sessionStorage.getItem("category2")).prop("selected", true);
+	}
 	$("#category2").on("change", function() {
 		var loadHref = "";
 		console.log($("#category2").val());

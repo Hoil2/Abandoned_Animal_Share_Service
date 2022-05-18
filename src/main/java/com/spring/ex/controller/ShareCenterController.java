@@ -42,6 +42,56 @@ public class ShareCenterController {
 		model.addAttribute("slist", shareCenterList);
 		model.addAttribute("Paging", pagingService.getPaging());*/
 		
+		HttpSession session = request.getSession();
+		String searchTheme  = "allTheme";
+		String searchArea = "allArea";
+		//String searchTheme  = request.getParameter("searchTheme");
+		//String searchArea = request.getParameter("searchArea");
+		String searchAlignment = request.getParameter("alignment");
+		
+		if(StringUtils.isEmpty(searchAlignment)) {
+			searchAlignment = "alignmentHit";
+			session.setAttribute("alignment", "alignmentDay");
+			System.out.println("asf");
+		} else if(!StringUtils.isEmpty(searchAlignment)){
+			System.out.println("saf");
+			session.setAttribute("alignment", searchAlignment);
+			System.out.println( searchAlignment);
+		}
+		
+		HashMap<String, String> searchMap = new HashMap<String, String>();
+		searchMap.put("searchArea", searchArea);
+		searchMap.put("searchTheme", searchTheme);
+		searchMap.put("alignment", (String) session.getAttribute("alignment"));
+		
+		//페이징
+		int totalCount = service.getShareCenterBoardViewTotalCount(searchMap);
+		int page = request.getParameter("page") == null ? 1 : Integer.parseInt(request.getParameter("page"));
+		
+		PagingDTO paging = new PagingDTO();
+		paging.setPageNo(page);
+		paging.setPageSize(12);
+		paging.setTotalCount(totalCount);
+		
+		page = (page - 1) * 12;
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("Page", page);
+		map.put("PageSize", paging.getPageSize());
+		map.put("searchArea", searchArea);
+		map.put("searchTheme", searchTheme);
+		map.put("alignment", session.getAttribute("alignment"));
+		
+		//검색 및 결과값 담기
+		List<ShareCenterDTO> slist = service.getShareCenterBoardPage(map);
+		
+		model.addAttribute("slist", slist);
+		model.addAttribute("Paging", paging);
+		model.addAttribute("searchArea", searchArea);
+		model.addAttribute("searchTheme", searchTheme);
+		model.addAttribute("alignment", searchAlignment);
+		System.out.println("하단"+searchAlignment);
+		
 		return "shereCenter";
 	}
 	
