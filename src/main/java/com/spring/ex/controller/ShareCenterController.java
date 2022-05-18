@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.spring.ex.dto.PagingDTO;
 import com.spring.ex.dto.ShareCenterDTO;
+import com.spring.ex.service.PagingService;
 import com.spring.ex.service.ShareCenterService;
 
 @Controller
@@ -21,49 +23,52 @@ public class ShareCenterController {
 	@Inject
 	ShareCenterService service;
 	
+	PagingService pagingService;
+	
 	//분양센터페이지 유기동물 목록 출력
 	@RequestMapping(value = "/shereCenterPage" , method = RequestMethod.GET)
 	public String shereCenterPage(Model model, HttpServletRequest request) throws Exception{
-		/*
-		List<ShareCenterDTO> shareCenterList = service.getShareCenterBoardPage(pagingService.getMap());
-		String searchTheme  = request.getParameter("searchTheme");
-		String searchArea = request.getParameter("searchArea");
-		String searchAlignment = request.getParameter("alignment");
 		
-		pagingService.PagingService(request, service.getShareCenterBoardViewTotalCount(), 12, searchTheme, searchArea, searchAlignment);
-		//String alignment2 = request.getParameter("alignmen2");
+		/*
+		pagingService.put("searchArea", "");
+		map.put("searchTheme", "");
+		map.put("alignment", "");
+		List<ShareCenterDTO> shareCenterList = service.getShareCenterBoardPage(pagingService.getMap());
+		
+		
+		pagingService.PagingService(request, service.getShareCenterBoardViewTotalCount(map), 12, searchTheme, searchArea, searchAlignment);
 		
 
 		model.addAttribute("slist", shareCenterList);
-		model.addAttribute("searchAlignment", searchAlignment);
-		model.addAttribute("searchArea", searchArea);
-		model.addAttribute("searchTheme", searchTheme);
 		model.addAttribute("Paging", pagingService.getPaging());*/
 		
-		
-		
+		return "shereCenter";
+	}
+	
+	//분양센터페이지 유기동물 목록 출력
+	@RequestMapping(value = "/shereCenterSearchPage" , method = RequestMethod.GET)
+	public String shereCenterSearchPage(Model model, HttpServletRequest request) throws Exception{
+		HttpSession session = request.getSession();
 		String searchTheme  = "allTheme";
 		String searchArea = "allArea";
 		//String searchTheme  = request.getParameter("searchTheme");
 		//String searchArea = request.getParameter("searchArea");
-		
 		String searchAlignment = request.getParameter("alignment");
-		
 		
 		if(StringUtils.isEmpty(searchAlignment)) {
 			searchAlignment = "alignmentHit";
+			session.setAttribute("alignment", "alignmentDay");
 			System.out.println("asf");
-		} 
-		else if(!StringUtils.isEmpty(searchAlignment)){
+		} else if(!StringUtils.isEmpty(searchAlignment)){
 			System.out.println("saf");
+			session.setAttribute("alignment", searchAlignment);
 			System.out.println( searchAlignment);
-			//scsDTO.setSearchAlignment(searchAlignment);
 		}
 		
 		HashMap<String, String> searchMap = new HashMap<String, String>();
 		searchMap.put("searchArea", searchArea);
 		searchMap.put("searchTheme", searchTheme);
-		searchMap.put("alignment", searchAlignment);
+		searchMap.put("alignment", (String) session.getAttribute("alignment"));
 		
 		//페이징
 		int totalCount = service.getShareCenterBoardViewTotalCount(searchMap);
@@ -81,7 +86,7 @@ public class ShareCenterController {
 		map.put("PageSize", paging.getPageSize());
 		map.put("searchArea", searchArea);
 		map.put("searchTheme", searchTheme);
-		map.put("alignment", searchAlignment);
+		map.put("alignment", session.getAttribute("alignment"));
 		
 		//검색 및 결과값 담기
 		List<ShareCenterDTO> slist = service.getShareCenterBoardPage(map);
@@ -90,11 +95,8 @@ public class ShareCenterController {
 		model.addAttribute("Paging", paging);
 		model.addAttribute("searchArea", searchArea);
 		model.addAttribute("searchTheme", searchTheme);
-		//model.addAttribute("searchAlignment", scsDTO.getSearchAlignment());
 		model.addAttribute("alignment", searchAlignment);
 		System.out.println("하단"+searchAlignment);
-		//System.out.println(scsDTO.getSearchAlignment());
-		
 		
 		return "shereCenter";
 	}

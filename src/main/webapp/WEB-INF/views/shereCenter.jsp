@@ -23,16 +23,16 @@ $(document).ready(function() {
 	$("#category2").on("change", function() {
 		var loadHref = "";
 		console.log($("#category2").val());
-		
+		sessionStorage.setItem("category2", $(this).val()); 
 		$.ajax({
 			url: "shereCenterPage",
 			type: "GET",
 			data: {'alignment':$("#category2").val()},
 			success: function(data) {
-				sessionStorage.setItem("category2", $(this).val()); 
+				location.href = "shereCenterPage?alignment="+sessionStorage.getItem("category2");
 				//location.href = "shereCenterPage?alignment="+$("#category2").val();
-					$("#slistDiv").load("shereCenterPage?alignment="+ sessionStorage.getItem("category2") + " #slistDiv");
-					$("#pagination").load("shereCenterPage?alignment="+sessionStorage.getItem("category2") + " #pagination");
+					//$("#slistDiv").load("shereCenterPage?alignment="+ sessionStorage.getItem("category2") + " #slistDiv");
+					//$("#pagination").load("shereCenterPage?alignment="+sessionStorage.getItem("category2") + " #pagination");
 			}
 		});
 		//sessionStorage.setItem("category2", $(this).val()); 
@@ -96,9 +96,9 @@ $(document).ready(function() {
 				<div class="d-flex flex-row justify-content-end"  style="margin: 10px 0px;">
 					<div class="col-lg-2 col-md-2" align="right" style="padding: 0px 0px;">
 						<select class="form-control" id="category2">
-							<option value="alignmentDay" <c:if test="${searchAlignment eq 'alignmentDay'}"> selected </c:if>>최신순</option>
-							<option value="alignmentHit" <c:if test="${searchAlignment eq 'alignmentHit'}"> selected </c:if>>조회순</option>
-							<option value="alignmentGood" <c:if test="${searchAlignment eq 'alignmentGood'}"> selected </c:if>>좋아요순</option>
+							<option value="alignmentDay" <c:if test="${alignment eq 'alignmentDay'}"> selected </c:if>>최신순</option>
+							<option value="alignmentHit" <c:if test="${alignment eq 'alignmentHit'}"> selected </c:if>>조회순</option>
+							<option value="alignmentGood" <c:if test="${alignment eq 'alignmentGood'}"> selected </c:if>>좋아요순</option>
 						</select>
 					</div>
 				</div>
@@ -160,7 +160,7 @@ $(document).ready(function() {
 						<a class="active disabledLink" href="shereCenterPage?page=${i}"><c:out value="${i }"/></a>
 					</c:when>
 					<c:otherwise>
-						<a href="shereCenterPage?page=${i}&alignment=${searchAlignment}"><c:out value="${i }"/></a>
+						<a href="shereCenterPage?page=${i}&alignment=${alignment}"><c:out value="${i }"/></a>
 					</c:otherwise>
 				</c:choose>
 			</c:forEach>

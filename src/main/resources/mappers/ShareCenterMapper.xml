@@ -4,41 +4,30 @@
 <mapper namespace="com.spring.ex.ShareCenterMapper">
 	<sql id="Search">
 		<choose>
-			<when test="searchTheme == 'allTheme' and searchArea == 'allArea' and alignment == alignmentDay">
+			<when test="searchTheme == 'allTheme' and searchArea == 'allArea'">
+			</when>
+			<when test="searchTheme == 'allTheme' and searchArea != 'allArea'">
+				WHERE kind_cd LIKE CONCAT('%', #{searchTheme}, '%')
+			</when>
+			<when test="searchTheme != 'allTheme' and searchArea == 'allArea'">
+				WHERE AND notice_no LIKE CONCAT('%', #{searchArea}, '%')
+			</when>
+			<when test="searchTheme != 'allTheme' and searchArea != 'allArea'">
+				WHERE kind_cd LIKE CONCAT('%', #{searchTheme}, '%') AND notice_no LIKE CONCAT('%', #{searchArea}, '%')
+			</when>
+
+		</choose>
+	</sql>
+	<sql id="SearchAlignment">
+		<choose>
+			<when test="alignment == 'alignmentDay'">
 				ORDER BY happen_dt DESC
 			</when>
-			<when test="searchTheme == 'allTheme' and searchArea == 'allArea' and alignment == alignmentHit">
+			<when test="alignment == 'alignmentHit'">
 				ORDER BY hit DESC
 			</when>
-			<when test="searchTheme == 'allTheme' and searchArea == 'allArea' and alignment == alignmentGood">
+			<when test="alignment == 'alignmentGood'">
 				ORDER BY good DESC
-			</when>
-			<when test="searchTheme == 'allTheme' and searchArea == 'allArea' and alignment == alignmentDay">
-				WHERE kind_cd LIKE CONCAT('%', #{searchTheme}, '%') ORDER BY happen_dt DESC
-			</when>
-			<when test="searchTheme == 'allTheme' and searchArea == 'allArea' and alignment == alignmentDay">
-				WHERE kind_cd LIKE CONCAT('%', #{searchTheme}, '%') ORDER BY ORDER BY hit DESC
-			</when>
-			<when test="searchTheme == 'allTheme' and searchArea == 'allArea' and alignment == alignmentDay">
-				WHERE kind_cd LIKE CONCAT('%', #{searchTheme}, '%') ORDER BY good DESC
-			</when>
-			<when test="searchTheme == 'allTheme' and searchArea == 'allArea' and alignment == alignmentDay">
-				WHERE notice_no LIKE CONCAT('%', #{searchArea}, '%') ORDER BY happen_dt DESC
-			</when>
-			<when test="searchTheme == 'allTheme' and searchArea == 'allArea' and alignment == alignmentHit">
-				WHERE notice_no LIKE CONCAT('%', #{searchArea}, '%') ORDER BY ORDER BY hit DESC
-			</when>
-			<when test="searchTheme == 'allTheme' and searchArea == 'allArea' and alignment == alignmentGood">
-				WHERE notice_no LIKE CONCAT('%', #{searchArea}, '%') ORDER BY good DESC
-			</when>
-			<when test="searchTheme == 'allTheme' and searchArea == 'allArea' and alignment == alignmentDay">
-				WHERE kind_cd LIKE CONCAT('%', #{searchTheme}, '%') AND notice_no LIKE CONCAT('%', #{searchArea}, '%') ORDER BY happen_dt DESC
-			</when>
-			<when test="searchTheme == 'allTheme' and searchArea == 'allArea' and alignment == alignmentHit">
-				WHERE kind_cd LIKE CONCAT('%', #{searchTheme}, '%') AND notice_no LIKE CONCAT('%', #{searchArea}, '%') ORDER BY ORDER BY hit DESC
-			</when>
-			<when test="searchTheme == 'allTheme' and searchArea == 'allArea' and alignment == alignmentGood">
-				WHERE kind_cd LIKE CONCAT('%', #{searchTheme}, '%') AND notice_no LIKE CONCAT('%', #{searchArea}, '%') ORDER BY good DESC
 			</when>
 		</choose>
 	</sql>
@@ -47,12 +36,14 @@
 		SELECT aai.desertion_no, aai.happen_dt, aai.sex_cd , aai.popfile, aai.hit, aai.kind_cd,
 		 (SELECT COUNT(*) FROM abandoned_animal_good aag WHERE aai.desertion_no = aag.desertion_no) good
 		FROM abandoned_animal_info aai 
-		<include refid="Search"></include> LIMIT #{Page}, #{PageSize};
+		<include refid="Search"></include>
+		<include refid="SearchAlignment"></include> LIMIT #{Page}, #{PageSize};
 	</select>
 	
 	<!-- 분양센터 게시글 총 갯수 -->
 	<select id="getShareCenterBoardViewTotalCount" resultType="int">
-		SELECT COUNT(*) FROM abandoned_animal_info <include refid="Search"></include> 
+		SELECT COUNT(*) FROM abandoned_animal_info 
+		<include refid="Search"></include> 
 	</select>
 	
 	<!-- 공공데이터 유기동물 API DB에 저장 -->
@@ -94,7 +85,5 @@
 			neuter_yn=#{neuter_yn}, 
 			special_mark=#{special_mark}
 	</insert>
-	
-	<!--WHERE kind_cd LIKE '[개]%' AND process_state = '보호중'  -->
 	
 </mapper>
