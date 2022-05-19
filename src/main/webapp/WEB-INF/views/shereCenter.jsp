@@ -67,7 +67,7 @@ $(document).ready(function() {
 		
 		<section class="page-header" style="background-image: url(<c:url value="/resources/images/banner_main/${BannerRespectivelyView.getS_file_name()}"/>);">
 			<div class="container">
-				<h2>분양센터 asd <c:url value="${searchAlignment}"/> <c:url value="${page}"/></h2>
+				<h2>분양센터</h2>
 				<ul class="thm-breadcrumb list-unstyled">
 				</ul>
 			</div>
