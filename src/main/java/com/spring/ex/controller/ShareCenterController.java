@@ -43,25 +43,37 @@ public class ShareCenterController {
 		model.addAttribute("Paging", pagingService.getPaging());*/
 		
 		HttpSession session = request.getSession();
-		String searchTheme  = "allTheme";
-		String searchArea = "allArea";
+		String searchTheme  = request.getParameter("searchTheme");
+		String searchArea = request.getParameter("searchArea");
 		//String searchTheme  = request.getParameter("searchTheme");
 		//String searchArea = request.getParameter("searchArea");
 		String searchAlignment = request.getParameter("alignment");
 		
+		
+		if(StringUtils.isEmpty(searchTheme) || searchTheme == null) {
+			searchTheme = "allTheme";
+			session.setAttribute("searchTheme", "allTheme");
+		} else if(!StringUtils.isEmpty(searchTheme)){
+			session.setAttribute("searchTheme", searchTheme);
+		}
+		
+		if(StringUtils.isEmpty(searchArea) || searchArea == "null") {
+			searchArea = "allArea";
+			session.setAttribute("searchArea", "allArea");
+		} else if(!StringUtils.isEmpty(searchArea)){
+			session.setAttribute("searchArea", searchArea);
+		}
+		
 		if(StringUtils.isEmpty(searchAlignment)) {
-			searchAlignment = "alignmentHit";
+			searchAlignment = "alignmentDay";
 			session.setAttribute("alignment", "alignmentDay");
-			System.out.println("asf");
 		} else if(!StringUtils.isEmpty(searchAlignment)){
-			System.out.println("saf");
 			session.setAttribute("alignment", searchAlignment);
-			System.out.println( searchAlignment);
 		}
 		
 		HashMap<String, String> searchMap = new HashMap<String, String>();
-		searchMap.put("searchArea", searchArea);
-		searchMap.put("searchTheme", searchTheme);
+		searchMap.put("searchArea", (String) session.getAttribute("searchArea"));
+		searchMap.put("searchTheme", (String) session.getAttribute("searchTheme"));
 		searchMap.put("alignment", (String) session.getAttribute("alignment"));
 		
 		//페이징
@@ -78,8 +90,8 @@ public class ShareCenterController {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("Page", page);
 		map.put("PageSize", paging.getPageSize());
-		map.put("searchArea", searchArea);
-		map.put("searchTheme", searchTheme);
+		map.put("searchArea", session.getAttribute("searchArea"));
+		map.put("searchTheme", session.getAttribute("searchTheme"));
 		map.put("alignment", session.getAttribute("alignment"));
 		
 		//검색 및 결과값 담기
@@ -90,6 +102,7 @@ public class ShareCenterController {
 		model.addAttribute("searchArea", searchArea);
 		model.addAttribute("searchTheme", searchTheme);
 		model.addAttribute("alignment", searchAlignment);
+		System.out.println(searchArea + " AND " + searchTheme);
 		System.out.println("하단"+searchAlignment);
 		
 		return "shereCenter";

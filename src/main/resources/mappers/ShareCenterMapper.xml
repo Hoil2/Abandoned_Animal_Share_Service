@@ -7,10 +7,10 @@
 			<when test="searchTheme == 'allTheme' and searchArea == 'allArea'">
 			</when>
 			<when test="searchTheme == 'allTheme' and searchArea != 'allArea'">
-				WHERE kind_cd LIKE CONCAT('%', #{searchTheme}, '%')
+				WHERE notice_no LIKE CONCAT('%', #{searchArea}, '%')
 			</when>
 			<when test="searchTheme != 'allTheme' and searchArea == 'allArea'">
-				WHERE AND notice_no LIKE CONCAT('%', #{searchArea}, '%')
+				WHERE kind_cd LIKE CONCAT('%', #{searchTheme}, '%')
 			</when>
 			<when test="searchTheme != 'allTheme' and searchArea != 'allArea'">
 				WHERE kind_cd LIKE CONCAT('%', #{searchTheme}, '%') AND notice_no LIKE CONCAT('%', #{searchArea}, '%')
@@ -44,6 +44,14 @@
 	<select id="getShareCenterBoardViewTotalCount" resultType="int">
 		SELECT COUNT(*) FROM abandoned_animal_info 
 		<include refid="Search"></include> 
+	</select>
+	
+	<!-- 유기동물 DB에서 존재하는 목록만 셀렉트 박스에 출력 -->
+	<select id="getShareCenterAreaList">
+		SELECT SUBSTR(notice_no, 1,2)
+		FROM abandoned_animal_info
+		GROUP BY SUBSTR(notice_no, 1,2)
+		ORDER BY notice_no ASC;
 	</select>
 	
 	<!-- 공공데이터 유기동물 API DB에 저장 -->

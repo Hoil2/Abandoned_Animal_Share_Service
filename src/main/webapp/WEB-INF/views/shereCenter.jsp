@@ -15,39 +15,63 @@
 <script>
 $(document).ready(function() {
 	
-
-		
-	//$("#category1").val(sessionStorage.getItem("category1")).prop("selected", true);
+	if(sessionStorage.getItem("searchTheme")==null){
+		sessionStorage.setItem("searchTheme", "allTheme"); 
+		$("#searchTheme").val("allTheme").prop("selected", true);
+	}else{
+		$("#searchTheme").val(sessionStorage.getItem("searchTheme")).prop("selected", true);
+	}
+	
+	if(sessionStorage.getItem("searchArea")==null){
+		sessionStorage.setItem("searchArea", "allArea"); 
+		$("#searchArea").val("allArea").prop("selected", true);
+	}else{
+		$("#searchArea").val(sessionStorage.getItem("searchArea")).prop("selected", true);
+	}
+	
 	if(sessionStorage.getItem("category2")==null){
 		$("#category2").val("alignmentDay").prop("selected", true);
 	}else{
 		$("#category2").val(sessionStorage.getItem("category2")).prop("selected", true);
 	}
-	$("#category2").on("change", function() {
-		var loadHref = "";
-		console.log($("#category2").val());
-		sessionStorage.setItem("category2", $(this).val()); 
+	
+	function pageRefresh() {
 		$.ajax({
 			url: "shereCenterPage",
 			type: "GET",
-			data: {'alignment':$("#category2").val()},
+			data: {'alignment':$("#category2").val(), 'searchTheme': $("#searchTheme").val(), 'searchArea':$("#searchArea").val()},
 			success: function(data) {
-				location.href = "shereCenterPage?alignment="+sessionStorage.getItem("category2");
+				//location.href = "shereCenterPage?alignment="+sessionStorage.getItem("category2");
 				//location.href = "shereCenterPage?alignment="+$("#category2").val();
-					//$("#slistDiv").load("shereCenterPage?alignment="+ sessionStorage.getItem("category2") + " #slistDiv");
-					//$("#pagination").load("shereCenterPage?alignment="+sessionStorage.getItem("category2") + " #pagination");
+				location.href = "shereCenterPage?searchTheme=" +sessionStorage.getItem("searchTheme") + "&searchArea=" + sessionStorage.getItem("searchArea") + "&alignment="+ sessionStorage.getItem("category2");
+				/*
+				$("#slistDiv").load("shereCenterPage?searchTheme=" +sessionStorage.getItem("searchTheme") + "&searchArea=" + sessionStorage.getItem("searchArea") + "&alignment="+ sessionStorage.getItem("category2") + " #slistDiv");
+				$("#pagination").load("shereCenterPage?alignment="+sessionStorage.getItem("category2") + " #pagination");*/
 			}
 		});
-		//sessionStorage.setItem("category2", $(this).val()); 
-		//sessionStorage.setItem("category3", null); 
+	}
+	
+	$("#category2").on("change", function() {
+		console.log($("#category2").val());
+		sessionStorage.setItem("category2", $(this).val()); 
+
+		pageRefresh();
 		console.log("2"+sessionStorage.getItem("category2"));
 	});
-	/*
-	$("#category1").on("change", function() {
-		console.log("1")
-		//sessionStorage.setItem("category1", $(this).val()); 
-		$("#slistDiv").load(window.location.href + "&asd" + " #slistDiv");
-	});*/
+	
+	$("#searchTheme").on("change", function() {
+		pageRefresh();
+		console.log("2")
+		console.log($("#searchTheme").val());
+		sessionStorage.setItem("searchTheme", $(this).val()); 
+	});
+	
+	$("#searchArea").on("change", function() {
+		pageRefresh();
+		sessionStorage.setItem("searchArea", $(this).val()); 
+		console.log($("#searchArea").val());
+		console.log("3")
+	});
 	
 });
 </script>
@@ -79,8 +103,8 @@ $(document).ready(function() {
 				<div class="d-flex flex-row" style="margin: 10px;">
 					<div class="col-lg-1 col-md-1" align="left" style="padding: 0px 0px;"> 분류</div>
 					<div class="col-lg-2 col-md-2">
-						<select class="form-control" id="category1">
-							<option value="전체">전체</option>
+						<select class="form-control" id="searchTheme">
+							<option value="allTheme" >전체</option>
 							<option value="개">개</option>
 							<option value="고양이">고양이</option>
 							<option value="기타축종">기타</option>
@@ -89,8 +113,9 @@ $(document).ready(function() {
 					<div class="col-lg-1 col-md-1" align="right" style="padding: 0px 0px;">지역 </div>
 					<div class="col-lg-2 col-md-2" align="left">
 						<select class="form-control" id="searchArea" name="searchArea">
-							<option value="noArea">전체</option>
+							<option value="allArea" >전체</option>
 							<option value="서울">서울</option>
+							<option value="부산">부산</option>
 						</select>
 					</div>
 					
@@ -163,7 +188,7 @@ $(document).ready(function() {
 						<a class="active disabledLink" href="shereCenterPage?page=${i}"><c:out value="${i }"/></a>
 					</c:when>
 					<c:otherwise>
-						<a href="shereCenterPage?page=${i}&alignment=${alignment}"><c:out value="${i }"/></a>
+						<a href="shereCenterPage?page=${i}&searchTheme=${searchTheme}&searchArea=${searchArea}&alignment=${alignment}"><c:out value="${i }"/></a>
 					</c:otherwise>
 				</c:choose>
 			</c:forEach>
