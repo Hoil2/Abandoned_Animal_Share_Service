@@ -34,8 +34,8 @@
 		<section class="blog-list">
 			<div class="container">
 				<div class="blog-details__image">
-				<c:if test="${content.s_file_name ne null}">
-					<img src='<c:url value="/resources/images/TravelPhotoReview/${content.s_file_name}"/>' alt="" class="img-fluid">
+				<c:if test="${scrReadPage.popfile ne null}">
+					<img src='<c:url value="${scrReadPage.popfil}"/>' alt="" class="img-fluid">
 				</c:if>
 				</div>
 				<div class="blog-details__content">

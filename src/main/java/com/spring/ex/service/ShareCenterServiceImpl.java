@@ -147,4 +147,10 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 		return dao.getShareCenterAreaList();
 	}
 	
+	//유기동물 게시글 상세페이지 출력 
+	@Override
+	public ShareCenterDTO getShareCenterBoardReadPage(String desertion_no) throws Exception {
+		return dao.getShareCenterBoardReadPage(desertion_no);
+	}
+	
 }

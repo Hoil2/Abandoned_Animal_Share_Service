@@ -25,4 +25,7 @@ public interface ShareCenterService {
 	
 	//유기동물 DB에서 존재하는 목록만 셀렉트 박스에 출력
 	public List<String> getShareCenterAreaList() throws Exception;
+	
+	//유기동물 게시글 상세페이지 출력 
+	public ShareCenterDTO getShareCenterBoardReadPage(String desertion_no) throws Exception;
 }

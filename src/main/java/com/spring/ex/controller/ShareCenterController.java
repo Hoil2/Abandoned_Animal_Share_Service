@@ -100,15 +100,17 @@ public class ShareCenterController {
 		System.out.println(searchArea + " AND " + searchTheme);
 		System.out.println("하단"+searchAlignment);
 		
-		List<String> asd = service.getShareCenterAreaList();
-		model.addAttribute("areaList", asd);
-		System.out.println(asd);
+		List<String> seletedBoxList = service.getShareCenterAreaList();
+		model.addAttribute("areaList", seletedBoxList);
+		System.out.println(seletedBoxList);
 		return "shereCenter";
 	}
 	//유기동물 게시글 상세페이지 출력
 	@RequestMapping(value = "/shereCenterReadPage" , method = RequestMethod.GET)
 	public String shereCenterReadPage(Model model, HttpServletRequest request) throws Exception{
+		String desertion_no = request.getParameter("desertion_no");
 		
+		model.addAttribute("scrReadPage", service.getShareCenterBoardReadPage(desertion_no));
 		return "shereCenterRead";
 	}
 	
