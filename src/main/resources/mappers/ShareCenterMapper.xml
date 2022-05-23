@@ -2,17 +2,56 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.spring.ex.ShareCenterMapper">
+	<sql id="Search">
+		<choose>
+			<when test="searchTheme == 'allTheme' and searchArea == 'allArea'">
+			</when>
+			<when test="searchTheme == 'allTheme' and searchArea != 'allArea'">
+				WHERE notice_no LIKE CONCAT('%', #{searchArea}, '%')
+			</when>
+			<when test="searchTheme != 'allTheme' and searchArea == 'allArea'">
+				WHERE kind_cd LIKE CONCAT('%', #{searchTheme}, '%')
+			</when>
+			<when test="searchTheme != 'allTheme' and searchArea != 'allArea'">
+				WHERE kind_cd LIKE CONCAT('%', #{searchTheme}, '%') AND notice_no LIKE CONCAT('%', #{searchArea}, '%')
+			</when>
 
-	<!-- 분양센터 게시판 출력 -->
+		</choose>
+	</sql>
+	<sql id="SearchAlignment">
+		<choose>
+			<when test="alignment == 'alignmentDay'">
+				ORDER BY happen_dt DESC
+			</when>
+			<when test="alignment == 'alignmentHit'">
+				ORDER BY hit DESC
+			</when>
+			<when test="alignment == 'alignmentGood'">
+				ORDER BY good DESC
+			</when>
+		</choose>
+	</sql>
+	<!-- 분양센터 게시판 전체 최신순 출력 -->
 	<select id="getShareCenterBoardPage" resultType="hashMap">
 		SELECT aai.desertion_no, aai.happen_dt, aai.sex_cd , aai.popfile, aai.hit, aai.kind_cd,
 		 (SELECT COUNT(*) FROM abandoned_animal_good aag WHERE aai.desertion_no = aag.desertion_no) good
-		FROM abandoned_animal_info aai LIMIT #{Page}, #{PageSize};
+		FROM abandoned_animal_info aai 
+		<include refid="Search"></include>
+		<include refid="SearchAlignment"></include> LIMIT #{Page}, #{PageSize};
 	</select>
 	
 	<!-- 분양센터 게시글 총 갯수 -->
 	<select id="getShareCenterBoardViewTotalCount" resultType="int">
-		SELECT COUNT(*) FROM abandoned_animal_info
+		SELECT COUNT(*) FROM abandoned_animal_info 
+		<include refid="Search"></include> 
+	</select>
+	
+	<!-- 유기동물 DB에서 존재하는 목록만 셀렉트 박스에 출력 -->
+	<select id="getShareCenterAreaList" resultType="hashMap">
+		SELECT SUBSTR(notice_no, 1,2) AS notice_no
+		FROM abandoned_animal_info
+		GROUP BY SUBSTR(notice_no, 1,2)
+		ORDER BY notice_no ASC;
 	</select>
 	
 	<!-- 공공데이터 유기동물 API DB에 저장 -->
@@ -54,4 +93,5 @@
 			neuter_yn=#{neuter_yn}, 
 			special_mark=#{special_mark}
 	</insert>
+	
 </mapper>

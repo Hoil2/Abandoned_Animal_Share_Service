@@ -65,6 +65,7 @@
 								<a href="/main" id="twayFont">홈</a>
 							</li>
 							<li class="dropdown"><a href="/shereCenterPage" id="twayFont">분양센터</a>
+							<!-- <li class="dropdown"><a href="/shereCenterPage?searchTheme=allThene&searchArea=allArea&alignment=alignmentDay" id="twayFont">분양센터</a> -->
 							</li>
 							<li class="dropdown"><a href="/fishing" id="twayFont">실종동물</a>
 							</li>
