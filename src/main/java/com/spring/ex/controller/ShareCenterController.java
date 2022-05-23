@@ -105,6 +105,9 @@ public class ShareCenterController {
 		System.out.println(searchArea + " AND " + searchTheme);
 		System.out.println("하단"+searchAlignment);
 		
+		List<ShareCenterDTO> asd = service.getShareCenterAreaList();
+		model.addAttribute("areaList", asd);
+		System.out.println(asd);
 		return "shereCenter";
 	}
 	

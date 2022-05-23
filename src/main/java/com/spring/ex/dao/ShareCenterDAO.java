@@ -18,5 +18,8 @@ public interface ShareCenterDAO {
 	
 	// 공공데이터 유기동물 API DB에 저장
 	public void setDbShareCenterApiResponse(ShareCenterDTO dto) throws Exception;
+	
+	//유기동물 DB에서 존재하는 목록만 셀렉트 박스에 출력
+	public List getShareCenterAreaList() throws Exception;
 
 }

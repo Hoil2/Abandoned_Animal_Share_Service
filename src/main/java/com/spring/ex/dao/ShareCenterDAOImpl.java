@@ -34,4 +34,10 @@ public class ShareCenterDAOImpl implements ShareCenterDAO{
 	public void setDbShareCenterApiResponse(ShareCenterDTO dto) throws Exception {
 		sqlSession.insert(namespace + ".setDbShareCenterApiResponse", dto);
 	}
+	
+	//유기동물 DB에서 존재하는 목록만 셀렉트 박스에 출력
+	@Override
+	public List<ShareCenterDTO> getShareCenterAreaList() throws Exception {
+		return sqlSession.selectList(namespace + ".getShareCenterAreaList"); 
+	}
 }

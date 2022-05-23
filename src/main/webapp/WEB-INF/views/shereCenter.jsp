@@ -114,6 +114,11 @@ $(document).ready(function() {
 					<div class="col-lg-2 col-md-2" align="left">
 						<select class="form-control" id="searchArea" name="searchArea">
 							<option value="allArea" >전체</option>
+							<c:forEach var="areaList" items="${areaList}">
+								<c:when test="${areaList.notice_no eq null}">
+									<option value="<c:out value="${areaList.notice_no}" />"><c:out value="${areaList.notice_no}" /></option>
+								</c:when>
+							</c:forEach>
 							<option value="서울">서울</option>
 							<option value="부산">부산</option>
 						</select>

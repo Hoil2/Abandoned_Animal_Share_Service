@@ -48,7 +48,7 @@
 	
 	<!-- 유기동물 DB에서 존재하는 목록만 셀렉트 박스에 출력 -->
 	<select id="getShareCenterAreaList">
-		SELECT SUBSTR(notice_no, 1,2)
+		SELECT SUBSTR(notice_no, 1,2) AS notice_no
 		FROM abandoned_animal_info
 		GROUP BY SUBSTR(notice_no, 1,2)
 		ORDER BY notice_no ASC;
