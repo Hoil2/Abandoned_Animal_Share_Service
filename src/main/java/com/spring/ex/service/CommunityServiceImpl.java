@@ -8,13 +8,16 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 
 import com.spring.ex.dao.CommunityDAO;
-import com.spring.ex.dto.CommunityDTO;
+import com.spring.ex.dao.CommunityLikeDAO;
 
 @Service
 public class CommunityServiceImpl implements CommunityService {
 	
 	@Inject
 	private CommunityDAO dao;
+	
+	@Inject
+	private CommunityLikeDAO communityLikeDAO;
 	
 	@Override
 	public List<HashMap<String, Object>> getBoardPage(HashMap<String, Object> map) throws Exception {
@@ -54,5 +57,25 @@ public class CommunityServiceImpl implements CommunityService {
 	@Override
 	public List<HashMap<String, Object>> getComment(int pageNo) throws Exception {
 		return dao.getComment(pageNo);
+	}
+
+	@Override
+	public int getCommunityLikeCount(int cb_id) {
+		return communityLikeDAO.getCommunityLikeCount(cb_id);
+	}
+
+	@Override
+	public int insertCommunityLike(int cb_id, int m_id) {
+		return communityLikeDAO.insertCommunityLike(cb_id, m_id);
+	}
+
+	@Override
+	public int deleteCommunityLike(int cb_id, int m_id) {
+		return communityLikeDAO.deleteCommunityLike(cb_id, m_id);
+	}
+
+	@Override
+	public int existCommunityLike(int cb_id, int m_id) {
+		return communityLikeDAO.existCommunityLike(cb_id, m_id);
 	}
 }

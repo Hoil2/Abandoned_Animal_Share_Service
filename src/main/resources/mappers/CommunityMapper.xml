@@ -75,4 +75,25 @@
 		SET hit = hit + 1
 		WHERE cb_id = #{pageNo}
 	</update>
+	
+	<select id="getCommunityLikeCount" resultType="int">
+		SELECT COUNT(*)
+		FROM community_board_good
+		WHERE cb_id = #{cb_id}
+	</select>
+	
+	<insert id="insertCommunityLike">
+		INSERT INTO community_board_good (cb_id, m_id)
+		SELECT #{cb_id}, #{m_id}
+		WHERE NOT EXISTS (SELECT m_id FROM community_board_good WHERE cb_id = #{cb_id} AND m_id = #{m_id})
+	</insert>
+	
+	<delete id="deleteCommunityLike">
+		DELETE FROM community_board_good
+		WHERE cb_id = #{cb_id} AND m_id = #{m_id} 
+	</delete>
+	
+	<select id="existCommunityLike" resultType="int">
+		SELECT EXISTS(SELECT * FROM community_board_good WHERE cb_id = #{cb_id} AND m_id = #{m_id})
+	</select>
 </mapper>
