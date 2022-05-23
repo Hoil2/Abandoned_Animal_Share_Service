@@ -98,11 +98,16 @@ $(document).ready(function() {
 		</section><br>
 
 		<section class="tour-one tour-grid" style="padding: 0px;">
-			
 			<div class="container">
 				<div class="d-flex flex-row" style="margin: 10px;">
-					<div class="col-lg-1 col-md-1" align="left" style="padding: 0px 0px;"> 분류</div>
-					<div class="col-lg-2 col-md-2">
+					
+				</div>
+				<hr style="margin: 0px;">
+				<div class="d-flex flex-row justify-content-end"  style="margin: 10px 0px;">
+					<div class="col-lg-1 col-md-1" align="right" style="padding: 0px 10px 0px 0px;">
+						분류
+					</div>
+					<div class="col-lg-1 col-md-1" style="padding: 0px 0px;">
 						<select class="form-control" id="searchTheme">
 							<option value="allTheme" >전체</option>
 							<option value="개">개</option>
@@ -110,24 +115,25 @@ $(document).ready(function() {
 							<option value="기타축종">기타</option>
 						</select>
 					</div>
-					<div class="col-lg-1 col-md-1" align="right" style="padding: 0px 0px;">지역 </div>
-					<div class="col-lg-2 col-md-2" align="left">
+					<div class="col-lg-1 col-md-1" align="right" style="padding: 0px 10px 0px 0px;">
+						지역
+					</div>
+					<div class="col-lg-1 col-md-1" style="padding: 0px 0px;">
 						<select class="form-control" id="searchArea" name="searchArea">
 							<option value="allArea" >전체</option>
 							<c:forEach var="areaList" items="${areaList}">
-								<c:when test="${areaList.notice_no eq null}">
-									<option value="<c:out value="${areaList.notice_no}" />"><c:out value="${areaList.notice_no}" /></option>
-								</c:when>
+								<c:choose>
+									<c:when test="${areaList.notice_no ne null}">
+										<option value="<c:out value='${areaList.notice_no}' />"><c:out value="${areaList.notice_no}" /></option>
+									</c:when>
+								</c:choose>
 							</c:forEach>
-							<option value="서울">서울</option>
-							<option value="부산">부산</option>
 						</select>
 					</div>
-					
-				</div>
-				<hr style="margin: 0px;">
-				<div class="d-flex flex-row justify-content-end"  style="margin: 10px 0px;">
-					<div class="col-lg-2 col-md-2" align="right" style="padding: 0px 0px;">
+					<div class="col-lg-1 col-md-1" align="right" style="padding: 0px 10px 0px 0px;">
+						보기
+					</div>
+					<div class="col-lg-1 col-md-1" align="right" style="padding: 0px 0px;">
 						<select class="form-control" id="category2">
 							<option value="alignmentDay" <c:if test="${alignment eq 'alignmentDay'}"> selected </c:if>>최신순</option>
 							<option value="alignmentHit" <c:if test="${alignment eq 'alignmentHit'}"> selected </c:if>>조회순</option>

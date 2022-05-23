@@ -37,7 +37,7 @@ public class ShareCenterDAOImpl implements ShareCenterDAO{
 	
 	//유기동물 DB에서 존재하는 목록만 셀렉트 박스에 출력
 	@Override
-	public List<ShareCenterDTO> getShareCenterAreaList() throws Exception {
+	public List<String> getShareCenterAreaList() throws Exception {
 		return sqlSession.selectList(namespace + ".getShareCenterAreaList"); 
 	}
 }
