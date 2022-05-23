@@ -42,11 +42,11 @@ $(document).ready(function() {
 			data: {'alignment':$("#category2").val(), 'searchTheme': $("#searchTheme").val(), 'searchArea':$("#searchArea").val()},
 			success: function(data) {
 				//location.href = "shereCenterPage?alignment="+sessionStorage.getItem("category2");
-				//location.href = "shereCenterPage?alignment="+$("#category2").val();
-				location.href = "shereCenterPage?searchTheme=" +sessionStorage.getItem("searchTheme") + "&searchArea=" + sessionStorage.getItem("searchArea") + "&alignment="+ sessionStorage.getItem("category2");
-				/*
-				$("#slistDiv").load("shereCenterPage?searchTheme=" +sessionStorage.getItem("searchTheme") + "&searchArea=" + sessionStorage.getItem("searchArea") + "&alignment="+ sessionStorage.getItem("category2") + " #slistDiv");
-				$("#pagination").load("shereCenterPage?alignment="+sessionStorage.getItem("category2") + " #pagination");*/
+				//location.href  = "shereCenterPage?searchTheme=" +sessionStorage.getItem("searchTheme") + "&searchArea=" + sessionStorage.getItem("searchArea") + "&alignment="+ sessionStorage.getItem("category2");
+				var shereCenterUrl = "shereCenterPage?searchTheme=" +sessionStorage.getItem("searchTheme") + "&searchArea=" + sessionStorage.getItem("searchArea") + "&alignment="+ sessionStorage.getItem("category2");
+				
+				$("#slistDiv").load(shereCenterUrl + " #slistDiv");
+				$("#pagination").load(shereCenterUrl + " #pagination");
 			}
 		});
 	}
@@ -141,42 +141,44 @@ $(document).ready(function() {
 						</select>
 					</div>
 				</div>
-				<div class="row" id="slistDiv">
-					<c:forEach var="slist" items="${slist}">
-					<div class="col-lg-3 col-md-6">
-						<div class="tour-one__single" >
-							<div class="tour-one__image">
-								<c:choose>
-									<c:when test="${slist.popfile eq null}">
-										<a href="#">
-											<img src='<c:url value="/resources/images/noImage.png"/>' width="200" height="200">
-										</a>
-									</c:when>
-									<c:otherwise>
-										<img src='<c:url value="${slist.popfile}"/>' alt="" width="200" height="200" onclick="location.href='main'" >
-									</c:otherwise>
-								</c:choose>
-							</div>
-							<div class="tour-one__content" style="padding: 10px; ">
-									<div class="row" >
-										<div class="col-lg-12" align="center"><font size="2px;"><c:out value="${slist.kind_cd}" /></font></div>
-									</div>
-									<div class="row">
-										<div class="col-lg-5">
-											<font size="1px;" >
-												💕 <c:out value="${slist.good}" />&nbsp;
-												👁‍🗨 <c:out value="${slist.hit}"/>
-											</font>
-										
+				<div id="slistDiv">
+					<div class="row" >
+						<c:forEach var="slist" items="${slist}">
+						<div class="col-lg-3 col-md-6">
+							<div class="tour-one__single" >
+								<div class="tour-one__image">
+									<c:choose>
+										<c:when test="${slist.popfile eq null}">
+											<a href="#">
+												<img src='<c:url value="/resources/images/noImage.png"/>' width="200" height="200">
+											</a>
+										</c:when>
+										<c:otherwise>
+											<img src='<c:url value="${slist.popfile}"/>' alt="" width="200" height="200" onclick="location.href='main'" >
+										</c:otherwise>
+									</c:choose>
+								</div>
+								<div class="tour-one__content" style="padding: 10px; ">
+										<div class="row" >
+											<div class="col-lg-12" align="center"><font size="2px;"><c:out value="${slist.kind_cd}" /></font></div>
 										</div>
-										<div class="col-lg-7" align="right">
-											<font size="1px;">발견일 : <c:out value="${slist.happen_dt}"/></font>
+										<div class="row">
+											<div class="col-lg-5">
+												<font size="1px;" >
+													💕 <c:out value="${slist.good}" />&nbsp;
+													<i class="far fa-eye"></i> <c:out value="${slist.hit}"/>
+												</font>
+											
+											</div>
+											<div class="col-lg-7" align="right">
+												<font size="1px;">발견일 : <c:out value="${slist.happen_dt}"/></font>
+											</div>
 										</div>
-									</div>
+								</div>
 							</div>
 						</div>
+						</c:forEach>
 					</div>
-					</c:forEach>
 				</div>
 			</div>
 		</section>

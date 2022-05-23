@@ -28,27 +28,22 @@ public class ShareCenterController {
 	//분양센터페이지 유기동물 목록 출력
 	@RequestMapping(value = "/shereCenterPage" , method = RequestMethod.GET)
 	public String shereCenterPage(Model model, HttpServletRequest request) throws Exception{
-		
 		/*
 		pagingService.put("searchArea", "");
 		map.put("searchTheme", "");
 		map.put("alignment", "");
 		List<ShareCenterDTO> shareCenterList = service.getShareCenterBoardPage(pagingService.getMap());
 		
-		
 		pagingService.PagingService(request, service.getShareCenterBoardViewTotalCount(map), 12, searchTheme, searchArea, searchAlignment);
 		
-
 		model.addAttribute("slist", shareCenterList);
 		model.addAttribute("Paging", pagingService.getPaging());*/
-		
 		HttpSession session = request.getSession();
 		String searchTheme  = request.getParameter("searchTheme");
 		String searchArea = request.getParameter("searchArea");
 		//String searchTheme  = request.getParameter("searchTheme");
 		//String searchArea = request.getParameter("searchArea");
 		String searchAlignment = request.getParameter("alignment");
-		
 		
 		if(StringUtils.isEmpty(searchTheme) || searchTheme == null) {
 			searchTheme = "allTheme";
@@ -57,7 +52,7 @@ public class ShareCenterController {
 			session.setAttribute("searchTheme", searchTheme);
 		}
 		
-		if(StringUtils.isEmpty(searchArea) || searchArea == "null") {
+		if(StringUtils.isEmpty(searchArea) || searchArea == null) {
 			searchArea = "allArea";
 			session.setAttribute("searchArea", "allArea");
 		} else if(!StringUtils.isEmpty(searchArea)){
@@ -109,6 +104,12 @@ public class ShareCenterController {
 		model.addAttribute("areaList", asd);
 		System.out.println(asd);
 		return "shereCenter";
+	}
+	//유기동물 게시글 상세페이지 출력
+	@RequestMapping(value = "/shereCenterReadPage" , method = RequestMethod.GET)
+	public String shereCenterReadPage(Model model, HttpServletRequest request) throws Exception{
+		
+		return "shereCenterRead";
 	}
 	
 	
