@@ -2,9 +2,9 @@ package com.spring.ex.service;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
 import com.spring.ex.dto.ShareCenterDTO;
 
@@ -27,5 +27,5 @@ public interface ShareCenterService {
 	public List<String> getShareCenterAreaList() throws Exception;
 	
 	//유기동물 게시글 상세페이지 출력 
-	public ShareCenterDTO getShareCenterBoardReadPage(String desertion_no) throws Exception;
+	public Map<String, Object> getShareCenterBoardReadPage(String desertion_no) throws Exception;
 }

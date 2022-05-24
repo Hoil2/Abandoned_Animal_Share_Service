@@ -2,6 +2,7 @@ package com.spring.ex.controller;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -109,8 +110,9 @@ public class ShareCenterController {
 	@RequestMapping(value = "/shereCenterReadPage" , method = RequestMethod.GET)
 	public String shereCenterReadPage(Model model, HttpServletRequest request) throws Exception{
 		String desertion_no = request.getParameter("desertion_no");
-		System.out.println(desertion_no);
-		model.addAttribute("scrReadPage", service.getShareCenterBoardReadPage(desertion_no));
+		Map<String, Object> sReadPage = service.getShareCenterBoardReadPage(desertion_no);
+		System.out.println("상세페이지 데이터" + sReadPage);
+		model.addAttribute("scrReadPage", sReadPage);
 		return "shereCenterRead";
 	}
 	

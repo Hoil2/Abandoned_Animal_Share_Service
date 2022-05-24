@@ -5,9 +5,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -15,7 +15,6 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
 import com.spring.ex.dao.ShareCenterDAO;
 import com.spring.ex.dto.ShareCenterDTO;
@@ -149,7 +148,7 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 	
 	//유기동물 게시글 상세페이지 출력 
 	@Override
-	public ShareCenterDTO getShareCenterBoardReadPage(String desertion_no) throws Exception {
+	public Map<String, Object> getShareCenterBoardReadPage(String desertion_no) throws Exception {
 		return dao.getShareCenterBoardReadPage(desertion_no);
 	}
 	
