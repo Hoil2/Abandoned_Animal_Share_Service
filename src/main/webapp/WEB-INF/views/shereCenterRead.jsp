@@ -31,23 +31,99 @@
 			</div>
 		</section><br>
 		
-		<section class="blog-list">
+		<section class="blog-list" style="padding: 0px 0px;">
 			<div class="container">
-				<div class="blog-details__image" align="center">
+				<div class="d-flex flex-row-reverse">
+					<ul class="list-unstyled blog-one__meta">
+						<li><a href="#"><i class="far fa-eye"></i> ${scrReadPage.hit }</a></li>
+						<li><a href="#"><i class="far fa-clock"></i> ${scrReadPage.redate  }</a></li>
+						<li><a href="#"><i class="far fa-heart"></i> ${scrReadPage }</a></li>
+					</ul>
+				</div><hr>
+				<div align="center" >
 					<c:if test="${scrReadPage.popfile ne null}">
 						<img src="${scrReadPage.popfile}" alt="" class="img-fluid" align="center">
 					</c:if>
 				</div>
-				<div class="blog-details__content">
-					<ul class="list-unstyled blog-one__meta">
-						<li><a href="#"><i class="far fa-user-circle"></i></a></li>
-						<li><a href="#"><i class="far fa-eye"></i> ${scrReadPage.hit }</a></li>
-						<li><a href="#"><i class="far fa-comments"></i> ${replyCount } Comments</a></li>
-						<li><a href="#"><i class="far fa-clock"></i> ${content.redate }</a></li>
-					</ul>
-					<h3>${content.title}</h3>
-					<br>
-					<p><c:out escapeXml="false" value="${fn:replace(content.content, crlf, '<br>')}"/></p>
+				<div class="blog-details__content" style="border: 0px;">
+					<div class="row">
+						<div class="col-md-12">No. ${scrReadPage.desertion_no}</div>
+						<div class="col-md-6">
+							<table class="table">
+								<thead>
+									<tr class="success">
+										<th>동물 정보</th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody >
+									<tr >
+										<td><font size="3px;">나이 / 몸무게</font></td>
+										<td>${scrReadPage.age} / ${scrReadPage.weight}</td>
+									</tr>
+									<tr>
+										<td><font size="3px;">성별 / 중성화여부</font></td>
+										<td>
+											<c:if test="${scrReadPage.sex_cd eq 'M'}">
+												수컷 /
+											</c:if>
+											<c:if test="${scrReadPage.sex_cd eq 'F'}">
+												암컷 /
+											</c:if>
+											<c:if test="${scrReadPage.sex_cd eq 'Q'}">
+												미상 /
+											</c:if>
+											<c:if test="${scrReadPage.neuter_yn eq 'Y'}">
+												O 
+											</c:if>
+											<c:if test="${scrReadPage.neuter_yn eq 'N'}">
+												X 
+											</c:if>
+											<c:if test="${scrReadPage.neuter_yn eq 'U'}">
+												미상
+											</c:if>
+										</td>
+									</tr>
+									<tr>
+										<td><font size="3px;">종</font></td>
+										<td>${scrReadPage.kind_cd}</td>
+									</tr>
+									
+									<tr>
+										<td><font size="3px;">특징</font></td>
+										<td><font size="2px;">${scrReadPage.special_mark}</font></td>
+									</tr>
+								</tbody> 
+							</table><br>
+						</div>
+						
+						<div class="col-md-6">
+							<table class="table">
+								<tbody>
+									<tr class="success">
+										<th>공고 정보</th>
+										<th> </th>
+									</tr>
+									<tr>
+										<td><font size="3px;">공고번호</font></td>
+										<td>${scrReadPage.notice_no}</td>
+									</tr>
+									<tr>
+										<td> <font size="3px;"> 상태</font></td>
+										<td>${scrReadPage.process_state}</td>
+									</tr>
+									<tr>
+										<td><font size="3px;">공고시작일 ~ 종료일</font></td>
+										<td>${scrReadPage.notice_sdt} ~ ${scrReadPage.notice_edt}</td>
+									</tr>
+									<tr>
+										<td><font size="3px;">발견장소</font></td>
+										<td>${scrReadPage.happen_place}</td>
+									</tr>
+								</tbody> 
+							</table>
+						</div>
+					</div>
 				</div>
 				<br>
 				
