@@ -123,6 +123,41 @@
 								</tbody> 
 							</table>
 						</div>
+						<br>
+						<div class="col-md-12">
+							<table class="table">
+								<tbody>
+									<tr class="success">
+										<th class="success">보호소 정보</th>
+										<th> </th>
+									</tr>
+									<tr>
+										<td><font size="3px;">보호소</font></td>
+										<td>${scrReadPage.notice_no}</td>
+									</tr>
+									<tr>
+										<td> <font size="3px;"> 보호장소</font></td>
+										<td>${scrReadPage.process_state}</td>
+									</tr>
+									<tr>
+										<td><font size="3px;">전화번호</font></td>
+										<td>${scrReadPage.notice_sdt} ~ ${scrReadPage.notice_edt}</td>
+									</tr>
+									<tr>
+										<td><font size="3px;">관할기관</font></td>
+										<td>${scrReadPage.happen_place}</td>
+									</tr>
+									<tr>
+										<td><font size="3px;">담당자 / 연락처</font></td>
+										<td>${scrReadPage.happen_place}</td>
+									</tr>
+									<tr>
+										<td><font size="3px;">특이사항</font></td>
+										<td>${scrReadPage.happen_place}</td>
+									</tr>
+								</tbody> 
+							</table>
+						</div>
 					</div>
 				</div>
 				<br>
