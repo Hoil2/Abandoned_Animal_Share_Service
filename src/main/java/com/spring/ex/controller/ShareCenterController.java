@@ -109,7 +109,7 @@ public class ShareCenterController {
 	@RequestMapping(value = "/shereCenterReadPage" , method = RequestMethod.GET)
 	public String shereCenterReadPage(Model model, HttpServletRequest request) throws Exception{
 		String desertion_no = request.getParameter("desertion_no");
-		
+		System.out.println(desertion_no);
 		model.addAttribute("scrReadPage", service.getShareCenterBoardReadPage(desertion_no));
 		return "shereCenterRead";
 	}

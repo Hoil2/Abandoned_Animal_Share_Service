@@ -44,6 +44,6 @@ public class ShareCenterDAOImpl implements ShareCenterDAO{
 	//유기동물 게시글 상세페이지 출력 
 	@Override
 	public ShareCenterDTO getShareCenterBoardReadPage(String desertion_no) throws Exception {
-		return sqlSession.selectOne(namespace + ".getShareCenterBoardReadPage" + desertion_no);
+		return sqlSession.selectOne(namespace + ".getShareCenterBoardReadPage", desertion_no);
 	}
 }

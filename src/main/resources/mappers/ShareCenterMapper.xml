@@ -95,8 +95,9 @@
 	</insert>
 	
 	<!-- 유기동물 게시글 상세페이지 출력 -->
-	<select id="getShareCenterBoardReadPage" resultType="hashMap">
-		SELECT * FROM v_abandoned_animal_info
+	<select id="getShareCenterBoardReadPage" resultType="ShareCenterDTO">
+		SELECT * 
+		FROM v_abandoned_animal_info
 		WHERE desertion_no = #{desertion_no};
 	</select>
 	
