@@ -35,8 +35,8 @@
 			<div class="container">
 				<div class="d-flex flex-row-reverse">
 					<ul class="list-unstyled blog-one__meta">
-						<li><a href="#"><i class="far fa-eye"></i> ${scrReadPage.hit }</a></li>
 						<li><a href="#"><i class="far fa-clock"></i> ${scrReadPage.redate  }</a></li>
+						<li><a href="#"><i class="far fa-eye"></i> ${scrReadPage.hit }</a></li>
 						<li><a href="#"><i class="far fa-heart"></i> ${scrReadPage.good }</a></li>
 					</ul>
 				</div><hr>
