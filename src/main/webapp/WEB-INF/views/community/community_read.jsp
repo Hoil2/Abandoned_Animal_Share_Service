@@ -13,7 +13,8 @@
 <link rel="manifest" href='<c:url value="/resources/images/favicons/site.webmanifest"/>'>
 <!-- bootstrap CSS only -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <title>${pageDetail.title}</title>
 
 <style type="text/css">
@@ -42,7 +43,19 @@
 		    <p class="fs-2 fw-bold">${pageDetail.title}</p>
 		    <span class="fs-4 pr-3">${pageDetail.name}</span>
 		    <span class="fs-4">조회수 ${pageDetail.hit}</span>
-		    
+		    <div class="float-right">
+		    	<%-- 좋아요 --%>
+			    <span class="fs-4">
+			    	<c:if test="${member != null}">
+			    		<i onclick="clickedHeart(this)" class="bi bi-heart" id="like"></i>
+			    	</c:if>
+			    	<c:if test="${member == null}">
+			    		<i class="bi bi-heart"></i>
+			    	</c:if>
+		    	</span>
+			    <span class="fs-4" id="likeCnt">${likeCnt}</span>
+			    <%-- 좋아요 끝 --%>
+		    </div>
 		</div>
 		<hr>
 		<%-- 게시물 내용 부분 --%>
@@ -97,6 +110,44 @@
 		        $(this).height($(this).prop('scrollHeight'));
 		    });
 		});
+		
+		// 좋아요를 이미 클릭했다면 채우기
+		$(function() {
+			if(${existLike}) {
+		 		var x = $('#like')[0]; 
+		 		x.classList.toggle("bi-heart");
+		        x.classList.toggle("bi-heart-fill");
+		        x.classList.toggle("text-danger");
+				}
+		});
+		
+		// 좋아요 클릭 이벤트
+		function clickedHeart(x) {
+			var status;
+			var likeCnt = parseInt($('#likeCnt').html());
+			if(x.classList.contains("bi-heart-fill")) {
+				status = false;
+				likeCnt = likeCnt - 1; 
+			}
+			else {
+				status = true;
+				likeCnt = likeCnt + 1; 
+			}
+		       
+			$('#likeCnt').text(likeCnt);
+		       
+			x.classList.toggle("bi-heart");
+			x.classList.toggle("bi-heart-fill");
+			x.classList.toggle("text-danger");
+			$.ajax({
+				url: '/communityClickedLike',
+				type: 'post',
+				data: {
+					status: status,
+					cb_id: ${pageNo}
+				}
+			});
+		}
 	</script>
 </body>
 </html>

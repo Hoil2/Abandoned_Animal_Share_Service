@@ -154,13 +154,20 @@ public class CommunityController {
 	public String dailyDetail(Model model, HttpServletRequest request, @PathVariable("pageNo") int pageNo) throws Exception {
 		HashMap<String, Object> pageDetail = communityService.getPageDetail(pageNo);
 		communityService.addHitToBoardPage(pageNo);
-		
+		int likeCnt = communityService.getCommunityLikeCount(pageNo);
 		List<HashMap<String, Object>> commentList = communityService.getComment(pageNo);
+		
+		boolean existLike; 
+		if(communityService.existCommunityLike(pageNo, 2) == 1) // m_id 임시
+			existLike = true;
+		else existLike= false;
 		
 		model.addAttribute("pageDetail", pageDetail);
 		model.addAttribute("pageNo", pageNo);
 		model.addAttribute("clist", commentList);
 		model.addAttribute("member", request.getSession().getAttribute("member"));
+		model.addAttribute("likeCnt", likeCnt);
+		model.addAttribute("existLike", existLike);
 		
 		return "community/community_read";
 	}
@@ -295,4 +302,21 @@ public class CommunityController {
 		
 		return "redirect:"+request.getHeader("Referer");
 	}
+	
+	@RequestMapping("/communityClickedLike")
+	public String communityClickedLike(HttpServletRequest request) {
+		System.out.println("받음");
+		int cb_id = Integer.parseInt(request.getParameter("cb_id"));
+		MemberDTO member = (MemberDTO)request.getSession().getAttribute("member");
+		String status = request.getParameter("status");
+		if(status.equals("true")) {
+			communityService.insertCommunityLike(cb_id, member.getM_id());
+		}
+		else {
+			communityService.deleteCommunityLike(cb_id, member.getM_id());
+		}
+		
+		return "redirect:" + request.getHeader("referer");
+	}
+	
 }
