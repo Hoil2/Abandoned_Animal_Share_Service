@@ -103,4 +103,30 @@
 		WHERE desertion_no = #{desertion_no};
 	</select>
 	
+	<!-- 조회수 증가 -->
+	<update id="addShareCenterBoardReadPageHit">
+		UPDATE abandoned_animal_info
+		SET hit = hit + 1
+		WHERE desertion_no = #{desertion_no}; 
+	</update>
+	
+	<!-- 회원 좋아요 체크 -->
+	<select id="getGoodCheckShareCenterBoardReadPage" resultType="int">
+		SELECT COUNT(*)
+		FROM abandoned_animal_good	
+		WHERE m_id = #{m_id} AND desertion_no = #{desertion_no};
+	</select>
+	
+	<!-- 좋아요 추가 -->
+	<insert id="addGoodShareCenterReadPage">
+		INSERT INTO abandoned_animal_good(desertion_no, m_id)
+		VALUES(#{desertion_no}, #{m_id})
+	</insert>
+	
+	<!-- 좋아요 삭제 -->
+	<delete id="subtractGoodShareCenterReadPage">
+		DELETE FROM abandoned_animal_good 
+		WHERE desertion_no = #{desertion_no} AND m_id = #{m_id}
+	</delete>
+	
 </mapper>

@@ -157,4 +157,28 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 		return dao.getShareCenterBoardReadPage(desertion_no);
 	}
 	
+	//유기동물 센터 게시물 조회수 증가
+	@Override
+	public void addShareCenterBoardReadPageHit(String desertion_no) throws Exception {
+		dao.addShareCenterBoardReadPageHit(desertion_no);
+	}
+	
+	//유기동물 센터 해당 게시물 좋아요 유무 체크
+	@Override
+	public int getGoodCheckShareCenterBoardReadPage(HashMap<String, Object> map) throws Exception {
+		return dao.getGoodCheckShareCenterBoardReadPage(map);
+	}
+	
+	//유기동물 센터 해당 게시물 좋아요 추가
+	@Override
+	public int addGoodShareCenterReadPage(HashMap<String, Object> map) throws Exception {
+		return dao.addGoodShareCenterReadPage(map);
+	}
+	
+	//유기동물 센터 해당 게시물 좋아요 삭제
+	@Override
+	public int subtractGoodShareCenterReadPage(HashMap<String, Object> map) throws Exception {
+		return dao.subtractGoodShareCenterReadPage(map);
+	}
+	
 }

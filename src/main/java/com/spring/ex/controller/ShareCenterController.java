@@ -14,6 +14,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.spring.ex.dto.MemberDTO;
 import com.spring.ex.dto.PagingDTO;
 import com.spring.ex.dto.ShareCenterDTO;
 import com.spring.ex.service.PagingService;
@@ -98,8 +99,7 @@ public class ShareCenterController {
 		model.addAttribute("searchArea", searchArea);
 		model.addAttribute("searchTheme", searchTheme);
 		model.addAttribute("alignment", searchAlignment);
-		System.out.println(searchArea + " AND " + searchTheme);
-		System.out.println("하단"+searchAlignment);
+		System.out.println("검색 지역/테마/정렬 : " + searchArea + ", " + searchTheme + ", " + searchAlignment);
 		
 		List<String> seletedBoxList = service.getShareCenterAreaList();
 		model.addAttribute("areaList", seletedBoxList);
@@ -111,9 +111,43 @@ public class ShareCenterController {
 	public String shereCenterReadPage(Model model, HttpServletRequest request) throws Exception{
 		String desertion_no = request.getParameter("desertion_no");
 		Map<String, Object> sReadPage = service.getShareCenterBoardReadPage(desertion_no);
-		System.out.println("상세페이지 데이터" + sReadPage);
+		service.addShareCenterBoardReadPageHit(desertion_no);
+		
+		if(request.getSession().getAttribute("member") != null) {
+			MemberDTO memberDto = (MemberDTO) request.getSession().getAttribute("member");
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("m_id", memberDto.getM_id());
+			map.put("desertion_no", desertion_no);
+			System.out.println("좋아요 회원/게시글" + map);
+			
+			int boardLikeCheck = service.getGoodCheckShareCenterBoardReadPage(map);
+			model.addAttribute("boardLikeCheck", boardLikeCheck);
+			System.out.println("회원 번호 : " + memberDto.getM_id());
+		}
+		
+		System.out.println("상세페이지 데이터 : " + sReadPage);
 		model.addAttribute("scrReadPage", sReadPage);
 		return "shereCenterRead";
+	}
+	
+	//유기동물 게시글 좋아요 삭제
+	@RequestMapping(value = "/shereCenterReadPage" , method = RequestMethod.GET)
+	public void subtractGoodShareCenter(Model model, HttpServletRequest request) throws Exception{
+		MemberDTO memberDto = (MemberDTO) request.getSession().getAttribute("member");
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("m_id", memberDto.getM_id());
+		map.put("desertion_no", request.getParameter("desertion_no"));
+		service.subtractGoodShareCenterReadPage(map);
+	}
+	
+	//유기동물 게시글 좋아요 추가
+	@RequestMapping(value = "/shereCenterReadPage" , method = RequestMethod.GET)
+	public void addGoodShareCenter(Model model, HttpServletRequest request) throws Exception{
+		MemberDTO memberDto = (MemberDTO) request.getSession().getAttribute("member");
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("m_id", memberDto.getM_id());
+		map.put("desertion_no", request.getParameter("desertion_no"));
+		service.addGoodShareCenterReadPage(map);
 	}
 	
 	

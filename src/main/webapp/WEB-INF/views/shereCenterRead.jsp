@@ -11,6 +11,9 @@
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<link rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
 <title>멍멍냥냥</title>
 </head>
 <body link="red">
@@ -25,7 +28,7 @@
 		<jsp:include page="layout/header.jsp"/>
 		<section class="page-header" style="background-image: url(<c:url value="/resources/images/banner_main/${BannerRespectivelyView.getS_file_name()}"/>);">
 			<div class="container">
-				<h2>분양센터</h2>
+				<h2>분양센터 ${sessionScope.member.getM_id()}</h2>
 				<ul class="thm-breadcrumb list-unstyled">
 				</ul>
 			</div>
@@ -35,9 +38,19 @@
 			<div class="container">
 				<div class="d-flex flex-row-reverse">
 					<ul class="list-unstyled blog-one__meta">
-						<li><a href="#"><i class="far fa-clock"></i> ${scrReadPage.redate  }</a></li>
-						<li><a href="#"><i class="far fa-eye"></i> ${scrReadPage.hit }</a></li>
-						<li><a href="#"><i class="far fa-heart"></i> ${scrReadPage.good }</a></li>
+						<li><i class="far fa-clock"></i> ${scrReadPage.redate  }</li>
+						<li><i class="far fa-eye"></i> ${scrReadPage.hit+1}</li>
+						<c:choose>
+							<c:when test="${member ne null && boardLikeCheck eq 1}"> 
+								<li><i class="fas fa-heart" onclick="buttonNoLogin_click();"></i> ${scrReadPage.good }</li>
+							</c:when>
+							<c:when test="${member ne null && boardLikeCheck ne 1}">
+								<li><i class="far fa-heart" onclick="buttonNoLogin_click();"></i> ${scrReadPage.good }</li>
+							</c:when>
+							<c:otherwise> 
+								<li><i class="far fa-heart" onclick="buttonNoLogin_click();"></i> ${scrReadPage.good }</li>
+							 </c:otherwise>
+						</c:choose>
 					</ul>
 				</div><hr>
 				<div align="center" >
@@ -166,6 +179,32 @@
 		</section>	
 			
 			
+	<script>
+		function buttonNoLogin_click() {
+			swal({
+				title: "로그인",
+				text: "로그인이 되어야 하트를 누를 수 있습니다.",
+				icon: "warning",
+			});
+		}
+		
+		//새로고침 방지
+		function noEvent() {
+		    if (event.keyCode == 116) {
+		        event.keyCode= 2;
+		        return false;
+		    }
+		    else if(event.ctrlKey && (event.keyCode==78 || event.keyCode == 82))
+		    {
+		        return false;
+		    }
+		}
+		document.onkeydown = noEvent;
+		
+		//뒤로가기 방지
+		function noBack(){window.history.forward();}
+
+	</script>
 		<br>
 		<jsp:include page="layout/footer.jsp"/>
 	</div>
