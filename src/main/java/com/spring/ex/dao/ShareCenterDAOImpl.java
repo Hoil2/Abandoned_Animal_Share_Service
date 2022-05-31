@@ -57,7 +57,7 @@ public class ShareCenterDAOImpl implements ShareCenterDAO{
 	//유기동물 센터 해당 게시물 좋아요 유무 체크
 	@Override
 	public int getGoodCheckShareCenterBoardReadPage(HashMap<String, Object> map) throws Exception {
-		return sqlSession.selectOne(namespace + ".getGoodShareCenterBoardReadPage", map);
+		return sqlSession.selectOne(namespace + ".getGoodCheckShareCenterBoardReadPage", map);
 	}
 	
 	//유기동물 센터 해당 게시물 좋아요 추가

@@ -36,16 +36,16 @@
 		
 		<section class="blog-list" style="padding: 0px 0px;">
 			<div class="container">
-				<div class="d-flex flex-row-reverse">
+				<div class="d-flex flex-row-reverse" id="heartDiv">
 					<ul class="list-unstyled blog-one__meta">
 						<li><i class="far fa-clock"></i> ${scrReadPage.redate  }</li>
 						<li><i class="far fa-eye"></i> ${scrReadPage.hit+1}</li>
 						<c:choose>
 							<c:when test="${member ne null && boardLikeCheck eq 1}"> 
-								<li><i class="fas fa-heart" onclick="buttonNoLogin_click();"></i> ${scrReadPage.good }</li>
+								<li><i class="fas fa-heart" onclick="subtractGood_click()"></i> ${scrReadPage.good }</li>
 							</c:when>
 							<c:when test="${member ne null && boardLikeCheck ne 1}">
-								<li><i class="far fa-heart" onclick="buttonNoLogin_click();"></i> ${scrReadPage.good }</li>
+								<li><i class="far fa-heart" onclick="addGood_click();"></i> ${scrReadPage.good }</li>
 							</c:when>
 							<c:otherwise> 
 								<li><i class="far fa-heart" onclick="buttonNoLogin_click();"></i> ${scrReadPage.good }</li>
@@ -177,36 +177,42 @@
 				
 			</div>
 		</section>	
-			
-			
-	<script>
-		function buttonNoLogin_click() {
-			swal({
-				title: "로그인",
-				text: "로그인이 되어야 하트를 누를 수 있습니다.",
-				icon: "warning",
-			});
-		}
-		
-		//새로고침 방지
-		function noEvent() {
-		    if (event.keyCode == 116) {
-		        event.keyCode= 2;
-		        return false;
-		    }
-		    else if(event.ctrlKey && (event.keyCode==78 || event.keyCode == 82))
-		    {
-		        return false;
-		    }
-		}
-		document.onkeydown = noEvent;
-		
-		//뒤로가기 방지
-		function noBack(){window.history.forward();}
-
-	</script>
 		<br>
 		<jsp:include page="layout/footer.jsp"/>
 	</div>
+	
+<script>
+	function addGood_click() {
+		$.ajax({
+			url: "addGoodShareCenter",
+			type: "GET",
+			data: {'desertion_no':${scrReadPage.desertion_no}},
+			success: function() {
+				var shereCenterUrl = "shereCenterReadPage?desertion_no=" + ${scrReadPage.desertion_no};
+				$("#heartDiv").load(shereCenterUrl + " #heartDiv");
+			}
+		});
+	}
+	
+	function subtractGood_click() {
+		$.ajax({
+			url: "subtractGoodShareCenter",
+			type: "GET",
+			data: {'desertion_no':${scrReadPage.desertion_no}},
+			success: function() {
+				var shereCenterUrl = "shereCenterReadPage?desertion_no=" + ${scrReadPage.desertion_no};
+				$("#heartDiv").load(shereCenterUrl + " #heartDiv");
+			}
+		});
+	}
+	
+	function buttonNoLogin_click() {
+		swal({
+			title: "로그인",
+			text: "로그인이 되어야 하트를 누를 수 있습니다.",
+			icon: "warning",
+		});
+	}
+</script>
 </body>
 </html>

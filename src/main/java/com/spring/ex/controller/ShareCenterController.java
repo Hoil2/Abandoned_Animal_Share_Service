@@ -131,23 +131,27 @@ public class ShareCenterController {
 	}
 	
 	//유기동물 게시글 좋아요 삭제
-	@RequestMapping(value = "/shereCenterReadPage" , method = RequestMethod.GET)
-	public void subtractGoodShareCenter(Model model, HttpServletRequest request) throws Exception{
+	@RequestMapping(value = "/subtractGoodShareCenter" , method = RequestMethod.GET)
+	public String subtractGoodShareCenter(Model model, HttpServletRequest request) throws Exception{
 		MemberDTO memberDto = (MemberDTO) request.getSession().getAttribute("member");
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("m_id", memberDto.getM_id());
 		map.put("desertion_no", request.getParameter("desertion_no"));
 		service.subtractGoodShareCenterReadPage(map);
+		
+		return "shereCenterRead";
 	}
 	
 	//유기동물 게시글 좋아요 추가
-	@RequestMapping(value = "/shereCenterReadPage" , method = RequestMethod.GET)
-	public void addGoodShareCenter(Model model, HttpServletRequest request) throws Exception{
+	@RequestMapping(value = "/addGoodShareCenter" , method = RequestMethod.GET)
+	public String addGoodShareCenter(Model model, HttpServletRequest request) throws Exception{
 		MemberDTO memberDto = (MemberDTO) request.getSession().getAttribute("member");
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("m_id", memberDto.getM_id());
 		map.put("desertion_no", request.getParameter("desertion_no"));
 		service.addGoodShareCenterReadPage(map);
+		
+		return "shereCenterRead";
 	}
 	
 	
