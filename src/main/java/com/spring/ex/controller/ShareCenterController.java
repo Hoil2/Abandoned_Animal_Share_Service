@@ -129,31 +129,29 @@ public class ShareCenterController {
 		
 		Cookie viewCookie = null;
 		Cookie[] cookies = request.getCookies();
-		System.out.println("cookie : "+cookies);
 		if(cookies !=null) {
 			for (int i = 0; i < cookies.length; i++) {
-				//System.out.println("쿠키 이름 : "+cookies[i].getName());
+				System.out.println("쿠키 이름 : "+cookies[i].getName());
 				//만들어진 쿠키들을 확인하며, 만약 들어온 적 있다면 생성되었을 쿠키가 있는지 확인
 				if(cookies[i].getName().equals("|"+desertion_no+"|")) {
 					System.out.println("if문 쿠키 이름 : "+cookies[i].getName());
-					//찾은 쿠키를 변수에 저장
-					viewCookie=cookies[i];
+					
+					viewCookie=cookies[i];								//찾은 쿠키를 변수에 저장
 				}
 			}
 		}else {
 			System.out.println("cookies 확인 로직 : 쿠키가 없습니다.");
 		}
-		//만들어진 쿠키가 없음을 확인
-		if(viewCookie==null) {
+		
+		if(viewCookie==null) {												//만들어진 쿠키가 없음을 확인
 			System.out.println("viewCookie 확인 로직 : 쿠키 없당");
 			Cookie newCookie=new Cookie("|"+desertion_no+"|","readCount");	//이 페이지에 왔다는 증거용(?) 쿠키 생성
 			response.addCookie(newCookie);
 			service.addShareCenterBoardReadPageHit(desertion_no); 			//쿠키가 없으니 증가 로직 진행
-		//만들어진 쿠키가 있으면 증가로직 진행하지 않음
+			model.addAttribute("hitReadPage", 1);
 		} else {
-			System.out.println("viewCookie 확인 로직 : 쿠키 있당");
-			String value=viewCookie.getValue();
-			System.out.println("viewCookie 확인 로직 : 쿠키 value : "+value);
+			model.addAttribute("hitReadPage", 0);
+			System.out.println("viewCookie 확인 로직 : 쿠키 있당");			//만들어진 쿠키가 있으면 증가로직 진행하지 않음
 		}
 		
 		model.addAttribute("scrReadPage", sReadPage);

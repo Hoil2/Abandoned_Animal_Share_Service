@@ -39,7 +39,16 @@
 				<div class="d-flex flex-row-reverse" id="heartDiv">
 					<ul class="list-unstyled blog-one__meta">
 						<li><i class="far fa-clock"></i> ${scrReadPage.redate  }</li>
-						<li><i class="far fa-eye"></i> ${scrReadPage.hit+1}</li>
+						<li><i class="far fa-eye"></i>
+							<c:choose>
+								<c:when test="${hitReadPage eq 1}"> 
+									${scrReadPage.hit+1}
+								</c:when>
+								<c:otherwise> 
+									${scrReadPage.hit}
+								 </c:otherwise>
+							</c:choose>
+						</li>
 						<c:choose>
 							<c:when test="${member ne null && boardLikeCheck eq 1}"> 
 								<li><i class="fas fa-heart" onclick="subtractGood_click()"></i> ${scrReadPage.good }</li>
