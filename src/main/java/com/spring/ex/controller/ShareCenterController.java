@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -108,22 +110,32 @@ public class ShareCenterController {
 	}
 	//유기동물 게시글 상세페이지 출력
 	@RequestMapping(value = "/shereCenterReadPage" , method = RequestMethod.GET)
-	public String shereCenterReadPage(Model model, HttpServletRequest request) throws Exception{
+	public String shereCenterReadPage(Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
 		String desertion_no = request.getParameter("desertion_no");
 		Map<String, Object> sReadPage = service.getShareCenterBoardReadPage(desertion_no);
 		service.addShareCenterBoardReadPageHit(desertion_no);
 		
-		if(request.getSession().getAttribute("member") != null) {
-			MemberDTO memberDto = (MemberDTO) request.getSession().getAttribute("member");
-			HashMap<String, Object> map = new HashMap<String, Object>();
-			map.put("m_id", memberDto.getM_id());
-			map.put("desertion_no", desertion_no);
-			System.out.println("좋아요 회원/게시글" + map);
+		Cookie[] cookies = request.getCookies();
+		
+		for(Cookie cookie : cookies) {
+			if (cookie.getName().equals(desertion_no)) {
+				if(request.getSession().getAttribute("member") != null) {
+					MemberDTO memberDto = (MemberDTO) request.getSession().getAttribute("member");
+					HashMap<String, Object> map = new HashMap<String, Object>();
+					map.put("m_id", memberDto.getM_id());
+					map.put("desertion_no", desertion_no);
+					System.out.println("좋아요 회원/게시글" + map);
+					
+					int boardLikeCheck = service.getGoodCheckShareCenterBoardReadPage(map);
+					model.addAttribute("boardLikeCheck", boardLikeCheck);
+					System.out.println("회원 번호 : " + memberDto.getM_id());
+				}
+			} else {
+				
+			}
 			
-			int boardLikeCheck = service.getGoodCheckShareCenterBoardReadPage(map);
-			model.addAttribute("boardLikeCheck", boardLikeCheck);
-			System.out.println("회원 번호 : " + memberDto.getM_id());
 		}
+		
 		
 		System.out.println("상세페이지 데이터 : " + sReadPage);
 		model.addAttribute("scrReadPage", sReadPage);
