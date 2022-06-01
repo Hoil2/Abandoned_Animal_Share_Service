@@ -113,31 +113,49 @@ public class ShareCenterController {
 	public String shereCenterReadPage(Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
 		String desertion_no = request.getParameter("desertion_no");
 		Map<String, Object> sReadPage = service.getShareCenterBoardReadPage(desertion_no);
-		service.addShareCenterBoardReadPageHit(desertion_no);
 		
-		Cookie[] cookies = request.getCookies();
-		
-		for(Cookie cookie : cookies) {
-			if (cookie.getName().equals(desertion_no)) {
-				if(request.getSession().getAttribute("member") != null) {
-					MemberDTO memberDto = (MemberDTO) request.getSession().getAttribute("member");
-					HashMap<String, Object> map = new HashMap<String, Object>();
-					map.put("m_id", memberDto.getM_id());
-					map.put("desertion_no", desertion_no);
-					System.out.println("좋아요 회원/게시글" + map);
-					
-					int boardLikeCheck = service.getGoodCheckShareCenterBoardReadPage(map);
-					model.addAttribute("boardLikeCheck", boardLikeCheck);
-					System.out.println("회원 번호 : " + memberDto.getM_id());
-				}
-			} else {
-				
-			}
+		if(request.getSession().getAttribute("member") != null) {
+			MemberDTO memberDto = (MemberDTO) request.getSession().getAttribute("member");
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("m_id", memberDto.getM_id());
+			map.put("desertion_no", desertion_no);
+			System.out.println("좋아요 회원/게시글" + map);
 			
+			int boardLikeCheck = service.getGoodCheckShareCenterBoardReadPage(map);
+			model.addAttribute("boardLikeCheck", boardLikeCheck);
+			System.out.println("회원 번호 : " + memberDto.getM_id());
+		}
+		System.out.println("상세페이지 데이터 : " + sReadPage);
+		
+		Cookie viewCookie = null;
+		Cookie[] cookies = request.getCookies();
+		System.out.println("cookie : "+cookies);
+		if(cookies !=null) {
+			for (int i = 0; i < cookies.length; i++) {
+				//System.out.println("쿠키 이름 : "+cookies[i].getName());
+				//만들어진 쿠키들을 확인하며, 만약 들어온 적 있다면 생성되었을 쿠키가 있는지 확인
+				if(cookies[i].getName().equals("|"+desertion_no+"|")) {
+					System.out.println("if문 쿠키 이름 : "+cookies[i].getName());
+					//찾은 쿠키를 변수에 저장
+					viewCookie=cookies[i];
+				}
+			}
+		}else {
+			System.out.println("cookies 확인 로직 : 쿠키가 없습니다.");
+		}
+		//만들어진 쿠키가 없음을 확인
+		if(viewCookie==null) {
+			System.out.println("viewCookie 확인 로직 : 쿠키 없당");
+			Cookie newCookie=new Cookie("|"+desertion_no+"|","readCount");	//이 페이지에 왔다는 증거용(?) 쿠키 생성
+			response.addCookie(newCookie);
+			service.addShareCenterBoardReadPageHit(desertion_no); 			//쿠키가 없으니 증가 로직 진행
+		//만들어진 쿠키가 있으면 증가로직 진행하지 않음
+		} else {
+			System.out.println("viewCookie 확인 로직 : 쿠키 있당");
+			String value=viewCookie.getValue();
+			System.out.println("viewCookie 확인 로직 : 쿠키 value : "+value);
 		}
 		
-		
-		System.out.println("상세페이지 데이터 : " + sReadPage);
 		model.addAttribute("scrReadPage", sReadPage);
 		return "shereCenterRead";
 	}
