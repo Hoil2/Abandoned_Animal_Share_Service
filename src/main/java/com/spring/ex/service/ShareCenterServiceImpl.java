@@ -90,20 +90,22 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 		conn.disconnect();
 		
 		// json data parsing 
+		String responseBody = sb.toString(); // < 에러나서 여기에 넣고 다시 넣었습니다.
 		JSONParser parser	= new JSONParser(); 
-		JSONObject obj 		= (JSONObject)parser.parse(sb.toString());
+		JSONObject obj 		= (JSONObject)parser.parse(responseBody);
 		JSONObject response = (JSONObject)obj.get("response");
 		JSONObject body 	= (JSONObject)response.get("body");
 		JSONObject items 	= (JSONObject)body.get("items");
 		JSONArray  item 	= (JSONArray) items.get("item");
 		
 		System.out.println( "카운트 수" +(String) body.get("totalCount").toString());
-		
+		/*
 		System.out.println("JSON(obj) : " + obj);
 		System.out.println("JSON(response) : " + response);
 		System.out.println("JSON(body) : " + body);
 		System.out.println("JSON(items) : " + items);
 		System.out.println("JSON(item[]) : " + item);
+		*/
 
 		// 조회 데이터 크기만큼 for문 + 테이블저장 
 		for (int i=0;i< item.size();i++) {
