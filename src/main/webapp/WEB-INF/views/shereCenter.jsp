@@ -160,7 +160,20 @@ $(document).ready(function() {
 								</div>
 								<div class="tour-one__content" style="padding: 10px; ">
 										<div class="row" >
-											<div class="col-lg-12" align="center"><font size="2px;"><c:out value="${slist.kind_cd}" /></font></div>
+											<div class="col-lg-12" align="center">
+												<font size="2px;"><c:out value="${slist.kind_cd}" /></font>
+												<c:choose>
+													<c:when test="${slist.sex_cd eq 'M'}"> 
+														<font size="3px;" color="Blue">♂</font>
+													</c:when>
+													<c:when test="${slist.sex_cd eq 'F'}"> 
+														<font size="3px;" color="#FF7171;">♀</font>
+													</c:when>
+													<c:otherwise> 
+														<font size="1px;">(미상)</font>
+													 </c:otherwise>
+												</c:choose>
+											</div>
 										</div>
 										<div class="row">
 											<div class="col-lg-5">

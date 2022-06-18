@@ -112,10 +112,62 @@
 					<h3>관심을 받은 친구</h3>
 				</div>
 				<!-- /.block-title -->
+				<div align="right">
+					<a href="/shereCenterPage"><font color="#FFCA6C">더보기</font></a>
+				</div>
 				<div class="row">
+					<c:forEach var="slist" items="${pShareCenterList }">
+						<div class="col-lg-3 col-md-6">
+							<div class="tour-one__single" >
+								<div class="tour-one__image">
+									<c:choose>
+										<c:when test="${slist.popfile eq null}">
+											<a href="#">
+												<img src='<c:url value="/resources/images/noImage.png"/>' width="200" height="200">
+											</a>
+										</c:when>
+										<c:otherwise>
+											<img src='<c:url value="${slist.popfile}"/>' alt="" width="200" height="200" onclick="location.href='shereCenterReadPage?desertion_no=${slist.desertion_no}'" >
+										</c:otherwise>
+									</c:choose>
+								</div>
+								<div class="tour-one__content" style="padding: 10px;">
+										<div class="row" >
+											<div class="col-lg-12" align="center">
+												<font size="2px;"><c:out value="${slist.kind_cd}" /></font>
+												<c:choose>
+													<c:when test="${slist.sex_cd eq 'M'}"> 
+														<font size="3px;" color="Blue">♂</font>
+													</c:when>
+													<c:when test="${slist.sex_cd eq 'F'}"> 
+														<font size="3px;" color="#FF7171;">♀</font>
+													</c:when>
+													<c:otherwise> 
+														<font size="1px;">(미상)</font>
+													 </c:otherwise>
+												</c:choose>
+												<br>
+												<font size="1px;">${fn:substring(slist.special_mark, 0 ,27)}</font>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-lg-5">
+												<font size="1px;" >
+													💕 <c:out value="${slist.good}" />&nbsp;
+													<i class="far fa-eye"></i> <c:out value="${slist.hit}"/>
+												</font>
+											
+											</div>
+											<div class="col-lg-7" align="right">
+												<font size="1px;">발견일 : <c:out value="${slist.happen_dt}"/></font>
+											</div>
+										</div>
+								</div>
+							</div>
+						</div>
+					</c:forEach>
 				</div>
 			</div>
-			
 		</section>
 	
 		<!-- 분양후기 -->
@@ -123,7 +175,43 @@
 			<div class="container">
 				<div class="block-title text-center">
 					<p>함께 해요</p>
-					<h3>소중한 분양 후기</h3>
+					<h3>소중한 일상 공유</h3>
+				</div>
+				<div align="right">
+					<a href="/community/daily"><font color="#FFCA6C">더보기</font></a>
+				</div>
+				<div class="row">
+					<c:forEach items="${pDailyBoardList}" var="pdbList">
+						<div class="col-lg-4 wow fadeInUp" data-wow-duration="1500ms" data-wow-delay="000ms">
+							<div class="blog-one__single">
+								<div class="blog-one__image">
+									<c:choose>
+										<c:when test="${pdbList.img_path eq null}">
+											<img src='<c:url value="/resources/images/noImage.png"/>' width="200" height="200">
+										</c:when>
+										<c:otherwise>
+											<img src='<c:url value="${pdbList.img_path}"/>' alt="" width="200" height="200">
+										</c:otherwise>
+									</c:choose>
+									<a href="/community/daily/${pdbList.cb_id}"><i class="fa fa-long-arrow-alt-right"></i></a>
+								</div>
+								<div class="blog-one__content" style="padding: 10 10px;">
+									<h3 style="font-size: 15px;">
+										<a href="/community/daily/${pdbList.cb_id}">${fn:substring(pdbList.title, 0 ,40)}</a>
+									</h3>
+									<font size="2px;" color="#8C8C8C">${fn:substring(pdbList.content, 0 ,50)}</font>
+									<div align="right">
+										<ul class="list-unstyled blog-one__meta" style="align-content: right;">
+											<li><i class="far fa-user-circle"></i><font size="1px;">${pdbList.name }</font></li>
+											<li><i class="far fa-eye"></i><font size="1px;"><c:out value="${pdbList.hit}" /></font></li>
+											<li><font color="#FFCA6C" >❤</font><font size="1px;"><c:out value="${pdbList.good}" /></font></li>
+											<li><font size="1px;">작성일 <c:out value="${pdbList.reg_date}" /></font></li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</c:forEach>
 				</div>
 			</div>
 		</section>

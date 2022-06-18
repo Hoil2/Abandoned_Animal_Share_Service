@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spring.ex.MainPageMapper">
+	<select id="getPopularityShareCenterList" resultType="HashMap">
+		SELECT *
+		FROM v_abandoned_animal_info
+		WHERE happen_dt BETWEEN CURDATE()-interval '40' day AND CURDATE()
+		ORDER BY good DESC, hit DESC LIMIT 0, 20
+	</select>
+	
+	<select id="getPopularityDailyCommunityBoardList" resultType="HashMap">
+		SELECT *, name, (SELECT COUNT(*) FROM community_board_good cbg WHERE cbg.cb_id = cb.cb_id) AS "good"
+		FROM community_board cb, member m 
+		WHERE classify = #{classify} AND enable = 1 AND cb.m_id = m.m_id
+				AND reg_date BETWEEN CURDATE()-interval '100' day AND CURDATE()
+		ORDER BY good DESC, hit DESC LIMIT 0, 9
+	</select>
+	
+</mapper>
