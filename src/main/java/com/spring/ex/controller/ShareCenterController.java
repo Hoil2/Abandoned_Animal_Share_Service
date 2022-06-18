@@ -2,9 +2,12 @@ package com.spring.ex.controller;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -13,6 +16,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.spring.ex.dto.MemberDTO;
 import com.spring.ex.dto.PagingDTO;
 import com.spring.ex.dto.ShareCenterDTO;
 import com.spring.ex.service.PagingService;
@@ -97,17 +101,83 @@ public class ShareCenterController {
 		model.addAttribute("searchArea", searchArea);
 		model.addAttribute("searchTheme", searchTheme);
 		model.addAttribute("alignment", searchAlignment);
-		System.out.println(searchArea + " AND " + searchTheme);
-		System.out.println("하단"+searchAlignment);
+		System.out.println("검색 지역/테마/정렬 : " + searchArea + ", " + searchTheme + ", " + searchAlignment);
 		
-		List<String> asd = service.getShareCenterAreaList();
-		model.addAttribute("areaList", asd);
-		System.out.println(asd);
+		List<String> seletedBoxList = service.getShareCenterAreaList();
+		model.addAttribute("areaList", seletedBoxList);
+		System.out.println(seletedBoxList);
 		return "shereCenter";
 	}
 	//유기동물 게시글 상세페이지 출력
 	@RequestMapping(value = "/shereCenterReadPage" , method = RequestMethod.GET)
-	public String shereCenterReadPage(Model model, HttpServletRequest request) throws Exception{
+	public String shereCenterReadPage(Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
+		String desertion_no = request.getParameter("desertion_no");
+		Map<String, Object> sReadPage = service.getShareCenterBoardReadPage(desertion_no);
+		
+		if(request.getSession().getAttribute("member") != null) {
+			MemberDTO memberDto = (MemberDTO) request.getSession().getAttribute("member");
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("m_id", memberDto.getM_id());
+			map.put("desertion_no", desertion_no);
+			System.out.println("좋아요 회원/게시글" + map);
+			
+			int boardLikeCheck = service.getGoodCheckShareCenterBoardReadPage(map);
+			model.addAttribute("boardLikeCheck", boardLikeCheck);
+			System.out.println("회원 번호 : " + memberDto.getM_id());
+		}
+		System.out.println("상세페이지 데이터 : " + sReadPage);
+		
+		Cookie viewCookie = null;
+		Cookie[] cookies = request.getCookies();
+		if(cookies !=null) {
+			for (int i = 0; i < cookies.length; i++) {
+				System.out.println("쿠키 이름 : "+cookies[i].getName());
+				//만들어진 쿠키들을 확인하며, 만약 들어온 적 있다면 생성되었을 쿠키가 있는지 확인
+				if(cookies[i].getName().equals("|"+desertion_no+"|")) {
+					System.out.println("if문 쿠키 이름 : "+cookies[i].getName());
+					
+					viewCookie=cookies[i];								//찾은 쿠키를 변수에 저장
+				}
+			}
+		}else {
+			System.out.println("cookies 확인 로직 : 쿠키가 없습니다.");
+		}
+		
+		if(viewCookie==null) {												//만들어진 쿠키가 없음을 확인
+			System.out.println("viewCookie 확인 로직 : 쿠키 없당");
+			Cookie newCookie=new Cookie("|"+desertion_no+"|","readCount");	//이 페이지에 왔다는 증거용(?) 쿠키 생성
+			response.addCookie(newCookie);
+			service.addShareCenterBoardReadPageHit(desertion_no); 			//쿠키가 없으니 증가 로직 진행
+			model.addAttribute("hitReadPage", 1);
+		} else {
+			model.addAttribute("hitReadPage", 0);
+			System.out.println("viewCookie 확인 로직 : 쿠키 있당");			//만들어진 쿠키가 있으면 증가로직 진행하지 않음
+		}
+		
+		model.addAttribute("scrReadPage", sReadPage);
+		return "shereCenterRead";
+	}
+	
+	//유기동물 게시글 좋아요 삭제
+	@RequestMapping(value = "/subtractGoodShareCenter" , method = RequestMethod.GET)
+	public String subtractGoodShareCenter(Model model, HttpServletRequest request) throws Exception{
+		MemberDTO memberDto = (MemberDTO) request.getSession().getAttribute("member");
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("m_id", memberDto.getM_id());
+		map.put("desertion_no", request.getParameter("desertion_no"));
+		service.subtractGoodShareCenterReadPage(map);
+		
+		return "shereCenterRead";
+	}
+	
+	//유기동물 게시글 좋아요 추가
+	@RequestMapping(value = "/addGoodShareCenter" , method = RequestMethod.GET)
+	public String addGoodShareCenter(Model model, HttpServletRequest request) throws Exception{
+		MemberDTO memberDto = (MemberDTO) request.getSession().getAttribute("member");
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("m_id", memberDto.getM_id());
+		map.put("desertion_no", request.getParameter("desertion_no"));
+		service.addGoodShareCenterReadPage(map);
 		
 		return "shereCenterRead";
 	}

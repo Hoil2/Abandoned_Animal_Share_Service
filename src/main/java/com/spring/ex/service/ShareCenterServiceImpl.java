@@ -5,9 +5,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -15,7 +15,6 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
 import com.spring.ex.dao.ShareCenterDAO;
 import com.spring.ex.dto.ShareCenterDTO;
@@ -42,6 +41,9 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 	public void getShareCenterTest(ShareCenterDTO dto) throws Exception {
 		// 1. URL을 만들기 위한 StringBuilder.
 		StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1543061/abandonmentPublicSrvc/abandonmentPublic"); /*URL*/
+		Object testCasting = 7;
+		String testCastingResult =String.valueOf(testCasting);
+		
 		
 		// 2. 오픈 API의요청 규격에 맞는 파라미터 생성, 발급받은 인증키.
 		urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=Q84iTs0OivxYSzXgMqJWORyolBgT87Mu5lXE6sSWgEFI%2BhLRrMmdyfML5z3g6HYBCfWqS0YiGkrXpzfT07XhJg%3D%3D"); /*Service Key*/
@@ -55,7 +57,7 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 		urlBuilder.append("&" + URLEncoder.encode("state","UTF-8") + "=" + URLEncoder.encode("", "UTF-8")); /*상태(전체 : null(빈값), 공고중 : notice, 보호중 : protect)*/
 		urlBuilder.append("&" + URLEncoder.encode("neuter_yn","UTF-8") + "=" + URLEncoder.encode("", "UTF-8")); /*상태 (전체 : null(빈값), 예 : Y, 아니오 : N, 미상 : U)*/
 		urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지 번호 (기본값 : 1)*/
-		urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("500", "UTF-8")); /*페이지당 보여줄 개수 (1,000 이하), 기본값 : 10*/
+		urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode(testCastingResult , "UTF-8")); /*페이지당 보여줄 개수 (1,000 이하), 기본값 : 10*/
 		urlBuilder.append("&" + URLEncoder.encode("_type","UTF-8") + "=" + URLEncoder.encode("json", "UTF-8")); /*xml(기본값) 또는 json*/
 		
 		// 3. URL 객체 생성.
@@ -88,18 +90,22 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 		conn.disconnect();
 		
 		// json data parsing 
+		String responseBody = sb.toString(); // < 에러나서 여기에 넣고 다시 넣었습니다.
 		JSONParser parser	= new JSONParser(); 
-		JSONObject obj 		= (JSONObject)parser.parse(sb.toString());
+		JSONObject obj 		= (JSONObject)parser.parse(responseBody);
 		JSONObject response = (JSONObject)obj.get("response");
 		JSONObject body 	= (JSONObject)response.get("body");
 		JSONObject items 	= (JSONObject)body.get("items");
 		JSONArray  item 	= (JSONArray) items.get("item");
+		
+		System.out.println( "카운트 수" +(String) body.get("totalCount").toString());
 		/*
 		System.out.println("JSON(obj) : " + obj);
 		System.out.println("JSON(response) : " + response);
 		System.out.println("JSON(body) : " + body);
 		System.out.println("JSON(items) : " + items);
-		System.out.println("JSON(item[]) : " + item);*/
+		System.out.println("JSON(item[]) : " + item);
+		*/
 
 		// 조회 데이터 크기만큼 for문 + 테이블저장 
 		for (int i=0;i< item.size();i++) {
@@ -145,6 +151,36 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 	@Override
 	public List<String> getShareCenterAreaList() throws Exception {
 		return dao.getShareCenterAreaList();
+	}
+	
+	//유기동물 게시글 상세페이지 출력 
+	@Override
+	public Map<String, Object> getShareCenterBoardReadPage(String desertion_no) throws Exception {
+		return dao.getShareCenterBoardReadPage(desertion_no);
+	}
+	
+	//유기동물 센터 게시물 조회수 증가
+	@Override
+	public void addShareCenterBoardReadPageHit(String desertion_no) throws Exception {
+		dao.addShareCenterBoardReadPageHit(desertion_no);
+	}
+	
+	//유기동물 센터 해당 게시물 좋아요 유무 체크
+	@Override
+	public int getGoodCheckShareCenterBoardReadPage(HashMap<String, Object> map) throws Exception {
+		return dao.getGoodCheckShareCenterBoardReadPage(map);
+	}
+	
+	//유기동물 센터 해당 게시물 좋아요 추가
+	@Override
+	public int addGoodShareCenterReadPage(HashMap<String, Object> map) throws Exception {
+		return dao.addGoodShareCenterReadPage(map);
+	}
+	
+	//유기동물 센터 해당 게시물 좋아요 삭제
+	@Override
+	public int subtractGoodShareCenterReadPage(HashMap<String, Object> map) throws Exception {
+		return dao.subtractGoodShareCenterReadPage(map);
 	}
 	
 }

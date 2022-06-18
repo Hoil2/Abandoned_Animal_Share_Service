@@ -11,6 +11,9 @@
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<link rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
 <title>멍멍냥냥</title>
 </head>
 <body link="red">
@@ -25,125 +28,200 @@
 		<jsp:include page="layout/header.jsp"/>
 		<section class="page-header" style="background-image: url(<c:url value="/resources/images/banner_main/${BannerRespectivelyView.getS_file_name()}"/>);">
 			<div class="container">
-				<h2>분양센터</h2>
+				<h2>분양센터 ${sessionScope.member.getM_id()}</h2>
 				<ul class="thm-breadcrumb list-unstyled">
 				</ul>
 			</div>
 		</section><br>
 		
-		<section class="blog-list">
+		<section class="blog-list" style="padding: 0px 0px;">
 			<div class="container">
-				<div class="blog-details__image">
-				<c:if test="${content.s_file_name ne null}">
-					<img src='<c:url value="/resources/images/TravelPhotoReview/${content.s_file_name}"/>' alt="" class="img-fluid">
-				</c:if>
-				</div>
-				<div class="blog-details__content">
+				<div class="d-flex flex-row-reverse" id="heartDiv">
 					<ul class="list-unstyled blog-one__meta">
-						<li><a href="#"><i class="far fa-user-circle"></i> ${content.userId}</a></li>
-						<li><a href="#"><i class="far fa-eye"></i> ${content.hit }</a></li>
-						<li><a href="#"><i class="far fa-comments"></i> ${replyCount } Comments</a></li>
-						<li><a href="#"><i class="far fa-clock"></i> ${content.redate }</a></li>
-					</ul>
-					<h3>${content.title}</h3>
-					<br>
-					<p><c:out escapeXml="false" value="${fn:replace(content.content, crlf, '<br>')}"/></p>
-				</div>
-				<br>
-				
-				<c:forEach items="${reply }" var="reply">
-				<div class="comment-one">
-					<div class="comment-one__single">
-						<div class="comment-one__image">
-							<img src='<c:url value="/resources/images/ranking/user1.jpg"/>' alt="">
-						</div>
-						<div class="comment-one__content">
-							<p><i class="far fa-clock"></i> ${reply.getRegDate() }</p>
-							<h3>${reply.getUserID() }</h3>
-							<p id="replyContentSection${reply.getPrrId() }">
-								<c:out escapeXml="false" value="${fn:replace(reply.getContent(), crlf, '<br>')}"/>
-							</p>
-							<ul class="list-unstyled blog-one__meta">
-							<c:if test="${sessionScope.member.getUserID() eq reply.getUserID() }">
-								<li><a href="javascript:void(0)" onclick="replyEdit(${reply.getPrrId() }, '${reply.getContent() }')"><i class="far fa-edit"></i> 수정</a></li>
-								<li><a href="javascript:void(0)" onclick="TravelPhotoReplyDelete(${param.prid }, ${reply.getPrrId()})"><i class="fas fa-trash-alt"></i> 삭제</a></li>
-							</c:if>
-							</ul>
-						</div>
-					</div>
-				</div>
-				</c:forEach>
-				
-				<!-- 댓글 페이징 처리(기준 5개) -->
-				<div class="post-pagination">
-					<!-- 첫 페이지면 Disabled 아니라면 Enabled -->
-					<c:choose>
-						<c:when test="${replyPaging.pageNo eq replyPaging.firstPageNo }">
-							<a class="disabledLink" href="travelphotoView?prid=${param.prid }&page=${replyPaging.prevPageNo}"><i class="fa fa-angle-left"></i></a>
-						</c:when>
-						<c:otherwise>
-							<a class="page-link" href="travelphotoView?prid=${param.prid }&page=${replyPaging.prevPageNo}"><i class="fa fa-angle-left"></i></a>
-						</c:otherwise>
-					</c:choose>
-					<!-- 페이지 갯수만큼 버튼 생성 -->
-					<c:forEach var="i" begin="${replyPaging.startPageNo }" end="${replyPaging.endPageNo }" step="1">
+						<li><i class="far fa-clock"></i> ${scrReadPage.redate  }</li>
+						<li><i class="far fa-eye"></i>
+							<c:choose>
+								<c:when test="${hitReadPage eq 1}"> 
+									${scrReadPage.hit+1}
+								</c:when>
+								<c:otherwise> 
+									${scrReadPage.hit}
+								 </c:otherwise>
+							</c:choose>
+						</li>
 						<c:choose>
-							<c:when test="${i eq replyPaging.pageNo }">
-								<a class="active disabledLink" href="travelphotoView?prid=${param.prid }&page=${i}"><c:out value="${i }"/></a>
+							<c:when test="${member ne null && boardLikeCheck eq 1}"> 
+								<li><i class="fas fa-heart" onclick="subtractGood_click()"></i> ${scrReadPage.good }</li>
 							</c:when>
-							<c:otherwise>
-								<a href="travelphotoView?prid=${param.prid }&page=${i}"><c:out value="${i }"/></a>
-							</c:otherwise>
+							<c:when test="${member ne null && boardLikeCheck ne 1}">
+								<li><i class="far fa-heart" onclick="addGood_click();"></i> ${scrReadPage.good }</li>
+							</c:when>
+							<c:otherwise> 
+								<li><i class="far fa-heart" onclick="buttonNoLogin_click();"></i> ${scrReadPage.good }</li>
+							 </c:otherwise>
 						</c:choose>
-					</c:forEach>
-					<!-- 마지막 페이지면 Disabled 아니라면 Enabled -->
-					<c:choose>
-						<c:when test="${replyPaging.pageNo eq replyPaging.finalPageNo }">
-							<a class="disabledLink" href="travelphotoView?prid=${param.prid }&page=${replyPaging.nextPageNo}"><i class="fa fa-angle-right"></i></a>
-						</c:when>
-						<c:otherwise>
-							<a href="travelphotoView?prid=${param.prid }&page=${replyPaging.nextPageNo}"><i class="fa fa-angle-right"></i></a>
-						</c:otherwise>
-					</c:choose>
+					</ul>
+				</div><hr>
+				<div align="center" >
+					<c:if test="${scrReadPage.popfile ne null}">
+						<img src="${scrReadPage.popfile}" alt="" class="img-fluid" align="center">
+					</c:if>
 				</div>
-				<br>
-				<div class="comment-form">
-					<h3 class="comment-form__title">댓글 작성</h3>
-					<form action="travelreplyWrite" method="POST" class="contact-one__form">
-						<div class="row low-gutters">
-							<div class="col-md-12">
-								<div class="input-group">
-									<textarea id="replyContent" name="Content" placeholder="댓글을 입력하세요..."></textarea>
-								</div>
-							</div>
-							<input type="hidden" id="replyAuthor" name="UserID" value="${sessionScope.member.getUserID() }">
-							<input type="hidden" id="prId" name="prId" value="${param.prid }">
-							<div class="col-md-12">
-								<div class="input-group">
-									<button type="button" onclick="" id="btnReplyWrite" name="btnReplyWrite" class="thm-btn contact-one__btn">작성하기</button>
-								</div>
-							</div>
+				<div class="blog-details__content" style="border: 0px;">
+					<div class="row">
+						<div class="col-md-12">No. ${scrReadPage.desertion_no}</div>
+						<div class="col-md-6">
+							<table class="table">
+								<thead>
+									<tr class="success">
+										<th>동물 정보</th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody >
+									<tr >
+										<td><font size="3px;">나이 / 몸무게</font></td>
+										<td>${scrReadPage.age} / ${scrReadPage.weight}</td>
+									</tr>
+									<tr>
+										<td><font size="3px;">성별 / 중성화여부</font></td>
+										<td>
+											<c:if test="${scrReadPage.sex_cd eq 'M'}">
+												수컷 /
+											</c:if>
+											<c:if test="${scrReadPage.sex_cd eq 'F'}">
+												암컷 /
+											</c:if>
+											<c:if test="${scrReadPage.sex_cd eq 'Q'}">
+												미상 /
+											</c:if>
+											<c:if test="${scrReadPage.neuter_yn eq 'Y'}">
+												O 
+											</c:if>
+											<c:if test="${scrReadPage.neuter_yn eq 'N'}">
+												X 
+											</c:if>
+											<c:if test="${scrReadPage.neuter_yn eq 'U'}">
+												미상
+											</c:if>
+										</td>
+									</tr>
+									<tr>
+										<td><font size="3px;">종</font></td>
+										<td>${scrReadPage.kind_cd}</td>
+									</tr>
+									
+									<tr>
+										<td><font size="3px;">특징</font></td>
+										<td><font size="2px;">${scrReadPage.special_mark}</font></td>
+									</tr>
+								</tbody> 
+							</table><br>
 						</div>
-					</form>
-				</div>
-				<div class="d-flex">
-					<div class="ml-auto">
-						<form name="postUpdate" method="POST">
-						<!-- 세션의 ID와 게시글 작성자가 같을 경우에만 수정, 삭제 권한을 줌 -->
-						<c:if test="${sessionScope.member.getUserID() eq content.userId }">
-							<button class="thm-btn-psd" type="button" onclick="location.href='travelphotoModifyView?prid=${content.prid}'">수정</button>
-							<button class="thm-btn-psd" type="button" onclick="TravelPhotoDelete()">삭제</button>
-						</c:if>
-							<button class="thm-btn-psd" type="button" onclick="location.href='travelphoto'">목록</button>
-						</form>
+						
+						<div class="col-md-6">
+							<table class="table">
+								<tbody>
+									<tr class="success">
+										<th>공고 정보</th>
+										<th> </th>
+									</tr>
+									<tr>
+										<td><font size="3px;">공고번호</font></td>
+										<td>${scrReadPage.notice_no}</td>
+									</tr>
+									<tr>
+										<td> <font size="3px;"> 상태</font></td>
+										<td>${scrReadPage.process_state}</td>
+									</tr>
+									<tr>
+										<td><font size="3px;">공고시작일 ~ 종료일</font></td>
+										<td>${scrReadPage.notice_sdt} ~ ${scrReadPage.notice_edt}</td>
+									</tr>
+									<tr>
+										<td><font size="3px;">발견장소</font></td>
+										<td>${scrReadPage.happen_place}</td>
+									</tr>
+								</tbody> 
+							</table>
+						</div>
+						<br>
+						<div class="col-md-12">
+							<table class="table">
+								<tbody>
+									<tr class="success">
+										<th class="success">보호소 정보</th>
+										<th> </th>
+									</tr>
+									<tr>
+										<td><font size="3px;">보호소</font></td>
+										<td>${scrReadPage.notice_no}</td>
+									</tr>
+									<tr>
+										<td> <font size="3px;"> 보호장소</font></td>
+										<td>${scrReadPage.process_state}</td>
+									</tr>
+									<tr>
+										<td><font size="3px;">전화번호</font></td>
+										<td>${scrReadPage.notice_sdt} ~ ${scrReadPage.notice_edt}</td>
+									</tr>
+									<tr>
+										<td><font size="3px;">관할기관</font></td>
+										<td>${scrReadPage.happen_place}</td>
+									</tr>
+									<tr>
+										<td><font size="3px;">담당자 / 연락처</font></td>
+										<td>${scrReadPage.happen_place}</td>
+									</tr>
+									<tr>
+										<td><font size="3px;">특이사항</font></td>
+										<td>${scrReadPage.happen_place}</td>
+									</tr>
+								</tbody> 
+							</table>
+						</div>
 					</div>
 				</div>
+				<br>
+				
 			</div>
 		</section>	
-			
-			
 		<br>
 		<jsp:include page="layout/footer.jsp"/>
 	</div>
+	
+<script>
+	function addGood_click() {
+		$.ajax({
+			url: "addGoodShareCenter",
+			type: "GET",
+			data: {'desertion_no':${scrReadPage.desertion_no}},
+			success: function() {
+				var shereCenterUrl = "shereCenterReadPage?desertion_no=" + ${scrReadPage.desertion_no};
+				$("#heartDiv").load(shereCenterUrl + " #heartDiv");
+			}
+		});
+	}
+	
+	function subtractGood_click() {
+		$.ajax({
+			url: "subtractGoodShareCenter",
+			type: "GET",
+			data: {'desertion_no':${scrReadPage.desertion_no}},
+			success: function() {
+				var shereCenterUrl = "shereCenterReadPage?desertion_no=" + ${scrReadPage.desertion_no};
+				$("#heartDiv").load(shereCenterUrl + " #heartDiv");
+			}
+		});
+	}
+	
+	function buttonNoLogin_click() {
+		swal({
+			title: "로그인",
+			text: "로그인이 되어야 하트를 누를 수 있습니다.",
+			icon: "warning",
+		});
+	}
+</script>
 </body>
 </html>

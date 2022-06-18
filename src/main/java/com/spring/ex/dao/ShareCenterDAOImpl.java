@@ -2,6 +2,7 @@ package com.spring.ex.dao;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -39,5 +40,35 @@ public class ShareCenterDAOImpl implements ShareCenterDAO{
 	@Override
 	public List<String> getShareCenterAreaList() throws Exception {
 		return sqlSession.selectList(namespace + ".getShareCenterAreaList"); 
+	}
+	
+	//유기동물 게시글 상세페이지 출력 
+	@Override
+	public Map<String, Object> getShareCenterBoardReadPage(String desertion_no) throws Exception {
+		return sqlSession.selectOne(namespace + ".getShareCenterBoardReadPage", desertion_no);
+	}
+	
+	//유기동물 센터 게시물 조회수 증가
+	@Override
+	public void addShareCenterBoardReadPageHit(String desertion_no) throws Exception {
+		sqlSession.update(namespace + ".addShareCenterBoardReadPageHit", desertion_no);
+	}
+	
+	//유기동물 센터 해당 게시물 좋아요 유무 체크
+	@Override
+	public int getGoodCheckShareCenterBoardReadPage(HashMap<String, Object> map) throws Exception {
+		return sqlSession.selectOne(namespace + ".getGoodCheckShareCenterBoardReadPage", map);
+	}
+	
+	//유기동물 센터 해당 게시물 좋아요 추가
+	@Override
+	public int addGoodShareCenterReadPage(HashMap<String, Object> map) throws Exception {
+		return sqlSession.insert(namespace + ".addGoodShareCenterReadPage", map);
+	}
+	
+	//유기동물 센터 해당 게시물 좋아요 삭제
+	@Override
+	public int subtractGoodShareCenterReadPage(HashMap<String, Object> map) throws Exception {
+		return sqlSession.delete(namespace + ".subtractGoodShareCenterReadPage", map);
 	}
 }

@@ -154,7 +154,7 @@ $(document).ready(function() {
 											</a>
 										</c:when>
 										<c:otherwise>
-											<img src='<c:url value="${slist.popfile}"/>' alt="" width="200" height="200" onclick="location.href='main'" >
+											<img src='<c:url value="${slist.popfile}"/>' alt="" width="200" height="200" onclick="location.href='shereCenterReadPage?desertion_no=${slist.desertion_no}'" >
 										</c:otherwise>
 									</c:choose>
 								</div>

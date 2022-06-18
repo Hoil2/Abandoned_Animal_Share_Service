@@ -56,7 +56,7 @@
 	
 	<!-- 공공데이터 유기동물 API DB에 저장 -->
 	<insert id="setDbShareCenterApiResponse">
-		INSERT INTO abandoned_animal_info(desertion_no, filename, happen_dt, happen_place, kind_cd, color_cd, age, weight, notice_no, notice_sdt, notice_edt, popfile, process_state, sex_cd, neuter_yn, special_mark, hit) 
+		INSERT INTO abandoned_animal_info(desertion_no, filename, happen_dt, happen_place, kind_cd, color_cd, age, weight, notice_no, notice_sdt, notice_edt, popfile, process_state, sex_cd, neuter_yn, special_mark, hit, redate) 
 		VALUES(
 			#{desertion_no}, 
 			#{filename}, 
@@ -74,7 +74,8 @@
 			#{sex_cd}, 
 			#{neuter_yn}, 
 			#{special_mark},
-			0)
+			0,
+			CURDATE())
 		ON DUPLICATE KEY UPDATE
 			desertion_no=#{desertion_no},
 			filename=#{filename}, 
@@ -91,7 +92,41 @@
 			process_state=#{process_state}, 
 			sex_cd=#{sex_cd}, 
 			neuter_yn=#{neuter_yn}, 
-			special_mark=#{special_mark}
+			special_mark=#{special_mark},
+			redate=CURDATE()
 	</insert>
+	
+	<!-- 유기동물 게시글 상세페이지 출력 -->
+	<select id="getShareCenterBoardReadPage" resultType="hashMap">
+		SELECT * 
+		FROM v_abandoned_animal_info
+		WHERE desertion_no = #{desertion_no};
+	</select>
+	
+	<!-- 조회수 증가 -->
+	<update id="addShareCenterBoardReadPageHit">
+		UPDATE abandoned_animal_info
+		SET hit = hit + 1
+		WHERE desertion_no = #{desertion_no}; 
+	</update>
+	
+	<!-- 회원 좋아요 체크 -->
+	<select id="getGoodCheckShareCenterBoardReadPage" resultType="int">
+		SELECT COUNT(*)
+		FROM abandoned_animal_good	
+		WHERE m_id = #{m_id} AND desertion_no = #{desertion_no};
+	</select>
+	
+	<!-- 좋아요 추가 -->
+	<insert id="addGoodShareCenterReadPage">
+		INSERT INTO abandoned_animal_good(desertion_no, m_id)
+		VALUES(#{desertion_no}, #{m_id})
+	</insert>
+	
+	<!-- 좋아요 삭제 -->
+	<delete id="subtractGoodShareCenterReadPage">
+		DELETE FROM abandoned_animal_good 
+		WHERE desertion_no = #{desertion_no} AND m_id = #{m_id}
+	</delete>
 	
 </mapper>

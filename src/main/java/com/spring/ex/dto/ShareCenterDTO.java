@@ -19,6 +19,7 @@ public class ShareCenterDTO {
 	private String neuter_yn;
 	private String special_mark;
 	private int hit;
+	private Object redate;
 	
 	public int getAni_id() {
 		return ani_id;
@@ -127,5 +128,11 @@ public class ShareCenterDTO {
 	}
 	public void setHit(int hit) {
 		this.hit = hit;
+	}
+	public Object getRedate() {
+		return redate;
+	}
+	public void setRedate(Object redate) {
+		this.redate = redate;
 	}
 }
