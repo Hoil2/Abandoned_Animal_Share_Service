@@ -33,9 +33,6 @@ public class CommunityController {
 	@Resource(name="uploadPath")
 	String uploadPath;
 	
-	@Autowired
-	ServletContext servletContext;
-	
 	@Inject
 	CommunityService communityService;
 	
