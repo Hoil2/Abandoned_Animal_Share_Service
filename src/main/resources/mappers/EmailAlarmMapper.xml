@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spring.ex.EmailAlarmMapper">
+	<insert id="insertEmailAlarm">
+		INSERT INTO email_alarm(m_id, desertion_no, ea_classify)
+		VALUES(#{m_id}, #{desertion_no}, #{ea_classify})
+	</insert>
+	
+	<delete id="deleteEmailAlarm">
+		DELETE FROM email_alarm
+		WHERE m_id = #{m_id} AND desertion_no = #{desertion_no}
+	</delete>
+	
+	<delete id="deleteEmailAlarmByM_id">
+		DELETE FROM email_alarm
+		WHERE m_id = #{m_id}
+	</delete>
+	
+	<select id="existEmailAlarm" resultType="int">
+		SELECT EXISTS(SELECT * FROM email_alarm WHERE m_id = #{m_id} AND desertion_no = #{desertion_no})
+	</select>
+	
+	<select id="getEmailAlarmList" resultType="EmailAlarmDTO">
+		SELECT * FROM email_alarm
+		WHERE desertion_no = #{desertion_no}
+	</select>
+	
+	<select id="getEmailAlarmListByM_id" resultType="EmailAlarmDTO">
+		SELECT * FROM email_alarm
+		WHERE m_id = #{m_id}
+	</select>
+</mapper>

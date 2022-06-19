@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spring.ex.MemberPetMapper">
+	<insert id="insertMemberPet">
+		INSERT INTO member_pet(m_id, desertion_no, pet_name)
+		VALUES(#{m_id}, #{desertion_no}, #{pet_name})
+	</insert>
+	
+	<delete id="deleteMemberPet">
+		DELETE FROM member_pet
+		WHERE m_id = #{m_id}
+	</delete>
+	
+	<select id="selectMemberPetList" resultType="MemberPetDTO">
+		SELECT * FROM member_pet
+		WHERE m_id = #{m_id}
+	</select>
+</mapper>
