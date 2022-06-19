@@ -8,5 +8,6 @@
 		<typeAlias type="com.spring.ex.dto.MemberDTO" alias="MemberDTO"/>
 		<typeAlias type="com.spring.ex.dto.MemberPetDTO" alias="MemberPetDTO"/>
 		<typeAlias type="com.spring.ex.dto.EmailAlarmDTO" alias="EmailAlarmDTO"/>
+		<typeAlias type="com.spring.ex.dto.LostAnimalDTO" alias="LostAnimalDTO"/>
 	</typeAliases>
 </configuration>

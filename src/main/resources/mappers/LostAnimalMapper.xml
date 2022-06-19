@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spring.ex.LostAnimalMapper">
+	
+	<select id="getLostAnimalBoardList" resultType="hashMap">
+		SELECT lab.*, name
+		FROM lost_animal_board lab, member m
+		WHERE lab.m_id = m.m_id
+		ORDER BY reg_date DESC
+		LIMIT #{Page}, #{PageSize}
+	</select>
+	
+	<select id="getTotalCountLostAnimalBoardList" resultType="int">
+		SELECT count(*)
+		FROM lost_animal_board lab, member m
+		WHERE lab.m_id = m.m_id
+	</select>
+	
+	<insert id="writeLostAnimalBoard">
+		INSERT INTO lost_animal_board(m_id, img_path, pet_name, kind_cd, lost_date, lost_place, sex_cd, age, color_cd, content, enable, reg_date)
+		VALUES(#{m_id}, #{img_path}, #{pet_name}, #{kind_cd}, #{lost_date}, #{lost_place}, #{sex_cd}, #{age}, #{color_cd}, #{content}, 1, CURDATE())
+	</insert>
+	
+	<delete id="deleteLostAnimalBoard">
+		DELETE FROM lost_animal_board
+		WHERE alb_id = #{alb_id}
+	</delete>
+	
+	
+<!-- 	<update id="modifyLostAnimalBoard">
+		UPDATE lost_animal_board
+		SET title = #{title}, content = #{content}, classify = #{classify}
+		WHERE cb_no = #{cb_no}; 
+	</update> -->
+	
+	<select id="getReadLostAnimal" resultType="hashMap">
+		SELECT lab.*, name, email, phone 
+		FROM lost_animal_board lab, member m
+		WHERE lab.m_id = m.m_id AND alb_id = #{alb_id}
+	</select>
+	
+</mapper>

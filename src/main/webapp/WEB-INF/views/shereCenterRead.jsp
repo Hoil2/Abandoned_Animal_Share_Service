@@ -28,7 +28,7 @@
 		<jsp:include page="layout/header.jsp"/>
 		<section class="page-header" style="background-image: url(<c:url value="/resources/images/banner_main/${BannerRespectivelyView.getS_file_name()}"/>);">
 			<div class="container">
-				<h2>분양센터 ${sessionScope.member.getM_id()}</h2>
+				<h2>분양센터</h2>
 				<ul class="thm-breadcrumb list-unstyled">
 				</ul>
 			</div>
@@ -38,6 +38,7 @@
 			<div class="container">
 				<div class="d-flex flex-row-reverse" id="heartDiv">
 					<ul class="list-unstyled blog-one__meta">
+						<li> <a href="javascript:window.history.back();"> 목록</a></li>
 						<li><i class="far fa-clock"></i> ${scrReadPage.redate  }</li>
 						<li><i class="far fa-eye"></i>
 							<c:choose>
