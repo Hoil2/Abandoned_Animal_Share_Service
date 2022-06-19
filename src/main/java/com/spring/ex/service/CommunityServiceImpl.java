@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.spring.ex.dao.CommunityDAO;
 import com.spring.ex.dao.CommunityLikeDAO;
+import com.spring.ex.dto.CommunityDTO;
 
 @Service
 public class CommunityServiceImpl implements CommunityService {
@@ -32,13 +33,13 @@ public class CommunityServiceImpl implements CommunityService {
 	
 	// 정보 공유 게시판에 등록
 	@Override
-	public int submitPost(HashMap<String, Object> map) throws Exception {
-		return dao.submitPost(map);
+	public int submitPost(CommunityDTO dto) throws Exception {
+		return dao.submitPost(dto);
 	}
 	
 	//게시물 상세 페이지 가져오기
 	@Override
-	public HashMap<String, Object> getPageDetail(int pageNo) throws Exception {
+	public CommunityDTO getPageDetail(int pageNo) throws Exception {
 		return dao.getPageDetail(pageNo);
 	}
 	

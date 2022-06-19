@@ -38,4 +38,14 @@ public class MemberServiceImpl implements MemberService {
 		map.put("password", pw);
 		return dao.findUserId(map);
 	}
+
+	@Override
+	public String getNameByM_id(int m_id) throws Exception {
+		return dao.getNameByM_id(m_id);
+	}
+
+	@Override
+	public MemberDTO getMemberByM_id(int m_id) throws Exception {
+		return dao.getMemberByM_id(m_id);
+	}
 }

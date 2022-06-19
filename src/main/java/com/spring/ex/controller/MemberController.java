@@ -67,6 +67,6 @@ public class MemberController {
 	@RequestMapping(value="/signOut", method = RequestMethod.GET)
 	public String signOut(HttpServletRequest request) throws Exception {
 		request.getSession().invalidate();
-		return "redirect:" + request.getHeader("Referer");
+		return "redirect:/";
 	}
 }

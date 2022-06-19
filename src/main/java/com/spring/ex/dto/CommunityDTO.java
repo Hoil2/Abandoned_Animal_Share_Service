@@ -5,6 +5,7 @@ import java.sql.Date;
 public class CommunityDTO {
 	private int cb_id;
 	private int m_id;
+	private String desertion_no;
 	private String title;
 	private String content;
 	private int hit;
@@ -24,6 +25,12 @@ public class CommunityDTO {
 	}
 	public void setM_id(int m_id) {
 		this.m_id = m_id;
+	}
+	public String getDesertion_no() {
+		return desertion_no;
+	}
+	public void setDesertion_no(String desertion_no) {
+		this.desertion_no = desertion_no;
 	}
 	public String getTitle() {
 		return title;

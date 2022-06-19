@@ -41,21 +41,30 @@
 		<%-- 게시물 제목 부분 --%>
 	  	<div class="pt-5 pb-1">
 		    <p class="fs-2 fw-bold">${pageDetail.title}</p>
-		    <span class="fs-4 pr-3">${pageDetail.name}</span>
+		    <span class="fs-4 pr-3">${memberService.getNameByM_id(pageDetail.m_id)}</span>
 		    <span class="fs-4">조회수 ${pageDetail.hit}</span>
-		    <div class="float-right">
-		    	<%-- 좋아요 --%>
-			    <span class="fs-4">
-			    	<c:if test="${member != null}">
-			    		<i onclick="clickedHeart(this)" class="bi bi-heart" id="like"></i>
-			    	</c:if>
-			    	<c:if test="${member == null}">
-			    		<i class="bi bi-heart"></i>
-			    	</c:if>
-		    	</span>
-			    <span class="fs-4" id="likeCnt">${likeCnt}</span>
-			    <%-- 좋아요 끝 --%>
-		    </div>
+		    
+		    <%-- 일상 게시판일 때만 좋아요 --%>
+		    <c:if test="${pageDetail.classify == 2}">
+			    <div class="float-right">
+			    	<%-- 좋아요 --%>
+				    <span class="fs-4">
+				    	<c:if test="${member != null}">
+				    		<i onclick="clickHeart(this)" class="bi bi-heart" id="like"></i>
+				    	</c:if>
+				    	<c:if test="${member == null}">
+				    		<i class="bi bi-heart"></i>
+				    	</c:if>
+			    	</span>
+				    <span class="fs-4 mr-3" id="likeCnt">${likeCnt}</span>
+				    <%-- 좋아요 끝 --%>
+				    <c:if test="${member != null}">
+				    	<span class="fs-4">
+		    				<i onclick="clickAlarm(this)" class="bi bi-exclamation-circle" id="alarm"></i>
+		    			</span>
+		    		</c:if>
+			    </div>
+		    </c:if>
 		</div>
 		<hr>
 		<%-- 게시물 내용 부분 --%>
@@ -118,19 +127,25 @@
 		 		x.classList.toggle("bi-heart");
 		        x.classList.toggle("bi-heart-fill");
 		        x.classList.toggle("text-danger");
-				}
+			}
+			if(${existAlarm}) {
+				var x = $('#alarm')[0]; 
+				x.classList.toggle("bi-exclamation-circle");
+				x.classList.toggle("bi-exclamation-circle-fill");
+				x.classList.toggle("text-warning");
+			}
 		});
 		
 		// 좋아요 클릭 이벤트
-		function clickedHeart(x) {
-			var status;
+		function clickHeart(x) {
+			var heartStatus, alarmStatus;
 			var likeCnt = parseInt($('#likeCnt').html());
 			if(x.classList.contains("bi-heart-fill")) {
-				status = false;
+				heartStatus = false;
 				likeCnt = likeCnt - 1; 
 			}
 			else {
-				status = true;
+				heartStatus = true;
 				likeCnt = likeCnt + 1; 
 			}
 		       
@@ -143,8 +158,29 @@
 				url: '/communityClickedLike',
 				type: 'post',
 				data: {
-					status: status,
+					status: heartStatus,
 					cb_id: ${pageNo}
+				}
+			});
+		}
+		
+		function clickAlarm(x) {
+			if(x.classList.contains("bi-exclamation-circle-fill")) {
+				alarmStatus = false;
+			}
+			else {
+				alarmStatus = true;
+			}
+		       
+			x.classList.toggle("bi-exclamation-circle");
+			x.classList.toggle("bi-exclamation-circle-fill");
+			x.classList.toggle("text-warning");
+			$.ajax({
+				url: '/communityClickedAlarm',
+				type: 'post',
+				data: {
+					status: alarmStatus,
+					desertion_no: ${pageDetail.desertion_no}
 				}
 			});
 		}

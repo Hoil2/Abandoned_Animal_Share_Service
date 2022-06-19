@@ -1,7 +1,5 @@
 package com.spring.ex.service;
 
-import java.util.HashMap;
-
 import org.springframework.stereotype.Service;
 
 import com.spring.ex.dto.MemberDTO;
@@ -17,4 +15,10 @@ public interface MemberService {
 	
 	// 회원 아이디 찾기
 	public int findUserId(String email, String pw) throws Exception;
+	
+	// 아이디로 이름 찾기
+	public String getNameByM_id(int m_id) throws Exception;
+	
+	// 아이디로 회원 정보 가져오기
+	public MemberDTO getMemberByM_id(int m_id) throws Exception;
 }

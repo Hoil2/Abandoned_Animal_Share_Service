@@ -36,4 +36,14 @@ public class MemberDAOImpl implements MemberDAO {
 	public int findUserId(HashMap<String, String> map) throws Exception {
 		return sql.selectOne(namespcae + ".findUserId", map);
 	}
+
+	@Override
+	public String getNameByM_id(int m_id) throws Exception {
+		return sql.selectOne(namespcae + ".getNameByM_id", m_id);
+	}
+
+	@Override
+	public MemberDTO getMemberByM_id(int m_id) throws Exception {
+		return sql.selectOne(namespcae + ".getMemberByM_id", m_id);
+	}
 }

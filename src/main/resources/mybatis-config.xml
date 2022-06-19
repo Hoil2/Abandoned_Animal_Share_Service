@@ -6,8 +6,7 @@
 		<typeAlias type="com.spring.ex.dto.ShareCenterDTO" alias="ShareCenterDTO"/>
 		<typeAlias type="com.spring.ex.dto.CommunityDTO" alias="CommunityDTO"/>
 		<typeAlias type="com.spring.ex.dto.MemberDTO" alias="MemberDTO"/>
-		
+		<typeAlias type="com.spring.ex.dto.MemberPetDTO" alias="MemberPetDTO"/>
+		<typeAlias type="com.spring.ex.dto.EmailAlarmDTO" alias="EmailAlarmDTO"/>
 	</typeAliases>
-	
-	
 </configuration>

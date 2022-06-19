@@ -48,10 +48,10 @@
 	
 	<!-- 공용 -->
 	
-	<select id="getPageDetail" resultType="HashMap">
+	<select id="getPageDetail" resultType="CommunityDTO">
 		SELECT * 
-		FROM member m, community_board c 
-		WHERE m.m_id=c.m_id AND cb_id=#{pageNo}
+		FROM community_board c 
+		WHERE cb_id=#{pageNo}
 	</select>
 	
 	<select id="getComment" resultType="HashMap">
@@ -61,8 +61,8 @@
 	</select>
 	
 	<insert id="submitPost">
-		INSERT INTO community_board(m_id, title, content, img_path, reg_date, classify) 
-		VALUES(#{m_id}, #{title}, #{content}, #{img_path}, #{reg_date}, #{classify})
+		INSERT INTO community_board(m_id, desertion_no, title, content, img_path, reg_date, classify) 
+		VALUES(#{m_id}, #{desertion_no}, #{title}, #{content}, #{img_path}, #{reg_date}, #{classify})
 	</insert>
 	
 	<insert id="submitComment">

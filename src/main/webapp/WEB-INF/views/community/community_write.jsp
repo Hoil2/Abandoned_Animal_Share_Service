@@ -56,7 +56,7 @@
 	<div class="container">
 		<form action="/submitPost" method="post" enctype="multipart/form-data">
 		  	<div class="form-group row">
-			    <label for="title" class="col-sm-2 col-form-label">제목 : </label>
+			    <label for="title" class="col-sm-2 col-form-label">제목 </label>
 			    <div class="col-sm-10">
 			      <input type="text" class="form-control" id="title" name ="title">
 			    </div>
@@ -65,11 +65,22 @@
 		  	
 		  	<c:if test="${classify == 2}">
 			  	<div class="form-group row">
-			  		<label class="col-sm-2 col-form-label">반려동물 이미지 업로드 </label>
+			  		<label class="col-sm-2 col-form-label">반려동물 이미지</label>
 			  		<div class="col-sm-10">
-			        	<input class="form-control" type="file" name="file" onchange="chk_file_type(this)" accept="image/*"/>
+			        	<input class="form-control" type="file" name="file" onchange="chk_file_type(this)" accept="image/*" required/>
 			  		</div>
 			  	</div>
+				
+				<div class="form-group row">
+			  		<label class="col-sm-2 col-form-label">반려동물 id</label>
+			  		<div class="col-sm-10">
+			        	<select name="desertion_no" class="form-select form-select-sm border border-dark" style="height:40px;" name="filter" aria-label=".form-select-sm example" required>
+			        		<c:forEach var="memberPet" items="${memberPetList}">
+								<option value="${memberPet.desertion_no}">${memberPet.pet_name} / id : ${memberPet.desertion_no}</option>
+			        		</c:forEach>
+						</select>
+			  		</div>
+			  	</div>			  	
 		  	</c:if>
 		  	<textarea class="form-control" name="content" rows="20"></textarea>
 		  	

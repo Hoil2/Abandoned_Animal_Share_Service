@@ -6,10 +6,13 @@ import java.util.List;
 
 import javax.annotation.Resource;
 import javax.inject.Inject;
-import javax.servlet.ServletContext;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,9 +21,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.spring.ex.dto.CommunityDTO;
+import com.spring.ex.dto.EmailAlarmDTO;
 import com.spring.ex.dto.MemberDTO;
+import com.spring.ex.dto.MemberPetDTO;
 import com.spring.ex.service.CommunityService;
+import com.spring.ex.service.EmailAlarmService;
+import com.spring.ex.service.EmailService;
 import com.spring.ex.service.FileUploadService;
+import com.spring.ex.service.MemberPetService;
 import com.spring.ex.service.MemberService;
 import com.spring.ex.service.PagingService;
 
@@ -43,6 +52,18 @@ public class CommunityController {
 	
 	@Inject
 	FileUploadService fileUploadService;
+	
+	@Inject
+	private MemberPetService memberPetService;
+	
+	@Inject
+	private EmailAlarmService emailAlarmService;
+	
+	@Inject
+	private EmailService emailService;
+	
+	@Autowired
+	private JavaMailSenderImpl mailSender;
 	
 	@RequestMapping("/dictionary")
 	public String dictionary(Model model, HttpServletRequest request) throws Exception {
@@ -83,7 +104,6 @@ public class CommunityController {
 		model.addAttribute("filter", filter);
 		model.addAttribute("keyword", keyword);
 		model.addAttribute("member", request.getSession().getAttribute("member"));
-		
 		System.out.println(request.getSession().getAttribute("member"));
 		
 		return "community/dictionary";
@@ -93,9 +113,10 @@ public class CommunityController {
 	// 지식백과 상세 페이지
 	@RequestMapping("/dictionary/{pageNo}")
 	public String dictionaryDetail(Model model, HttpServletRequest request, @PathVariable("pageNo") int pageNo) throws Exception {
-		HashMap<String, Object> pageDetail = communityService.getPageDetail(pageNo);
+		CommunityDTO pageDetail = communityService.getPageDetail(pageNo);
 		communityService.addHitToBoardPage(pageNo);
 		
+		model.addAttribute("memberService", memberService);
 		model.addAttribute("pageDetail", pageDetail);
 		model.addAttribute("member", request.getSession().getAttribute("member"));
 		
@@ -141,7 +162,6 @@ public class CommunityController {
 		model.addAttribute("clist", communityList);
 		model.addAttribute("filter", filter);
 		model.addAttribute("keyword", keyword);
-		model.addAttribute("member", request.getSession().getAttribute("member"));
 		
 		return "community/community_daily";
 	}
@@ -149,22 +169,30 @@ public class CommunityController {
 	// 일상 공유 상세 페이지
 	@RequestMapping("/community/daily/{pageNo}")
 	public String dailyDetail(Model model, HttpServletRequest request, @PathVariable("pageNo") int pageNo) throws Exception {
-		HashMap<String, Object> pageDetail = communityService.getPageDetail(pageNo);
+		MemberDTO memberDTO = (MemberDTO)request.getSession().getAttribute("member");
+		CommunityDTO pageDetail = communityService.getPageDetail(pageNo);
 		communityService.addHitToBoardPage(pageNo);
 		int likeCnt = communityService.getCommunityLikeCount(pageNo);
 		List<HashMap<String, Object>> commentList = communityService.getComment(pageNo);
 		
-		boolean existLike; 
-		if(communityService.existCommunityLike(pageNo, 2) == 1) // m_id 임시
-			existLike = true;
-		else existLike= false;
+		System.out.println(pageDetail);
 		
+		if(memberDTO != null) {
+			EmailAlarmDTO emailAlarmDTO = new EmailAlarmDTO();
+			emailAlarmDTO.setM_id(memberDTO.getM_id());
+			emailAlarmDTO.setDesertion_no(pageDetail.getDesertion_no());
+			
+			boolean existLike = (communityService.existCommunityLike(pageNo, memberDTO.getM_id()) == 1) ? true : false;
+			boolean existAlarm = (emailAlarmService.existEmailAlarm(emailAlarmDTO) == 1) ? true : false;
+			model.addAttribute("existLike", existLike);
+			model.addAttribute("existAlarm", existAlarm);
+		}
+		
+		model.addAttribute("memberService", memberService);
 		model.addAttribute("pageDetail", pageDetail);
 		model.addAttribute("pageNo", pageNo);
 		model.addAttribute("clist", commentList);
-		model.addAttribute("member", request.getSession().getAttribute("member"));
 		model.addAttribute("likeCnt", likeCnt);
-		model.addAttribute("existLike", existLike);
 		
 		return "community/community_read";
 	}
@@ -208,7 +236,6 @@ public class CommunityController {
 		model.addAttribute("clist", communityList);
 		model.addAttribute("filter", filter);
 		model.addAttribute("keyword", keyword);
-		model.addAttribute("member", request.getSession().getAttribute("member"));
 		
 		return "community/community_info";
 	}
@@ -216,15 +243,15 @@ public class CommunityController {
 	// 정보 공유 상세 페이지
 	@RequestMapping("/community/info/{pageNo}")
 	public String read(Model model, HttpServletRequest request, @PathVariable("pageNo") int pageNo) throws Exception {
-		HashMap<String, Object> pageDetail = communityService.getPageDetail(pageNo);
+		CommunityDTO pageDetail = communityService.getPageDetail(pageNo);
 		List<HashMap<String, Object>> commentList = communityService.getComment(pageNo);
 		
 		communityService.addHitToBoardPage(pageNo);
 		
+		model.addAttribute("memberService", memberService);
 		model.addAttribute("pageDetail", pageDetail);
 		model.addAttribute("pageNo", pageNo);
 		model.addAttribute("clist", commentList);
-		model.addAttribute("member", request.getSession().getAttribute("member"));
 		
 		return "community/community_read";
 	}
@@ -232,9 +259,15 @@ public class CommunityController {
 	// 게시물 작성 페이지
 	@RequestMapping("/write")
 	public String write(Model model, HttpServletRequest request) throws Exception {
+		MemberDTO memberDTO = (MemberDTO)request.getSession().getAttribute("member");
+		int classify = Integer.parseInt(request.getParameter("classify"));
+		if(classify == dailyBoard) {
+			List<MemberPetDTO> memberPetList = memberPetService.selectMemberPetList(memberDTO.getM_id());
+			model.addAttribute("memberPetList", memberPetList);
+		}
+		
 		// 글쓰기를 누른 게시판의 분류 코드 전달
-		model.addAttribute("classify", Integer.parseInt(request.getParameter("classify")));
-		model.addAttribute("member", request.getSession().getAttribute("member"));
+		model.addAttribute("classify", classify);
 		
 		return "community/community_write";
 	}
@@ -252,27 +285,35 @@ public class CommunityController {
 		MemberDTO memberDTO = (MemberDTO)request.getSession().getAttribute("member");
 		String title = request.getParameter("title").toString();
 		String content = request.getParameter("content").toString();
-		String classify = request.getParameter("classify");
+		int classify = Integer.parseInt(request.getParameter("classify"));
 		Date reg_date = new Date(System.currentTimeMillis());
+		String desertion_no = request.getParameter("desertion_no");
 		
 		// 등록 실패
 		if(title.equals("") || content.equals("")) { 
 			return "redirect:/error"; 
 		}
 		
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("m_id", memberDTO.getM_id());
-		map.put("title", title);
-		map.put("content", content);
-		map.put("img_path", img_path);
-		map.put("reg_date", reg_date);
-		map.put("classify", Integer.parseInt(classify));
+		CommunityDTO communityDTO = new CommunityDTO();
+		communityDTO.setM_id(memberDTO.getM_id());
+		communityDTO.setDesertion_no(desertion_no);
+		communityDTO.setTitle(title);
+		communityDTO.setContent(content);
+		communityDTO.setImg_path(img_path);
+		communityDTO.setReg_date(reg_date);
+		communityDTO.setClassify(classify);
 		
-		communityService.submitPost(map);
+		communityService.submitPost(communityDTO);
 		System.out.println("게시물 등록 성공");
 		
+		for(EmailAlarmDTO ead : emailAlarmService.getEmailAlarmList(desertion_no)) {
+			MemberDTO md = memberService.getMemberByM_id(ead.getM_id());
+			
+			emailService.emailSend(md.getEmail(), "유기동물 분양 센터 - 알림", "알림 설정하신 " + desertion_no + "의 새로운 소식이 등록되었습니다.");
+		}
+		
 		// 뒤로가기
-		switch(Integer.parseInt(classify)) {
+		switch(classify) {
 			case 1:
 				return "redirect:/dictionary";
 			case 2:
@@ -302,7 +343,6 @@ public class CommunityController {
 	
 	@RequestMapping("/communityClickedLike")
 	public String communityClickedLike(HttpServletRequest request) {
-		System.out.println("받음");
 		int cb_id = Integer.parseInt(request.getParameter("cb_id"));
 		MemberDTO member = (MemberDTO)request.getSession().getAttribute("member");
 		String status = request.getParameter("status");
@@ -316,4 +356,28 @@ public class CommunityController {
 		return "redirect:" + request.getHeader("referer");
 	}
 	
+	@RequestMapping("/communityClickedAlarm")
+	public String communityClickedAlarm(HttpServletRequest request) {
+		String desertion_no = request.getParameter("desertion_no");
+		MemberDTO member = (MemberDTO)request.getSession().getAttribute("member");
+		String status = request.getParameter("status");
+		
+		EmailAlarmDTO emailAlarmDTO = new EmailAlarmDTO();
+		emailAlarmDTO.setM_id(member.getM_id());
+		emailAlarmDTO.setDesertion_no(desertion_no);
+		emailAlarmDTO.setEa_classify(2);
+		
+		System.out.println(status);
+		
+		if(status.equals("true")) {
+			System.out.println("알람 추가");
+			emailAlarmService.insertEmailAlarm(emailAlarmDTO);
+		}
+		else {
+			System.out.println("알람 삭제");
+			emailAlarmService.deleteEmailAlarm(emailAlarmDTO);
+		}
+	
+		return "redirect:" + request.getHeader("referer");
+	}
 }

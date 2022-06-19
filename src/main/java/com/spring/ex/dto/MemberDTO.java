@@ -67,4 +67,10 @@ public class MemberDTO {
 	public void setSignup_date(Date signup_date) {
 		this.signup_date = signup_date;
 	}
+	@Override
+	public String toString() {
+		return "MemberDTO [m_id=" + m_id + ", email=" + email + ", m_pw=" + m_pw + ", name=" + name + ", region="
+				+ region + ", phone=" + phone + ", grade=" + grade + ", comment=" + comment + ", signup_date="
+				+ signup_date + "]";
+	}
 }

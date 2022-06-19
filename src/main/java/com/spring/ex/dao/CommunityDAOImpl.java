@@ -8,6 +8,8 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import com.spring.ex.dto.CommunityDTO;
+
 @Repository
 public class CommunityDAOImpl implements CommunityDAO {
 	
@@ -26,12 +28,12 @@ public class CommunityDAOImpl implements CommunityDAO {
 	}
 	
 	@Override
-	public int submitPost(HashMap<String, Object> map) throws Exception {
-		return sqlSession.insert(namespace + ".submitPost", map);
+	public int submitPost(CommunityDTO dto) throws Exception {
+		return sqlSession.insert(namespace + ".submitPost", dto);
 	}
 	
 	@Override
-	public HashMap<String, Object> getPageDetail(int pageNo) throws Exception {
+	public CommunityDTO getPageDetail(int pageNo) throws Exception {
 		return sqlSession.selectOne(namespace + ".getPageDetail", pageNo);
 	}
 
