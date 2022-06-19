@@ -117,9 +117,10 @@
 		$(function() {
 		    $('textarea').each(function() {
 		        $(this).height($(this).prop('scrollHeight'));
+		        console.log($(this).height());
 		    });
 		});
-		
+		<c:if test="${pageDetail.classify == 2 and memberDTO != null}">
 		// 좋아요를 이미 클릭했다면 채우기
 		$(function() {
 			if(${existLike}) {
@@ -137,6 +138,7 @@
 		});
 		
 		// 좋아요 클릭 이벤트
+		
 		function clickHeart(x) {
 			var heartStatus, alarmStatus;
 			var likeCnt = parseInt($('#likeCnt').html());
@@ -184,6 +186,7 @@
 				}
 			});
 		}
+		</c:if>
 	</script>
 </body>
 </html>

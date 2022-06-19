@@ -118,8 +118,6 @@ public class CommunityController {
 		
 		model.addAttribute("memberService", memberService);
 		model.addAttribute("pageDetail", pageDetail);
-		model.addAttribute("member", request.getSession().getAttribute("member"));
-		
 		return "community/community_read";
 	}
 	
