@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.spring.ex.dao.MainPageDAO;
 import com.spring.ex.dto.CommunityDTO;
+import com.spring.ex.dto.LostAnimalDTO;
 import com.spring.ex.dto.ShareCenterDTO;
 
 @Service
@@ -25,4 +26,8 @@ public class MainPageServiceImpl implements MainPageService{
 		return dao.getPopularityDailyCommunityBoardList(classify);
 	}
 	
+	@Override
+	public List<LostAnimalDTO> getMainPageLostAnimalBoardList() throws Exception {
+		return dao.getMainPageLostAnimalBoardList();
+	}
 }
