@@ -21,21 +21,24 @@ public class FileUploadService {
 	ServletContext servletContext;
 	
 	public String uploadFile(MultipartFile file, String path) throws Exception {
-		String databasePath; 
-		String serverPath = servletContext.getRealPath("resources" + path); // 서버 경로
-		createFolder(uploadPath + path);
-		createFolder(serverPath);
-		
 		String uuid = UUID.randomUUID().toString();
 		
-		// 데이터베이스에 저장될 경로
-		databasePath = "/resources" + path + "/" + uuid + file.getOriginalFilename();
+		String serverPath = servletContext.getRealPath("resources" + path); // 서버 경로
+		String localPath = uploadPath + path;
+		String databasePath = "/resources" + path + "/" + uuid + file.getOriginalFilename();
+		
+		// 테스트
+		System.out.println("localPath : " + localPath);
+		System.out.println("serverPath : " + serverPath);
+		
+		createFolder(localPath);
+		createFolder(serverPath);
 		
 		// 로컬에 저장
-		File localFile = new File(uploadPath + path, uuid + file.getOriginalFilename());
+		File localFile = new File(localPath, uuid + file.getOriginalFilename());
 		file.transferTo(localFile);
 		
-		// refresh 없이 바로 적용되게 서버에 저장
+		// 서버에 저장 (refresh 없이 바로 적용되게)
 		File serverFile = new File(serverPath, uuid + file.getOriginalFilename());
 		Files.copy(localFile.toPath(), serverFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 		
