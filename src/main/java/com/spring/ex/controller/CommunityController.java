@@ -6,13 +6,10 @@ import java.util.List;
 
 import javax.annotation.Resource;
 import javax.inject.Inject;
-import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.ex.dto.CommunityDTO;
 import com.spring.ex.dto.EmailAlarmDTO;
+import com.spring.ex.dto.EmailDTO;
 import com.spring.ex.dto.MemberDTO;
 import com.spring.ex.dto.MemberPetDTO;
 import com.spring.ex.service.CommunityService;
@@ -306,8 +304,13 @@ public class CommunityController {
 		
 		for(EmailAlarmDTO ead : emailAlarmService.getEmailAlarmList(desertion_no)) {
 			MemberDTO md = memberService.getMemberByM_id(ead.getM_id());
-			
-			emailService.emailSend(md.getEmail(), "유기동물 분양 센터 - 알림", "알림 설정하신 " + desertion_no + "의 새로운 소식이 등록되었습니다.");
+			EmailDTO emailDTO = new EmailDTO(
+					emailService.getAdminEmailAddress(), 					// from
+					md.getEmail(), 						 					// to
+					"유기동물 분양 센터 - 알림", 				 					// title
+					"알림 설정하신 " + desertion_no + "의 새로운 소식이 등록되었습니다." // contents
+				);
+			emailService.sendEmail(emailDTO);
 		}
 		
 		// 뒤로가기

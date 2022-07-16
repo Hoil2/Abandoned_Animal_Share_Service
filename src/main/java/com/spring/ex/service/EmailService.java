@@ -8,24 +8,29 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Service;
 
+import com.spring.ex.dto.EmailDTO;
+
 @Service
 public class EmailService {
-	
 	@Autowired
 	private JavaMailSenderImpl mailSender;
 	
-	public void emailSend(final String to, final String subject, final String text) {
+	public void sendEmail(final EmailDTO dto) {
 		final MimeMessagePreparator preparator = new MimeMessagePreparator() {
-	        @Override
-	        public void prepare(MimeMessage mimeMessage) throws Exception {
-	            final MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-	            helper.setFrom(mailSender.getUsername());
-	            helper.setTo(to);
-	            helper.setSubject(subject);
-	            helper.setText(text, true);
-	        }
-	    };
+			@Override
+			public void prepare(MimeMessage mimeMessage) throws Exception {
+		    final MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+				helper.setFrom(dto.getFrom());
+				helper.setTo(dto.getTo());
+				helper.setSubject(dto.getSubject());
+				helper.setText(dto.getContents(), true);
+			}
+		};
 
-	    mailSender.send(preparator);
+		mailSender.send(preparator);
+	}
+	
+	public String getAdminEmailAddress() {
+		return mailSender.getUsername();
 	}
 }
