@@ -120,7 +120,7 @@
 		        console.log($(this).height());
 		    });
 		});
-		<c:if test="${pageDetail.classify == 2 and memberDTO != null}">
+		<c:if test="${pageDetail.classify == 2 and member != null}">
 		// 좋아요를 이미 클릭했다면 채우기
 		$(function() {
 			if(${existLike}) {

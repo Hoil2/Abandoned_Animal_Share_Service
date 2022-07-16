@@ -223,7 +223,52 @@
 					<p>하나 밖에 없는</p>
 					<h3>실종동물을 찾고 있어요</h3>
 				</div>
-				<div class="row">
+				<div align="right">
+					<a href="/communityLostBoard"><font color="#FFCA6C">더보기</font></a>
+				</div>
+				<div class="row" >
+					<c:forEach var="slist" items="${slist}">
+					<div class="col-lg-3 col-md-6">
+						<div class="tour-one__single" >
+							<div class="tour-one__image">
+								<c:choose>
+									<c:when test="${slist.img_path eq null}">
+										<a href="#">
+											<img src='<c:url value="/resources/images/noImage.png"/>' width="200" height="200">
+										</a>
+									</c:when>
+									<c:otherwise>
+										<img src='<c:url value="${slist.img_path}"/>' alt="" width="200" height="200" onclick="location.href='readLostCommunityBoard?alb_id=${slist.alb_id}'" >
+									</c:otherwise>
+								</c:choose>
+							</div>
+							<div class="tour-one__content" style="padding: 10px; ">
+								<div class="row">
+									<div class="col-lg-12" style="letter-spacing: 0px;">
+											<font size="2px;" style="letter-spacing: 0px;">이름 : ${slist.pet_name}</font>
+											<c:choose>
+												<c:when test="${slist.sex_cd eq 'M'}"> 
+													<font size="3px;" color="Blue">♂</font>
+												</c:when>
+												<c:when test="${slist.sex_cd eq 'F'}"> 
+													<font size="3px;" color="#FF7171;">♀</font>
+												</c:when>
+												<c:otherwise> 
+													<font size="1px;">(미상)</font>
+												 </c:otherwise>
+											</c:choose>
+											<br>
+											<font size="2px;" style="letter-spacing: 0px;">신고자 : ${slist.name}</font> <br>
+											<font size="2px;"style="letter-spacing: 0px;">품종 : ${slist.kind_cd}</font> <br>
+											<font size="2px;"style="letter-spacing: 0px;">실종일 : ${slist.lost_date}</font> <br>
+											<font size="2px;"style="letter-spacing: 0px;">실종장소 : ${fn:substring(slist.lost_place, 0, 10)}</font> <br>
+											<font size="2px;"style="letter-spacing: 0px;">특징 : ${fn:substring(slist.content, 0, 15)}</font>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					</c:forEach>
 				</div>
 			</div>
 		</section>

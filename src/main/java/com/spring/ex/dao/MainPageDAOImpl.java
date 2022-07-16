@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.spring.ex.dto.CommunityDTO;
+import com.spring.ex.dto.LostAnimalDTO;
 import com.spring.ex.dto.ShareCenterDTO;
 
 
@@ -26,5 +27,10 @@ public class MainPageDAOImpl implements MainPageDAO{
 	@Override
 	public List<CommunityDTO> getPopularityDailyCommunityBoardList(int classify) throws Exception {
 		return sqlSession.selectList(namespace + ".getPopularityDailyCommunityBoardList", classify);
+	}
+	
+	@Override
+	public List<LostAnimalDTO> getMainPageLostAnimalBoardList() throws Exception {
+		return sqlSession.selectList(namespace + ".getMainPageLostAnimalBoardList");
 	}
 }
