@@ -38,17 +38,17 @@ public class CommunityDAOImpl implements CommunityDAO {
 	}
 
 	@Override
+	public int updatePost(CommunityDTO dto) throws Exception {
+		return sqlSession.update(namespace + ".updatePost", dto);
+	}
+
+	@Override
+	public int deletePost(int pageNo) throws Exception {
+		return sqlSession.update(namespace + ".deletePost", pageNo);
+	}
+	
+	@Override
 	public int addHitToBoardPage(int pageNo) throws Exception {
 		return sqlSession.update(namespace + ".addHitToBoardPage", pageNo);
-	}
-
-	@Override
-	public int submitComment(HashMap<String, Object> map) throws Exception {
-		return sqlSession.insert(namespace + ".submitComment", map);
-	}
-
-	@Override
-	public List<HashMap<String, Object>> getComment(int pageNo) throws Exception {
-		return sqlSession.selectList(namespace + ".getComment", pageNo);
 	}
 }

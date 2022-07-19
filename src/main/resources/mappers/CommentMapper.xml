@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spring.ex.CommentMapper">
+
+	<select id="selectCommentList" resultType="HashMap">
+		SELECT name, cbr_content, reg_date
+		FROM member m, community_board_reply cbr
+		WHERE m.m_id = cbr.m_id and cb_id = #{pageNo}
+	</select>
+
+	<insert id="insertComment">
+		INSERT INTO community_board_reply(cb_id, m_id, cbr_content, reg_date) 
+		VALUES(#{cb_id}, #{m_id}, #{content}, #{reg_date})
+	</insert>
+	
+	<update id="updateComment">
+		UPDATE community_board_reply
+		SET cbr_content = #{cbr_content}
+		WHERE cbr_id = #{cbr_id}
+	</update>
+	
+	<delete id="deleteComment">
+		DELETE FROM community_board_reply
+		WHERE cbr_id = #{cbr_id}
+	</delete>
+</mapper>

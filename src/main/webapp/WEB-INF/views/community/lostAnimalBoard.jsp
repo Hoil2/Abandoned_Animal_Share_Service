@@ -14,6 +14,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href='<c:url value="/resources/images/favicons/favicon-32x32.png"/>'>
 <link rel="icon" type="image/png" sizes="16x16" href='<c:url value="/resources/images/favicons/favicon-16x16.png"/>'>
 <link rel="manifest" href='<c:url value="/resources/images/favicons/site.webmanifest"/>'>
+<jsp:include page="../layout/libraries.jsp"/>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=1d6c0ae7305fb9210dc71640a373972b"></script>
 <title>일상 공유 게시판</title>
 

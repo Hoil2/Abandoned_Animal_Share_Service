@@ -74,4 +74,10 @@ public class CommunityDTO {
 	public void setEnable(int enable) {
 		this.enable = enable;
 	}
+	@Override
+	public String toString() {
+		return "CommunityDTO [cb_id=" + cb_id + ", m_id=" + m_id + ", desertion_no=" + desertion_no + ", title=" + title
+				+ ", content=" + content + ", hit=" + hit + ", img_path=" + img_path + ", reg_date=" + reg_date
+				+ ", classify=" + classify + ", enable=" + enable + "]";
+	}
 }

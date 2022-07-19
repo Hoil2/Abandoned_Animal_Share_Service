@@ -169,7 +169,7 @@ public class CommunityController {
 		CommunityDTO pageDetail = communityService.getPageDetail(pageNo);
 		communityService.addHitToBoardPage(pageNo);
 		int likeCnt = communityService.getCommunityLikeCount(pageNo);
-		List<HashMap<String, Object>> commentList = communityService.getComment(pageNo);
+		List<HashMap<String, Object>> commentList = communityService.selectCommentList(pageNo);
 		
 		System.out.println(pageDetail);
 		
@@ -183,6 +183,9 @@ public class CommunityController {
 			model.addAttribute("existLike", existLike);
 			model.addAttribute("existAlarm", existAlarm);
 		}
+		
+		System.out.println(commentList);
+		System.out.println(pageDetail);
 		
 		model.addAttribute("memberService", memberService);
 		model.addAttribute("pageDetail", pageDetail);
@@ -240,7 +243,7 @@ public class CommunityController {
 	@RequestMapping("/community/info/{pageNo}")
 	public String read(Model model, HttpServletRequest request, @PathVariable("pageNo") int pageNo) throws Exception {
 		CommunityDTO pageDetail = communityService.getPageDetail(pageNo);
-		List<HashMap<String, Object>> commentList = communityService.getComment(pageNo);
+		List<HashMap<String, Object>> commentList = communityService.selectCommentList(pageNo);
 		
 		communityService.addHitToBoardPage(pageNo);
 		
@@ -337,7 +340,7 @@ public class CommunityController {
 		map.put("content", request.getParameter("content"));
 		map.put("reg_date", new Date(System.currentTimeMillis()));
 		
-		communityService.submitComment(map);
+		communityService.insertComment(map);
 		
 		return "redirect:"+request.getHeader("Referer");
 	}

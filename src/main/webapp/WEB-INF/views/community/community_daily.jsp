@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!DOCTYPE html>
 <html>
@@ -12,16 +11,21 @@
 <link rel="icon" type="image/png" sizes="32x32" href='<c:url value="/resources/images/favicons/favicon-32x32.png"/>'>
 <link rel="icon" type="image/png" sizes="16x16" href='<c:url value="/resources/images/favicons/favicon-16x16.png"/>'>
 <link rel="manifest" href='<c:url value="/resources/images/favicons/site.webmanifest"/>'>
+<jsp:include page="../layout/libraries.jsp"/>
 <title>일상 공유 게시판</title>
 
 <style type="text/css">
-.preloader {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background: #301e4e;
-}
+	.preloader {
+	  display: flex;
+	  justify-content: center;
+	  align-items: center;
+	  min-height: 100vh;
+	  background: #301e4e;
+	}
+	
+	a {
+		text-decoration: none;
+	}
 </style>
 </head>
 <body link="red">
