@@ -24,8 +24,8 @@ public class CommentDAOImpl implements CommentDAO {
 	}
 	
 	@Override
-	public int insertComment(HashMap<String, Object> map) throws Exception {
-		return sqlSession.insert(namespace + ".insertComment", map);
+	public int insertComment(CommentDTO dto) throws Exception {
+		return sqlSession.insert(namespace + ".insertComment", dto);
 	}
 
 	@Override

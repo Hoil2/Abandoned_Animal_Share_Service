@@ -73,8 +73,8 @@ public class CommunityServiceImpl implements CommunityService {
 	}
 	
 	@Override
-	public int insertComment(HashMap<String, Object> map) throws Exception {
-		return commentDAO.insertComment(map);
+	public int insertComment(CommentDTO dto) throws Exception {
+		return commentDAO.insertComment(dto);
 	}
 
 	@Override

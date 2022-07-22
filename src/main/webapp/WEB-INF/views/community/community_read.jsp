@@ -54,7 +54,7 @@
 		    <span class="fs-4">조회수 ${pageDetail.hit}</span>
 		    
 		    <%-- 일상 게시판일 때만 좋아요 --%>
-		    <c:if test="${pageDetail.classify == 2}">
+		    <c:if test="${pageDetail.classify == 2 && member.m_id != pageDetail.m_id}">
 			    <div class="float-right">
 			    	<%-- 좋아요 --%>
 				    <span class="fs-4">
@@ -66,7 +66,8 @@
 				    	</c:if>
 			    	</span>
 				    <span class="fs-4 mr-3" id="likeCnt">${likeCnt}</span>
-				    <%-- 좋아요 끝 --%>
+				    
+				    <%-- 알람 --%>
 				    <c:if test="${member != null}">
 				    	<span class="fs-4">
 		    				<i onclick="clickAlarm(this)" class="bi bi-exclamation-circle" id="alarm"></i>
@@ -74,16 +75,24 @@
 		    		</c:if>
 			    </div>
 		    </c:if>
+		    
+		    <%-- 글 수정 | 삭제 --%>
+		    <c:if test="${member.m_id == pageDetail.m_id}">
+		    	<div class="float-right">
+		    		<span><a href="/community">수정</a> | <a href="">삭제</a></span>
+		    	</div>
+		    </c:if>
 		</div>
 		<hr>
 		<%-- 게시물 내용 부분 --%>
 	    <div class="pt-3 pb-3">
-    		<c:if test="${pageDetail.img_path != null}">
+	    	<c:out value="${pageDetail.content}" escapeXml="false"/>
+    		<%-- <c:if test="${pageDetail.img_path != null}">
 				<img style="max-width:800px;" src="<c:url value='${pageDetail.img_path}'/>"/>	    		
     		</c:if>
     		<div class="row">
 		    	<textarea readonly class="fs-5 autoExtend" style="overflow:hidden; resize:none; border-style: none; outline: none;">${pageDetail.content}</textarea>
-		    </div>
+		    </div> --%>
 	    </div>
 	    <hr>
 	    
@@ -91,24 +100,26 @@
 	    <div id="commentOutput">
 		    <c:forEach var="list" items="${clist}" varStatus="status">
 		    	<div class="px-3 pt-3">
-		    		<span class="fw-bold">${list.name}</span> <span>(${list.reg_date})</span> 
-		    		<div class="float-right">
-		    			<div class="collapse show" id="edit">
-				    		<span><a data-toggle="collapse" href="#edit" role="button" aria-expanded="false" aria-controls="edit">수정</a></span>
-				    		<span>| <a href="javascript:;" onclick="">삭제</a></span>
+		    		<span class="fw-bold">${list.name}</span> <span>(${list.reg_date})</span>
+		    		<%-- 수정 | 삭제 --%>
+		    		<c:if test="${member.m_id == list.m_id}">
+			    		<div class="float-right">
+			    			<div class="collapse show" id="edit${list.cbr_id}">
+					    		<span><a data-toggle="collapse" href="#edit${list.cbr_id}" role="button" aria-expanded="false" aria-controls="edit${list.cbr_id}">수정</a></span>
+					    		<span>| <a href="javascript:;" onclick="deleteComment(${list.cbr_id})">삭제</a></span>
+				    		</div>
+				    		<span class="collapse" id="edit${list.cbr_id}"><a onclick="cancelEdit()" data-toggle="collapse" href="#edit${list.cbr_id}" role="button" aria-expanded="false" aria-controls="edit${list.cbr_id}">닫기</a></span>
 			    		</div>
-			    		<span class="collapse" id="edit"><a onclick="cancelEdit()" data-toggle="collapse" href="#edit" role="button" aria-expanded="false" aria-controls="edit">닫기</a></span>
-		    		</div>
+		    		</c:if>
 		    		<%-- 댓글 내용 --%>
-		    		<p class="collapse show mt-1" id="edit">${list.cbr_content}</p>
+		    		<p class="collapse show mt-1" id="edit${list.cbr_id}">${list.cbr_content}</p>
 		    		
 		    		<%-- 댓글 수정 --%>
-		    		<form class="collapse" id="edit">
+		    		<form class="collapse" id="edit${list.cbr_id}">
 		    			<div class="form-group">
-				    		<input type="hidden" name="pageNo" value="${pageNo}" />
-				    		<textarea class="form-control mt-1" name="content" id="commentContentToEdit" rows="3">${list.cbr_content}</textarea>
+				    		<textarea class="form-control mt-1" name="content" id="content" rows="3">${list.cbr_content}</textarea>
 				    		<div class="d-flex flex-row-reverse">
-			    				<button type="submit" class="btn btn-dark mt-2 px-2">수정</button>
+			    				<input type="button" value="수정" onclick="updateComment(${list.cbr_id})" class="btn btn-dark mt-2 px-2"/>
 				    		</div>
 			    		</div>
 		    		</form>
@@ -118,14 +129,14 @@
 	    
 	    <%-- 댓글 달기 --%>
 	    <c:if test="${member != null && pageDetail.classify != 1}">
-		    <div class="bg-light my-4">
-		    	<form action="/submitComment">
+		    <div class="bg-light my-4" id="commentInput">
+		    	<form>
 			    	<div class="form-group p-3">
 			    		<label>댓글 달기</label>
 			    		<input type="hidden" name="pageNo" value="${pageNo}" />
-			    		<textarea name="content" class="form-control" rows="3"></textarea>
+			    		<textarea name="content" id="content" class="form-control" rows="3"></textarea>
 			    		<div class="d-flex flex-row-reverse">
-		    				<button type="submit" class="btn btn-dark mt-2 px-2">등록</button>
+		    				<input type="button" value="등록" onclick="submitComment()" class="btn btn-dark mt-2 px-2"/>
 			    		</div>
 			    	</div>
 		    	</form>
@@ -215,9 +226,69 @@
 		}
 		</c:if>
 		
+		// ------------ 댓글 부분 --------------
+		
+		function submitComment() {
+			var content = $("#commentInput").find("#content").val();
+			console.log(content);
+			$.ajax({
+				url : "/community/submitComment",
+				type : "post",
+				data : {
+					pageNo : ${pageNo},
+					content : content
+				},
+				success : function() {
+					$("#commentOutput").load(location.href+" #commentOutput>*","");
+					$("#commentInput").load(location.href+" #commentInput>*","");
+				},
+				error : function(xhr, status) {
+		               alert(xhr + " : " + status);
+		           }
+			});
+		}
+		
+		function updateComment(cbr_id) {
+			var content = $("#commentOutput").find("#content").val();
+			console.log(content);
+			$.ajax({
+				url : "/community/updateComment",
+				type : "post",
+				data : {
+					cbr_id : cbr_id,
+					content : content
+				},
+				success : function() {
+					$("#commentOutput").load(location.href+" #commentOutput>*","");
+				},
+				error : function(xhr, status) {
+		               alert(xhr + " : " + status);
+		           }
+			});
+		}
+		
+		function deleteComment(cbr_id) {
+			if (confirm('댓글을 삭제하시겠습니까?')) {
+				$.ajax({
+					url : "/community/deleteComment",
+					type : "POST",
+					data : {
+						cbr_id : cbr_id
+					},
+					success : function() {
+						$("#commentOutput").load(location.href+" #commentOutput>*","");
+					},
+					error:function(request,status,error){
+				    	alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+					}
+				});
+			} else {
+				
+			}
+		}
+		
 		function cancelEdit() {
 			$("#commentOutput").load(location.href+" #commentOutput>*","");
-			console.log("실행");
 		}
 	</script>
 </body>

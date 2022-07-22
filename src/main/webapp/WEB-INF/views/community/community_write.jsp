@@ -4,54 +4,53 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="X-UA-Compatible" content="ie=edge">
-<link rel="apple-touch-icon" sizes="180x180" href='<c:url value="/resources/favicons/apple-touch-icon.png"/>'>
-<link rel="icon" type="image/png" sizes="32x32" href='<c:url value="/resources/images/favicons/favicon-32x32.png"/>'>
-<link rel="icon" type="image/png" sizes="16x16" href='<c:url value="/resources/images/favicons/favicon-16x16.png"/>'>
-<link rel="manifest" href='<c:url value="/resources/images/favicons/site.webmanifest"/>'>
-<jsp:include page="../layout/libraries.jsp"/>
-<!-- bootstrap CSS only -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-
-<title>정보 공유 게시판</title>
-
-<style type="text/css">
-	.preloader {
-	  display: flex;
-	  justify-content: center;
-	  align-items: center;
-	  min-height: 100vh;
-	  background: #301e4e;
-	}
-	a {
-			text-decoration: none;
-	}
-</style>
-<script type="text/javascript">
-	function chk_file_type(obj) {
-		if(obj.value == '') return false;
-		var file_kind = obj.value.lastIndexOf('.');
-		var file_name = obj.value.substring(file_kind+1,obj.length);
-		var file_type = file_name.toLowerCase();
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link rel="apple-touch-icon" sizes="180x180" href='<c:url value="/resources/favicons/apple-touch-icon.png"/>'>
+	<link rel="icon" type="image/png" sizes="32x32" href='<c:url value="/resources/images/favicons/favicon-32x32.png"/>'>
+	<link rel="icon" type="image/png" sizes="16x16" href='<c:url value="/resources/images/favicons/favicon-16x16.png"/>'>
+	<%-- <link rel="manifest" href='<c:url value="/resources/images/favicons/site.webmanifest"/>'> --%>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+	<jsp:include page="../layout/libraries.jsp"/>
+	<%-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"> --%>
+    <%-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script> --%>
+	<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet"> 
+	<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+	  
+	<title>정보 공유 게시판</title>
 	
-	 	if(!(file_type=='jpg' || file_type=='gif' || file_type=='jpeg' || file_type=='png' || file_type=='bmp')){
-		  	alert('이미지 파일만 선택할 수 있습니다.');
-		  	var parent_Obj=obj.parentNode;
-		  	var node=parent_Obj.replaceChild(obj.cloneNode(true),obj);
-	  		return false;
- 		}
-	}
-</script>
+	<style type="text/css">
+		@font-face {
+		    font-family: 'twayfly';
+		    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_tway@1.0/twayfly.woff') format('woff');
+		    font-weight: normal;
+		    font-style: normal;
+		}
+		#twayFont{ font-family: 'twayfly'; } 
+		#container{
+	        max-width: 2000px;
+	    	 }
+	    	 
+		.preloader {
+		  display: flex;
+		  justify-content: center;
+		  align-items: center;
+		  min-height: 100vh;
+		  background: #301e4e;
+		}
+		a {
+			text-decoration: none;
+		}
+	</style>
 </head>
 <body link="red">
 	
 
 	<%-- Preloader --%>
-	<div class="preloader">
+	<%-- <div class="preloader">
 		<img src='<c:url value="/resources/images/loader3.png"/>' class="preloader__image" alt="">
-	</div>
+	</div> --%>
 	
 	<%-- header 영역 --%>
 	<jsp:include page="../layout/header.jsp"/>
@@ -68,13 +67,6 @@
 		  	
 		  	
 		  	<c:if test="${classify == 2}">
-			  	<div class="form-group row">
-			  		<label class="col-sm-2 col-form-label">반려동물 이미지</label>
-			  		<div class="col-sm-10">
-			        	<input class="form-control" type="file" name="file" onchange="chk_file_type(this)" accept="image/*" required/>
-			  		</div>
-			  	</div>
-				
 				<div class="form-group row">
 			  		<label class="col-sm-2 col-form-label">반려동물 id</label>
 			  		<div class="col-sm-10">
@@ -86,7 +78,9 @@
 			  		</div>
 			  	</div>			  	
 		  	</c:if>
-		  	<textarea class="form-control" name="content" rows="20"></textarea>
+		  	<textarea class="summernote" name="content"></textarea>
+		    
+		  	<!-- <textarea class="form-control" name="content" rows="20"></textarea> -->
 		  	
 		  	<input type="hidden" name="classify" value="${classify}">
 		  	
@@ -99,9 +93,53 @@
 	</div>
 	<%-- main 끝 --%>
 	
+	<script>
+		$(document).ready(function() {
+			$('.summernote').summernote({
+				placeholder: 'Hello stand alone ui',
+				tabsize: 2,
+				height: 300,
+				toolbar: [
+					['style', ['style']],
+					['font', ['bold', 'underline', 'clear']],
+					['color', ['color']],
+					['para', ['ul', 'ol', 'paragraph']],
+					['table', ['table']],
+					['insert', ['link', 'picture', 'video']],
+					['view', ['fullscreen', 'codeview', 'help']]
+				],
+		        
+		        callbacks : { 
+		        	onImageUpload : function(files, editor, welEditable) {
+						// 파일 업로드(다중업로드를 위해 반복문 사용)
+						for (var i = files.length - 1; i >= 0; i--) {
+							uploadSummernoteImageFile(files[i], this);
+		        		}
+		        	}
+		        }
+			});
+		});
+		
+		function uploadSummernoteImageFile(file, el) {
+			data = new FormData();
+			data.append("file", file);
+			$.ajax({
+				data : data,
+				type : "POST",
+				url : "/uploadSummernoteImageFile",
+				contentType : false,
+				enctype : 'multipart/form-data',
+				processData : false,
+				success : function(data) {
+					$(el).summernote('editor.insertImage', data.url);
+				}
+			});
+		}
+      
+    </script>	
+	
 	<%-- footer 영역 --%>
 	<jsp:include page="../layout/footer.jsp"/>
-	
 	
 </body>
 </html>

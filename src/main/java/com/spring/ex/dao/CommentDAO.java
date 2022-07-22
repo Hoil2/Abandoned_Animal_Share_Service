@@ -13,7 +13,7 @@ public interface CommentDAO {
 	public List<HashMap<String, Object>> selectCommentList(int pageNo) throws Exception;
 	
 	// 댓글 달기
-	public int insertComment(HashMap<String, Object> map) throws Exception;
+	public int insertComment(CommentDTO dto) throws Exception;
 	
 	// 댓글 수정
 	public int updateComment(CommentDTO dto) throws Exception;

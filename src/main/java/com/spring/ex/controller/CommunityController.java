@@ -1,23 +1,29 @@
 package com.spring.ex.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.google.gson.JsonObject;
 import com.spring.ex.dto.CommunityDTO;
 import com.spring.ex.dto.EmailAlarmDTO;
 import com.spring.ex.dto.EmailDTO;
@@ -59,9 +65,6 @@ public class CommunityController {
 	
 	@Inject
 	private EmailService emailService;
-	
-	@Autowired
-	private JavaMailSenderImpl mailSender;
 	
 	@RequestMapping("/dictionary")
 	public String dictionary(Model model, HttpServletRequest request) throws Exception {
@@ -171,8 +174,6 @@ public class CommunityController {
 		int likeCnt = communityService.getCommunityLikeCount(pageNo);
 		List<HashMap<String, Object>> commentList = communityService.selectCommentList(pageNo);
 		
-		System.out.println(pageDetail);
-		
 		if(memberDTO != null) {
 			EmailAlarmDTO emailAlarmDTO = new EmailAlarmDTO();
 			emailAlarmDTO.setM_id(memberDTO.getM_id());
@@ -183,9 +184,6 @@ public class CommunityController {
 			model.addAttribute("existLike", existLike);
 			model.addAttribute("existAlarm", existAlarm);
 		}
-		
-		System.out.println(commentList);
-		System.out.println(pageDetail);
 		
 		model.addAttribute("memberService", memberService);
 		model.addAttribute("pageDetail", pageDetail);
@@ -256,10 +254,17 @@ public class CommunityController {
 	}
 	
 	// 게시물 작성 페이지
+	// 글쓰기 버튼으로 들어왔을 때
 	@RequestMapping("/write")
 	public String write(Model model, HttpServletRequest request) throws Exception {
 		MemberDTO memberDTO = (MemberDTO)request.getSession().getAttribute("member");
 		int classify = Integer.parseInt(request.getParameter("classify"));
+		
+		if(memberDTO == null) {
+			System.out.println("로그인이 필요합니다.");
+			return "error";
+		}
+		
 		if(classify == dailyBoard) {
 			List<MemberPetDTO> memberPetList = memberPetService.selectMemberPetList(memberDTO.getM_id());
 			model.addAttribute("memberPetList", memberPetList);
@@ -271,22 +276,59 @@ public class CommunityController {
 		return "community/community_write";
 	}
 	
+	// 수정 링크로 들어왔을 때
+	@RequestMapping("/update")
+	public String update(Model model, HttpServletRequest request) throws Exception {
+		MemberDTO memberDTO = (MemberDTO)request.getSession().getAttribute("member");
+		
+		if(memberDTO == null) {
+			System.out.println("로그인이 필요합니다.");
+			return "error";
+		}
+		
+		// 게시물 수정으로 들어왔을 때
+		String pageNo = request.getParameter("pageNo");
+		if(pageNo != null) {
+			CommunityDTO communityDTO = communityService.getPageDetail(Integer.parseInt(pageNo));
+			if(communityDTO.getM_id() != memberDTO.getM_id()) {
+				System.out.println("글을 수정할 권한이 없습니다.");
+				return "error";
+			}
+			model.addAttribute("communityDTO", communityDTO);
+			
+			if(communityDTO.getClassify() == dailyBoard) {
+				List<MemberPetDTO> memberPetList = memberPetService.selectMemberPetList(memberDTO.getM_id());
+				model.addAttribute("memberPetList", memberPetList);
+			}
+			model.addAttribute("classify", communityDTO.getClassify());
+		}
+		else {
+			System.out.println("수정할 게시물을 찾을 수 없습니다.");
+			return "error";
+		}
+		
+		return "community/community_write";
+	}
+	
 	// 게시물 등록
 	@RequestMapping(value="/submitPost", method=RequestMethod.POST)
-	public String submitPost(HttpServletRequest request, @RequestParam(value="file", required = false) MultipartFile file) throws Exception {
+	public String submitPost(HttpServletRequest request) throws Exception {
 		String img_path = null;
-		
-		if(file != null) { 
-			img_path = fileUploadService.uploadFile(file, "/images/uploaded_images");
-		}
 		
 		System.out.println("시작");
 		MemberDTO memberDTO = (MemberDTO)request.getSession().getAttribute("member");
+		if(memberDTO == null) {
+			System.out.println("로그인이 필요합니다.");
+			return "error";
+		}
+		String pageNo = request.getParameter("pageNo"); // 수정할 게시물은 pageNo를 전송
 		String title = request.getParameter("title").toString();
 		String content = request.getParameter("content").toString();
 		int classify = Integer.parseInt(request.getParameter("classify"));
 		Date reg_date = new Date(System.currentTimeMillis());
 		String desertion_no = request.getParameter("desertion_no");
+		
+		System.out.println("content : " + content);
 		
 		// 등록 실패
 		if(title.equals("") || content.equals("")) { 
@@ -302,18 +344,24 @@ public class CommunityController {
 		communityDTO.setReg_date(reg_date);
 		communityDTO.setClassify(classify);
 		
-		communityService.submitPost(communityDTO);
-		System.out.println("게시물 등록 성공");
-		
-		for(EmailAlarmDTO ead : emailAlarmService.getEmailAlarmList(desertion_no)) {
-			MemberDTO md = memberService.getMemberByM_id(ead.getM_id());
-			EmailDTO emailDTO = new EmailDTO(
-					emailService.getAdminEmailAddress(), 					// from
-					md.getEmail(), 						 					// to
-					"유기동물 분양 센터 - 알림", 				 					// title
-					"알림 설정하신 " + desertion_no + "의 새로운 소식이 등록되었습니다." // contents
-				);
-			emailService.sendEmail(emailDTO);
+		if(pageNo == null) {
+			communityService.submitPost(communityDTO);
+			System.out.println("게시물 등록 성공");
+			
+			for(EmailAlarmDTO ead : emailAlarmService.getEmailAlarmList(desertion_no)) {
+				MemberDTO md = memberService.getMemberByM_id(ead.getM_id());
+				EmailDTO emailDTO = new EmailDTO(
+						emailService.getAdminEmailAddress(), 					// from
+						md.getEmail(), 						 					// to
+						"유기동물 분양 센터 - 알림", 				 					// title
+						"알림 설정하신 " + desertion_no + "의 새로운 소식이 등록되었습니다." // contents
+					);
+				emailService.sendEmail(emailDTO);
+			}
+		}
+		else { 
+			communityService.updatePost(communityDTO);
+			System.out.println("게시물 수정 성공");
 		}
 		
 		// 뒤로가기
@@ -327,22 +375,6 @@ public class CommunityController {
 			default:
 				return "redirect:/";
 		}
-	}
-	
-	// 댓글 달기
-	@RequestMapping("/submitComment")
-	public String submitComment(HttpServletRequest request) throws Exception {
-		MemberDTO memberDTO = (MemberDTO)request.getSession().getAttribute("member");
-		
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("cb_id", request.getParameter("pageNo"));
-		map.put("m_id", memberDTO.getM_id());
-		map.put("content", request.getParameter("content"));
-		map.put("reg_date", new Date(System.currentTimeMillis()));
-		
-		communityService.insertComment(map);
-		
-		return "redirect:"+request.getHeader("Referer");
 	}
 	
 	@RequestMapping("/communityClickedLike")
@@ -383,5 +415,39 @@ public class CommunityController {
 		}
 	
 		return "redirect:" + request.getHeader("referer");
+	}
+	
+	
+	@RequestMapping(value="/uploadSummernoteImageFile", produces = "application/json; charset=utf8")
+	@ResponseBody
+	public String uploadSummernoteImageFile(@RequestParam("file") MultipartFile multipartFile, HttpServletRequest request )  {
+		JsonObject jsonObject = new JsonObject();
+		
+        /*
+		 * String fileRoot = "C:\\summernote_image\\"; // 외부경로로 저장을 희망할때.
+		 */
+		
+		// 내부경로로 저장
+		String contextRoot = new HttpServletRequestWrapper(request).getRealPath("/");
+		String fileRoot = contextRoot+"resources/images/uploaded_images/";
+		
+		String originalFileName = multipartFile.getOriginalFilename();	//오리지날 파일명
+		String extension = originalFileName.substring(originalFileName.lastIndexOf("."));	//파일 확장자
+		String savedFileName = UUID.randomUUID() + extension;	//저장될 파일 명
+		
+		File targetFile = new File(fileRoot + savedFileName);	
+		try {
+			InputStream fileStream = multipartFile.getInputStream();
+			FileUtils.copyInputStreamToFile(fileStream, targetFile);	//파일 저장
+			jsonObject.addProperty("url", "/resources/images/uploaded_images/"+savedFileName); // contextroot + resources + 저장할 내부 폴더명
+			jsonObject.addProperty("responseCode", "success");
+				
+		} catch (IOException e) {
+			FileUtils.deleteQuietly(targetFile);	//저장된 파일 삭제
+			jsonObject.addProperty("responseCode", "error");
+			e.printStackTrace();
+		}
+		String a = jsonObject.toString();
+		return a;
 	}
 }

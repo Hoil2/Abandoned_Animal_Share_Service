@@ -76,3 +76,6 @@
 		</header>
 	</div>
 	<!-- 상단 헤더 -->
+	
+	<jsp:include page="signIn.jsp"/>
+	<jsp:include page="signUp.jsp"/>

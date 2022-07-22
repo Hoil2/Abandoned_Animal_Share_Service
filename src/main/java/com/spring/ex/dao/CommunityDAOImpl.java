@@ -28,13 +28,13 @@ public class CommunityDAOImpl implements CommunityDAO {
 	}
 	
 	@Override
-	public int submitPost(CommunityDTO dto) throws Exception {
-		return sqlSession.insert(namespace + ".submitPost", dto);
+	public CommunityDTO getPageDetail(int pageNo) throws Exception {
+		return sqlSession.selectOne(namespace + ".getPageDetail", pageNo);
 	}
 	
 	@Override
-	public CommunityDTO getPageDetail(int pageNo) throws Exception {
-		return sqlSession.selectOne(namespace + ".getPageDetail", pageNo);
+	public int submitPost(CommunityDTO dto) throws Exception {
+		return sqlSession.insert(namespace + ".submitPost", dto);
 	}
 
 	@Override

@@ -39,3 +39,28 @@
         max-width: 2000px;
     	 }
 </style>
+
+<!-- Plugin Script -->
+<script src='<c:url value="/resources/js/jquery.min.js"/>'></script>
+<script src='<c:url value="/resources/js/bootstrap.bundle.min.js"/>'></script>
+<script src='<c:url value="/resources/js/owl.carousel.min.js"/>'></script>
+<script src='<c:url value="/resources/js/waypoints.min.js"/>'></script>
+<script src='<c:url value="/resources/js/jquery.counterup.min.js"/>'></script>
+<script src='<c:url value="/resources/js/TweenMax.min.js"/>'></script>
+<script src='<c:url value="/resources/js/wow.js"/>'></script>
+<script src='<c:url value="/resources/js/jquery.magnific-popup.min.js"/>'></script>
+<script src='<c:url value="/resources/js/jquery.ajaxchimp.min.js"/>'></script>
+<script src='<c:url value="/resources/js/swiper.min.js"/>'></script>
+<script src='<c:url value="/resources/js/typed-2.0.11.js"/>'></script>
+<script src='<c:url value="/resources/js/vegas.min.js"/>'></script>
+<script src='<c:url value="/resources/js/jquery.validate.min.js"/>'></script>
+<script src='<c:url value="/resources/js/bootstrap-select.min.js"/>'></script>
+<script src='<c:url value="/resources/js/countdown.min.js"/>'></script>
+<script src='<c:url value="/resources/js/jquery.mCustomScrollbar.concat.min.js"/>'></script>
+<script src='<c:url value="/resources/js/bootstrap-datepicker.min.js"/>'></script>
+<script src='<c:url value="/resources/js/nouislider.min.js"/>'></script>
+<script src='<c:url value="/resources/js/isotope.js"/>'></script>
+
+<!-- Template Script -->
+<script src='<c:url value="/resources/js/theme.js"/>'></script>
+<script src='<c:url value="/resources/js/Member.js"/>'></script>

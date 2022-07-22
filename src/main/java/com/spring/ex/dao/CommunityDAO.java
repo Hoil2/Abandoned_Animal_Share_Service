@@ -15,11 +15,11 @@ public interface CommunityDAO {
 	// 게시판의 게시물 총 개수
 	public int getCommunityBoardPostTotalCount(HashMap<String, Object> map) throws Exception;
 	
-	// 정보 공유 게시판에 등록
-	public int submitPost(CommunityDTO dto) throws Exception;
-	
 	// 게시물 상세 페이지 가져오기 
 	public CommunityDTO getPageDetail(int pageNo) throws Exception;
+	
+	// 정보 공유 게시판에 등록
+	public int submitPost(CommunityDTO dto) throws Exception;
 	
 	// 게시물 수정
 	public int updatePost(CommunityDTO dto) throws Exception;
