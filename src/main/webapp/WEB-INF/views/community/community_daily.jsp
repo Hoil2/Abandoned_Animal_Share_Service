@@ -10,7 +10,6 @@
 <link rel="apple-touch-icon" sizes="180x180" href='<c:url value="/resources/favicons/apple-touch-icon.png"/>'>
 <link rel="icon" type="image/png" sizes="32x32" href='<c:url value="/resources/images/favicons/favicon-32x32.png"/>'>
 <link rel="icon" type="image/png" sizes="16x16" href='<c:url value="/resources/images/favicons/favicon-16x16.png"/>'>
-<link rel="manifest" href='<c:url value="/resources/images/favicons/site.webmanifest"/>'>
 <jsp:include page="../layout/libraries.jsp"/>
 <title>일상 공유 게시판</title>
 
@@ -65,7 +64,7 @@
 		</table>
 		<c:if test="${member != null}">
 			<div class="d-flex flex-row-reverse pb-3">
-				<a class="btn border border-2" href="/write?classify=2">글쓰기</a>
+				<a class="btn border border-2" href="/writePost?classify=2">글쓰기</a>
 			</div>		
 		</c:if>
 		<%-- Pagination 영역 --%>

@@ -15,6 +15,9 @@ import com.spring.ex.dto.CommunityDTO;
 
 @Service
 public class CommunityServiceImpl implements CommunityService {
+	private final int dictBoard = 1;
+	private final int dailyBoard = 2;
+	private final int infoBoard = 3;
 	
 	@Inject
 	private CommunityDAO communityDAO;
@@ -106,5 +109,25 @@ public class CommunityServiceImpl implements CommunityService {
 	@Override
 	public int existCommunityLike(int cb_id, int m_id) {
 		return communityLikeDAO.existCommunityLike(cb_id, m_id);
+	}
+
+	@Override
+	public String convertClassifyToUrl(int classify) {
+		String url = "";
+		switch(classify) {
+			case dictBoard:
+				url = "community/dictionary";
+				break;
+			case dailyBoard:
+				url = "community/daily";
+				break;
+			case infoBoard:
+				url = "community/info";
+				break;
+			default:
+				url = "error";
+				break;
+		}
+		return url;
 	}
 }

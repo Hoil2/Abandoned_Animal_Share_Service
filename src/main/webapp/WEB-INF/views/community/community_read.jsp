@@ -79,7 +79,7 @@
 		    <%-- 글 수정 | 삭제 --%>
 		    <c:if test="${member.m_id == pageDetail.m_id}">
 		    	<div class="float-right">
-		    		<span><a href="/community">수정</a> | <a href="">삭제</a></span>
+		    		<span><a href="/updatePost?pageNo=${pageDetail.cb_id}">수정</a> | <a href="javascript:;" onclick="deletePost()">삭제</a></span>
 		    	</div>
 		    </c:if>
 		</div>
@@ -225,6 +225,23 @@
 			});
 		}
 		</c:if>
+		
+		// ------------ 게시물 부분 -------------
+		function deletePost() {
+			if(confirm("정말로 삭제하시겠습니까?")) {
+				$.ajax({
+					url : "/deletePost",
+					type : "post",
+					data : {
+						pageNo : ${pageDetail.cb_id}
+					},
+					success : function(url) {
+						window.location.href = "/" + url;
+					}
+				});
+			}
+		}
+		
 		
 		// ------------ 댓글 부분 --------------
 		

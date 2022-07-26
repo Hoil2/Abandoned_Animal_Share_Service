@@ -54,4 +54,7 @@ public interface CommunityService {
 	
 	// 좋아요가 존재하는지
 	public int existCommunityLike(int cb_id, int m_id);
+	
+	// classify를 url로 변환
+	public String convertClassifyToUrl(int classify);
 }

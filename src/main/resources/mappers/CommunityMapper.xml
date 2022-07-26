@@ -5,7 +5,7 @@
 	
 	<!-- 지식백과 게시판 부분 -->
 	<select id="getBoardPage" resultType="HashMap">
-		SELECT cb_id, title, content, hit, reg_date, name, img_path
+		SELECT cb_id, title, content, hit, reg_date, name
 		FROM community_board c, member m
 		<include refid="search"></include>
 		ORDER BY cb_id DESC
@@ -52,10 +52,23 @@
 		WHERE cb_id=#{pageNo}
 	</select>
 	
-	<insert id="submitPost">
-		INSERT INTO community_board(m_id, desertion_no, title, content, img_path, reg_date, classify) 
-		VALUES(#{m_id}, #{desertion_no}, #{title}, #{content}, #{img_path}, #{reg_date}, #{classify})
+	<insert id="submitPost" useGeneratedKeys="true" keyProperty="cb_id">
+		INSERT INTO community_board(m_id, desertion_no, title, content, reg_date, classify) 
+		VALUES(#{m_id}, #{desertion_no}, #{title}, #{content}, #{reg_date}, #{classify})
 	</insert>
+	
+	<update id="updatePost">
+		UPDATE community_board
+		SET desertion_no = #{desertion_no}, 
+			title = #{title}, 
+			content = #{content} 
+		WHERE cb_id = #{cb_id}
+	</update>
+	
+	<delete id="deletePost">
+		DELETE FROM community_board
+		WHERE cb_id = #{cb_id}
+	</delete>
 	
 	<update id="addHitToBoardPage">
 		UPDATE community_board

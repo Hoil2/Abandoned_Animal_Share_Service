@@ -65,7 +65,7 @@
 	
 		<c:if test="${member != null}">
 			<div class="d-flex flex-row-reverse pb-3">
-				<a class="btn border border-2" href="/write?classify=3">글쓰기</a>
+				<a class="btn border border-2" href="/writePost?classify=3">글쓰기</a>
 			</div>		
 		</c:if>
 		<%-- Pagination 영역 --%>

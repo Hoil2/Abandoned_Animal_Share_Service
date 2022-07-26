@@ -18,7 +18,7 @@
 	<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet"> 
 	<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 	  
-	<title>정보 공유 게시판</title>
+	<title>게시물 작성</title>
 	
 	<style type="text/css">
 		@font-face {
@@ -45,13 +45,6 @@
 	</style>
 </head>
 <body link="red">
-	
-
-	<%-- Preloader --%>
-	<%-- <div class="preloader">
-		<img src='<c:url value="/resources/images/loader3.png"/>' class="preloader__image" alt="">
-	</div> --%>
-	
 	<%-- header 영역 --%>
 	<jsp:include page="../layout/header.jsp"/>
 		
@@ -61,7 +54,7 @@
 		  	<div class="form-group row">
 			    <label for="title" class="col-sm-2 col-form-label">제목 </label>
 			    <div class="col-sm-10">
-			      <input type="text" class="form-control" id="title" name ="title">
+			      <input type="text" class="form-control" id="title" name ="title" value="${communityDTO.title}">
 			    </div>
 		  	</div>
 		  	
@@ -70,30 +63,28 @@
 				<div class="form-group row">
 			  		<label class="col-sm-2 col-form-label">반려동물 id</label>
 			  		<div class="col-sm-10">
-			        	<select name="desertion_no" class="form-select form-select-sm border border-dark" style="height:40px;" name="filter" aria-label=".form-select-sm example" required>
+			        	<select id="desertion_no" name="desertion_no" class="form-select form-select-sm border border-dark" style="height:40px;" name="filter" aria-label=".form-select-sm example" required>
 			        		<c:forEach var="memberPet" items="${memberPetList}">
-								<option value="${memberPet.desertion_no}">${memberPet.pet_name} / id : ${memberPet.desertion_no}</option>
+								<option value="${memberPet.desertion_no}" <c:if test="${memberPet.desertion_no == communityDTO.desertion_no}">selected</c:if>>${memberPet.pet_name} / id : ${memberPet.desertion_no}</option>
 			        		</c:forEach>
 						</select>
 			  		</div>
 			  	</div>			  	
 		  	</c:if>
-		  	<textarea class="summernote" name="content"></textarea>
-		    
-		  	<!-- <textarea class="form-control" name="content" rows="20"></textarea> -->
-		  	
-		  	<input type="hidden" name="classify" value="${classify}">
-		  	
+		  	<textarea class="summernote" id="content" name="content">${communityDTO.content}</textarea>
 		  	<hr>
-		  	
 		  	<div class="d-flex justify-content-end">
-		  		<button type="submit" class="px-3 btn btn-dark mb-2">작성완료</button>
+		  		<input type="button" onclick="submitPost()" class="px-3 btn btn-dark mb-2" value="작성완료"/>
 		  	</div>
 		</form>
 	</div>
 	<%-- main 끝 --%>
 	
+	<%-- footer 영역 --%>
+	<jsp:include page="../layout/footer.jsp"/>
+	
 	<script>
+		var imgSrcList = [];
 		$(document).ready(function() {
 			$('.summernote').summernote({
 				placeholder: 'Hello stand alone ui',
@@ -132,14 +123,32 @@
 				processData : false,
 				success : function(data) {
 					$(el).summernote('editor.insertImage', data.url);
+					imgSrcList.push(data.url);
 				}
 			});
 		}
-      
-    </script>	
-	
-	<%-- footer 영역 --%>
-	<jsp:include page="../layout/footer.jsp"/>
-	
+		
+		function submitPost() {
+			var title = $("#title").val();
+			var content = $("#content").val();
+			var desertion_no = $("#desertion_no").val();
+			$.ajax({
+				data : {
+					<c:if test="${communityDTO != null}">pageNo : ${communityDTO.cb_id},</c:if>
+					imgSrcList : JSON.stringify(imgSrcList),
+					title : title,
+					content : content,
+					desertion_no : desertion_no,
+					classify : ${classify},
+				},
+				type : "POST",
+				url : "/submitPost",
+				enctype : 'multipart/form-data',
+				success : function(url) {
+					window.location.href = "/" + url;
+				}
+			});
+		}
+	</script>
 </body>
 </html>

@@ -9,7 +9,6 @@ public class CommunityDTO {
 	private String title;
 	private String content;
 	private int hit;
-	private String img_path;
 	private Date reg_date;
 	private int classify;
 	private int enable;
@@ -50,12 +49,6 @@ public class CommunityDTO {
 	public void setHit(int hit) {
 		this.hit = hit;
 	}
-	public String getImg_path() {
-		return img_path;
-	}
-	public void setImg_path(String img_path) {
-		this.img_path = img_path;
-	}
 	public Date getReg_date() {
 		return reg_date;
 	}
@@ -77,7 +70,7 @@ public class CommunityDTO {
 	@Override
 	public String toString() {
 		return "CommunityDTO [cb_id=" + cb_id + ", m_id=" + m_id + ", desertion_no=" + desertion_no + ", title=" + title
-				+ ", content=" + content + ", hit=" + hit + ", img_path=" + img_path + ", reg_date=" + reg_date
+				+ ", content=" + content + ", hit=" + hit + ", reg_date=" + reg_date
 				+ ", classify=" + classify + ", enable=" + enable + "]";
 	}
 }
