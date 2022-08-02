@@ -3,10 +3,7 @@ package com.spring.ex.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -35,6 +32,7 @@ import com.google.gson.JsonObject;
 import com.spring.ex.dto.CommunityDTO;
 import com.spring.ex.dto.EmailAlarmDTO;
 import com.spring.ex.dto.EmailDTO;
+import com.spring.ex.dto.FileUploadDTO;
 import com.spring.ex.dto.MemberDTO;
 import com.spring.ex.dto.MemberPetDTO;
 import com.spring.ex.service.CommunityService;
@@ -273,8 +271,8 @@ public class CommunityController {
 	@RequestMapping("/writePost")
 	public String writePost(Model model, HttpServletRequest request) throws Exception {
 		MemberDTO memberDTO = (MemberDTO)request.getSession().getAttribute("member");
+		Date reg_date = new Date(System.currentTimeMillis());
 		int classify = Integer.parseInt(request.getParameter("classify"));
-		
 		if(memberDTO == null) {
 			System.out.println("로그인이 필요합니다.");
 			return "error";
@@ -285,8 +283,16 @@ public class CommunityController {
 			model.addAttribute("memberPetList", memberPetList);
 		}
 		
-		// 글쓰기를 누른 게시판의 분류 코드 전달
-		model.addAttribute("classify", classify);
+		CommunityDTO communityDTO = new CommunityDTO();
+		communityDTO.setM_id(memberDTO.getM_id());
+		communityDTO.setReg_date(reg_date);
+		communityDTO.setClassify(classify);
+		communityDTO.setEnable(0);
+		
+		communityService.insertPost(communityDTO);
+		
+		model.addAttribute("communityDTO", communityDTO);
+		model.addAttribute("update", false);
 		
 		return "community/community_write";
 	}
@@ -301,13 +307,13 @@ public class CommunityController {
 			return "error";
 		}
 		
-		// 게시물 수정으로 들어왔을 때
 		String pageNo = request.getParameter("pageNo");
 		if(pageNo != null) {
 			CommunityDTO communityDTO = communityService.getPageDetail(Integer.parseInt(pageNo));
 			if(communityDTO.getM_id() == memberDTO.getM_id()) {
 				model.addAttribute("communityDTO", communityDTO);
 				model.addAttribute("classify", communityDTO.getClassify());
+				model.addAttribute("update", true);
 				if(communityDTO.getClassify() == dailyBoard) {
 					List<MemberPetDTO> memberPetList = memberPetService.selectMemberPetList(memberDTO.getM_id());
 					model.addAttribute("memberPetList", memberPetList);
@@ -327,100 +333,87 @@ public class CommunityController {
 	}
 	
 	// 게시물 등록
-	@ResponseBody
-	@RequestMapping(value="/submitPost", method=RequestMethod.POST)
-	public String submitPost(HttpServletRequest request) throws Exception {
-		String img_path = null;
-		
-		System.out.println("시작");
+	@RequestMapping(value="/savePost", method=RequestMethod.POST)
+	public String savePost(HttpServletRequest request) throws Exception {
 		MemberDTO memberDTO = (MemberDTO)request.getSession().getAttribute("member");
 		if(memberDTO == null) {
 			System.out.println("로그인이 필요합니다.");
 			return "redirect:error";
 		}
-		String pageNo = request.getParameter("pageNo"); // 수정할 게시물은 pageNo를 전송
-		String title = request.getParameter("title").toString();
-		String content = request.getParameter("content").toString();
+		String pageNo = request.getParameter("pageNo");
+		String title = request.getParameter("title");
+		String content = request.getParameter("content");
 		int classify = Integer.parseInt(request.getParameter("classify"));
-		Date reg_date = new Date(System.currentTimeMillis());
 		String desertion_no = request.getParameter("desertion_no");
-		String _allImgSrcList = request.getParameter("imgSrcList");
 		
-		// img src들 저장
-		List<String> htmlSrcs = new ArrayList<String>();
-		Document doc = Jsoup.parseBodyFragment(content);
-		Elements imgs = doc.getElementsByTag("img");
-		for(int i = 0; i < imgs.size(); i++) {
-			htmlSrcs.add(imgs.get(i).attr("src"));
-		}
-		
-		System.out.println("img src 값 리스트로 저장" + htmlSrcs);
-		
-		JSONParser parser = new JSONParser();
-		JSONArray allImgSrcList = (JSONArray)parser.parse(_allImgSrcList);
-					
 		// 등록 실패
 		if(title.equals("") || content.equals("")) { 
 			return "redirect:error";
 		}
 		
 		CommunityDTO communityDTO = new CommunityDTO();
+		communityDTO.setCb_id(Integer.parseInt(pageNo));
 		communityDTO.setM_id(memberDTO.getM_id());
 		communityDTO.setDesertion_no(desertion_no);
 		communityDTO.setTitle(title);
 		communityDTO.setContent(content);
-		communityDTO.setReg_date(reg_date);
 		communityDTO.setClassify(classify);
-		
+		communityDTO.setEnable(1);
 		System.out.println(communityDTO);
+		communityService.updatePost(communityDTO);
 		
-		if(pageNo == null) {
-			communityService.submitPost(communityDTO);
-			System.out.println("게시물 등록 성공");
+		System.out.println("게시물 등록 성공");
 			
-			for(EmailAlarmDTO ead : emailAlarmService.getEmailAlarmList(desertion_no)) {
-				MemberDTO md = memberService.getMemberByM_id(ead.getM_id());
-				EmailDTO emailDTO = new EmailDTO(
-						emailService.getAdminEmailAddress(), 					// from
-						md.getEmail(), 						 					// to
-						"유기동물 분양 센터 - 알림", 				 					// title
-						"알림 설정하신 " + desertion_no + "의 새로운 소식이 등록되었습니다." // contents
-					);
-				emailService.sendEmail(emailDTO);
-			}
-		}
-		else { 
-			communityDTO.setCb_id(Integer.parseInt(pageNo));
-			communityService.updatePost(communityDTO);
-			System.out.println("게시물 수정 성공");
+		for(EmailAlarmDTO ead : emailAlarmService.getEmailAlarmList(desertion_no)) {
+			MemberDTO md = memberService.getMemberByM_id(ead.getM_id());
+			EmailDTO emailDTO = new EmailDTO(
+					emailService.getAdminEmailAddress(), 					// from
+					md.getEmail(), 						 					// to
+					"유기동물 분양 센터 - 알림", 				 					// title
+					"알림 설정하신 " + desertion_no + "의 새로운 소식이 등록되었습니다." // contents
+				);
+			emailService.sendEmail(emailDTO);
 		}
 		
-		// 이미지 로컬에 저장
 		String contextRoot = new HttpServletRequestWrapper(request).getRealPath("/");
-		for(int i = 0; i < htmlSrcs.size(); i++) {
-			File file = new File(contextRoot + htmlSrcs.get(i));
-			File newFile = new File(uploadPath + "/images/uploaded_images/" + file.getName());
-			Files.copy(file.toPath(), newFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-			
-			System.out.println("로컬에 이미지 저장 : " + newFile.toPath().toString());
-			
-			allImgSrcList.remove(htmlSrcs.get(i));
-		}
 		
-		// 에디터에서 삭제된 이미지 서버에서 삭제
-		for(int i = 0; i < allImgSrcList.size(); i++) {
-			File dumpImg = new File(contextRoot + allImgSrcList.get(i).toString());
-			dumpImg.delete();
-			System.out.println("안쓰는 이미지 삭제 : " + allImgSrcList.get(i).toString());
-		}
+		// html의 src값을 추출
+		List<String> srcList = communityService.convertHtmlToSrcList(content); 
 		
-		return communityService.convertClassifyToUrl(classify) + "/" + communityDTO.getCb_id();
+		// 서버에 저장된 이미지를 로컬에 복사
+		communityService.copySrcListToLocal(srcList, contextRoot);
+		
+		// 해당 게시물의 임시 + 모든 파일의 url 가져오기
+		List<String> uploadedUrlList = communityService.selectUrlListByCb_id(communityDTO.getCb_id());
+		
+		communityService.deleteFileNotInMain(srcList, uploadedUrlList, contextRoot);
+		
+		return "redirect:" + communityService.convertClassifyToUrl(classify) + "/" + communityDTO.getCb_id();
+	}
+	
+	@ResponseBody
+	@RequestMapping("/cancelPost")
+	public void cancelPost(HttpServletRequest request) throws Exception {
+		System.out.println("게시물 수정 취소");
+		int pageNo = Integer.parseInt(request.getParameter("pageNo"));
+		String contextRoot = new HttpServletRequestWrapper(request).getRealPath("/");
+		
+		CommunityDTO communityDTO = communityService.getPageDetail(pageNo);
+		// html의 src값을 추출
+		List<String> srcList = communityService.convertHtmlToSrcList(communityDTO.getContent()); 
+		
+		// 해당 게시물의 모든 파일의 url 가져오기
+		List<String> uploadedUrlList = communityService.selectUrlListByCb_id(pageNo);
+		
+		// 임시로 저장된 파일 삭제
+		communityService.deleteFileNotInMain(srcList, uploadedUrlList, contextRoot);
 	}
 	
 	// 게시물 삭제
 	@ResponseBody
 	@RequestMapping("/deletePost")
 	public String deletePost(HttpServletRequest request) throws Exception {
+		System.out.println("게시물 삭제");
 		int pageNo = Integer.parseInt(request.getParameter("pageNo"));
 		MemberDTO member = (MemberDTO)request.getSession().getAttribute("member");
 		CommunityDTO communityDTO = communityService.getPageDetail(pageNo);
@@ -430,27 +423,14 @@ public class CommunityController {
 		}
 		
 		if(member.getM_id() == communityDTO.getM_id() || member.getGrade().equals("admin")) {
+			String contextRoot = new HttpServletRequestWrapper(request).getRealPath("/");
+			// 데이터베이스에서 게시물의 모든 파일 정보 불러오고 삭제하기
+			List<FileUploadDTO> fileUploadDTOList = communityService.selectFileListByCb_id(pageNo);
+			for(int i = 0; i < fileUploadDTOList.size(); i++) {
+				communityService.deleteFileEveryWhere(fileUploadDTOList.get(i).getUrl(), contextRoot);
+			}
 			communityService.deletePost(pageNo);
 			System.out.println("게시물 삭제 성공");
-			
-			// img src 값만 추출
-			List<String> htmlSrcs = new ArrayList<String>();
-			Document doc = Jsoup.parseBodyFragment(communityDTO.getContent());
-			Elements imgs = doc.getElementsByTag("img");
-			for(int i = 0; i < imgs.size(); i++) {
-				htmlSrcs.add(imgs.get(i).attr("src"));
-			}
-			
-			// 에디터에서 삭제된 이미지 서버에서 삭제
-			String contextRoot = new HttpServletRequestWrapper(request).getRealPath("/");
-			for(int i = 0; i < htmlSrcs.size(); i++) {
-				File serverImg = new File(contextRoot + htmlSrcs.get(i));
-				File localFile = new File(uploadPath + "/images/uploaded_images/" + serverImg.getName());
-				serverImg.delete();
-				localFile.delete();
-				System.out.println("서버의 게시물 이미지 삭제 : " + serverImg.getPath().toString());
-				System.out.println("로컬의 게시물 이미지 삭제 : " + localFile.getPath().toString());
-			}
 	 	}
 		else {
 			System.out.println("삭제할 권한이 없습니다.");
@@ -460,37 +440,40 @@ public class CommunityController {
 		return communityService.convertClassifyToUrl(communityDTO.getClassify());
 	}
 	
-	// 서버에 임시로 저장
+	// 서버에만 이미지 임시로 저장
 	@ResponseBody
 	@RequestMapping(value="/uploadSummernoteImageFile", produces = "application/json; charset=utf8")
-	public String uploadSummernoteImageFile(@RequestParam("file") MultipartFile multipartFile, HttpServletRequest request )  {
+	public String uploadSummernoteImageFile(@RequestParam("file") MultipartFile multipartFile, HttpServletRequest request ) throws Exception {
+		int cb_id = Integer.parseInt(request.getParameter("cb_id"));
 		JsonObject jsonObject = new JsonObject();
-		
 		// 내부경로로 저장
 		String contextRoot = new HttpServletRequestWrapper(request).getRealPath("/");
 		String fileRoot = contextRoot+"/resources/images/uploaded_images/";
-		
-		
 		String originalFileName = multipartFile.getOriginalFilename();	//오리지날 파일명
 		String extension = originalFileName.substring(originalFileName.lastIndexOf("."));	//파일 확장자
 		String savedFileName = UUID.randomUUID() + extension;	//저장될 파일 명
-		
 		File serverFile = new File(fileRoot + savedFileName);
 		try {
 			InputStream fileStream = multipartFile.getInputStream();
 			FileUtils.copyInputStreamToFile(fileStream, serverFile);	// 서버에 파일 저장
 			jsonObject.addProperty("url", "/resources/images/uploaded_images/"+savedFileName); // contextroot + resources + 저장할 내부 폴더명
 			jsonObject.addProperty("responseCode", "success");
-				
+			
+			// 데이터베이스에 게시판 id와 경로 저장
+			FileUploadDTO fileUploadDTO = new FileUploadDTO();
+			fileUploadDTO.setCb_id(cb_id);
+			fileUploadDTO.setUrl("/resources/images/uploaded_images/"+savedFileName);
+			communityService.insertFile(fileUploadDTO);
 		} catch (IOException e) {
 			FileUtils.deleteQuietly(serverFile);	//저장된 파일 삭제
 			jsonObject.addProperty("responseCode", "error");
+			communityService.deleteFileByUrl("/resources/images/uploaded_images/"+savedFileName);
 			e.printStackTrace();
-		}
+		} 
 		String a = jsonObject.toString();
 		return a;
 	}
-	
+
 	// 게시물의 좋아요 클릭했을 때
 	@RequestMapping("/communityClickedLike")
 	public String communityClickedLike(HttpServletRequest request) {

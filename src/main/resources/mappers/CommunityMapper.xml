@@ -52,16 +52,18 @@
 		WHERE cb_id=#{pageNo}
 	</select>
 	
-	<insert id="submitPost" useGeneratedKeys="true" keyProperty="cb_id">
-		INSERT INTO community_board(m_id, desertion_no, title, content, reg_date, classify) 
-		VALUES(#{m_id}, #{desertion_no}, #{title}, #{content}, #{reg_date}, #{classify})
+	<insert id="insertPost" useGeneratedKeys="true" keyProperty="cb_id">
+		INSERT INTO community_board(m_id, desertion_no, title, content, reg_date, classify, enable) 
+		VALUES(#{m_id}, #{desertion_no}, #{title}, #{content}, #{reg_date}, #{classify}, #{enable})
 	</insert>
 	
 	<update id="updatePost">
 		UPDATE community_board
 		SET desertion_no = #{desertion_no}, 
 			title = #{title}, 
-			content = #{content} 
+			content = #{content},
+			classify = #{classify},
+			enable = #{enable}
 		WHERE cb_id = #{cb_id}
 	</update>
 	
@@ -97,5 +99,24 @@
 		SELECT EXISTS(SELECT * FROM community_board_good WHERE cb_id = #{cb_id} AND m_id = #{m_id})
 	</select>
 	
+	<!-- 파일 부분 -->
 	
+	<!-- 파일 검색 -->
+	<select id="selectFileListByCb_id" resultType="FileUploadDTO">
+		SELECT *
+		FROM file_upload
+		WHERE cb_id = #{cb_id}
+	</select>
+	
+	<!--  파일 추가 -->
+	<insert id="insertFile">
+		INSERT file_upload(cb_id, url) 
+		VALUE(#{cb_id}, #{url})
+	</insert>
+	
+	<!-- 파일 삭제 -->
+	<delete id="deleteFileByUrl">
+		DELETE FROM file_upload
+		WHERE url = #{url}
+	</delete>
 </mapper>

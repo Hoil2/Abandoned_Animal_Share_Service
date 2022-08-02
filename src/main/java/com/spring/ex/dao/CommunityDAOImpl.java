@@ -9,6 +9,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.spring.ex.dto.CommunityDTO;
+import com.spring.ex.dto.FileUploadDTO;
 
 @Repository
 public class CommunityDAOImpl implements CommunityDAO {
@@ -33,8 +34,8 @@ public class CommunityDAOImpl implements CommunityDAO {
 	}
 	
 	@Override
-	public int submitPost(CommunityDTO dto) throws Exception {
-		return sqlSession.insert(namespace + ".submitPost", dto);
+	public int insertPost(CommunityDTO dto) throws Exception {
+		return sqlSession.insert(namespace + ".insertPost", dto);
 	}
 
 	@Override
@@ -50,5 +51,20 @@ public class CommunityDAOImpl implements CommunityDAO {
 	@Override
 	public int addHitToBoardPage(int pageNo) throws Exception {
 		return sqlSession.update(namespace + ".addHitToBoardPage", pageNo);
+	}
+
+	@Override
+	public List<FileUploadDTO> selectFileListByCb_id(int cb_id) throws Exception {
+		return sqlSession.selectList(namespace + ".selectFileListByCb_id", cb_id);
+	}
+
+	@Override
+	public int insertFile(FileUploadDTO dto) throws Exception {
+		return sqlSession.insert(namespace + ".insertFile", dto);
+	}
+
+	@Override
+	public int deleteFileByUrl(String url) throws Exception {
+		return sqlSession.delete(namespace + ".deleteFileByUrl", url);
 	}
 }

@@ -10,5 +10,6 @@
 		<typeAlias type="com.spring.ex.dto.EmailAlarmDTO" alias="EmailAlarmDTO"/>
 		<typeAlias type="com.spring.ex.dto.LostAnimalDTO" alias="LostAnimalDTO"/>
 		<typeAlias type="com.spring.ex.dto.CommentDTO" alias="CommentDTO"/>
+		<typeAlias type="com.spring.ex.dto.FileUploadDTO" alias="FileUploadDTO"/>
 	</typeAliases>
 </configuration>

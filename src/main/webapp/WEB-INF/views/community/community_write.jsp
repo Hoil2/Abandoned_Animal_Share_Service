@@ -10,11 +10,10 @@
 	<link rel="apple-touch-icon" sizes="180x180" href='<c:url value="/resources/favicons/apple-touch-icon.png"/>'>
 	<link rel="icon" type="image/png" sizes="32x32" href='<c:url value="/resources/images/favicons/favicon-32x32.png"/>'>
 	<link rel="icon" type="image/png" sizes="16x16" href='<c:url value="/resources/images/favicons/favicon-16x16.png"/>'>
-	<%-- <link rel="manifest" href='<c:url value="/resources/images/favicons/site.webmanifest"/>'> --%>
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 	<jsp:include page="../layout/libraries.jsp"/>
 	<%-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"> --%>
-    <%-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script> --%>
+	<%-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script> --%>
 	<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet"> 
 	<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 	  
@@ -50,7 +49,9 @@
 		
 	<%-- main 영역 --%>
 	<div class="container">
-		<form action="/submitPost" method="post" enctype="multipart/form-data">
+		<form action="/savePost" method="post" enctype="multipart/form-data">
+			<input type="hidden" name="pageNo" value="${communityDTO.cb_id}"/>
+			<input type="hidden" name="classify" value="${communityDTO.classify}"/>
 		  	<div class="form-group row">
 			    <label for="title" class="col-sm-2 col-form-label">제목 </label>
 			    <div class="col-sm-10">
@@ -59,23 +60,23 @@
 		  	</div>
 		  	
 		  	
-		  	<c:if test="${classify == 2}">
+			<c:if test="${communityDTO.classify == 2}">
 				<div class="form-group row">
 			  		<label class="col-sm-2 col-form-label">반려동물 id</label>
 			  		<div class="col-sm-10">
-			        	<select id="desertion_no" name="desertion_no" class="form-select form-select-sm border border-dark" style="height:40px;" name="filter" aria-label=".form-select-sm example" required>
-			        		<c:forEach var="memberPet" items="${memberPetList}">
+						<select id="desertion_no" name="desertion_no" class="form-select form-select-sm border border-dark" style="height:40px;" name="filter" aria-label=".form-select-sm example" required>
+							<c:forEach var="memberPet" items="${memberPetList}">
 								<option value="${memberPet.desertion_no}" <c:if test="${memberPet.desertion_no == communityDTO.desertion_no}">selected</c:if>>${memberPet.pet_name} / id : ${memberPet.desertion_no}</option>
-			        		</c:forEach>
+							</c:forEach>
 						</select>
-			  		</div>
-			  	</div>			  	
-		  	</c:if>
-		  	<textarea class="summernote" id="content" name="content">${communityDTO.content}</textarea>
-		  	<hr>
-		  	<div class="d-flex justify-content-end">
-		  		<input type="button" onclick="submitPost()" class="px-3 btn btn-dark mb-2" value="작성완료"/>
-		  	</div>
+					</div>
+				</div>			  	
+			</c:if>
+			<textarea class="summernote" id="content" name="content">${communityDTO.content}</textarea>
+			<hr>
+			<div class="d-flex justify-content-end">
+				<input type="submit" class="px-3 btn btn-dark mb-2" value="등록"/>
+			</div>
 		</form>
 	</div>
 	<%-- main 끝 --%>
@@ -84,7 +85,8 @@
 	<jsp:include page="../layout/footer.jsp"/>
 	
 	<script>
-		var imgSrcList = [];
+		var submitted = false;
+		
 		$(document).ready(function() {
 			$('.summernote').summernote({
 				placeholder: 'Hello stand alone ui',
@@ -99,21 +101,22 @@
 					['insert', ['link', 'picture', 'video']],
 					['view', ['fullscreen', 'codeview', 'help']]
 				],
-		        
-		        callbacks : { 
-		        	onImageUpload : function(files, editor, welEditable) {
+
+				callbacks : { 
+					onImageUpload : function(files, editor, welEditable) {
 						// 파일 업로드(다중업로드를 위해 반복문 사용)
 						for (var i = files.length - 1; i >= 0; i--) {
 							uploadSummernoteImageFile(files[i], this);
-		        		}
-		        	}
-		        }
+						}
+					}
+				}
 			});
 		});
 		
 		function uploadSummernoteImageFile(file, el) {
 			data = new FormData();
 			data.append("file", file);
+			data.append("cb_id", ${communityDTO.cb_id})
 			$.ajax({
 				data : data,
 				type : "POST",
@@ -123,32 +126,30 @@
 				processData : false,
 				success : function(data) {
 					$(el).summernote('editor.insertImage', data.url);
-					imgSrcList.push(data.url);
 				}
 			});
 		}
 		
-		function submitPost() {
-			var title = $("#title").val();
-			var content = $("#content").val();
-			var desertion_no = $("#desertion_no").val();
-			$.ajax({
-				data : {
-					<c:if test="${communityDTO != null}">pageNo : ${communityDTO.cb_id},</c:if>
-					imgSrcList : JSON.stringify(imgSrcList),
-					title : title,
-					content : content,
-					desertion_no : desertion_no,
-					classify : ${classify},
-				},
-				type : "POST",
-				url : "/submitPost",
-				enctype : 'multipart/form-data',
-				success : function(url) {
-					window.location.href = "/" + url;
-				}
-			});
-		}
+		$(window).on("beforeunload", function() {
+			console.log("글쓰기 종료");
+			if(!submitted) {
+				$.ajax({
+					type : "POST",
+					<c:if test="${update}">url : "/cancelPost",</c:if>
+					<c:if test="${!update}">url : "/deletePost",</c:if>
+					data : {
+						pageNo : ${communityDTO.cb_id}
+					}
+				});
+				
+				return "작성중인 글이 존재합니다. 페이지를 나가시겠습니까?";
+			}
+		});
+		
+		// 등록 버튼을 눌렀을 때는 경고창 뜨지 않게 설정
+		$("form").submit(function() {
+			submitted = true;
+		});
 	</script>
 </body>
 </html>
