@@ -26,7 +26,9 @@
 								<a href="/main" id="twayFont">홈</a>
 							</li>
 							<li class="dropdown"><a href="/shereCenterPage" id="twayFont">분양센터</a>
-							<!-- <li class="dropdown"><a href="/shereCenterPage?searchTheme=allThene&searchArea=allArea&alignment=alignmentDay" id="twayFont">분양센터</a> -->
+								<ul>
+									<li><a href="/shareCenterPage_searchAniamlInRegion" id="twayFont">지역 검색</a></li>
+								</ul>
 							</li>
 							<li class="dropdown"><a href="/communityLostBoard" id="twayFont">실종동물</a>
 							</li>
