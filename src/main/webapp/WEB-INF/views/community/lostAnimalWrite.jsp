@@ -165,7 +165,7 @@
 					특징
 					<div class="form-group">
 						<div class="input-group my-2 mb-1">
-							<textarea name="content" id="content" cols="100"></textarea>
+							<textarea name="content" id="content" cols="100" style="height:300px; width: 100%;"></textarea>
 						</div>
 					</div>
 					<hr >
