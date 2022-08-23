@@ -129,4 +129,20 @@
 		WHERE desertion_no = #{desertion_no} AND m_id = #{m_id}
 	</delete>
 	
+	<select id="isCheckCareShelter">
+		SELECT ans_id FROM abandoned_animal_shelter WHERE care_nm = #{care_nm} AND care_addr =#{care_addr}
+	</select>
+	
+	<insert id="setCareShelter">
+		INSERT INTO abandoned_animal_shelter
+		VALUES(
+			#{care_nm}, 
+			#{care_tel}, 
+			#{care_addr}, 
+			#{org_nm}, 
+			#{charge_nm}, 
+			#{officetel}, 
+			#{notice_comment}
+		)
+	</insert>
 </mapper>

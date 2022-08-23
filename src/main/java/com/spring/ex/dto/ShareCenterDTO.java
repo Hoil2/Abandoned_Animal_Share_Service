@@ -19,6 +19,7 @@ public class ShareCenterDTO {
 	private String neuter_yn;
 	private String special_mark;
 	private int hit;
+	private int aas_id;
 	private Object redate;
 	
 	public int getAni_id() {
@@ -134,5 +135,11 @@ public class ShareCenterDTO {
 	}
 	public void setRedate(Object redate) {
 		this.redate = redate;
+	}
+	public int getAas_id() {
+		return aas_id;
+	}
+	public void setAas_id(int aas_id) {
+		this.aas_id = aas_id;
 	}
 }

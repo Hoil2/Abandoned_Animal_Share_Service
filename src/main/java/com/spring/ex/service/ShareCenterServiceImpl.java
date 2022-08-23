@@ -99,13 +99,13 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 		JSONArray  item 	= (JSONArray) items.get("item");
 		
 		System.out.println( "카운트 수" +(String) body.get("totalCount").toString());
-		/*
+		
 		System.out.println("JSON(obj) : " + obj);
 		System.out.println("JSON(response) : " + response);
 		System.out.println("JSON(body) : " + body);
 		System.out.println("JSON(items) : " + items);
 		System.out.println("JSON(item[]) : " + item);
-		*/
+		
 
 		// 조회 데이터 크기만큼 for문 + 테이블저장 
 		for (int i=0;i< item.size();i++) {
@@ -128,10 +128,10 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 			dto.setSex_cd((String) eqData.get("sexCd").toString());
 			dto.setNeuter_yn((String) eqData.get("neuterYn").toString());
 			dto.setSpecial_mark((String) eqData.get("specialMark").toString());
-			/*
-			System.out.println("서비스 for : " +dto.toString());
-			System.out.println(dto.getDesertion_no());
-			System.out.println(dto.getHappen_place());*/
+			
+			//System.out.println("서비스 for : " +dto.toString());
+			//System.out.println(dto.getDesertion_no());
+			//System.out.println(dto.getHappen_place());
 			dao.setDbShareCenterApiResponse(dto);
 			// EarthquakeDAO dao = sqlSession.getMapper(EarthquakeDAO.class);
 			// cd = dao.saveEarthquake(eqSeq,eqPoint,noticeType,img,noticeTime,refSeq,eqTime,miSeq,lat,lng,addr,scale,intensity,deep,remarks,flagYN,issueID);
