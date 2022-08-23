@@ -42,7 +42,7 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 	public void getShareCenterTest(ShareCenterDTO dto, ShelterDTO shelterDto) throws Exception {
 		// 1. URL을 만들기 위한 StringBuilder.
 		StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1543061/abandonmentPublicSrvc/abandonmentPublic"); /*URL*/
-		Object testCasting = 7;
+		Object testCasting = 500;
 		String testCastingResult =String.valueOf(testCasting);
 		
 		
@@ -101,14 +101,17 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 		
 		System.out.println( "카운트 수" +(String) body.get("totalCount").toString());
 		
+		//주의 : 다수 데이터 요청시 여기 부분 주석처리 안하면 이클립스 멈춤 
+		/*
 		System.out.println("JSON(obj) : " + obj);
 		System.out.println("JSON(response) : " + response);
 		System.out.println("JSON(body) : " + body);
 		System.out.println("JSON(items) : " + items);
 		System.out.println("JSON(item[]) : " + item);
-		
+		*/
 
-		// 조회 데이터 크기만큼 for문 + 테이블저장 
+		// 조회 데이터 크기만큼 for문 + 테이블저장
+		// dto에 담고 -> 등록된 보호소인지 확인 -> 기등록은 aas_id 값으로, 미등록은 보호소 등록후 값으로
 		for (int i=0;i< item.size();i++) {
 			
 			JSONObject eqData = (JSONObject) item.get(i);
@@ -132,12 +135,11 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 			
 			String care_nm =  (String)eqData.get("careNm").toString();
 			String care_addr = (String)eqData.get("careAddr").toString();
-			
 			HashMap<String, Object> shelterMap = new HashMap<String, Object>();
 			shelterMap.put("care_nm", care_nm);
 			shelterMap.put("care_addr", care_addr);
 			int checkCareShelter = dao.isCheckCareShelter(shelterMap);
-			System.out.println(checkCareShelter);
+			//System.out.println("기 등록 보호소 확인1"+checkCareShelter);
 			
 			if(checkCareShelter != 0) {
 				dto.setAas_id(checkCareShelter);
@@ -152,13 +154,11 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 				
 				dao.setCareShelter(shelterDto);
 				dto.setAas_id(shelterDto.getAas_id());
-				System.out.println("자동 증가된 값 오는지 test" + shelterDto.getAas_id());
-				
 				dao.setDbShareCenterApiResponse(dto);
+				//System.out.println("자동 증가된 값 오는지 test" + shelterDto.getAas_id());
 			}
 			
-			System.out.println(care_nm + "  "+ care_addr);
-			
+			//System.out.println(care_nm + "  "+ care_addr);
 			//System.out.println("서비스 for : " +dto.toString());
 			//System.out.println(dto.getDesertion_no());
 			//System.out.println(dto.getHappen_place());
