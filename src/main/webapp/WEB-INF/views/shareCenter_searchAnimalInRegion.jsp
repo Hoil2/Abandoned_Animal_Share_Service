@@ -117,16 +117,17 @@ $(document).ready(function() {
 						<label class="col-form-label pt-4">주소로 검색 위치 변경</label>
 						<div class="row">
 							<div class="px-3 input-group">
-								<input type="text" class="form-control"/>
+								<input type="text" id="changedAddress" class="form-control"/>
 								<div class="input-group-append">
-							    	<button type="button" class="btn btn-outline-secondary">변경</button>
+							    	<button type="button" class="btn btn-outline-secondary" onclick="changeAddressToSearch()">변경</button>
 							    </div>
 						    </div>
 						</div>
 						
+						<%-- 보호소 검색 --%>
 						<div class="d-flex flex-row justify-content-end mt-4">
-							<input type="button" class="btn btn-secondary btn-lg mr-4" value="현재 위치로 변경">
-							<input type="button" class="btn btn-primary btn-lg" value="검색" onclick="drawCircle()">
+							<input type="button" class="btn btn-secondary btn-lg mr-4" value="현재 위치로 변경" onclick="changeAddressToNow()">
+							<input type="button" class="btn btn-primary btn-lg" value="검색" onclick="startSearch()">
 						</div>
 					</div>
 					
@@ -282,15 +283,102 @@ $(document).ready(function() {
         	    fillOpacity: 0.6  // 채우기 불투명도 입니다   
         	}); 
 	        
+	        var radius;
+	        
+	        var resultAddressList = [];
+	        
+	        var markers = [];
+	        var infowindows = [];
+	        
 	        $(function() {
 	        	setToCurrentPosition();
 			});
 	        
+	        function startSearch() {
+	        	resultAddressList = [];
+	        	
+	        	for (var i = 0; i < markers.length; i++) {
+	                markers[i].setMap(null);
+	            }
+	        	
+	        	for(var i = 0; i < infowindows.length; i++) {
+	        		infowindows[i].close();
+	        	}
+	        	
+	        	markers = [];
+	        	infowindows = [];
+	        	
+	        	// 맵에 검색 범위 그리기
+	        	drawCircle();
+	        	
+	        	// 범위 안의 보호소를 표시. 표시한 보호소는 resultAddressList에 저장
+	        	displayShelterInRegion();
+	        }
+	        
+	        function changeAddressToNow() {
+	        	setToCurrentPosition();
+	        }
+	        
+	        function changeAddressToSearch() {
+	        	var changedAddress = $('#changedAddress').val();
+	        	
+				var geocoder = new kakao.maps.services.Geocoder();
+	        	
+	        	// 주소로 좌표를 검색합니다
+	        	geocoder.addressSearch(changedAddress, function(result, status) {
+	        	    // 정상적으로 검색이 완료됐으면 
+	        	     if (status === kakao.maps.services.Status.OK) {
+	        	        var targetPosition = new kakao.maps.LatLng(result[0].y, result[0].x);
+	        	        nowPosition = targetPosition;
+	        	        
+	        	        message = '변경된 위치';
+	        	        map.setCenter(nowPosition);
+        	            displayMarker(nowPosition, message);
+	        	     }
+	        	     else {
+         	     		console.log("x");
+         	     		var iwContent = '<div style="padding:5px;padding-right:30px;white-space:nowrap;">can not found address</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+ 	        	     	    iwPosition = nowPosition, //인포윈도우 표시 위치입니다
+ 	        	     	    iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
+ 	
+ 	        	     	// 인포윈도우를 생성하고 지도에 표시합니다
+ 	        	     	var infowindow = new kakao.maps.InfoWindow({
+ 	        	     	    map: map, // 인포윈도우가 표시될 지도
+ 	        	     	    position : iwPosition, 
+ 	        	     	    content : iwContent,
+ 	        	     	    removable : iwRemoveable
+ 	        	     	});
+ 	        	     	
+ 	        	     	infowindows.push(infowindow);
+ 	        	     	    
+ 	    	         	// 지도 중심좌표를 접속위치로 변경합니다
+ 	    	            map.setCenter(nowPosition);  
+	        	     }
+	        	});
+	        }
+	        
+	        function displayShelterInRegion() {
+	        	$.ajax({
+	        		url : '/getAllShelterList',
+	        		type : 'post',
+	        		success : function(data) {
+	        			$(data).each(function() {
+	        				console.log("주소 검색 시작 : "+this.care_addr);
+	        				getAddressPositionAndDisplayMarker(this.care_addr, this.care_nm)
+       					});
+	        		}
+	        	});
+	        }
+	        // 검색 범위 그리기
 	        function drawCircle() {
-	        	var radius = $('#radius').val() * 1000;
+	        	// km를 m로 변환합니다
+	        	radius = $('#radius').val() * 1000;
+	        	
+	        	// 기존에 그려져 있던 원을 제거합니다
         		circle.setMap(null);
         		circle.setPosition(nowPosition);
 	        	circle.setRadius(radius);
+	        	
 	        	// 지도에 원을 표시합니다 
 	        	circle.setMap(map); 
 	        	map.setBounds(circle.getBounds());
@@ -319,24 +407,27 @@ $(document).ready(function() {
     	         	// 지도 중심좌표를 접속위치로 변경합니다
     	            map.setCenter(nowPosition);  
 	        	}
-        	 	
-	        	return nowPosition;
 	        }
 	        
 	        // 주소로 위치값 구하는 함수
-	        function getAddressPosition(address) {
+	        function getAddressPositionAndDisplayMarker(address, name) {
 	        	// 주소-좌표 변환 객체를 생성합니다
 	        	var geocoder = new kakao.maps.services.Geocoder();
 	        	
 	        	// 주소로 좌표를 검색합니다
 	        	geocoder.addressSearch(address, function(result, status) {
-	        	    // 정상적으로 검색이 완료됐으면 
-	        	     if (status === kakao.maps.services.Status.OK) {
-	        	        var targetPosotion = new kakao.maps.LatLng(result[0].y, result[0].x);
-	        					return targetPosition;
-	        	    } 
+        	    	// 정상적으로 검색이 완료됐으면 
+        	     	if (status === kakao.maps.services.Status.OK) {
+	        	        var targetPosition = new kakao.maps.LatLng(result[0].y, result[0].x);
+	        	        
+	        	        if(getDistance(nowPosition, targetPosition) <= radius) {
+    						resultAddressList.push(this.care_addr);
+
+        					// 마커 생성
+        					displayMarker(targetPosition, name);
+   						}
+	        	    }
 	        	});
-	        	return null;
 	        }
 	        
 	        // 두 위치의 거리 구하는 함수
@@ -350,26 +441,33 @@ $(document).ready(function() {
 	        
 	     	// 지도에 마커와 인포윈도우를 표시하는 함수입니다
 	        function displayMarker(locPosition, message) {
-
+	
 	            // 마커를 생성합니다
-	            var marker = new kakao.maps.Marker({  
-	                map: map, 
-	                position: locPosition
-	            }); 
+				var marker = new kakao.maps.Marker({
+				    map: map,
+				    position: locPosition
+				});	
 	            
-	            var iwContent = message, // 인포윈도우에 표시할 내용
-	                iwRemoveable = true;
-
-	            // 인포윈도우를 생성합니다
-	            var infowindow = new kakao.maps.InfoWindow({
-	                content : iwContent,
-	                removable : iwRemoveable
-	            });
-	            
-	            // 인포윈도우를 마커위에 표시합니다 
-	            infowindow.open(map, marker);
-	            
-	                
+				markers.push(marker);
+				
+				marker.setMap(map);
+				
+				// 마커를 클릭했을 때 마커 위에 표시할 인포윈도우를 생성합니다
+				var iwContent = '<div style="padding:5px;">' + message + '</div>'; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+				
+				// 인포윈도우를 생성합니다
+				var infowindow = new kakao.maps.InfoWindow({
+				    content : iwContent,
+				    removable : true
+				});
+				
+				infowindows.push(infowindow);
+				
+				// 마커에 클릭이벤트를 등록합니다
+				kakao.maps.event.addListener(marker, 'click', function() {
+					// 마커 위에 인포윈도우를 표시합니다
+			    	infowindow.open(map, marker);  
+				});
 	        }    
 			
 	    </script>
