@@ -50,11 +50,4 @@ public class ShelterDTO {
 	public void setOfficetel(String officetel) {
 		this.officetel = officetel;
 	}
-	public String getNotice_comment() {
-		return notice_comment;
-	}
-	public void setNotice_comment(String notice_comment) {
-		this.notice_comment = notice_comment;
-	}
-	private String notice_comment;
 }

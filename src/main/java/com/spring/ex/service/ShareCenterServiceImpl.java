@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import com.spring.ex.dao.ShareCenterDAO;
 import com.spring.ex.dto.ShareCenterDTO;
+import com.spring.ex.dto.ShelterDTO;
 
 @Service
 public class ShareCenterServiceImpl implements ShareCenterService{
@@ -38,7 +39,7 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 	}
 
 	@Override
-	public void getShareCenterTest(ShareCenterDTO dto) throws Exception {
+	public void getShareCenterTest(ShareCenterDTO dto, ShelterDTO shelterDto) throws Exception {
 		// 1. URL을 만들기 위한 StringBuilder.
 		StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1543061/abandonmentPublicSrvc/abandonmentPublic"); /*URL*/
 		Object testCasting = 7;
@@ -129,10 +130,39 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 			dto.setNeuter_yn((String) eqData.get("neuterYn").toString());
 			dto.setSpecial_mark((String) eqData.get("specialMark").toString());
 			
+			String care_nm =  (String)eqData.get("careNm").toString();
+			String care_addr = (String)eqData.get("careAddr").toString();
+			
+			HashMap<String, Object> shelterMap = new HashMap<String, Object>();
+			shelterMap.put("care_nm", care_nm);
+			shelterMap.put("care_addr", care_addr);
+			int checkCareShelter = dao.isCheckCareShelter(shelterMap);
+			System.out.println(checkCareShelter);
+			
+			if(checkCareShelter != 0) {
+				dto.setAas_id(checkCareShelter);
+				dao.setDbShareCenterApiResponse(dto);
+			} else {
+				shelterDto.setCare_nm(care_nm);
+				shelterDto.setCare_addr(care_addr);
+				shelterDto.setCare_tel((String)eqData.get("careTel").toString());
+				shelterDto.setCharge_nm((String)eqData.get("chargeNm").toString());
+				shelterDto.setOfficetel((String)eqData.get("officetel").toString());
+				shelterDto.setOrg_nm((String)eqData.get("orgNm").toString());
+				
+				dao.setCareShelter(shelterDto);
+				dto.setAas_id(shelterDto.getAas_id());
+				System.out.println("자동 증가된 값 오는지 test" + shelterDto.getAas_id());
+				
+				dao.setDbShareCenterApiResponse(dto);
+			}
+			
+			System.out.println(care_nm + "  "+ care_addr);
+			
 			//System.out.println("서비스 for : " +dto.toString());
 			//System.out.println(dto.getDesertion_no());
 			//System.out.println(dto.getHappen_place());
-			dao.setDbShareCenterApiResponse(dto);
+			
 			// EarthquakeDAO dao = sqlSession.getMapper(EarthquakeDAO.class);
 			// cd = dao.saveEarthquake(eqSeq,eqPoint,noticeType,img,noticeTime,refSeq,eqTime,miSeq,lat,lng,addr,scale,intensity,deep,remarks,flagYN,issueID);
 			//System.out.println("cd : "+ cd);

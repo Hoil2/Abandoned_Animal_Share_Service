@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import com.spring.ex.dto.ShareCenterDTO;
+import com.spring.ex.dto.ShelterDTO;
 
 @Service
 public interface ShareCenterService {
@@ -18,7 +19,7 @@ public interface ShareCenterService {
 	public int getShareCenterBoardViewTotalCount(HashMap<String, String> map) throws Exception;
 	
 	//공공데이터 api 요청
-	public void getShareCenterTest(ShareCenterDTO dto) throws Exception;
+	public void getShareCenterTest(ShareCenterDTO dto, ShelterDTO shelterDto) throws Exception;
 	
 	//공공데이터 test
 	public void getTest() throws Exception;
