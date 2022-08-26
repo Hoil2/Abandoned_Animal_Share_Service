@@ -10,6 +10,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.spring.ex.dto.ShareCenterDTO;
+import com.spring.ex.dto.ShelterDTO;
 
 
 @Repository
@@ -70,5 +71,15 @@ public class ShareCenterDAOImpl implements ShareCenterDAO{
 	@Override
 	public int subtractGoodShareCenterReadPage(HashMap<String, Object> map) throws Exception {
 		return sqlSession.delete(namespace + ".subtractGoodShareCenterReadPage", map);
+	}
+	
+	//기 등록된 보호소인지 체크
+	public int isCheckCareShelter(HashMap<String, Object> map) throws Exception {
+		return sqlSession.selectOne(namespace + ".isCheckCareShelter", map);
+	}
+	
+	//보호소 등록안된 보호소라면 추가
+	public int setCareShelter(ShelterDTO dto) throws Exception {
+		return sqlSession.insert(namespace + ".setCareShelter", dto);
 	}
 }

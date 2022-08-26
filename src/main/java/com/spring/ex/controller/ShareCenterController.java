@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.spring.ex.dto.MemberDTO;
 import com.spring.ex.dto.PagingDTO;
 import com.spring.ex.dto.ShareCenterDTO;
+import com.spring.ex.dto.ShelterDTO;
 import com.spring.ex.service.PagingService;
 import com.spring.ex.service.ShareCenterService;
 
@@ -185,8 +186,8 @@ public class ShareCenterController {
 	
 	
 	@RequestMapping(value = "/sTestPage",  method = RequestMethod.GET)
-	public String shereCenterPageView2( ShareCenterDTO dto) throws Exception {
-		service.getShareCenterTest(dto);
+	public String shereCenterPageView2(ShareCenterDTO dto, ShelterDTO shelterDto) throws Exception {
+		service.getShareCenterTest(dto, shelterDto);
 		
 		return "shereCenterTest";
 	}

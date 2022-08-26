@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import com.spring.ex.dao.ShareCenterDAO;
 import com.spring.ex.dto.ShareCenterDTO;
+import com.spring.ex.dto.ShelterDTO;
 
 @Service
 public class ShareCenterServiceImpl implements ShareCenterService{
@@ -38,10 +39,10 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 	}
 
 	@Override
-	public void getShareCenterTest(ShareCenterDTO dto) throws Exception {
+	public void getShareCenterTest(ShareCenterDTO dto, ShelterDTO shelterDto) throws Exception {
 		// 1. URL을 만들기 위한 StringBuilder.
 		StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1543061/abandonmentPublicSrvc/abandonmentPublic"); /*URL*/
-		Object testCasting = 7;
+		Object testCasting = 500;
 		String testCastingResult =String.valueOf(testCasting);
 		
 		
@@ -99,6 +100,8 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 		JSONArray  item 	= (JSONArray) items.get("item");
 		
 		System.out.println( "카운트 수" +(String) body.get("totalCount").toString());
+		
+		//주의 : 다수 데이터 요청시 여기 부분 주석처리 안하면 이클립스 멈춤 
 		/*
 		System.out.println("JSON(obj) : " + obj);
 		System.out.println("JSON(response) : " + response);
@@ -107,7 +110,8 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 		System.out.println("JSON(item[]) : " + item);
 		*/
 
-		// 조회 데이터 크기만큼 for문 + 테이블저장 
+		// 조회 데이터 크기만큼 for문 + 테이블저장
+		// dto에 담고 -> 등록된 보호소인지 확인 -> 기등록은 aas_id 값으로, 미등록은 보호소 등록후 값으로
 		for (int i=0;i< item.size();i++) {
 			
 			JSONObject eqData = (JSONObject) item.get(i);
@@ -128,11 +132,37 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 			dto.setSex_cd((String) eqData.get("sexCd").toString());
 			dto.setNeuter_yn((String) eqData.get("neuterYn").toString());
 			dto.setSpecial_mark((String) eqData.get("specialMark").toString());
-			/*
-			System.out.println("서비스 for : " +dto.toString());
-			System.out.println(dto.getDesertion_no());
-			System.out.println(dto.getHappen_place());*/
-			dao.setDbShareCenterApiResponse(dto);
+			
+			String care_nm =  (String)eqData.get("careNm").toString();
+			String care_addr = (String)eqData.get("careAddr").toString();
+			HashMap<String, Object> shelterMap = new HashMap<String, Object>();
+			shelterMap.put("care_nm", care_nm);
+			shelterMap.put("care_addr", care_addr);
+			int checkCareShelter = dao.isCheckCareShelter(shelterMap);
+			//System.out.println("기 등록 보호소 확인1"+checkCareShelter);
+			
+			if(checkCareShelter != 0) {
+				dto.setAas_id(checkCareShelter);
+				dao.setDbShareCenterApiResponse(dto);
+			} else {
+				shelterDto.setCare_nm(care_nm);
+				shelterDto.setCare_addr(care_addr);
+				shelterDto.setCare_tel((String)eqData.get("careTel").toString());
+				shelterDto.setCharge_nm((String)eqData.get("chargeNm").toString());
+				shelterDto.setOfficetel((String)eqData.get("officetel").toString());
+				shelterDto.setOrg_nm((String)eqData.get("orgNm").toString());
+				
+				dao.setCareShelter(shelterDto);
+				dto.setAas_id(shelterDto.getAas_id());
+				dao.setDbShareCenterApiResponse(dto);
+				//System.out.println("자동 증가된 값 오는지 test" + shelterDto.getAas_id());
+			}
+			
+			//System.out.println(care_nm + "  "+ care_addr);
+			//System.out.println("서비스 for : " +dto.toString());
+			//System.out.println(dto.getDesertion_no());
+			//System.out.println(dto.getHappen_place());
+			
 			// EarthquakeDAO dao = sqlSession.getMapper(EarthquakeDAO.class);
 			// cd = dao.saveEarthquake(eqSeq,eqPoint,noticeType,img,noticeTime,refSeq,eqTime,miSeq,lat,lng,addr,scale,intensity,deep,remarks,flagYN,issueID);
 			//System.out.println("cd : "+ cd);

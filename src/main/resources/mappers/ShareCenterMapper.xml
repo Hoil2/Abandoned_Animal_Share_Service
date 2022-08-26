@@ -56,7 +56,7 @@
 	
 	<!-- 공공데이터 유기동물 API DB에 저장 -->
 	<insert id="setDbShareCenterApiResponse">
-		INSERT INTO abandoned_animal_info(desertion_no, filename, happen_dt, happen_place, kind_cd, color_cd, age, weight, notice_no, notice_sdt, notice_edt, popfile, process_state, sex_cd, neuter_yn, special_mark, hit, redate) 
+		INSERT INTO abandoned_animal_info(desertion_no, filename, happen_dt, happen_place, kind_cd, color_cd, age, weight, notice_no, notice_sdt, notice_edt, popfile, process_state, sex_cd, neuter_yn, special_mark, hit, aas_id, redate) 
 		VALUES(
 			#{desertion_no}, 
 			#{filename}, 
@@ -75,6 +75,7 @@
 			#{neuter_yn}, 
 			#{special_mark},
 			0,
+			#{aas_id},
 			CURDATE())
 		ON DUPLICATE KEY UPDATE
 			desertion_no=#{desertion_no},
@@ -93,6 +94,7 @@
 			sex_cd=#{sex_cd}, 
 			neuter_yn=#{neuter_yn}, 
 			special_mark=#{special_mark},
+			aas_id=#{aas_id},
 			redate=CURDATE()
 	</insert>
 	
@@ -129,4 +131,27 @@
 		WHERE desertion_no = #{desertion_no} AND m_id = #{m_id}
 	</delete>
 	
+	<!-- 기 등록된 보호소인지 체크 -->
+	<select id="isCheckCareShelter" resultType="int">
+		SELECT IFNULL(max(aas_id), 0) AS test FROM abandoned_animal_shelter WHERE care_nm = #{care_nm} AND care_addr =#{care_addr}
+	</select>
+	
+	<!-- 보호소 등록안된 보호소라면 추가-->
+	<insert id="setCareShelter" parameterType="ShelterDTO" useGeneratedKeys="true" keyProperty="aas_id">
+		INSERT INTO abandoned_animal_shelter(
+			care_nm, 
+			care_tel, 
+			care_addr, 
+			org_nm, 
+			charge_nm, 
+			officetel)
+		VALUES(
+			#{care_nm}, 
+			#{care_tel}, 
+			#{care_addr}, 
+			#{org_nm}, 
+			#{charge_nm}, 
+			#{officetel}
+		)
+	</insert>
 </mapper>
