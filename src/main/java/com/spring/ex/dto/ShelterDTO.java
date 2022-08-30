@@ -50,4 +50,9 @@ public class ShelterDTO {
 	public void setOfficetel(String officetel) {
 		this.officetel = officetel;
 	}
+	@Override
+	public String toString() {
+		return "ShelterDTO [aas_id=" + aas_id + ", care_nm=" + care_nm + ", care_tel=" + care_tel + ", care_addr="
+				+ care_addr + ", org_nm=" + org_nm + ", charge_nm=" + charge_nm + ", officetel=" + officetel + "]";
+	}
 }

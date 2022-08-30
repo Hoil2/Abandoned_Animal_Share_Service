@@ -19,64 +19,6 @@
 <script>
 $(document).ready(function() {
 	
-	if(sessionStorage.getItem("searchTheme")==null){
-		sessionStorage.setItem("searchTheme", "allTheme"); 
-		$("#searchTheme").val("allTheme").prop("selected", true);
-	}else{
-		$("#searchTheme").val(sessionStorage.getItem("searchTheme")).prop("selected", true);
-	}
-	
-	if(sessionStorage.getItem("searchArea")==null){
-		sessionStorage.setItem("searchArea", "allArea"); 
-		$("#searchArea").val("allArea").prop("selected", true);
-	}else{
-		$("#searchArea").val(sessionStorage.getItem("searchArea")).prop("selected", true);
-	}
-	
-	if(sessionStorage.getItem("category2")==null){
-		$("#category2").val("alignmentDay").prop("selected", true);
-	}else{
-		$("#category2").val(sessionStorage.getItem("category2")).prop("selected", true);
-	}
-	
-	function pageRefresh() {
-		$.ajax({
-			url: "shereCenterPage",
-			type: "GET",
-			data: {'alignment':$("#category2").val(), 'searchTheme': $("#searchTheme").val(), 'searchArea':$("#searchArea").val()},
-			success: function(data) {
-				//location.href = "shereCenterPage?alignment="+sessionStorage.getItem("category2");
-				//location.href  = "shereCenterPage?searchTheme=" +sessionStorage.getItem("searchTheme") + "&searchArea=" + sessionStorage.getItem("searchArea") + "&alignment="+ sessionStorage.getItem("category2");
-				var shereCenterUrl = "shereCenterPage?searchTheme=" +sessionStorage.getItem("searchTheme") + "&searchArea=" + sessionStorage.getItem("searchArea") + "&alignment="+ sessionStorage.getItem("category2");
-				
-				$("#slistDiv").load(shereCenterUrl + " #slistDiv");
-				$("#pagination").load(shereCenterUrl + " #pagination");
-			}
-		});
-	}
-	
-	$("#category2").on("change", function() {
-		console.log($("#category2").val());
-		sessionStorage.setItem("category2", $(this).val()); 
-
-		pageRefresh();
-		console.log("2"+sessionStorage.getItem("category2"));
-	});
-	
-	$("#searchTheme").on("change", function() {
-		pageRefresh();
-		console.log("2")
-		console.log($("#searchTheme").val());
-		sessionStorage.setItem("searchTheme", $(this).val()); 
-	});
-	
-	$("#searchArea").on("change", function() {
-		pageRefresh();
-		sessionStorage.setItem("searchArea", $(this).val()); 
-		console.log($("#searchArea").val());
-		console.log("3")
-	});
-	
 });
 </script>
 </head>
@@ -107,7 +49,7 @@ $(document).ready(function() {
 						<div class="row">
 					    	<label class="col-form-label col-3">검색 반경</label>
 							<div class="col-9 input-group">
-						  		<input type="number" id="radius" class="form-control" value="3">
+						  		<input type="number" id="radius" class="form-control" value="15">
 								<div class="input-group-append">
 								    <span class="input-group-text">km</span>
 								</div>
@@ -137,7 +79,7 @@ $(document).ready(function() {
 					</div>
 				</div>
 				<%-- 검색 필터 --%>
-				<div class="d-flex flex-row justify-content-end"  style="margin: 10px 0px;">
+				<div id="classify" class="d-flex flex-row justify-content-end"  style="margin: 10px 0px;">
 					<div class="col-lg-1 col-md-1" align="right" style="padding: 0px 10px 0px 0px;">
 						분류
 					</div>
@@ -234,31 +176,31 @@ $(document).ready(function() {
 		<div class="post-pagination" id="pagination">
 			<!-- 첫 페이지면 Disabled 아니라면 Enabled -->
 			<c:choose>
-				<c:when test="${Paging.pageNo eq Paging.firstPageNo }">
-					<a class="disabledLink" href="shereCenterPage?page=${Paging.prevPageNo}"><i class="fa fa-angle-left"></i></a>
+				<c:when test="${Paging.pageNo eq Paging.firstPageNo}">
+					<a class="disabledLink" href=""><i class="fa fa-angle-left"></i></a>
 				</c:when>
 				<c:otherwise>
-					<a class="page-link" href="shereCenterPage?page=${Paging.prevPageNo}"><i class="fa fa-angle-left"></i></a>
+					<a class="page-link" onclick="setPage(${Paging.prevPageNo})"><i class="fa fa-angle-left"></i></a>
 				</c:otherwise>
 			</c:choose>
 			<!-- 페이지 갯수만큼 버튼 생성 -->
-			<c:forEach var="i" begin="${Paging.startPageNo }" end="${Paging.endPageNo }" step="1">
+			<c:forEach var="i" begin="${Paging.startPageNo}" end="${Paging.endPageNo}" step="1">
 				<c:choose>
-					<c:when test="${i eq Paging.pageNo }">
-						<a class="active disabledLink" href="shereCenterPage?page=${i}"><c:out value="${i }"/></a>
+					<c:when test="${i eq Paging.pageNo}">
+						<a class="active disabledLink" href=""><c:out value="${i}"/></a>
 					</c:when>
 					<c:otherwise>
-						<a href="shereCenterPage?page=${i}&searchTheme=${searchTheme}&searchArea=${searchArea}&alignment=${alignment}"><c:out value="${i }"/></a>
+						<a onclick="setPage(${i})"><c:out value="${i}"/></a>
 					</c:otherwise>
 				</c:choose>
 			</c:forEach>
 			<!-- 마지막 페이지면 Disabled 아니라면 Enabled -->
 			<c:choose>
-				<c:when test="${Paging.pageNo eq Paging.finalPageNo }">
-					<a class="disabledLink" href="shereCenterPage?page=${Paging.nextPageNo}"><i class="fa fa-angle-right"></i></a>
+				<c:when test="${Paging.pageNo eq Paging.finalPageNo}">
+					<a class="disabledLink" href=""><i class="fa fa-angle-right"></i></a>
 				</c:when>
 				<c:otherwise>
-					<a href="shereCenterPage?page=${Paging.nextPageNo}"><i class="fa fa-angle-right"></i></a>
+					<a onclick="setPage(${Paging.nextPageNo})"><i class="fa fa-angle-right"></i></a>
 				</c:otherwise>
 			</c:choose>
 		</div>
@@ -290,9 +232,38 @@ $(document).ready(function() {
 	        var markers = [];
 	        var infowindows = [];
 	        
+	        var allShelterCount;
+	        var nowShelterCount;
+	        
 	        $(function() {
 	        	setToCurrentPosition();
 			});
+	        
+	        function pageRefresh() {
+	    		console.log("페이지 리프레쉬");
+	    		$.ajax({
+	    			url: "/shareCenterPage_searchAniamlInRegion",
+	    			type: "post",
+	    			traditional: true,
+	    			data: {
+	    				resultAddressList: resultAddressList,
+	    				alignment: $("#category2").val(), 
+	    				searchTheme: $("#searchTheme").val(),
+	    				searchArea: $("#searchArea").val()
+	    			},
+	    			dataType: 'html',
+	    			success: function(data) {
+	    				var content = $(data).find("#slistDiv>*");
+	    				var pagination = $(data).find("#pagination>*");
+	    				$("#slistDiv").html(content);
+	    				$("#pagination").html(pagination);
+	    			}
+	    		});
+	    	}
+	    	
+	    	$(document).on("change", "#category2, #searchTheme, #searchArea", function() {
+	    		pageRefresh();
+	    	});
 	        
 	        function startSearch() {
 	        	resultAddressList = [];
@@ -313,6 +284,28 @@ $(document).ready(function() {
 	        	
 	        	// 범위 안의 보호소를 표시. 표시한 보호소는 resultAddressList에 저장
 	        	displayShelterInRegion();
+	        }
+	        
+	        function setPage(pageNo) {	        	
+	        	$.ajax({
+    				url : '/shareCenterPage_searchAniamlInRegion',
+    				type : 'post',
+    				traditional : true,
+    				data : {
+    					resultAddressList : resultAddressList,
+    					alignment: $("#category2").val(), 
+    					searchTheme: $("#searchTheme").val(),
+    					searchArea: $("#searchArea").val(),
+    					page : pageNo
+    				},
+    				dataType : 'html', // 반환값
+    				success : function(data) {
+    					var content = $(data).find("#slistDiv>*");
+    					var pagination = $(data).find("#pagination>*");
+    					$("#slistDiv").html(content);
+    					$("#pagination").html(pagination);
+    				}
+    			});
 	        }
 	        
 	        function changeAddressToNow() {
@@ -362,9 +355,12 @@ $(document).ready(function() {
 	        		url : '/getAllShelterList',
 	        		type : 'post',
 	        		success : function(data) {
+	        			allShelterCount = data.length;
+	        			nowShelterCount = 0;
+	        			console.log("모든 쉘터 개수" + data.length);
 	        			$(data).each(function() {
-	        				console.log("주소 검색 시작 : "+this.care_addr);
-	        				getAddressPositionAndDisplayMarker(this.care_addr, this.care_nm)
+	        				//console.log("주소 검색 시작 : "+this.care_addr);
+	        				getAddressPositionAndDisplayMarker(this.care_addr, this.care_nm);
        					});
 	        		}
 	        	});
@@ -416,16 +412,40 @@ $(document).ready(function() {
 	        	
 	        	// 주소로 좌표를 검색합니다
 	        	geocoder.addressSearch(address, function(result, status) {
+	        		nowShelterCount = nowShelterCount + 1;
         	    	// 정상적으로 검색이 완료됐으면 
         	     	if (status === kakao.maps.services.Status.OK) {
 	        	        var targetPosition = new kakao.maps.LatLng(result[0].y, result[0].x);
 	        	        
 	        	        if(getDistance(nowPosition, targetPosition) <= radius) {
-    						resultAddressList.push(this.care_addr);
+	        	        	console.log(address + "저장");
+    						resultAddressList.push(address);
 
         					// 마커 생성
         					displayMarker(targetPosition, name);
    						}
+	        	    }
+	        		
+        	    	// 결과값 전송
+	        		if(nowShelterCount == allShelterCount) {
+	        			$.ajax({
+	        				url : '/shareCenterPage_searchAniamlInRegion',
+	        				type : 'post',
+	        				traditional : true,
+	        				data : {
+	        					resultAddressList : resultAddressList
+	        				},
+	        				dataType : 'html', // 반환값
+	        				success : function(data) {
+	        					console.log(data);
+	        					var content = $(data).find("#slistDiv>*");
+	        					var pagination = $(data).find("#pagination>*");
+	        					var classify = $(data).find("#classify>*");
+	        					$("#slistDiv").html(content);
+	        					$("#pagination").html(pagination);
+	        					$("#classify").html(classify);
+	        				}
+	        			});
 	        	    }
 	        	});
 	        }

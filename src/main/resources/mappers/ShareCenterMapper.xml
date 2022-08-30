@@ -5,6 +5,7 @@
 	<sql id="Search">
 		<choose>
 			<when test="searchTheme == 'allTheme' and searchArea == 'allArea'">
+				WHERE notice_no LIKE CONCAT('%', '', '%')
 			</when>
 			<when test="searchTheme == 'allTheme' and searchArea != 'allArea'">
 				WHERE notice_no LIKE CONCAT('%', #{searchArea}, '%')
@@ -15,9 +16,12 @@
 			<when test="searchTheme != 'allTheme' and searchArea != 'allArea'">
 				WHERE kind_cd LIKE CONCAT('%', #{searchTheme}, '%') AND notice_no LIKE CONCAT('%', #{searchArea}, '%')
 			</when>
-
+			<otherwise>
+				WHERE notice_no LIKE CONCAT('%', '', '%')
+			</otherwise>
 		</choose>
 	</sql>
+	
 	<sql id="SearchAlignment">
 		<choose>
 			<when test="alignment == 'alignmentDay'">
@@ -31,12 +35,38 @@
 			</when>
 		</choose>
 	</sql>
+	
+	<!-- 2022-08-27 김홍일 / 주소 조건 -->
+	<sql id="SearchByAddress">
+		AND aai.aas_id IN (SELECT aas.aas_id FROM abandoned_animal_shelter aas
+							 WHERE aas.care_addr IN 
+							 <choose>
+							 	<when test="shelterAddressList == null">('')</when>
+							 	<otherwise>
+							 		<foreach collection="shelterAddressList" item="address" open="(" close=")" separator=",">
+								 		#{address}
+								 	</foreach>
+							 	</otherwise>
+							 </choose>
+							 )
+	</sql>
+	
 	<!-- 분양센터 게시판 전체 최신순 출력 -->
 	<select id="getShareCenterBoardPage" resultType="hashMap">
+		SELECT aai.desertion_no, aai.happen_dt, aai.sex_cd , aai.popfile, aai.hit, aai.kind_cd, 
+		 (SELECT COUNT(*) FROM abandoned_animal_good aag WHERE aai.desertion_no = aag.desertion_no) good
+		FROM abandoned_animal_info aai 
+		<include refid="Search"></include>
+		<include refid="SearchAlignment"></include> LIMIT #{Page}, #{PageSize};
+	</select>
+	
+	<!-- 2022-08-27 김홍일 / 분양센터 게시판 전체 최신순 출력 + 주소 조건 -->
+	<select id="getShareCenterBoardPageByAddress" resultType="hashMap">
 		SELECT aai.desertion_no, aai.happen_dt, aai.sex_cd , aai.popfile, aai.hit, aai.kind_cd,
 		 (SELECT COUNT(*) FROM abandoned_animal_good aag WHERE aai.desertion_no = aag.desertion_no) good
 		FROM abandoned_animal_info aai 
 		<include refid="Search"></include>
+		<include refid="SearchByAddress"></include>
 		<include refid="SearchAlignment"></include> LIMIT #{Page}, #{PageSize};
 	</select>
 	
@@ -44,6 +74,13 @@
 	<select id="getShareCenterBoardViewTotalCount" resultType="int">
 		SELECT COUNT(*) FROM abandoned_animal_info 
 		<include refid="Search"></include> 
+	</select>
+	
+	<!-- 2022-08-27 김홍일 / 분양센터 게시글 총 갯수 + 주소 조건 -->
+	<select id="getShareCenterBoardViewTotalCountByAddress" resultType="int">
+		SELECT COUNT(*) FROM abandoned_animal_info aai
+		<include refid="Search"></include> 
+		<include refid="SearchByAddress"></include>
 	</select>
 	
 	<!-- 유기동물 DB에서 존재하는 목록만 셀렉트 박스에 출력 -->

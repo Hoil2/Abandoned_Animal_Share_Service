@@ -1,5 +1,6 @@
 package com.spring.ex.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -18,6 +19,16 @@ public class ShelterServiceImpl implements ShelterService {
 	@Override
 	public List<ShelterDTO> selectAllShelterList() {
 		return shelterDAO.selectAllShelterList();
+	}
+
+	@Override
+	public List<HashMap> getShareCenterBoardPageByAddress(HashMap<String, Object> map) {
+		return shelterDAO.getShareCenterBoardPageByAddress(map);
+	}
+
+	@Override
+	public int getShareCenterBoardViewTotalCountByAddress(HashMap<String, Object> map) {
+		return shelterDAO.getShareCenterBoardViewTotalCountByAddress(map);
 	}
 
 }

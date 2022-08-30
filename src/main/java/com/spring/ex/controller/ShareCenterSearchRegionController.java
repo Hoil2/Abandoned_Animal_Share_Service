@@ -4,6 +4,7 @@ package com.spring.ex.controller;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -26,60 +28,50 @@ import com.spring.ex.service.ShelterService;
 public class ShareCenterSearchRegionController {
 	
 	@Inject
-	ShareCenterService service;
+	ShareCenterService shareCenterService;
 	
 	@Inject
 	private ShelterService shelterService;
 	
-	// 2022.08.20 추가 by 김홍일
-	// 유기동물 지역 검색
-	@RequestMapping(value = "/shareCenterPage_searchAniamlInRegion" , method = RequestMethod.GET)
-	public String shareCenterPage_searchAniamlInRegion(Model model, HttpServletRequest request) throws Exception{
-		/*
-		pagingService.put("searchArea", "");
-		map.put("searchTheme", "");
-		map.put("alignment", "");
-		List<ShareCenterDTO> shareCenterList = service.getShareCenterBoardPage(pagingService.getMap());
-		
-		pagingService.PagingService(request, service.getShareCenterBoardViewTotalCount(map), 12, searchTheme, searchArea, searchAlignment);
-		
-		model.addAttribute("slist", shareCenterList);
-		model.addAttribute("Paging", pagingService.getPaging());*/
-		HttpSession session = request.getSession();
+	@RequestMapping(value="/shareCenterPage_searchAniamlInRegion", method=RequestMethod.GET)
+	public String getShareCenterPage_searchAniamlInRegion() throws Exception {
+		return "shareCenter_searchAnimalInRegion";
+	}
+	
+	// 기존 유기동물 검색에 지역 검색 추가
+	// 세션으로 조건 넘기는 것 그냥 넘기는 걸로 바꿈
+	@RequestMapping(value="/shareCenterPage_searchAniamlInRegion", method=RequestMethod.POST)
+	public String postShareCenterPage_searchAniamlInRegion(HttpServletRequest request, Model model) throws Exception {
+		String[] shelterAddressList = request.getParameterValues("resultAddressList");
+	
+		if(shelterAddressList != null) {
+			for(String address : shelterAddressList)
+				System.out.println("전송받은 보호소 주소 리스트 : " + address);
+		}
 		String searchTheme  = request.getParameter("searchTheme");
 		String searchArea = request.getParameter("searchArea");
-		//String searchTheme  = request.getParameter("searchTheme");
-		//String searchArea = request.getParameter("searchArea");
 		String searchAlignment = request.getParameter("alignment");
 		
 		if(StringUtils.isEmpty(searchTheme) || searchTheme == null) {
 			searchTheme = "allTheme";
-			session.setAttribute("searchTheme", "allTheme");
-		} else if(!StringUtils.isEmpty(searchTheme)){
-			session.setAttribute("searchTheme", searchTheme);
 		}
 		
 		if(StringUtils.isEmpty(searchArea) || searchArea == null) {
 			searchArea = "allArea";
-			session.setAttribute("searchArea", "allArea");
-		} else if(!StringUtils.isEmpty(searchArea)){
-			session.setAttribute("searchArea", searchArea);
 		}
 		
-		if(StringUtils.isEmpty(searchAlignment)) {
+		if(StringUtils.isEmpty(searchAlignment) || searchAlignment == null) {
 			searchAlignment = "alignmentDay";
-			session.setAttribute("alignment", "alignmentDay");
-		} else if(!StringUtils.isEmpty(searchAlignment)){
-			session.setAttribute("alignment", searchAlignment);
 		}
 		
-		HashMap<String, String> searchMap = new HashMap<String, String>();
-		searchMap.put("searchArea", (String) session.getAttribute("searchArea"));
-		searchMap.put("searchTheme", (String) session.getAttribute("searchTheme"));
-		searchMap.put("alignment", (String) session.getAttribute("alignment"));
+		HashMap<String, Object> searchMap = new HashMap<String, Object>();
+		searchMap.put("searchTheme", (String) searchTheme);
+		searchMap.put("searchArea", (String) searchArea);
+		searchMap.put("alignment", (String) searchAlignment);
+		searchMap.put("shelterAddressList", shelterAddressList);
 		
 		//페이징
-		int totalCount = service.getShareCenterBoardViewTotalCount(searchMap);
+		int totalCount = shelterService.getShareCenterBoardViewTotalCountByAddress(searchMap);
 		int page = request.getParameter("page") == null ? 1 : Integer.parseInt(request.getParameter("page"));
 		
 		PagingDTO paging = new PagingDTO();
@@ -92,13 +84,17 @@ public class ShareCenterSearchRegionController {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("Page", page);
 		map.put("PageSize", paging.getPageSize());
-		map.put("searchArea", session.getAttribute("searchArea"));
-		map.put("searchTheme", session.getAttribute("searchTheme"));
-		map.put("alignment", session.getAttribute("alignment"));
+		map.put("searchTheme", searchTheme);
+		map.put("searchArea", searchArea);
+		map.put("alignment", searchAlignment);
+		map.put("shelterAddressList", shelterAddressList);
+		
+		System.out.println("map : " + map);
 		
 		//검색 및 결과값 담기
-		List<ShareCenterDTO> slist = service.getShareCenterBoardPage(map);
-		
+		List<HashMap> slist = shelterService.getShareCenterBoardPageByAddress(map);
+		System.out.println("검색 결과 수 : " + totalCount);
+		System.out.println("검색 결과 : " + slist);
 		model.addAttribute("slist", slist);
 		model.addAttribute("Paging", paging);
 		model.addAttribute("searchArea", searchArea);
@@ -106,16 +102,16 @@ public class ShareCenterSearchRegionController {
 		model.addAttribute("alignment", searchAlignment);
 		System.out.println("검색 지역/테마/정렬 : " + searchArea + ", " + searchTheme + ", " + searchAlignment);
 		
-		List<String> seletedBoxList = service.getShareCenterAreaList();
+		List<String> seletedBoxList = shareCenterService.getShareCenterAreaList();
 		model.addAttribute("areaList", seletedBoxList);
 		System.out.println(seletedBoxList);
 		return "shareCenter_searchAnimalInRegion";
 	}
-
-	@ResponseBody
-	@RequestMapping("/getAllShelterList")
-	public List<ShelterDTO> getAllShelterList() {
-		System.out.println(shelterService.selectAllShelterList());
-		return shelterService.selectAllShelterList();
-	}
+	
+	// 모든 보호소 정보 클라이언트로 보내기
+		@ResponseBody
+		@RequestMapping("/getAllShelterList")
+		public List<ShelterDTO> getAllShelterList() {
+			return shelterService.selectAllShelterList();
+		}
 }
