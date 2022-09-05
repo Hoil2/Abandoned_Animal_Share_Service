@@ -137,9 +137,9 @@
 	
 	<!-- 유기동물 게시글 상세페이지 출력 -->
 	<select id="getShareCenterBoardReadPage" resultType="hashMap">
-		SELECT * 
-		FROM v_abandoned_animal_info
-		WHERE desertion_no = #{desertion_no};
+		SELECT vaai.*, aas.*  
+		FROM v_abandoned_animal_info vaai, abandoned_animal_shelter aas
+		WHERE desertion_no = #{desertion_no} AND vaai.aas_id = aas.aas_id;
 	</select>
 	
 	<!-- 조회수 증가 -->
