@@ -7,6 +7,11 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	
+	<META HTTP-EQUIV="Expires" CONTENT="-1">
+	<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+	<META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+	
 	<link rel="apple-touch-icon" sizes="180x180" href='<c:url value="/resources/favicons/apple-touch-icon.png"/>'>
 	<link rel="icon" type="image/png" sizes="32x32" href='<c:url value="/resources/images/favicons/favicon-32x32.png"/>'>
 	<link rel="icon" type="image/png" sizes="16x16" href='<c:url value="/resources/images/favicons/favicon-16x16.png"/>'>
@@ -130,13 +135,22 @@
 			});
 		}
 		
-		$(window).on("beforeunload", function() {
+		$(window).on("beforeunload", function(event) {
+			var url = <c:choose>
+				<c:when test="${update}">"/cancelPost"</c:when>
+				<c:otherwise>"/deletePost"</c:otherwise>
+			</c:choose>;
+			
 			console.log("글쓰기 종료");
 			if(!submitted) {
+				/* if (event.persisted || (window.performance && window.performance.navigation.type == 2)) {
+					url = "/cancelPost";
+					console.log("뒤로가기 cancel");
+				} */
+				
 				$.ajax({
 					type : "POST",
-					<c:if test="${update}">url : "/cancelPost",</c:if>
-					<c:if test="${!update}">url : "/deletePost",</c:if>
+					url: url,
 					data : {
 						pageNo : ${communityDTO.cb_id}
 					}
@@ -150,6 +164,16 @@
 		$("form").submit(function() {
 			submitted = true;
 		});
+		
+		/* window.onpageshow = function(event) {
+			if (event.persisted || (window.performance && window.performance.navigation.type == 2)) {
+				console.log("뒤로가기");
+				location.reload();
+			}
+			else {
+				console.log("새로 열린 페이지");
+			}
+		} */
 	</script>
 </body>
 </html>
