@@ -204,8 +204,12 @@
 	var map = new kakao.maps.Map(mapContainer, mapOption); 
 	// 주소-좌표 변환 객체를 생성합니다
 	var geocoder = new kakao.maps.services.Geocoder();
+	
+	var care_addr = $('#scrReadPage.care_addr').val();
+	var care_nm = $('#scrReadPage.care_nm').val();
+	
 	// 주소로 좌표를 검색합니다
-	geocoder.addressSearch('경상남도 통영시 광도면 전두1길 9-8', function(result, status) {
+	geocoder.addressSearch(care_addr, function(result, status) {
 	    // 정상적으로 검색이 완료됐으면 
 	     if (status === kakao.maps.services.Status.OK) {
 	        var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
@@ -216,7 +220,7 @@
 	        });
 	        // 인포윈도우로 장소에 대한 설명을 표시합니다
 	        var infowindow = new kakao.maps.InfoWindow({
-	            content: '<div style="width:150px;text-align:center;padding:6px 0;">우리회사</div>'
+	            content: '<div style="width:150px;text-align:center;padding:6px 0;">' + care_nm  + '</div>'
 	        });
 	        infowindow.open(map, marker);
 	        // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
