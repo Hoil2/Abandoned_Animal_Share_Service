@@ -137,9 +137,10 @@
 	
 	<!-- 유기동물 게시글 상세페이지 출력 -->
 	<select id="getShareCenterBoardReadPage" resultType="hashMap">
-		SELECT vaai.*, aas.*  
-		FROM v_abandoned_animal_info vaai, abandoned_animal_shelter aas
-		WHERE desertion_no = #{desertion_no} AND vaai.aas_id = aas.aas_id;
+		SELECT aai.*, aas.*,
+				(SELECT COUNT(*) FROM abandoned_animal_good aag WHERE aai.desertion_no = aag.desertion_no) good
+		FROM abandoned_animal_info aai, abandoned_animal_shelter aas
+		WHERE desertion_no = #{desertion_no} AND aai.aas_id = aas.aas_id;
 	</select>
 	
 	<!-- 조회수 증가 -->
