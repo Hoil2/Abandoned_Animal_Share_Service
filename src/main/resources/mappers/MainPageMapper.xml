@@ -3,8 +3,8 @@
 
 <mapper namespace="com.spring.ex.MainPageMapper">
 	<select id="getPopularityShareCenterList" resultType="HashMap">
-		SELECT *
-		FROM v_abandoned_animal_info
+		SELECT aai.*, (SELECT COUNT(*) FROM community_board_good cbg WHERE cbg.cb_id = cb.cb_id) AS "good"
+		FROM abandoned_animal_info aai
 		WHERE happen_dt BETWEEN CURDATE()-interval '100' day AND CURDATE()
 		ORDER BY good DESC, hit DESC LIMIT 0, 20
 	</select>
