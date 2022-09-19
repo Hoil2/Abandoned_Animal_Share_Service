@@ -187,24 +187,17 @@ public class ShareCenterController {
 	
 	@RequestMapping(value = "/sTestPage",  method = RequestMethod.GET)
 	public String shereCenterPageView2(ShareCenterDTO dto, ShelterDTO shelterDto) throws Exception {
-		service.getShareCenterTest(dto, shelterDto);
+		//service.getShareCenterTest(dto, shelterDto);
 		
 		return "shereCenterTest";
 	}
 	
 	
 	//Db연결 확인
-	@RequestMapping("/sTest")
-	public String DBConTest(HttpServletRequest request) throws Exception {
-		HashMap<String, String> searchMap = new HashMap<String, String>();
-		searchMap.put("searchArea", "allArea");
-		searchMap.put("searchTheme", "allTheme");
-		searchMap.put("searchKeyword", "alignmentDay");
-		
-		int res = service.getShareCenterBoardViewTotalCount(searchMap);
-		
-		System.out.println("res :" + res);
-		return "shereCenter"; 
+	@RequestMapping(value = "/sTest", method = RequestMethod.GET)
+	public String DBConTest(ShareCenterDTO dto, ShelterDTO shelterDto, HttpServletRequest request) throws Exception {
+		service.getShareCenterTest(dto, shelterDto);
+		return "shereCenterTest"; 
 	}
 	
 

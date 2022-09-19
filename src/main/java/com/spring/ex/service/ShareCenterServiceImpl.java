@@ -42,7 +42,7 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 	public void getShareCenterTest(ShareCenterDTO dto, ShelterDTO shelterDto) throws Exception {
 		// 1. URL을 만들기 위한 StringBuilder.
 		StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1543061/abandonmentPublicSrvc/abandonmentPublic"); /*URL*/
-		Object testCasting = 500;
+		Object testCasting = 1000;
 		String testCastingResult =String.valueOf(testCasting);
 		
 		
@@ -109,32 +109,62 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 		System.out.println("JSON(items) : " + items);
 		System.out.println("JSON(item[]) : " + item);
 		*/
-
+		int res = 0;
 		// 조회 데이터 크기만큼 for문 + 테이블저장
 		// dto에 담고 -> 등록된 보호소인지 확인 -> 기등록은 aas_id 값으로, 미등록은 보호소 등록후 값으로
 		for (int i=0;i< item.size();i++) {
 			
 			JSONObject eqData = (JSONObject) item.get(i);
 			
-			dto.setDesertion_no((String) eqData.get("desertionNo").toString());
-			dto.setFilename((String) eqData.get("filename").toString());
-			dto.setHappen_dt((Object) eqData.get("happenDt"));
-			dto.setHappen_place((String) eqData.get("happenPlace").toString());
-			dto.setKind_cd((String) eqData.get("kindCd").toString());
-			dto.setColor_cd((String) eqData.get("colorCd").toString());
-			dto.setAge((String) eqData.get("age").toString());
-			dto.setWeight((String) eqData.get("weight").toString());
-			dto.setNotice_no((String) eqData.get("noticeNo").toString());
-			dto.setNotice_sdt((Object) eqData.get("noticeSdt"));
-			dto.setNotice_edt((Object) eqData.get("noticeEdt"));
-			dto.setPopfile((String) eqData.get("popfile").toString());
-			dto.setProcess_state((String) eqData.get("processState").toString());
-			dto.setSex_cd((String) eqData.get("sexCd").toString());
-			dto.setNeuter_yn((String) eqData.get("neuterYn").toString());
-			dto.setSpecial_mark((String) eqData.get("specialMark").toString());
+			String desertionNo = (String) eqData.get("desertionNo").toString();
+			String filename = (String) eqData.get("filename").toString();
+			Object happenDt= (Object) eqData.get("happenDt");
+			String happenPlace = (String) eqData.get("happenPlace").toString();
+			String kindCd = (String) eqData.get("kindCd").toString();
+			String colorCd = (String) eqData.get("colorCd").toString();
+			String age = (String) eqData.get("age").toString();
+			String weight = (String) eqData.get("weight").toString();
+			String noticeNo = (String) eqData.get("noticeNo").toString();
+			Object noticeSdt = (Object) eqData.get("noticeSdt");
+			Object noticeEdt= (Object) eqData.get("noticeEdt");
+			String popfile = (String) eqData.get("popfile").toString();
+			String processState = (String) eqData.get("processState").toString();
+			String sexCd = (String) eqData.get("sexCd").toString();
+			String neuterYn = (String) eqData.get("neuterYn").toString();
+			String specialMark = (String) eqData.get("specialMark").toString();
 			
 			String care_nm =  (String)eqData.get("careNm").toString();
 			String care_addr = (String)eqData.get("careAddr").toString();
+			String careTel = (String)eqData.get("careTel") == null ? "x" : (String)eqData.get("careTel").toString();
+			
+			
+			String chargeNm = (String)eqData.get("chargeNm") == null ? "x" : (String)eqData.get("chargeNm").toString();
+			String officetel = (String)eqData.get("officetel") == null ? "x" : (String)eqData.get("officetel").toString();
+			String orgNm = (String)eqData.get("orgNm") == null ? "x" : (String)eqData.get("orgNm").toString();
+			
+			
+			dto.setDesertion_no(desertionNo);
+			dto.setFilename(filename);
+			dto.setHappen_dt(happenDt);
+			dto.setHappen_place(happenPlace);
+			dto.setKind_cd(kindCd);
+			dto.setColor_cd(colorCd);
+			dto.setAge(age);
+			dto.setWeight(weight);
+			dto.setNotice_no(noticeNo);
+			dto.setNotice_sdt(noticeSdt);
+			dto.setNotice_edt(noticeEdt);
+			dto.setPopfile(popfile);
+			dto.setProcess_state(processState);
+			dto.setSex_cd(sexCd);
+			dto.setNeuter_yn(neuterYn);
+			dto.setSpecial_mark(specialMark);
+			
+			if(chargeNm == "x") {
+				res = res+1;
+				System.out.println(dto);
+			}
+			
 			HashMap<String, Object> shelterMap = new HashMap<String, Object>();
 			shelterMap.put("care_nm", care_nm);
 			shelterMap.put("care_addr", care_addr);
@@ -147,10 +177,10 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 			} else {
 				shelterDto.setCare_nm(care_nm);
 				shelterDto.setCare_addr(care_addr);
-				shelterDto.setCare_tel((String)eqData.get("careTel").toString());
-				shelterDto.setCharge_nm((String)eqData.get("chargeNm").toString());
-				shelterDto.setOfficetel((String)eqData.get("officetel").toString());
-				shelterDto.setOrg_nm((String)eqData.get("orgNm").toString());
+				shelterDto.setCare_tel(careTel);
+				shelterDto.setCharge_nm(chargeNm);
+				shelterDto.setOfficetel(officetel);
+				shelterDto.setOrg_nm(orgNm);
 				
 				dao.setCareShelter(shelterDto);
 				dto.setAas_id(shelterDto.getAas_id());
@@ -167,7 +197,7 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 			// cd = dao.saveEarthquake(eqSeq,eqPoint,noticeType,img,noticeTime,refSeq,eqTime,miSeq,lat,lng,addr,scale,intensity,deep,remarks,flagYN,issueID);
 			//System.out.println("cd : "+ cd);
 		}
-		
+		System.out.println(res);
 		
 		
 	}
