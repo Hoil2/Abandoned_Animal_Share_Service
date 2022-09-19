@@ -40,4 +40,9 @@
 		WHERE lab.m_id = m.m_id AND alb_id = #{alb_id}
 	</select>
 	
+	<select id="getKindListWithDistinct" resultType="String">
+		SELECT DISTINCT kind_cd FROM abandoned_animal_info
+		ORDER BY kind_cd ASC
+	</select>
+	
 </mapper>

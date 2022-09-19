@@ -36,4 +36,9 @@ public class LostAnimalDAOImpl implements LostAnimalDAO{
 	public Map<String, Object> getReadLostAnimal(int alb_id) throws Exception {
 		return sqlSession.selectOne(namespace + ".getReadLostAnimal", alb_id);
 	}
+
+	@Override
+	public List<String> getKindListWithDistinct() {
+		return sqlSession.selectList(namespace + ".getKindListWithDistinct");
+	}
 }

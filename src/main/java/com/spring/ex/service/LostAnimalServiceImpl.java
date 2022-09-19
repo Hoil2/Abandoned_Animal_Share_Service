@@ -37,4 +37,10 @@ public class LostAnimalServiceImpl implements LostAnimalService{
 	public Map<String, Object> getReadLostAnimal(int alb_id) throws Exception {
 		return dao.getReadLostAnimal(alb_id);
 	}
+	
+	//실종 동물의 품종 겹치지 않게 가져오기
+	@Override
+	public List<String> getKindListWithDistinct() {
+		return dao.getKindListWithDistinct();
+	}
 }

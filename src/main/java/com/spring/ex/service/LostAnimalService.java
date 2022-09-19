@@ -20,4 +20,6 @@ public interface LostAnimalService {
 	public int deleteLostAnimalBoard(int alb_id) throws Exception;
 	//실종 게시판 상세페이지
 	public Map<String, Object> getReadLostAnimal(int alb_id) throws Exception;
+	//실종 동물의 품종 겹치지 않게 가져오기
+	public List<String> getKindListWithDistinct();
 }

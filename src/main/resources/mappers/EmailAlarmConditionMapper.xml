@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spring.ex.EmailAlarmConditionMapper">
+	
+	<!-- 회원의 이메일 알람 조건 가져오기 -->
+	<select id="getEmailAlarmCondition" resultType="EmailAlarmConditionDTO">
+		SELECT * FROM email_alarm_condition
+		WHERE m_id = #{m_id}
+	</select>
+	
+	<!-- 이메일 알람 조건 추가 -->
+	<insert id="insertEmailAlarmCondition">
+		INSERT INTO email_alarm_condition 
+		VALUES(#{m_id}, #{kind}, #{breed}, #{age}, #{sex}, #{neuter_yn}, #{region})
+	</insert>
+	
+	<!-- 이메일 알람 조건 변경 -->
+	<update id="updateEmailAlarmCondition">
+		UPDATE email_alarm_condition 
+		SET kind = #{kind},
+			breed = #{breed},
+			age = #{age}, 
+			sex = #{sex}, 
+			neuter_yn = #{neuter_yn},
+			region = #{region}
+		WHERE m_id = #{m_id}
+	</update>
+	
+	<delete id="deleteEmailAlarmCondition">
+		DELETE FROM email_alarm_condition 
+		WHERE m_id = #{m_id}
+	</delete>
+</mapper>

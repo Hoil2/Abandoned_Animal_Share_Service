@@ -12,5 +12,6 @@
 		<typeAlias type="com.spring.ex.dto.CommentDTO" alias="CommentDTO"/>
 		<typeAlias type="com.spring.ex.dto.FileUploadDTO" alias="FileUploadDTO"/>
 		<typeAlias type="com.spring.ex.dto.ShelterDTO" alias="ShelterDTO"/>
+		<typeAlias type="com.spring.ex.dto.EmailAlarmConditionDTO" alias="EmailAlarmConditionDTO"/>
 	</typeAliases>
 </configuration>
