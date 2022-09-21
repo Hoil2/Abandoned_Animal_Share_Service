@@ -109,7 +109,6 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 		System.out.println("JSON(items) : " + items);
 		System.out.println("JSON(item[]) : " + item);
 		*/
-		int res = 0;
 		// 조회 데이터 크기만큼 for문 + 테이블저장
 		// dto에 담고 -> 등록된 보호소인지 확인 -> 기등록은 aas_id 값으로, 미등록은 보호소 등록후 값으로
 		for (int i=0;i< item.size();i++) {
@@ -160,11 +159,6 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 			dto.setNeuter_yn(neuterYn);
 			dto.setSpecial_mark(specialMark);
 			
-			if(chargeNm == "x") {
-				res = res+1;
-				System.out.println(dto);
-			}
-			
 			HashMap<String, Object> shelterMap = new HashMap<String, Object>();
 			shelterMap.put("care_nm", care_nm);
 			shelterMap.put("care_addr", care_addr);
@@ -197,8 +191,6 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 			// cd = dao.saveEarthquake(eqSeq,eqPoint,noticeType,img,noticeTime,refSeq,eqTime,miSeq,lat,lng,addr,scale,intensity,deep,remarks,flagYN,issueID);
 			//System.out.println("cd : "+ cd);
 		}
-		System.out.println(res);
-		
 		
 	}
 	
