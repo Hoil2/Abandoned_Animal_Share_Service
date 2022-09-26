@@ -2,12 +2,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 		<!-- 하단 푸터 -->
 		<footer class="site-footer">
-			<div class="site-footer__bg" style="background-image: url(<c:url value="/resources/images/backgrounds/footer-bg-1-1.png"/>);"></div>
+			<%-- <div class="site-footer__bg" style="background-image: url(<c:url value="/resources/images/backgrounds/footer-bg-1-1.png"/>);"></div> --%>
 			<div class="container">
 				<div class="row">
 					<div class="footer-widget__column footer-widget__about">
 						<a href="main" class="footer-widget__logo">
-							<img src='<c:url value="/resources/images/bottom_Logo.png"/>' width="100" alt="">
+							<%-- <img src='<c:url value="/resources/images/bottom_Logo.png"/>' width="100" alt=""> --%>
 						</a>
 						<p>함께 유기동물 친구들의<br>새로운 가족이 되어주세요!</p>
 						<a href="mailto:ljpk@kyungmin.ac.kr">choum9797@kyungmin.ac.kr</a><br>
@@ -59,7 +59,7 @@
 			<div class="side-menu__block-inner ">
 				<div class="side-menu__top justify-content-end">
 					<a href="#" class="side-menu__toggler side-menu__close-btn">
-						<img src='<c:url value="/resources/images/Logo.png"/>' width="123" alt="">
+						<%-- <img src='<c:url value="/resources/images/Logo.png"/>' width="123" alt=""> --%>
 					</a>
 				</div>
 				<nav class="mobile-nav__container"></nav>

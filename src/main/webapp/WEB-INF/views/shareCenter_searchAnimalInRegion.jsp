@@ -265,6 +265,28 @@ $(document).ready(function() {
 	    		pageRefresh();
 	    	});
 	        
+	    	function setPage(pageNo) {	        	
+	        	$.ajax({
+    				url : '/shareCenterPage_searchAniamlInRegion',
+    				type : 'post',
+    				traditional : true,
+    				data : {
+    					resultAddressList : resultAddressList,
+    					alignment: $("#category2").val(), 
+    					searchTheme: $("#searchTheme").val(),
+    					searchArea: $("#searchArea").val(),
+    					page : pageNo
+    				},
+    				dataType : 'html', // 반환값
+    				success : function(data) {
+    					var content = $(data).find("#slistDiv>*");
+    					var pagination = $(data).find("#pagination>*");
+    					$("#slistDiv").html(content);
+    					$("#pagination").html(pagination);
+    				}
+    			});
+	        }
+	    	
 	        function startSearch() {
 	        	resultAddressList = [];
 	        	
@@ -286,27 +308,7 @@ $(document).ready(function() {
 	        	displayShelterInRegion();
 	        }
 	        
-	        function setPage(pageNo) {	        	
-	        	$.ajax({
-    				url : '/shareCenterPage_searchAniamlInRegion',
-    				type : 'post',
-    				traditional : true,
-    				data : {
-    					resultAddressList : resultAddressList,
-    					alignment: $("#category2").val(), 
-    					searchTheme: $("#searchTheme").val(),
-    					searchArea: $("#searchArea").val(),
-    					page : pageNo
-    				},
-    				dataType : 'html', // 반환값
-    				success : function(data) {
-    					var content = $(data).find("#slistDiv>*");
-    					var pagination = $(data).find("#pagination>*");
-    					$("#slistDiv").html(content);
-    					$("#pagination").html(pagination);
-    				}
-    			});
-	        }
+	        
 	        
 	        function changeAddressToNow() {
 	        	setToCurrentPosition();

@@ -83,7 +83,7 @@ public class MyPageController {
 		
 		model.addAttribute("emailAlarmList", emailAlarmList);
 		
-		return "mypage/manageMyGoodAnimalAlarm";
+		return "mypage/manageMyGoodAnimalEmailAlarm";
 	}
 	
 	@RequestMapping("mypage/updateMyEmailAlarm")
