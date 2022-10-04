@@ -39,7 +39,7 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 	}
 
 	@Override
-	public void getShareCenterTest(ShareCenterDTO dto, ShelterDTO shelterDto) throws Exception {
+	public void getShareCenterRequest(ShareCenterDTO dto, ShelterDTO shelterDto) throws Exception {
 		// 1. URL을 만들기 위한 StringBuilder.
 		StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1543061/abandonmentPublicSrvc/abandonmentPublic"); /*URL*/
 		Object testCasting = 1000;
@@ -191,6 +191,13 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 			// cd = dao.saveEarthquake(eqSeq,eqPoint,noticeType,img,noticeTime,refSeq,eqTime,miSeq,lat,lng,addr,scale,intensity,deep,remarks,flagYN,issueID);
 			//System.out.println("cd : "+ cd);
 		}
+		
+	}
+	
+	//공공데이터 api 총 갯수
+	public int getShareCenterTotalCount() throws Exception {
+		
+		return 0;
 		
 	}
 	
