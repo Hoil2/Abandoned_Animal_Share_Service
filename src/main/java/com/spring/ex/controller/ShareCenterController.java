@@ -196,7 +196,7 @@ public class ShareCenterController {
 	//Db연결 확인
 	@RequestMapping(value = "/sTest", method = RequestMethod.GET)
 	public String DBConTest(ShareCenterDTO dto, ShelterDTO shelterDto, HttpServletRequest request) throws Exception {
-		service.getShareCenterRequest(dto, shelterDto);
+		service.getShareCenterRequest(dto, shelterDto, service.getShareCenterTotalCount());
 		return "shereCenterTest"; 
 	}
 	
