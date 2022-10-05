@@ -41,7 +41,7 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 	@Override
 	public void getShareCenterRequest(ShareCenterDTO dto, ShelterDTO shelterDto, String totalCountCasting) throws Exception {
 		
-		for(int j = 1; j<=10; j++) {
+		for(int j = 1; j<=6; j++) {
 			// 1. URL을 만들기 위한 StringBuilder.
 			StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1543061/abandonmentPublicSrvc/abandonmentPublic"); /*URL*/
 			//Object totalCountCasting = 1000;
