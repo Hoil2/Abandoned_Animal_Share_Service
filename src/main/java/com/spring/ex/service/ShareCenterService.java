@@ -19,7 +19,7 @@ public interface ShareCenterService {
 	public int getShareCenterBoardViewTotalCount(HashMap<String, String> map) throws Exception;
 	
 	//공공데이터 api 요청
-	public void getShareCenterRequest(ShareCenterDTO dto, ShelterDTO shelterDto, String totalCountCasting) throws Exception;
+	public void getShareCenterRequest(ShareCenterDTO dto, ShelterDTO shelterDto, int pageNum) throws Exception;
 	
 	//공공데이터 api 총 갯수
 	public String getShareCenterTotalCount() throws Exception;

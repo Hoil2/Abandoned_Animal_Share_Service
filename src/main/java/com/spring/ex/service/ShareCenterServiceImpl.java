@@ -5,6 +5,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +28,10 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 	@Inject
 	private ShareCenterDAO dao;
 	
+	Date date = new Date();
+	SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+	String toDay = formatter.format(date);
+	
 	//분양센터페이지 유기동물 목록 출력
 	@Override
 	public List<ShareCenterDTO> getShareCenterBoardPage(HashMap<String, Object> map) throws Exception {
@@ -39,19 +45,19 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 	}
 
 	@Override
-	public void getShareCenterRequest(ShareCenterDTO dto, ShelterDTO shelterDto, String totalCountCasting) throws Exception {
-		
-		for(int j = 1; j<=6; j++) {
+	public void getShareCenterRequest(ShareCenterDTO dto, ShelterDTO shelterDto, int pageNum) throws Exception {
+		for(int j = 1; j <= pageNum; j++) {
 			// 1. URL을 만들기 위한 StringBuilder.
 			StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1543061/abandonmentPublicSrvc/abandonmentPublic"); /*URL*/
 			//Object totalCountCasting = 1000;
-			String testCastingResult =String.valueOf(totalCountCasting);
+			//String testCastingResult =String.valueOf(totalCountCasting);
 			String apiPageNum =String.valueOf(j);
 			
+			System.out.println(toDay);
 			// 2. 오픈 API의요청 규격에 맞는 파라미터 생성, 발급받은 인증키.
 			urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=Q84iTs0OivxYSzXgMqJWORyolBgT87Mu5lXE6sSWgEFI%2BhLRrMmdyfML5z3g6HYBCfWqS0YiGkrXpzfT07XhJg%3D%3D"); /*Service Key*/
 			urlBuilder.append("&" + URLEncoder.encode("bgnde","UTF-8") + "=" + URLEncoder.encode("20220425", "UTF-8")); /*유기날짜(검색 시작일) (YYYYMMDD)*/
-			urlBuilder.append("&" + URLEncoder.encode("endde","UTF-8") + "=" + URLEncoder.encode("20220510", "UTF-8")); /*유기날짜(검색 종료일) (YYYYMMDD)*/
+			urlBuilder.append("&" + URLEncoder.encode("endde","UTF-8") + "=" + URLEncoder.encode(toDay, "UTF-8")); /*유기날짜(검색 종료일) (YYYYMMDD)*/
 			urlBuilder.append("&" + URLEncoder.encode("upkind","UTF-8") + "=" + URLEncoder.encode("", "UTF-8")); /*축종코드 (개 : 417000, 고양이 : 422400, 기타 : 429900)*/
 			urlBuilder.append("&" + URLEncoder.encode("kind","UTF-8") + "=" + URLEncoder.encode("", "UTF-8")); /*품종코드 (품종 조회 OPEN API 참조)*/
 			urlBuilder.append("&" + URLEncoder.encode("upr_cd","UTF-8") + "=" + URLEncoder.encode("", "UTF-8")); /*시도코드 (시도 조회 OPEN API 참조)*/
@@ -72,7 +78,7 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 			// 6. 통신을 위한 Content-type SET. 
 			conn.setRequestProperty("Content-type", "application/json");
 			// 7. 통신 응답 코드 확인.
-			System.out.println("Response code: " + conn.getResponseCode());
+			System.out.println("Response code: " + conn.getResponseCode() + " / 현재 api페이지:" + j);
 			// 8. 전달받은 데이터를 BufferedReader 객체로 저장
 			BufferedReader rd;
 			if(conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
@@ -255,9 +261,9 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 		JSONArray  item 	= (JSONArray) items.get("item");
 		
 		
-		String totalCount = body.get("totalCount").toString();
-		System.out.println( "카운트 수" +totalCount);
-		return totalCount;
+		String apiResultTotalCount = body.get("totalCount").toString();
+		System.out.println( "카운트 수" +apiResultTotalCount);
+		return apiResultTotalCount;
 		
 	}
 	
