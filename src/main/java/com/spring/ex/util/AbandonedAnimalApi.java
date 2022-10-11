@@ -39,6 +39,9 @@ public class AbandonedAnimalApi {
 		URL url = new URL(urlBuilder.toString());
 		// 4. 요청하고자 하는 URL과 통신하기 위한 Connection 객체 생성.
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		conn.setConnectTimeout(10000);// 22 10 12추가
+		conn.setReadTimeout(20000);
+		
 		// 5. 통신을 위한 메소드 SET.
 		conn.setRequestMethod("GET");
 		// 6. 통신을 위한 Content-type SET. 
