@@ -19,7 +19,7 @@ public interface ShareCenterDAO {
 	public int getShareCenterBoardViewTotalCount(HashMap<String, String> map) throws Exception;
 	
 	// 공공데이터 유기동물 API DB에 저장
-	public void setDbShareCenterApiResponse(ShareCenterDTO dto) throws Exception;
+	public void setDbShareCenterApiResponse(Map<String, Object> map) throws Exception;
 	
 	//유기동물 DB에서 존재하는 목록만 셀렉트 박스에 출력
 	public List<String> getShareCenterAreaList() throws Exception;

@@ -1,5 +1,6 @@
 package com.spring.ex.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +36,9 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 		return dao.getShareCenterBoardViewTotalCount(map);
 	}
 	@Override
-	public void getShareCenterRequest(ShareCenterDTO dto, ShelterDTO shelterDto, int pageLastNum, String startApiRequest, String endApiRequest) throws Exception {
+	public void getShareCenterRequest(ShelterDTO shelterDto, int pageLastNum, String startApiRequest, String endApiRequest) throws Exception {
+		List<ShareCenterDTO> shareCenterDtoList = new ArrayList<ShareCenterDTO>();
+		//List<Map<String, Object>> shareCenterDtoList = new ArrayList<Map<String, Object>>();
 		for(int j = 1; j <= pageLastNum; j++) {
 			
 			JSONArray item = abandonedAnimalApi.getRequestApiAbandonedAnimal(startApiRequest, endApiRequest, j);
@@ -83,6 +86,7 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 				String orgNm = (String)eqData.get("orgNm") == null ? "x" : (String)eqData.get("orgNm").toString();
 				
 				
+				ShareCenterDTO dto = new ShareCenterDTO();
 				dto.setDesertion_no(desertionNo);
 				dto.setFilename(filename);
 				dto.setHappen_dt(happenDt);
@@ -100,15 +104,20 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 				dto.setNeuter_yn(neuterYn);
 				dto.setSpecial_mark(specialMark);
 				
+				
+				
 				HashMap<String, Object> shelterMap = new HashMap<String, Object>();
 				shelterMap.put("care_nm", care_nm);
 				shelterMap.put("care_addr", care_addr);
 				int checkCareShelter = dao.isCheckCareShelter(shelterMap);
 				//System.out.println("기 등록 보호소 확인1"+checkCareShelter);
 				
+				//Map<String, Object> insertMap = new HashMap<String, Object>();
+				
 				if(checkCareShelter != 0) {
 					dto.setAas_id(checkCareShelter);
-					dao.setDbShareCenterApiResponse(dto);
+					//dao.setDbShareCenterApiResponse(shareCenterDtoList);
+					shareCenterDtoList.add(dto);
 				} else {
 					shelterDto.setCare_nm(care_nm);
 					shelterDto.setCare_addr(care_addr);
@@ -119,9 +128,11 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 					
 					dao.setCareShelter(shelterDto);
 					dto.setAas_id(shelterDto.getAas_id());
-					dao.setDbShareCenterApiResponse(dto);
+					shareCenterDtoList.add(dto);
+					//dao.setDbShareCenterApiResponse(shareCenterDtoList);
 					//System.out.println("자동 증가된 값 오는지 test" + shelterDto.getAas_id());
 				}
+				
 				
 				//System.out.println(care_nm + "  "+ care_addr);
 				//System.out.println("서비스 for : " +dto.toString());
@@ -132,6 +143,9 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 				// cd = dao.saveEarthquake(eqSeq,eqPoint,noticeType,img,noticeTime,refSeq,eqTime,miSeq,lat,lng,addr,scale,intensity,deep,remarks,flagYN,issueID);
 				//System.out.println("cd : "+ cd);
 			}
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("list", shareCenterDtoList);
+			dao.setDbShareCenterApiResponse(map);
 		}
 	}
 	

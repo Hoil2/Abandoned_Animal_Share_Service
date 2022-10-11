@@ -204,23 +204,20 @@ public class ShareCenterController {
 		Date date = new Date();
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
 		String endApiRequest = formatter.format(date);
-		String startApiRequest = dateCalculation.addDate(endApiRequest, 0, -2, 0);
+		String startApiRequest = dateCalculation.addDate(endApiRequest, 0, -1, 0);
 		//String startApiRequest = "20220907";
 		int apiTotalCount = Integer.valueOf(abandonedAnimalApi.getTotalCountRequestApiAbandonedAnimal(startApiRequest, endApiRequest));
 		System.out.println(apiTotalCount);
 		System.out.println(apiTotalCount/1000);
 		int pageNum = apiTotalCount/1000;
-		System.out.println(pageNum+5);
 		int pageCalculation = apiTotalCount % 1000;
 		if(pageCalculation > 0) {
-			System.out.println("페이지 수 : " + pageNum+5);
+			
 			System.out.println("마지막페이지 데이터 수 : " + pageCalculation );
 			//service.getShareCenterRequest(dto, shelterDto, pageLastNum+1, startApiRequest, endApiRequest);
-			service.getShareCenterRequest(dto, shelterDto, pageNum+1, startApiRequest, endApiRequest);
+			service.getShareCenterRequest(shelterDto, pageNum+1, startApiRequest, endApiRequest);
 		}else {
-			System.out.println("페이지 수 : " + pageNum);
-			System.out.println("마지막페이지 데이터 수 : " + pageCalculation );
-			service.getShareCenterRequest(dto, shelterDto, pageNum, startApiRequest, endApiRequest);
+			service.getShareCenterRequest(shelterDto, pageNum, startApiRequest, endApiRequest);
 		}
 		
 		

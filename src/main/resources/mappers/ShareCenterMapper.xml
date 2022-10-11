@@ -92,46 +92,50 @@
 	</select>
 	
 	<!-- 공공데이터 유기동물 API DB에 저장 -->
-	<insert id="setDbShareCenterApiResponse">
+	<insert id="setDbShareCenterApiResponse" parameterType="HashMap">
 		INSERT INTO abandoned_animal_info(desertion_no, filename, happen_dt, happen_place, kind_cd, color_cd, age, weight, notice_no, notice_sdt, notice_edt, popfile, process_state, sex_cd, neuter_yn, special_mark, hit, aas_id, redate) 
-		VALUES(
-			#{desertion_no}, 
-			#{filename}, 
-			#{happen_dt}, 
-			#{happen_place}, 
-			#{kind_cd}, 
-			#{color_cd}, 
-			#{age}, 
-			#{weight}, 
-			#{notice_no}, 
-			#{notice_sdt}, 
-			#{notice_edt}, 
-			#{popfile}, 
-			#{process_state}, 
-			#{sex_cd}, 
-			#{neuter_yn}, 
-			#{special_mark},
-			0,
-			#{aas_id},
-			CURDATE())
+		VALUES
+		<foreach collection = "list" item = "item"  separator="," >
+			(
+				#{item.desertion_no}, 
+				#{item.filename}, 
+				#{item.happen_dt}, 
+				#{item.happen_place}, 
+				#{item.kind_cd}, 
+				#{item.color_cd}, 
+				#{item.age}, 
+				#{item.weight}, 
+				#{item.notice_no}, 
+				#{item.notice_sdt}, 
+				#{item.notice_edt}, 
+				#{item.popfile}, 
+				#{item.process_state}, 
+				#{item.sex_cd}, 
+				#{item.neuter_yn}, 
+				#{item.special_mark},
+				0,
+				#{item.aas_id},
+				CURDATE()
+			)
+		</foreach> 
 		ON DUPLICATE KEY UPDATE
-			desertion_no=#{desertion_no},
-			filename=#{filename}, 
-			happen_dt=#{happen_dt}, 
-			happen_place= #{happen_place}, 
-			kind_cd=#{kind_cd}, 
-			color_cd= #{color_cd}, 
-			age=#{age}, 
-			weight=#{weight}, 
-			notice_no=#{notice_no}, 
-			notice_sdt=#{notice_sdt}, 
-			notice_edt=#{notice_edt}, 
-			popfile=#{popfile}, 
-			process_state=#{process_state}, 
-			sex_cd=#{sex_cd}, 
-			neuter_yn=#{neuter_yn}, 
-			special_mark=#{special_mark},
-			aas_id=#{aas_id},
+			desertion_no=values(desertion_no),
+			filename=values(filename), 
+			happen_dt=values(happen_dt), 
+			happen_place= values(happen_place), 
+			kind_cd=values(kind_cd), 
+			color_cd= values(color_cd), 
+			age=values(age), 
+			weight=values(weight), 
+			notice_no=values(notice_no), 
+			notice_sdt=values(notice_sdt), 
+			notice_edt=values(notice_edt), 
+			popfile=values(popfile), 
+			process_state=values(process_state), 
+			sex_cd=values(sex_cd), 
+			neuter_yn=values(neuter_yn), 
+			special_mark=values(special_mark),
+			aas_id=values(aas_id),
 			redate=CURDATE()
 	</insert>
 	
