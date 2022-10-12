@@ -15,32 +15,8 @@
 	<link rel="stylesheet" href='<c:url value="/resources/css/style.css"/>'>
 	<link rel="stylesheet" href='<c:url value="/resources/css/responsive.css"/>'><link rel="stylesheet">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+	<jsp:include page="../layout/libraries.jsp"/>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
-	
-	<!-- Plugin Script -->
-	<script src='<c:url value="/resources/js/jquery.min.js"/>'></script>
-	<script src='<c:url value="/resources/js/bootstrap.bundle.min.js"/>'></script>
-	<script src='<c:url value="/resources/js/owl.carousel.min.js"/>'></script>
-	<script src='<c:url value="/resources/js/waypoints.min.js"/>'></script>
-	<script src='<c:url value="/resources/js/jquery.counterup.min.js"/>'></script>
-	<script src='<c:url value="/resources/js/TweenMax.min.js"/>'></script>
-	<script src='<c:url value="/resources/js/wow.js"/>'></script>
-	<script src='<c:url value="/resources/js/jquery.magnific-popup.min.js"/>'></script>
-	<script src='<c:url value="/resources/js/jquery.ajaxchimp.min.js"/>'></script>
-	<script src='<c:url value="/resources/js/swiper.min.js"/>'></script>
-	<script src='<c:url value="/resources/js/typed-2.0.11.js"/>'></script>
-	<script src='<c:url value="/resources/js/vegas.min.js"/>'></script>
-	<script src='<c:url value="/resources/js/jquery.validate.min.js"/>'></script>
-	<script src='<c:url value="/resources/js/bootstrap-select.min.js"/>'></script>
-	<script src='<c:url value="/resources/js/countdown.min.js"/>'></script>
-	<script src='<c:url value="/resources/js/jquery.mCustomScrollbar.concat.min.js"/>'></script>
-	<script src='<c:url value="/resources/js/bootstrap-datepicker.min.js"/>'></script>
-	<script src='<c:url value="/resources/js/nouislider.min.js"/>'></script>
-	<script src='<c:url value="/resources/js/isotope.js"/>'></script>
-	
-	<!-- Template Script -->
-	<script src='<c:url value="/resources/js/theme.js"/>'></script>
-	<script src='<c:url value="/resources/js/Member.js"/>'></script>
 	
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=8fa765d237b5684d617d012e915c53a3&libraries=services,clusterer,drawing"></script>
 	
@@ -54,22 +30,23 @@
 	<%-- main 영역 --%>
 	<div class="container">
 		<form action="/mypage/updateMyConditionAlarm" method="post">
+			
 			<div class="mb-5">
 				<p class="fs-5">동물 종류</p>
 				<div class="form-check">
-					<input class="form-check-input" type="checkbox" value="dog" name="dog">
+					<input class="form-check-input" type="checkbox"  name="kind[]" value="dog">
 					<label class="form-check-label" for="flexCheckDefault">
 						강아지
 					</label>
 				</div>
 				<div class="form-check">
-					<input class="form-check-input" type="checkbox" value="cat" name="cat">
+					<input class="form-check-input" type="checkbox" name="kind[]" value="cat">
 					<label class="form-check-label" for="flexCheckDefault">
 						고양이
 					</label>
 				</div>
 				<div class="form-check">
-					<input class="form-check-input" type="checkbox" value="kind_etc" name="kind_etc">
+					<input class="form-check-input" type="checkbox" name="kind[]" value="etc">
 					<label class="form-check-label" for="flexCheckDefault">
 						기타
 					</label>
@@ -122,7 +99,7 @@
 			
 			<div class="mb-5">
 				<p class="fs-5">품종</p>
-				<select class="selectpicker">
+				<select class="selectpicker" multiple>
 					<option>Mustard</option>
 					<option>Ketchup</option>
 					<option>Barbecue</option>
@@ -130,7 +107,7 @@
 			</div>
 			
 			<div class="mb-5">
-				<p class="fs-5">보호소 선택</p>
+				<p class="fs-5">알림받을 보호소 선택</p>
 				<%-- 지도 필터 --%>
 				<div class="row">
 					<div class="col">
@@ -177,6 +154,51 @@
 	<%-- footer 영역 --%>
 	<jsp:include page="../layout/footer.jsp"/>
 	<script>
+		
+		$('button[type="submit"]').on('click', function() {
+			
+			<%-- 보호소 주소 list 보내기 --%>
+			resultAddressList.forEach(function(shelterAddress) {
+				$('form').append('<input type="hidden" name="shelterAddress[]" value="' + shelterAddress + '">')
+			});
+			
+			<%-- 그룹 체크박스 required --%>
+			var cbx_group = $("input:checkbox[name='kind[]']");
+			cbx_group.prop('required', true);
+			if(cbx_group.is(":checked")){
+			  cbx_group.prop('required', false);
+			}
+			
+			//$('input[name="shelterAddressList"]').val(resultAddressList.join(", "));
+		});
+		
+		<%-- 강아지 체크 이벤트 --%>
+		$('input[name="kind[]"]input[value="dog"]').change(function() {
+			var chx_kind_dog = $('input[name="kind[]"]input[value="dog"]');
+			if(chx_kind_dog.is(":checked")) {
+				<%-- 강아지 품종 select 우측에 표시 --%>
+				console.log("dog check");
+			}
+			else {
+				<%-- 강아지 품종 없애기 --%>
+				console.log("dog uncheck");
+			}
+		});
+		
+		<%-- 고양이 체크 이벤트 --%>
+		$('input[name="kind[]"]input[value="cat"]').change(function() {
+			var chx_kind_dog = $('input[name="kind[]"]input[value="cat"]');
+			if(chx_kind_dog.is(":checked")) {
+				<%-- 고양이 품종 select 우측에 표시 --%>
+				console.log("cat check");
+			}
+			else {
+				<%-- 고양이 품종 없애기 --%>
+				console.log("cat uncheck");
+			}
+		});
+	
+		<%-- kakao map script section --%>
 		var container = document.getElementById('kakaoMap'); //지도를 담을 영역의 DOM 레퍼런스
 	    var options = { //지도를 생성할 때 필요한 기본 옵션
 	        center: new kakao.maps.LatLng(33.450701, 126.570667), //지도의 중심좌표.
@@ -340,7 +362,7 @@
         	        var targetPosition = new kakao.maps.LatLng(result[0].y, result[0].x);
         	        
         	        if(getDistance(nowPosition, targetPosition) <= radius) {
-        	        	console.log(address + "저장");
+        	        	console.log(address);
 						resultAddressList.push(address);
 
     					// 마커 생성
