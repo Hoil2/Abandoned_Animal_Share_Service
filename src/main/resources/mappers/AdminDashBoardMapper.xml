@@ -17,7 +17,13 @@
 	<select id="getTodayAbandonedAnimalTotalCount" resultType="int">
 		SELECT COUNT(*)
 		FROM abandoned_animal_info
-		WHERE happen_dt != CURDATE();
+		WHERE happen_dt = CURDATE();
+	</select>
+	
+	<select id="getTodayProtectAbandonedAnimalTotalCount" resultType="int">
+		SELECT COUNT(*)
+		FROM abandoned_animal_info
+		WHERE process_state = '보호중';
 	</select>
 	
 </mapper>

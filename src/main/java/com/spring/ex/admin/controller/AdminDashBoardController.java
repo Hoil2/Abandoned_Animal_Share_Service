@@ -22,14 +22,9 @@ public class AdminDashBoardController {
 		model.addAttribute("todayRegisterMemberTotalCount", service.getTodayRegisterMemberTotalCount());
 		model.addAttribute("todayBoardWriteTotalCount", service.getTodayBoardWriteTotalCount());
 		model.addAttribute("todayAbandonedAnimalTotalCount", service.getTodayAbandonedAnimalTotalCount());
+		model.addAttribute("todayProtectAbandonedAnimalTotalCount", service.getTodayProtectAbandonedAnimalTotalCount());
 		
 		return "admin/index";
-	}
-	
-	//관리자 분양센터
-	@RequestMapping(value = "/admin/shereCenter", method = RequestMethod.GET)
-	public String AdminShereCenter(HttpSession session, Model model) throws Exception {
-		return "admin/";
 	}
 	
 	//관리자 실종동물

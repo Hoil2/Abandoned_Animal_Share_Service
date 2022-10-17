@@ -196,4 +196,19 @@
 			#{officetel}
 		)
 	</insert>
+	
+	<!--관리자페이지 사용 2022 10 17-->
+	<!-- 보호중인 유기동물 수 -->
+	<select id="getAnimalProtectCount">
+		SELECT COUNT(*)
+		FROM abandoned_animal_info
+		WHERE process_state = "보호중"
+	</select>
+	
+	<select id="getAnimalDeadlineCount">
+		SELECT COUNT(*)
+		FROM abandoned_animal_info
+		WHERE process_state = "보호중" AND notice_edt BETWEEN CURDATE()-3 AND CURDATE()
+	</select>
+	
 </mapper>

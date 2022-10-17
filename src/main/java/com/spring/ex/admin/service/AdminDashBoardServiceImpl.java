@@ -29,4 +29,8 @@ public class AdminDashBoardServiceImpl implements AdminDashBoardService {
 		return dao.getTodayAbandonedAnimalTotalCount();
 	}
 	
+	//현재 보호중인 유기동물 수
+	public int getTodayProtectAbandonedAnimalTotalCount() throws Exception {
+		return dao.getTodayProtectAbandonedAnimalTotalCount();
+	}
 }

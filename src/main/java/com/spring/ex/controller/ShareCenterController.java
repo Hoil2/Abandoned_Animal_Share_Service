@@ -204,7 +204,7 @@ public class ShareCenterController {
 		Date date = new Date();
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
 		String endApiRequest = formatter.format(date);
-		String startApiRequest = dateCalculation.addDate(endApiRequest, 0, -2, 0);
+		String startApiRequest = dateCalculation.addDate(endApiRequest, 0, -1, 0);
 		//String startApiRequest = "20220907";
 		int apiTotalCount = Integer.valueOf(abandonedAnimalApi.getTotalCountRequestApiAbandonedAnimal(startApiRequest, endApiRequest));
 		System.out.println(apiTotalCount);
@@ -220,8 +220,7 @@ public class ShareCenterController {
 			service.getShareCenterRequest(shelterDto, pageNum, startApiRequest, endApiRequest);
 		}
 		
-		
-		return "shereCenterTest"; 
+		return "redirect:/sTestPage"; 
 	}
 	
 
