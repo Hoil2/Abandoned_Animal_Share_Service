@@ -18,6 +18,8 @@
 	<jsp:include page="../layout/libraries.jsp"/>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
 	
+	<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
+	<!-- <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script> -->
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=8fa765d237b5684d617d012e915c53a3&libraries=services,clusterer,drawing"></script>
 	
 	<title>유기동물 등록 알림 설정</title>
@@ -31,28 +33,59 @@
 	<div class="container">
 		<form action="/mypage/updateMyConditionAlarm" method="post">
 			
+			<%-- 동물 종류 --%>
 			<div class="mb-5">
-				<p class="fs-5">동물 종류</p>
-				<div class="form-check">
-					<input class="form-check-input" type="checkbox"  name="kind[]" value="dog">
-					<label class="form-check-label" for="flexCheckDefault">
-						강아지
-					</label>
+				<%-- 강아지 품종 선택 --%>	
+				<p class="fs-5 fw-bold">동물 종류</p>
+				<div class="row d-flex align-items-center mb-1">
+					<div class="col-2">
+						<div class="form-check">
+							<input class="form-check-input" type="checkbox"  name="kind[]" value="dog">
+							<label class="form-check-label" for="flexCheckDefault">
+								강아지
+							</label>
+						</div>
+					</div>
+									
+					<div class="col-3" id="dog_breed_list" style="height:50px;">
+						
+					</div>
+					<div id="dog_breed_list1"></div>
 				</div>
-				<div class="form-check">
-					<input class="form-check-input" type="checkbox" name="kind[]" value="cat">
-					<label class="form-check-label" for="flexCheckDefault">
-						고양이
-					</label>
+				
+				<%-- 고양이 품종 선택 --%>
+				<div class="row d-flex align-items-center mb-1">
+					<div class="col-2">
+						<div class="form-check">
+							<input class="form-check-input" type="checkbox" name="kind[]" value="cat">
+							<label class="form-check-label" for="flexCheckDefault">
+								고양이
+							</label>
+						</div>
+					</div>
+										
+					<div class="col-3" id="cat_breed_list" style="height:50px;">
+						
+					</div>
 				</div>
-				<div class="form-check">
-					<input class="form-check-input" type="checkbox" name="kind[]" value="etc">
-					<label class="form-check-label" for="flexCheckDefault">
-						기타
-					</label>
+				<%-- 기타 품종 선택 --%>
+				<div class="row d-flex align-items-center">
+					<div class="col-2">
+						<div class="form-check">
+							<input class="form-check-input" type="checkbox" name="kind[]" value="etc">
+							<label class="form-check-label" for="flexCheckDefault">
+								기타
+							</label>
+						</div>
+					</div>
+					
+					<div class="col-3" id="etc_breed_list" style="height:50px;">
+						
+					</div>
 				</div>
 			</div>
 			
+			<%-- 성별 --%>
 			<div class="mb-5">
 				<p class="fs-5">성별</p>
 				<div class="form-check">
@@ -75,6 +108,7 @@
 				</div>
 			</div>
 			
+			<%-- 중성화 여부 --%>
 			<div class="mb-5">
 				<p class="fs-5">중성화 여부</p>
 				<div class="form-check">
@@ -98,12 +132,7 @@
 			</div>
 			
 			<div class="mb-5">
-				<p class="fs-5">품종</p>
-				<select class="selectpicker" multiple>
-					<option>Mustard</option>
-					<option>Ketchup</option>
-					<option>Barbecue</option>
-				</select>
+				
 			</div>
 			
 			<div class="mb-5">
@@ -177,26 +206,62 @@
 			var chx_kind_dog = $('input[name="kind[]"]input[value="dog"]');
 			if(chx_kind_dog.is(":checked")) {
 				<%-- 강아지 품종 select 우측에 표시 --%>
+				getSelectAnimalBreedList('dog');
 				console.log("dog check");
 			}
 			else {
 				<%-- 강아지 품종 없애기 --%>
+				$('#dog_breed_list').empty();
 				console.log("dog uncheck");
 			}
 		});
 		
 		<%-- 고양이 체크 이벤트 --%>
 		$('input[name="kind[]"]input[value="cat"]').change(function() {
-			var chx_kind_dog = $('input[name="kind[]"]input[value="cat"]');
-			if(chx_kind_dog.is(":checked")) {
+			var chx_kind_cat = $('input[name="kind[]"]input[value="cat"]');
+			if(chx_kind_cat.is(":checked")) {
 				<%-- 고양이 품종 select 우측에 표시 --%>
+				getSelectAnimalBreedList('cat');
 				console.log("cat check");
 			}
 			else {
 				<%-- 고양이 품종 없애기 --%>
+				$('#cat_breed_list').empty();
 				console.log("cat uncheck");
 			}
 		});
+		
+		<%-- 기타 체크 이벤트 --%>
+		$('input[name="kind[]"]input[value="etc"]').change(function() {
+			var chx_kind_etc = $('input[name="kind[]"]input[value="etc"]');
+			if(chx_kind_etc.is(":checked")) {
+				<%-- 기타 품종 select 우측에 표시 --%>
+				getSelectAnimalBreedList('etc');
+				console.log("etc check");
+			}
+			else {
+				<%-- 기타 품종 없애기 --%>
+				$('#etc_breed_list').empty();
+				console.log("etc uncheck");
+			}
+		});
+		
+		function getSelectAnimalBreedList(kind) {
+			$.ajax({
+				url: '/getSelectAnimalBreedList',
+				type: 'post',
+				dataType: 'html',
+				data: {
+					kind: kind
+				},
+				success: function(data) {
+			 		var breedList = $(data).children("#breed_list>*");
+				 	$('#'+kind+'_breed_list').html(breedList);
+				 	$('[name="'+kind+'_breed_list"]').selectpicker();
+				}
+			});
+		} 
+		
 	
 		<%-- kakao map script section --%>
 		var container = document.getElementById('kakaoMap'); //지도를 담을 영역의 DOM 레퍼런스

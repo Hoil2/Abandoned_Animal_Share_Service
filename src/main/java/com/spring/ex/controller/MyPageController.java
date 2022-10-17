@@ -38,6 +38,7 @@ public class MyPageController {
 		return "mypage/mypage";
 	}
 	
+	// 나의 반려동물 관리 페이지
 	@RequestMapping("mypage/manageMyPet")
 	public String manageMyPet(HttpServletRequest request, Model model) {
 		MemberDTO memberDTO = (MemberDTO)request.getSession().getAttribute("member");
@@ -48,6 +49,7 @@ public class MyPageController {
 		return "mypage/manageMyPet";
 	}
 	
+	// 나의 반려동물 수정
 	@RequestMapping("mypage/updateMyPet")
 	public String updateMyPet(HttpServletRequest request) {
 		MemberDTO memberDTO = (MemberDTO)request.getSession().getAttribute("member");
@@ -74,6 +76,7 @@ public class MyPageController {
 		return "redirect:/mypage";
 	}
 	
+	// 좋아요 표시한 동물 알람 관리 페이지
 	@RequestMapping("mypage/manageMyGoodAnimalEmailAlarm")
 	public String manageMyEmailAlarm(HttpServletRequest request, Model model) {
 		MemberDTO memberDTO = (MemberDTO)request.getSession().getAttribute("member");
@@ -86,7 +89,8 @@ public class MyPageController {
 		return "mypage/manageMyGoodAnimalEmailAlarm";
 	}
 	
-	@RequestMapping("mypage/updateMyEmailAlarm")
+	// 좋아요 표시한 동물 알람 
+	@RequestMapping("mypage/updateMyGoodEmailAlarm")
 	public String updateMyEmailAlarm(HttpServletRequest request) {
 		MemberDTO memberDTO = (MemberDTO)request.getSession().getAttribute("member");
 		String[] desertion_noList = request.getParameterValues("desertion_no");
@@ -108,65 +112,5 @@ public class MyPageController {
 		emailAlarmService.updateEmailAlarm(memberDTO.getM_id(), emailAlarmList);
 		
 		return "redirect:/mypage";
-	}
-	
-	// 이메일 알람 조건 설정 페이지
-	@RequestMapping("mypage/manageMyEmailAlarmCondition")
-	public String manageMyConditionEmailAlarm(HttpServletRequest request, Model model) {
-		MemberDTO memberDTO = (MemberDTO)request.getSession().getAttribute("member");
-		if(memberDTO == null) {
-			System.out.println("로그인이 필요합니다.");
-		}
-		
-		EmailAlarmConditionDTO eac = emailAlarmConditionService.getEmailAlarmCondition(memberDTO.getM_id());
-		System.out.println(eac);
-		
-		model.addAttribute("emailAlarmCondition", eac);
-		
-		return "mypage/manageMyEmailAlarmCondition";
-	}
-	
-	@RequestMapping("mypage/updateMyEmailAlarmCondition")
-	public String updateMyEmailAlarmCondition(HttpServletRequest request, Model model) {
-		MemberDTO memberDTO = (MemberDTO)request.getSession().getAttribute("member");
-		if(memberDTO == null) {
-			System.out.println("로그인이 필요합니다.");
-		}
-		
-		String[] _kinds = request.getParameterValues("kinds");
-		String[] _breeds = request.getParameterValues("breeds"); 
-		String[] _ages = request.getParameterValues("ages");
-		String[] _sex = request.getParameterValues("sex");
-		String[] _neuter_yn = request.getParameterValues("neuter_yn");
-		String[] _ass_idList = request.getParameterValues("aas_idList"); // 보호소 id
-		
-		String kinds = String.join(",", _kinds);
-		String breeds = String.join(",", _breeds);
-		String ages = String.join(",", _ages);
-		String sex = String.join(",", _sex);
-		String neuter_yn = String.join(",", _neuter_yn);
-		String ass_idList = String.join(",", _ass_idList);
-		
-		EmailAlarmConditionDTO eac = emailAlarmConditionService.getEmailAlarmCondition(memberDTO.getM_id());
-		eac.setKind(kinds);
-		eac.setBreed(breeds);
-		eac.setAge(ages);
-		eac.setSex(sex);
-		eac.setNeuter_yn(neuter_yn);
-		eac.setRegion(ass_idList);
-		if(eac == null) {
-			eac.setM_id(memberDTO.getM_id());
-			emailAlarmConditionService.insertEmailAlarmCondition(eac);
-		}
-		else {
-			emailAlarmConditionService.updateEmailAlarmCondition(eac);
-		}
-		System.out.println(eac);
-		
-		model.addAttribute("emailAlarmCondition", eac);
-		// abandoned_animal_info에서 kind_cd distinct로 가져온것 select option으로 만들기
-		model.addAttribute("kindList", lostAnimalService.getKindListWithDistinct());
-		
-		return "mypage/manageMyEmailAlarmCondition";
 	}
 }

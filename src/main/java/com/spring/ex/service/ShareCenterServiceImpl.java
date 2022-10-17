@@ -185,5 +185,11 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 	public int subtractGoodShareCenterReadPage(HashMap<String, Object> map) throws Exception {
 		return dao.subtractGoodShareCenterReadPage(map);
 	}
+
+	//2022-10-17 김홍일 / 현재 db에 저장된 동물의 품종 리스트 가져오기
+	@Override
+	public List<String> getAnimalBreedList(String kind) {
+		return dao.getAnimalBreedList(kind);
+	}
 	
 }

@@ -44,4 +44,7 @@ public interface ShareCenterDAO {
 	
 	//보호소 등록안된 보호소라면 추가
 	public int setCareShelter(ShelterDTO dto) throws Exception;
+	
+	//2022-10-17 김홍일 / 현재 db에 저장된 동물의 품종 리스트 가져오기
+	public List<String> getAnimalBreedList(String kind);
 }

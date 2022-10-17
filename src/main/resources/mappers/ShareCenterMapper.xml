@@ -196,4 +196,13 @@
 			#{officetel}
 		)
 	</insert>
+	
+	<!-- 2022-10-17 김홍일 / 현재 db에 저장된 동물의 품종 리스트 가져오기 -->
+	<!-- 파라미터로 '개', '고양이', '기타축종' 들어갈 수 있음 -->
+	<select id="getAnimalBreedList" resultType="string">
+		SELECT DISTINCT SUBSTRING(kind_cd, INSTR(kind_cd, ']')+2, LENGTH(kind_cd)) AS breed FROM abandoned_animal_info
+		WHERE SUBSTRING(kind_cd, INSTR(kind_cd, '[')+1, INSTR(kind_cd, ']')-2) = #{kind} AND 
+			LENGTH(SUBSTRING(kind_cd, INSTR(kind_cd, ']')+2, LENGTH(kind_cd))) != 0
+		ORDER BY breed
+	</select>
 </mapper>

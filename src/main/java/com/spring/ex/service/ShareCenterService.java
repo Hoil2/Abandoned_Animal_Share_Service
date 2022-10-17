@@ -38,4 +38,7 @@ public interface ShareCenterService {
 	
 	//유기동물 센터 해당 게시물 좋아요 삭제
 	public int subtractGoodShareCenterReadPage(HashMap<String, Object> map) throws Exception;
+	
+	//2022-10-17 김홍일 / 현재 db에 저장된 동물의 품종 리스트 가져오기
+	public List<String> getAnimalBreedList(String kind);
 }

@@ -82,4 +82,10 @@ public class ShareCenterDAOImpl implements ShareCenterDAO{
 	public int setCareShelter(ShelterDTO dto) throws Exception {
 		return sqlSession.insert(namespace + ".setCareShelter", dto);
 	}
+
+	//2022-10-17 김홍일 / 현재 db에 저장된 동물의 품종 리스트 가져오기
+	@Override
+	public List<String> getAnimalBreedList(String kind) {
+		return sqlSession.selectList(namespace + ".getAnimalBreedList", kind);
+	}
 }
