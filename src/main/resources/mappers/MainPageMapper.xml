@@ -3,9 +3,9 @@
 
 <mapper namespace="com.spring.ex.MainPageMapper">
 	<select id="getPopularityShareCenterList" resultType="HashMap">
-		SELECT *
-		FROM v_abandoned_animal_info
-		WHERE happen_dt BETWEEN CURDATE()-interval '100' day AND CURDATE()
+		SELECT aai.*, (SELECT COUNT(*) FROM abandoned_animal_good aag WHERE aag.desertion_no = aai.desertion_no) AS "good"
+		FROM abandoned_animal_info aai
+		WHERE happen_dt BETWEEN CURDATE()-interval '200' day AND CURDATE()
 		ORDER BY good DESC, hit DESC LIMIT 0, 20
 	</select>
 	

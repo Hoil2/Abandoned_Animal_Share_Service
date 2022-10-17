@@ -1,5 +1,7 @@
 package com.spring.ex.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +24,8 @@ import com.spring.ex.dto.ShareCenterDTO;
 import com.spring.ex.dto.ShelterDTO;
 import com.spring.ex.service.PagingService;
 import com.spring.ex.service.ShareCenterService;
+import com.spring.ex.util.AbandonedAnimalApi;
+import com.spring.ex.util.DateCalculation;
 
 @Controller
 public class ShareCenterController {
@@ -29,6 +33,8 @@ public class ShareCenterController {
 	ShareCenterService service;
 	
 	PagingService pagingService;
+	DateCalculation dateCalculation = new DateCalculation();
+	AbandonedAnimalApi abandonedAnimalApi = new AbandonedAnimalApi();
 	
 	//분양센터페이지 유기동물 목록 출력
 	@RequestMapping(value = "/shereCenterPage" , method = RequestMethod.GET)
@@ -187,24 +193,35 @@ public class ShareCenterController {
 	
 	@RequestMapping(value = "/sTestPage",  method = RequestMethod.GET)
 	public String shereCenterPageView2(ShareCenterDTO dto, ShelterDTO shelterDto) throws Exception {
-		service.getShareCenterTest(dto, shelterDto);
 		
 		return "shereCenterTest";
 	}
 	
 	
-	//Db연결 확인
-	@RequestMapping("/sTest")
-	public String DBConTest(HttpServletRequest request) throws Exception {
-		HashMap<String, String> searchMap = new HashMap<String, String>();
-		searchMap.put("searchArea", "allArea");
-		searchMap.put("searchTheme", "allTheme");
-		searchMap.put("searchKeyword", "alignmentDay");
+	// api 데이터 요청
+	@RequestMapping(value = "/sTest", method = RequestMethod.GET)
+	public String DBConTest(ShareCenterDTO dto, ShelterDTO shelterDto, HttpServletRequest request) throws Exception {
+		Date date = new Date();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+		String endApiRequest = formatter.format(date);
+		String startApiRequest = dateCalculation.addDate(endApiRequest, 0, -2, 0);
+		//String startApiRequest = "20220907";
+		int apiTotalCount = Integer.valueOf(abandonedAnimalApi.getTotalCountRequestApiAbandonedAnimal(startApiRequest, endApiRequest));
+		System.out.println(apiTotalCount);
+		System.out.println(apiTotalCount/1000);
+		int pageNum = apiTotalCount/1000;
+		int pageCalculation = apiTotalCount % 1000;
+		if(pageCalculation > 0) {
+			
+			System.out.println("마지막페이지 데이터 수 : " + pageCalculation );
+			//service.getShareCenterRequest(dto, shelterDto, pageLastNum+1, startApiRequest, endApiRequest);
+			service.getShareCenterRequest(shelterDto, pageNum+1, startApiRequest, endApiRequest);
+		}else {
+			service.getShareCenterRequest(shelterDto, pageNum, startApiRequest, endApiRequest);
+		}
 		
-		int res = service.getShareCenterBoardViewTotalCount(searchMap);
 		
-		System.out.println("res :" + res);
-		return "shereCenter"; 
+		return "shereCenterTest"; 
 	}
 	
 

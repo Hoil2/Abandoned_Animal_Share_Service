@@ -205,7 +205,7 @@ $(document).ready(function() {
 					<a class="disabledLink" href="shereCenterPage?page=${Paging.prevPageNo}"><i class="fa fa-angle-left"></i></a>
 				</c:when>
 				<c:otherwise>
-					<a class="page-link" href="shereCenterPage?page=${Paging.prevPageNo}"><i class="fa fa-angle-left"></i></a>
+					<a class="page-link" href="shereCenterPage?page=${Paging.prevPageNo}&searchTheme=${searchTheme}&searchArea=${searchArea}&alignment=${alignment}"><i class="fa fa-angle-left"></i></a>
 				</c:otherwise>
 			</c:choose>
 			<!-- 페이지 갯수만큼 버튼 생성 -->
@@ -222,7 +222,7 @@ $(document).ready(function() {
 			<!-- 마지막 페이지면 Disabled 아니라면 Enabled -->
 			<c:choose>
 				<c:when test="${Paging.pageNo eq Paging.finalPageNo }">
-					<a class="disabledLink" href="shereCenterPage?page=${Paging.nextPageNo}"><i class="fa fa-angle-right"></i></a>
+					<a class="disabledLink" href="shereCenterPage?page=${Paging.nextPageNo}&searchTheme=${searchTheme}&searchArea=${searchArea}&alignment=${alignment}"><i class="fa fa-angle-right"></i></a>
 				</c:when>
 				<c:otherwise>
 					<a href="shereCenterPage?page=${Paging.nextPageNo}"><i class="fa fa-angle-right"></i></a>

@@ -147,8 +147,7 @@
 								</tbody> 
 							</table>
 						</div>
-						<br>
-						<div class="col-md-12">
+						<div class="col-md-12" style="margin-top: 15px;">
 							<table class="table">
 								<tbody>
 									<tr class="success">
@@ -156,28 +155,30 @@
 										<th> </th>
 									</tr>
 									<tr>
+										<td colspan="2">
+											<div id="map" style="width:100%;height:350px;"></div>
+										</td>
+									</tr>
+									
+									<tr>
 										<td><font size="3px;">보호소</font></td>
-										<td>${scrReadPage.notice_no}</td>
+										<td>${scrReadPage.care_nm}</td>
 									</tr>
 									<tr>
 										<td> <font size="3px;"> 보호장소</font></td>
-										<td>${scrReadPage.process_state}</td>
+										<td>${scrReadPage.care_addr}</td>
 									</tr>
 									<tr>
 										<td><font size="3px;">전화번호</font></td>
-										<td>${scrReadPage.notice_sdt} ~ ${scrReadPage.notice_edt}</td>
+										<td>${scrReadPage.care_tel}</td>
 									</tr>
 									<tr>
 										<td><font size="3px;">관할기관</font></td>
-										<td>${scrReadPage.happen_place}</td>
+										<td>${scrReadPage.org_nm}</td>
 									</tr>
 									<tr>
 										<td><font size="3px;">담당자 / 연락처</font></td>
-										<td>${scrReadPage.happen_place}</td>
-									</tr>
-									<tr>
-										<td><font size="3px;">특이사항</font></td>
-										<td>${scrReadPage.happen_place}</td>
+										<td>${scrReadPage.charge_nm} / ${scrReadPage.officetel}</td>
 									</tr>
 								</tbody> 
 							</table>
@@ -192,7 +193,41 @@
 		<jsp:include page="layout/footer.jsp"/>
 	</div>
 	
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=51b48d7e64099981156514cbd0f41107&libraries=services,clusterer,drawing"></script>
 <script>
+	var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+	    mapOption = {
+	        center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+	        level: 3 // 지도의 확대 레벨
+	    };  
+	// 지도를 생성합니다    
+	var map = new kakao.maps.Map(mapContainer, mapOption); 
+	// 주소-좌표 변환 객체를 생성합니다
+	var geocoder = new kakao.maps.services.Geocoder();
+	
+	var care_addr = "${scrReadPage.care_addr}";
+	var care_nm =  "${scrReadPage.care_nm}";
+	
+	// 주소로 좌표를 검색합니다
+	geocoder.addressSearch(care_addr, function(result, status) {
+	    // 정상적으로 검색이 완료됐으면 
+	     if (status === kakao.maps.services.Status.OK) {
+	        var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+	        // 결과값으로 받은 위치를 마커로 표시합니다
+	        var marker = new kakao.maps.Marker({
+	            map: map,
+	            position: coords
+	        });
+	        // 인포윈도우로 장소에 대한 설명을 표시합니다
+	        var infowindow = new kakao.maps.InfoWindow({
+	            content: '<div style="width:200px;text-align:center;padding:6px 0;">' + care_nm  + '</div>'
+	        });
+	        infowindow.open(map, marker);
+	        // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+	        map.setCenter(coords);
+	    } 
+	});    
+
 	function addGood_click() {
 		$.ajax({
 			url: "addGoodShareCenter",
@@ -224,6 +259,8 @@
 			icon: "warning",
 		});
 	}
+	
+	
 </script>
 </body>
 </html>

@@ -18,11 +18,12 @@
 	<util:properties id="email" location="classpath:config/email.properties"/>
 	
 	<!-- MariaDB DataSource -->
-	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
 		<property name="driverClassName" value="#{db['driverClassName']}"></property>
 		<property name="url" value="#{db['url']}"></property>
 		<property name="username" value="#{db['username']}"></property>
 		<property name="password" value="#{db['password']}"></property>
+		
 	</bean>
 	
 	<!-- MyBatis SqlSessionFactoryBean -->
