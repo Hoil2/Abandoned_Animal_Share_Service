@@ -60,28 +60,6 @@
 	</li>
 	<li>
 		<hr class="sidebar-divider">
-		<div class="sidebar-heading">통계</div>
-	</li>
-	<li class="nav-item">
-		<a class="nav-link" href="visit">
-			<i class="fas fa-fw fa-table"></i>
-			<span>방문자 수</span>
-		</a>
-	</li>
-	<li class="nav-item">
-		<a class="nav-link" href="board">
-			<i class="fas fa-fw fa-table"></i>
-			<span>게시글 작성 수</span>
-		</a>
-	</li>
-	<li class="nav-item">
-		<a class="nav-link" href="period">
-			<i class="fas fa-fw fa-table"></i>
-			<span>기간별  분양 수</span>
-		</a>
-	</li>
-	<li>
-		<hr class="sidebar-divider">
 		<div class="sidebar-heading">고객센터</div>
 	</li>
 	<li class="nav-item">

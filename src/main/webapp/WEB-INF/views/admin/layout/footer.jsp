@@ -29,7 +29,7 @@
 							<div class="input-group-prepend">
 								<span class="input-group-text">아이디　</span>
 							</div>
-							<input type="text" class="form-control" id="AdminID" name="UserID" value="${AdminProfile.getUserID() }" readonly>
+							<input type="text" class="form-control" id="AdminID" name="UserID" value="${AdminProfile.getEmail() }" readonly>
 						</div>
 						<div class="input-group my-2 mb-1">
 							<div class="input-group-prepend">
