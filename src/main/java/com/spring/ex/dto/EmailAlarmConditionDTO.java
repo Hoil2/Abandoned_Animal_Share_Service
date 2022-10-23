@@ -2,12 +2,14 @@ package com.spring.ex.dto;
 
 public class EmailAlarmConditionDTO {
 	private int m_id;
-	private String kind;
-	private String breed;
-	private String age;
-	private String sex;
-	private String neuter_yn;
-	private String region;
+	private String kinds;
+	private String dog_breeds;
+	private String cat_breeds;
+	private String etc_breeds;
+	private String ages;
+	private String sexs;
+	private String neuterings;
+	private String shelter_ids;
 	
 	public int getM_id() {
 		return m_id;
@@ -15,45 +17,58 @@ public class EmailAlarmConditionDTO {
 	public void setM_id(int m_id) {
 		this.m_id = m_id;
 	}
-	public String getKind() {
-		return kind;
+	public String getKinds() {
+		return kinds;
 	}
-	public void setKind(String kind) {
-		this.kind = kind;
+	public void setKinds(String kinds) {
+		this.kinds = kinds;
 	}
-	public String getBreed() {
-		return breed;
+	public String getDog_breeds() {
+		return dog_breeds;
 	}
-	public void setBreed(String breed) {
-		this.breed = breed;
+	public void setDog_breeds(String dog_breeds) {
+		this.dog_breeds = dog_breeds;
 	}
-	public String getAge() {
-		return age;
+	public String getCat_breeds() {
+		return cat_breeds;
 	}
-	public void setAge(String age) {
-		this.age = age;
+	public void setCat_breeds(String cat_breeds) {
+		this.cat_breeds = cat_breeds;
 	}
-	public String getSex() {
-		return sex;
+	public String getEtc_breeds() {
+		return etc_breeds;
 	}
-	public void setSex(String sex) {
-		this.sex = sex;
+	public void setEtc_breeds(String etc_breeds) {
+		this.etc_breeds = etc_breeds;
 	}
-	public String getNeuter_yn() {
-		return neuter_yn;
+	public String getAges() {
+		return ages;
 	}
-	public void setNeuter_yn(String neuter_yn) {
-		this.neuter_yn = neuter_yn;
+	public void setAges(String ages) {
+		this.ages = ages;
 	}
-	public String getRegion() {
-		return region;
+	public String getSexs() {
+		return sexs;
 	}
-	public void setRegion(String region) {
-		this.region = region;
+	public void setSexs(String sexs) {
+		this.sexs = sexs;
+	}
+	public String getNeuterings() {
+		return neuterings;
+	}
+	public void setNeuterings(String neuterings) {
+		this.neuterings = neuterings;
+	}
+	public String getShelter_ids() {
+		return shelter_ids;
+	}
+	public void setShelter_ids(String shelter_ids) {
+		this.shelter_ids = shelter_ids;
 	}
 	@Override
 	public String toString() {
-		return "EmailAlarmConditionDTO [m_id=" + m_id + ", kind=" + kind + ", breed=" + breed + ", age=" + age
-				+ ", sex=" + sex + ", neuter_yn=" + neuter_yn + ", region=" + region + "]";
+		return "EmailAlarmConditionDTO [m_id=" + m_id + ", kinds=" + kinds + ", dog_breeds=" + dog_breeds
+				+ ", cat_breeds=" + cat_breeds + ", etc_breeds=" + etc_breeds + ", ages=" + ages + ", sexs=" + sexs
+				+ ", neuterings=" + neuterings + ", shelter_ids=" + shelter_ids + "]";
 	}
 }

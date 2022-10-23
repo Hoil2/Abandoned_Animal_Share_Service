@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <!DOCTYPE html>
 <html>
@@ -23,7 +24,17 @@
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=8fa765d237b5684d617d012e915c53a3&libraries=services,clusterer,drawing"></script>
 	
 	<title>유기동물 등록 알림 설정</title>
+	<c:if test="${fn:contains(eac.kinds, '개')}">
+		<c:set var="kind_dog" value="true"></c:set>
+	</c:if>
 	
+	<c:if test="${fn:contains(eac.kinds, '고양이')}">
+		<c:set var="kind_cat" value="true"></c:set>
+	</c:if>
+	
+	<c:if test="${fn:contains(eac.kinds, '기타축종')}">
+		<c:set var="kind_etc" value="true"></c:set>
+	</c:if>
 </head>
 <body link="red">
 	<%-- header 영역 --%>
@@ -31,33 +42,43 @@
 		
 	<%-- main 영역 --%>
 	<div class="container">
-		<form action="/mypage/updateMyConditionAlarm" method="post">
+		<form action="/mypage/updateMyEmailAlarmCondition" method="post">
 			
 			<%-- 동물 종류 --%>
 			<div class="mb-5">
 				<%-- 강아지 품종 선택 --%>	
-				<p class="fs-5 fw-bold">동물 종류</p>
-				<div class="row d-flex align-items-center mb-1">
+				<div class="mb-3">
+					<p class="fs-5 fw-bold d-inline">동물 종류</p><span class="text-danger d-inline ml-1">*</span>
+					<p><small>품종을 고르지 않을 경우 모든 품종을 포함하게 됩니다.</small></p>
+				</div>
+				<div class="row d-flex align-items-center mb-1 pl-3">
 					<div class="col-2">
 						<div class="form-check">
-							<input class="form-check-input" type="checkbox"  name="kind[]" value="dog">
+							<input class="form-check-input" type="checkbox" name="kind[]" value="개" <c:if test="${kind_dog}">checked</c:if>>
 							<label class="form-check-label" for="flexCheckDefault">
 								강아지
 							</label>
 						</div>
 					</div>
-									
+					
+					<%-- 체크박스 체크했을 때 ajax로 select option 태그 불러오기 --%>
+					<%-- ajax로 불러올 태그는 mypage/module/breedSelectList.jsp에 있음 --%>
 					<div class="col-3" id="dog_breed_list" style="height:50px;">
-						
+						<c:if test="${kind_dog}">
+							<select name="dog_breed[]" class="selectpicker" data-size="6" multiple>
+								<c:forEach var="breed" items="${shareCenterService.getAnimalBreedList('개')}">
+									<option value="${breed}" <c:if test="${fn:contains(eac.dog_breeds, breed)}">selected</c:if>>${breed}</option>
+								</c:forEach>
+							</select>
+						</c:if>
 					</div>
-					<div id="dog_breed_list1"></div>
 				</div>
 				
 				<%-- 고양이 품종 선택 --%>
-				<div class="row d-flex align-items-center mb-1">
+				<div class="row d-flex align-items-center mb-1 pl-3">
 					<div class="col-2">
 						<div class="form-check">
-							<input class="form-check-input" type="checkbox" name="kind[]" value="cat">
+							<input class="form-check-input" type="checkbox" name="kind[]" value="고양이" <c:if test="${kind_cat}">checked</c:if>>
 							<label class="form-check-label" for="flexCheckDefault">
 								고양이
 							</label>
@@ -65,14 +86,20 @@
 					</div>
 										
 					<div class="col-3" id="cat_breed_list" style="height:50px;">
-						
+						<c:if test="${kind_cat}">
+							<select name="cat_breed[]" class="selectpicker" data-size="6" multiple>
+								<c:forEach var="breed" items="${shareCenterService.getAnimalBreedList('고양이')}">
+									<option value="${breed}" <c:if test="${fn:contains(eac.cat_breeds, breed)}">selected</c:if>>${breed}</option>
+								</c:forEach>
+							</select>
+						</c:if>
 					</div>
 				</div>
 				<%-- 기타 품종 선택 --%>
-				<div class="row d-flex align-items-center">
+				<div class="row d-flex align-items-center  pl-3">
 					<div class="col-2">
 						<div class="form-check">
-							<input class="form-check-input" type="checkbox" name="kind[]" value="etc">
+							<input class="form-check-input" type="checkbox" name="kind[]" value="기타축종" <c:if test="${kind_etc}">checked</c:if>>
 							<label class="form-check-label" for="flexCheckDefault">
 								기타
 							</label>
@@ -80,54 +107,79 @@
 					</div>
 					
 					<div class="col-3" id="etc_breed_list" style="height:50px;">
-						
+						<c:if test="${kind_etc}">
+							<select name="etc_breed[]" class="selectpicker" data-size="6" multiple>
+								<c:forEach var="breed" items="${shareCenterService.getAnimalBreedList('기타축종')}">
+									<option value="${breed}" <c:if test="${fn:contains(eac.etc_breeds, breed)}">selected</c:if>>${breed}</option>
+								</c:forEach>
+							</select>
+						</c:if>
 					</div>
 				</div>
 			</div>
 			
 			<%-- 성별 --%>
 			<div class="mb-5">
-				<p class="fs-5">성별</p>
+				<div class="mb-3">
+					<p class="fs-5 fw-bold d-inline">성별</p><span class="text-danger d-inline ml-1">*</span>
+				</div>
+				<div class="pl-3">
 				<div class="form-check">
-					<input class="form-check-input" type="checkbox" value="female" name="female">
+					<input class="form-check-input" type="checkbox" value="F" name="sex[]" <c:if test="${fn:contains(eac.sexs, 'F')}">checked</c:if>>
 					<label class="form-check-label" for="flexCheckDefault">
 						암컷
 					</label>
 				</div>
 				<div class="form-check">
-					<input class="form-check-input" type="checkbox" value="male" name="male">
+					<input class="form-check-input" type="checkbox" value="M" name="sex[]" <c:if test="${fn:contains(eac.sexs, 'M')}">checked</c:if>>
 					<label class="form-check-label" for="flexCheckDefault">
 						수컷
 					</label>
 				</div>
 				<div class="form-check">
-					<input class="form-check-input" type="checkbox" value="sex_etc" name="sex_etc">
+					<input class="form-check-input" type="checkbox" value="Q" name="sex[]" <c:if test="${fn:contains(eac.sexs, 'Q')}">checked</c:if>>
 					<label class="form-check-label" for="flexCheckDefault">
 						미상
 					</label>
 				</div>
+				</div>
+			</div>
+			
+			<%-- 나이 --%>
+			<div class="mb-5">
+				<p class="fs-5 fw-bold m-0">나이</p>
+				<p><small>고르지 않을 경우 모든 나이를 포함하게 됩니다.</small></p>
+				<select name="age[]" class="selectpicker" data-size="6" multiple>
+					<c:forEach var="year" begin="${nowYear-15}" end="${nowYear}">
+						<option value="${nowYear - year + nowYear-15}" <c:if test="${fn:contains(eac.ages, nowYear - year + nowYear-15)}">selected</c:if>>${nowYear - year + nowYear-15}년생</option>
+					</c:forEach>
+				</select>
 			</div>
 			
 			<%-- 중성화 여부 --%>
 			<div class="mb-5">
-				<p class="fs-5">중성화 여부</p>
-				<div class="form-check">
-					<input class="form-check-input" type="checkbox" value="neuter_yes" name="neuter_yes">
-					<label class="form-check-label" for="flexCheckDefault">
-						중성화 함
-					</label>
+				<div class="mb-3">
+					<p class="fs-5 fw-bold  d-inline">중성화 여부</p><span class="text-danger d-inline ml-1">*</span>
 				</div>
-				<div class="form-check">
-					<input class="form-check-input" type="checkbox" value="neuter_no" name="neuter_no">
-					<label class="form-check-label" for="flexCheckDefault">
-						중성화 안함
-					</label>
-				</div>
-				<div class="form-check">
-					<input class="form-check-input" type="checkbox" value="neuter_etc" name="neuter_etc">
-					<label class="form-check-label" for="flexCheckDefault">
-						미상
-					</label>
+				<div class="pl-3">
+					<div class="form-check">
+						<input class="form-check-input" type="checkbox" value="Y" name="neutering[]" <c:if test="${fn:contains(eac.neuterings, 'Y')}">checked</c:if>>
+						<label class="form-check-label" for="flexCheckDefault">
+							중성화 함
+						</label>
+					</div>
+					<div class="form-check">
+						<input class="form-check-input" type="checkbox" value="N" name="neutering[]" <c:if test="${fn:contains(eac.neuterings, 'N')}">checked</c:if>>
+						<label class="form-check-label" for="flexCheckDefault">
+							중성화 안함
+						</label>
+					</div>
+					<div class="form-check">
+						<input class="form-check-input" type="checkbox" value="U" name="neutering[]" <c:if test="${fn:contains(eac.neuterings, 'U')}">checked</c:if>>
+						<label class="form-check-label" for="flexCheckDefault">
+							미상
+						</label>
+					</div>
 				</div>
 			</div>
 			
@@ -136,7 +188,8 @@
 			</div>
 			
 			<div class="mb-5">
-				<p class="fs-5">알림받을 보호소 선택</p>
+				<p class="fs-5 fw-bold m-0">알림받을 보호소 선택</p>
+				<p><small>고르지 않을 경우 모든 보호소를 포함하게 됩니다.</small></p>
 				<%-- 지도 필터 --%>
 				<div class="row">
 					<div class="col">
@@ -183,27 +236,61 @@
 	<%-- footer 영역 --%>
 	<jsp:include page="../layout/footer.jsp"/>
 	<script>
+	
+		// 품종 리스트 태그 추가
+		function getSelectAnimalBreedList(kind) {
+			$.ajax({
+				url: '/getSelectAnimalBreedList',
+				type: 'post',
+				dataType: 'html',
+				data: {
+					kind: kind
+				},
+				success: function(data) {
+			 		var breedList = $(data).children("#breed_list>*");
+				 	$('#'+kind+'_breed_list').html(breedList);
+				 	$('[name="'+kind+'_breed[]"]').selectpicker();
+				}
+			});
+		} 
+		
+		
 		
 		$('button[type="submit"]').on('click', function() {
 			
-			<%-- 보호소 주소 list 보내기 --%>
-			resultAddressList.forEach(function(shelterAddress) {
-				$('form').append('<input type="hidden" name="shelterAddress[]" value="' + shelterAddress + '">')
+			<%-- 보호소 주소 list form에 동적으로 추가해서 서버로 보내기--%>
+			resultShelterId.forEach(function(shelterId) {
+				$('form').append('<input type="hidden" name="shelter_id[]" value="' + shelterId + '">')
 			});
 			
 			<%-- 그룹 체크박스 required --%>
-			var cbx_group = $("input:checkbox[name='kind[]']");
-			cbx_group.prop('required', true);
-			if(cbx_group.is(":checked")){
-			  cbx_group.prop('required', false);
+			<%-- 동물 종류 --%>
+			var kind_cbx_group = $("input:checkbox[name='kind[]']");
+			kind_cbx_group.prop('required', true);
+			if(kind_cbx_group.is(":checked")){
+				kind_cbx_group.prop('required', false);
+			}
+			
+			<%-- 성별 --%>
+			var sex_cbx_group = $("input:checkbox[name='sex[]']");
+			sex_cbx_group.prop('required', true);
+			if(sex_cbx_group.is(":checked")){
+				sex_cbx_group.prop('required', false);
+			}
+			
+			<%-- 중성화 여부 --%>
+			var neutering_cbx_group = $("input:checkbox[name='neutering[]']");
+			neutering_cbx_group.prop('required', true);
+			if(neutering_cbx_group.is(":checked")){
+				neutering_cbx_group.prop('required', false);
 			}
 			
 			//$('input[name="shelterAddressList"]').val(resultAddressList.join(", "));
 		});
 		
 		<%-- 강아지 체크 이벤트 --%>
-		$('input[name="kind[]"]input[value="dog"]').change(function() {
-			var chx_kind_dog = $('input[name="kind[]"]input[value="dog"]');
+		$('input[name="kind[]"]input[value="개"]').change(function() {
+			var chx_kind_dog = $('input[name="kind[]"]input[value="개"]');
 			if(chx_kind_dog.is(":checked")) {
 				<%-- 강아지 품종 select 우측에 표시 --%>
 				getSelectAnimalBreedList('dog');
@@ -217,8 +304,8 @@
 		});
 		
 		<%-- 고양이 체크 이벤트 --%>
-		$('input[name="kind[]"]input[value="cat"]').change(function() {
-			var chx_kind_cat = $('input[name="kind[]"]input[value="cat"]');
+		$('input[name="kind[]"]input[value="고양이"]').change(function() {
+			var chx_kind_cat = $('input[name="kind[]"]input[value="고양이"]');
 			if(chx_kind_cat.is(":checked")) {
 				<%-- 고양이 품종 select 우측에 표시 --%>
 				getSelectAnimalBreedList('cat');
@@ -232,8 +319,8 @@
 		});
 		
 		<%-- 기타 체크 이벤트 --%>
-		$('input[name="kind[]"]input[value="etc"]').change(function() {
-			var chx_kind_etc = $('input[name="kind[]"]input[value="etc"]');
+		$('input[name="kind[]"]input[value="기타축종"]').change(function() {
+			var chx_kind_etc = $('input[name="kind[]"]input[value="기타축종"]');
 			if(chx_kind_etc.is(":checked")) {
 				<%-- 기타 품종 select 우측에 표시 --%>
 				getSelectAnimalBreedList('etc');
@@ -246,22 +333,10 @@
 			}
 		});
 		
-		function getSelectAnimalBreedList(kind) {
-			$.ajax({
-				url: '/getSelectAnimalBreedList',
-				type: 'post',
-				dataType: 'html',
-				data: {
-					kind: kind
-				},
-				success: function(data) {
-			 		var breedList = $(data).children("#breed_list>*");
-				 	$('#'+kind+'_breed_list').html(breedList);
-				 	$('[name="'+kind+'_breed_list"]').selectpicker();
-				}
-			});
-		} 
 		
+		$(function() {
+	    	setToCurrentPosition();
+		});
 	
 		<%-- kakao map script section --%>
 		var container = document.getElementById('kakaoMap'); //지도를 담을 영역의 DOM 레퍼런스
@@ -284,7 +359,14 @@
 	    
 	    var radius;
 	    
-	    var resultAddressList = [];
+	    var resultShelterId = [];
+	    
+	    // 보호소 주소가 있다면 설정
+	    <c:if test="${eac.shelter_ids != null}">
+	    	<c:forEach var="shelter_id" items="${fn:split(eac.shelter_ids, ',')}">
+	    		resultShelterId.push(${shelter_id});
+	    	</c:forEach>
+	    </c:if>
 	    
 	    var markers = [];
 	    var infowindows = [];
@@ -292,12 +374,10 @@
 	    var allShelterCount;
 	    var nowShelterCount;
 	    
-	    $(function() {
-	    	setToCurrentPosition();
-		});
+	    
 	    
 	    function startSearch() {
-        	resultAddressList = [];
+	    	resultShelterId = [];
         	
         	for (var i = 0; i < markers.length; i++) {
                 markers[i].setMap(null);
@@ -368,8 +448,8 @@
         			nowShelterCount = 0;
         			console.log("모든 쉘터 개수" + data.length);
         			$(data).each(function() {
-        				//console.log("주소 검색 시작 : "+this.care_addr);
-        				getAddressPositionAndDisplayMarker(this.care_addr, this.care_nm);
+        				console.log("주소 검색 시작 : "+this.care_addr);
+        				getAddressPositionAndDisplayMarker(this);
    					});
         		}
         	});
@@ -415,23 +495,22 @@
         }
         
         // 주소로 위치값 구하는 함수
-        function getAddressPositionAndDisplayMarker(address, name) {
+        function getAddressPositionAndDisplayMarker(shelter) {
         	// 주소-좌표 변환 객체를 생성합니다
         	var geocoder = new kakao.maps.services.Geocoder();
         	
         	// 주소로 좌표를 검색합니다
-        	geocoder.addressSearch(address, function(result, status) {
+        	geocoder.addressSearch(shelter.care_addr, function(result, status) {
         		nowShelterCount = nowShelterCount + 1;
     	    	// 정상적으로 검색이 완료됐으면 
     	     	if (status === kakao.maps.services.Status.OK) {
         	        var targetPosition = new kakao.maps.LatLng(result[0].y, result[0].x);
         	        
         	        if(getDistance(nowPosition, targetPosition) <= radius) {
-        	        	console.log(address);
-						resultAddressList.push(address);
+						resultShelterId.push(shelter.aas_id);
 
     					// 마커 생성
-    					displayMarker(targetPosition, name);
+    					displayMarker(targetPosition, shelter.care_nm);
 					}
         	    }
         	});

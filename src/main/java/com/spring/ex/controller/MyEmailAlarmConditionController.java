@@ -1,5 +1,7 @@
 package com.spring.ex.controller;
 
+import java.util.Calendar;
+
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
@@ -32,15 +34,14 @@ public class MyEmailAlarmConditionController {
 		EmailAlarmConditionDTO eac = emailAlarmConditionService.getEmailAlarmCondition(memberDTO.getM_id());
 		System.out.println(eac);
 		
-		model.addAttribute("emailAlarmCondition", eac);
-		model.addAttribute("dogBreedList", shareCenterService.getAnimalBreedList("개"));
-		model.addAttribute("catBreedList", shareCenterService.getAnimalBreedList("고양이"));
-		model.addAttribute("etcBreedList", shareCenterService.getAnimalBreedList("기타축종"));
+		model.addAttribute("eac", eac);
+		model.addAttribute("shareCenterService", shareCenterService);
+		model.addAttribute("nowYear", Calendar.getInstance().get(Calendar.YEAR));
 		
 		return "mypage/manageMyEmailAlarmCondition";
 	}
 	
-	// 이메일 알람 조건 설정 수정
+	// 이메일 알람 조건 저장
 	@RequestMapping("mypage/updateMyEmailAlarmCondition")
 	public String updateMyEmailAlarmCondition(HttpServletRequest request, Model model) {
 		MemberDTO memberDTO = (MemberDTO)request.getSession().getAttribute("member");
@@ -48,41 +49,71 @@ public class MyEmailAlarmConditionController {
 			System.out.println("로그인이 필요합니다.");
 		}
 		
-		String[] _kinds = request.getParameterValues("kinds");
-		String[] _breeds = request.getParameterValues("breeds"); 
-		String[] _ages = request.getParameterValues("ages");
-		String[] _sex = request.getParameterValues("sex");
-		String[] _neuter_yn = request.getParameterValues("neuter_yn");
-		String[] _ass_idList = request.getParameterValues("aas_idList"); // 보호소 id
+		String dog_breeds = null;
+		String cat_breeds = null;
+		String etc_breeds = null;
+		String ages = null;
+		String sexs = null;
+		String neuterings = null;
+		String shelter_ids = null;
 		
-		String kinds = String.join(",", _kinds);
-		String breeds = String.join(",", _breeds);
-		String ages = String.join(",", _ages);
-		String sex = String.join(",", _sex);
-		String neuter_yn = String.join(",", _neuter_yn);
-		String ass_idList = String.join(",", _ass_idList);
+		String[] _kinds = request.getParameterValues("kind[]");
+		String[] _dog_breeds = request.getParameterValues("dog_breed[]");
+		String[] _cat_breeds = request.getParameterValues("cat_breed[]");
+		String[] _etc_breeds = request.getParameterValues("etc_breed[]");
+		String[] _sexs = request.getParameterValues("sex[]");
+		String[] _ages = request.getParameterValues("age[]");
+		String[] _neuterings = request.getParameterValues("neutering[]");
+		String[] _shelter_ids = request.getParameterValues("shelter_id[]"); // 보호소 id
+		
+		String kinds = String.join(",", _kinds); 
+		if(_dog_breeds != null) dog_breeds = String.join(",", _dog_breeds);
+		if(_cat_breeds != null) cat_breeds = String.join(",", _cat_breeds);
+		if(_etc_breeds != null) etc_breeds = String.join(",", _etc_breeds);
+		if(_ages != null) ages = String.join(",", _ages);
+		if(_sexs != null) sexs = String.join(",", _sexs);
+		if(_neuterings != null) neuterings = String.join(",", _neuterings);
+		if(_shelter_ids != null) shelter_ids = String.join(",", _shelter_ids);
+		
+		System.out.println("kinds : " + kinds);
+		System.out.println("dog_breeds : " + dog_breeds);
+		System.out.println("cat_breeds : " + cat_breeds);
+		System.out.println("etc_breeds : " + etc_breeds);
+		System.out.println("ages : " + ages);
+		System.out.println("sexs : " + sexs);
+		System.out.println("neuterings : " + neuterings);
+		System.out.println("shelter_ids : " + shelter_ids);
 		
 		EmailAlarmConditionDTO eac = emailAlarmConditionService.getEmailAlarmCondition(memberDTO.getM_id());
-		eac.setKind(kinds);
-		eac.setBreed(breeds);
-		eac.setAge(ages);
-		eac.setSex(sex);
-		eac.setNeuter_yn(neuter_yn);
-		eac.setRegion(ass_idList);
 		if(eac == null) {
+			eac = new EmailAlarmConditionDTO();
 			eac.setM_id(memberDTO.getM_id());
+			eac.setKinds(kinds);
+			eac.setDog_breeds(dog_breeds);
+			eac.setCat_breeds(cat_breeds);
+			eac.setEtc_breeds(etc_breeds);
+			eac.setAges(ages);
+			eac.setSexs(sexs);
+			eac.setNeuterings(neuterings);
+			eac.setShelter_ids(shelter_ids);
 			emailAlarmConditionService.insertEmailAlarmCondition(eac);
 		}
 		else {
+			eac.setKinds(kinds);
+			eac.setDog_breeds(dog_breeds);
+			eac.setCat_breeds(cat_breeds);
+			eac.setEtc_breeds(etc_breeds);
+			eac.setAges(ages);
+			eac.setSexs(sexs);
+			eac.setNeuterings(neuterings);
+			eac.setShelter_ids(shelter_ids);
 			emailAlarmConditionService.updateEmailAlarmCondition(eac);
 		}
 		System.out.println(eac);
 		
 		model.addAttribute("emailAlarmCondition", eac);
-		// abandoned_animal_info에서 kind_cd distinct로 가져온것 select option으로 만들기
-		// model.addAttribute("breedList", shareCenterService.getAnimalBreedList());
 		
-		return "mypage/manageMyEmailAlarmCondition";
+		return "redirect:/mypage";
 	}
 	
 	@RequestMapping("/getSelectAnimalBreedList")

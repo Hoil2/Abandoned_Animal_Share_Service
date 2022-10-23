@@ -25,7 +25,7 @@
 	<%-- main 영역 --%>
 	<div class="container">
 		<a href="mypage/manageMyPet">내 반려동물 관리</a><br/>
-		<a href="mypage/manageMyGoodAnimalEmailAlarm">좋아요한 알림 설정 관리</a>
+		<a href="mypage/manageMyGoodAnimalEmailAlarm">좋아요한 알림 설정 관리</a><br>
 		<a href="mypage/manageMyEmailAlarmCondition">유기동물 등록 시 알림 설정 관리</a>
 	</div>
 	<%-- main 끝 --%>

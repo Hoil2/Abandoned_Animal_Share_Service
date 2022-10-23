@@ -12,18 +12,20 @@
 	<!-- 이메일 알람 조건 추가 -->
 	<insert id="insertEmailAlarmCondition">
 		INSERT INTO email_alarm_condition 
-		VALUES(#{m_id}, #{kind}, #{breed}, #{age}, #{sex}, #{neuter_yn}, #{region})
+		VALUES(#{m_id}, #{kinds}, #{dog_breeds}, #{cat_breeds}, #{etc_breeds}, #{ages}, #{sexs}, #{neuterings}, #{shelter_ids})
 	</insert>
 	
 	<!-- 이메일 알람 조건 변경 -->
 	<update id="updateEmailAlarmCondition">
 		UPDATE email_alarm_condition 
-		SET kind = #{kind},
-			breed = #{breed},
-			age = #{age}, 
-			sex = #{sex}, 
-			neuter_yn = #{neuter_yn},
-			region = #{region}
+		SET kinds = #{kinds},
+			dog_breeds = #{dog_breeds},
+			cat_breeds = #{cat_breeds},
+			etc_breeds = #{etc_breeds},
+			ages = #{ages}, 
+			sexs = #{sexs}, 
+			neuterings = #{neuterings},
+			shelter_ids = #{shelter_ids}
 		WHERE m_id = #{m_id}
 	</update>
 	
