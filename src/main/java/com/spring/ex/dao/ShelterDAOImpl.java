@@ -34,4 +34,9 @@ public class ShelterDAOImpl implements ShelterDAO {
 		return sqlSession.selectOne(shareCenterNamespace + ".getShareCenterBoardViewTotalCountByAddress", map);
 	}
 
+	@Override
+	public ShelterDTO selectShelterByAas_id(int aas_id) {
+		return sqlSession.selectOne(shelterNamespace + ".selectShelterByAas_id", aas_id);
+	}
+
 }

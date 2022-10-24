@@ -12,4 +12,5 @@ public interface ShelterDAO {
 	public List<ShelterDTO> selectAllShelterList();
 	public List<HashMap> getShareCenterBoardPageByAddress(HashMap<String, Object> map);
 	public int getShareCenterBoardViewTotalCountByAddress(HashMap<String, Object> map);
+	public ShelterDTO selectShelterByAas_id(int aas_id);
 }

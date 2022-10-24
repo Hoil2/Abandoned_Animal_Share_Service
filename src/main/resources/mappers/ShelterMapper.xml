@@ -7,4 +7,10 @@
 	<select id="selectAllShelterList" resultType="ShelterDTO">
 		SELECT * FROM abandoned_animal_shelter
 	</select>
+	
+	<!-- 키값으로 보호소 가져오기 -->
+	<select id="selectShelterByAas_id" resultType="ShelterDTO">
+		SELECT * FROM abandoned_animal_shelter
+		WHERE aas_id = #{aas_id}
+	</select>
 </mapper>

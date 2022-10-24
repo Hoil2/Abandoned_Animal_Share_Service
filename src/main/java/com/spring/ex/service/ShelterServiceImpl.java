@@ -31,4 +31,9 @@ public class ShelterServiceImpl implements ShelterService {
 		return shelterDAO.getShareCenterBoardViewTotalCountByAddress(map);
 	}
 
+	@Override
+	public ShelterDTO getShelterByAas_id(int aas_id) {
+		return shelterDAO.selectShelterByAas_id(aas_id);
+	}
+
 }

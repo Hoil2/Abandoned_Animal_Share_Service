@@ -1,6 +1,8 @@
 package com.spring.ex.controller;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -8,11 +10,14 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.spring.ex.dto.EmailAlarmConditionDTO;
 import com.spring.ex.dto.MemberDTO;
+import com.spring.ex.dto.ShelterDTO;
 import com.spring.ex.service.EmailAlarmConditionService;
 import com.spring.ex.service.ShareCenterService;
+import com.spring.ex.service.ShelterService;
 
 @Controller
 public class MyEmailAlarmConditionController {
@@ -22,6 +27,9 @@ public class MyEmailAlarmConditionController {
 	
 	@Inject
 	private ShareCenterService shareCenterService;
+	
+	@Inject
+	private ShelterService shelterService;
 	
 	// 이메일 알람 조건 설정 페이지
 	@RequestMapping("mypage/manageMyEmailAlarmCondition")
@@ -133,5 +141,25 @@ public class MyEmailAlarmConditionController {
 		model.addAttribute("animalBreedList", shareCenterService.getAnimalBreedList(engToKR));
 		model.addAttribute("kind", kind);
 		return "mypage/module/breedSelectList";
+	}
+	
+	// 회원이 선택한 보호소의 아이디값들을 쉘터DTO 리스트로 바꿔서 전송하는 함수
+	@ResponseBody
+	@RequestMapping("/getShelterOfEmailConditionByMember")
+	public List<ShelterDTO> getShelterOfEmailConditionByMember(HttpServletRequest request) {
+		MemberDTO member = (MemberDTO)request.getSession().getAttribute("member");
+		EmailAlarmConditionDTO eac = emailAlarmConditionService.getEmailAlarmCondition(member.getM_id());
+		String[] aas_ids = eac.getShelter_ids().split(",");
+		List<ShelterDTO> shelterList = new ArrayList<ShelterDTO>();
+		ShelterDTO shelter1 = shelterService.getShelterByAas_id(126);
+		System.out.println(shelter1);
+		for(String aas_id : aas_ids) {
+			System.out.println(aas_id);
+			ShelterDTO shelter = shelterService.getShelterByAas_id(Integer.parseInt(aas_id));
+			shelterList.add(shelter);
+			System.out.println(shelter);
+		}
+		
+		return shelterList;
 	}
 }

@@ -236,7 +236,7 @@
 	<%-- footer 영역 --%>
 	<jsp:include page="../layout/footer.jsp"/>
 	<script>
-	
+	 	var resultShelterId = [];
 		// 품종 리스트 태그 추가
 		function getSelectAnimalBreedList(kind) {
 			$.ajax({
@@ -252,9 +252,7 @@
 				 	$('[name="'+kind+'_breed[]"]').selectpicker();
 				}
 			});
-		} 
-		
-		
+		}
 		
 		$('button[type="submit"]').on('click', function() {
 			
@@ -336,6 +334,39 @@
 		
 		$(function() {
 	    	setToCurrentPosition();
+	    	
+	    	// 회원이 선택한 보호소의 아이디값들을 쉘터DTO 리스트로 바꿔서 받아옴
+	    	$.ajax({
+	    		url: "/getShelterOfEmailConditionByMember",
+	    		type: "post",
+	    		success: function(shelterList) {
+    				// 주소-좌표 변환 객체를 생성합니다
+	    			var geocoder = new kakao.maps.services.Geocoder();
+    				
+	    			// 지도를 재설정할 범위정보를 가지고 있을 LatLngBounds 객체를 생성합니다
+    	        	var bounds = new kakao.maps.LatLngBounds(); 
+	    			
+	    			$(shelterList).each(function() {
+	    				console.log(this.care_nm);
+	    	        	// 주소로 좌표를 검색합니다
+	    	        	geocoder.addressSearch(this.care_addr, function(result, status) {
+	    	        		nowShelterCount = nowShelterCount + 1;
+	    	    	    	// 정상적으로 검색이 완료됐으면 
+	    	    	     	if (status === kakao.maps.services.Status.OK) {
+	    	        	        var targetPosition = new kakao.maps.LatLng(result[0].y, result[0].x);
+    							resultShelterId.push(this.aas_id);
+    							
+    	    					// 마커 생성
+    	    					displayMarker(targetPosition, this.care_nm);
+    	    					
+    	    					// 중심 좌표로 카메라 이동
+    							bounds.extend(targetPosition);
+    	    					map.setBounds(bounds);
+	    	        	    }
+	    	        	});
+	    			});
+	    		}
+	    	});
 		});
 	
 		<%-- kakao map script section --%>
@@ -359,14 +390,13 @@
 	    
 	    var radius;
 	    
-	    var resultShelterId = [];
-	    
 	    // 보호소 주소가 있다면 설정
-	    <c:if test="${eac.shelter_ids != null}">
+	    /* <c:if test="${eac.shelter_ids != null}">
 	    	<c:forEach var="shelter_id" items="${fn:split(eac.shelter_ids, ',')}">
 	    		resultShelterId.push(${shelter_id});
 	    	</c:forEach>
-	    </c:if>
+	    </c:if> */
+	    
 	    
 	    var markers = [];
 	    var infowindows = [];
