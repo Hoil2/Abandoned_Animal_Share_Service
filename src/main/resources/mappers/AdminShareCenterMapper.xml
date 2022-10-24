@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spring.ex.AdminShareCenterMapper">
+
+	<!-- 오늘 공고된 유기동물 수 -->
+	<select id="getTodayRegistrationCount" resultType="int">
+		SELECT COUNT(*)
+		FROM abandoned_animal_info
+		WHERE notice_sdt = CURDATE()
+	</select>
+
+	<!--  3일 이내 종료되는 유기동물 수-->
+	<select id="getAnimalDeadlineCount" resultType="int">
+		SELECT COUNT(*)
+		FROM abandoned_animal_info
+		WHERE process_state = "보호중" AND notice_edt BETWEEN CURDATE()-3 AND CURDATE()
+	</select>
+	
+	<!-- 보호소 수 -->
+	<select id="getShelterCount" resultType="int">
+		SELECT COUNT(*)
+		FROM abandoned_animal_shelter
+	</select>
+	
+	<!--api 갱신 일, 시간-->
+	<select id="getApiRenewalDate" resultType="Object">
+		SELECT MAX(redate)
+		FROM abandoned_animal_info
+		where redate
+	</select>
+	<!-- 보호중인 유기동물 수 -->
+	<select id="getAnimalProtectCount" resultType="int">
+		SELECT COUNT(*)
+		FROM abandoned_animal_info
+		WHERE process_state = "보호중"
+	</select>
+	
+	<!-- 2주내 입양된 유기동물 수 -->
+	<select id="getAnimalAdoptionCount" resultType="int">
+		SELECT COUNT(*)
+		FROM abandoned_animal_info
+		WHERE process_state LIKE "%입양%" AND notice_edt BETWEEN CURDATE()-14 AND CURDATE()
+	</select>
+	
+	<!--  2주내 반환된 유기동물 수 -->
+	<select id="getAnimalReturnCount" resultType="int">
+		SELECT COUNT(*)
+		FROM abandoned_animal_info
+		WHERE process_state LIKE "%반환%" AND notice_edt BETWEEN CURDATE()-14 AND CURDATE()
+	</select>
+	
+	<!--  2주내 사망한 유기동물 수 -->
+	<select id="getAnimalDeathCount" resultType="int">
+		SELECT COUNT(*)
+		FROM abandoned_animal_info
+		WHERE process_state LIKE "%사%" AND notice_edt BETWEEN CURDATE()-14 AND CURDATE()
+	</select>
+	
+</mapper>

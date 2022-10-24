@@ -33,8 +33,8 @@
 											<div class="text-xs font-weight-bold text-warning text-uppercase mb-1">오늘 등록된 유기동물 수</div>
 											<div class="h5 mb-0 font-weight-bold text-gray-800">
 												<c:choose>
-													<c:when test="${todayAbandonedAnimalTotalCount ne null}">
-														<div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">${todayAbandonedAnimalTotalCount } 마리</div>
+													<c:when test="${TodayRegistrationCount ne null}">
+														<div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">${TodayRegistrationCount} 마리</div>
 													</c:when>
 													<c:otherwise>
 														<font size="2px;">오늘 등록된 유기동물이 없습니다.</font> 
@@ -54,10 +54,10 @@
 								<div class="card-body">
 									<div class="row no-gutters align-items-center">
 										<div class="col mr-2">
-										<div class="text-xs font-weight-bold text-info text-uppercase mb-1">공고 종료 1일내 동물 수</div>
+										<div class="text-xs font-weight-bold text-info text-uppercase mb-1">공고 종료 3일내 동물 수</div>
 											<div class="row no-gutters align-items-center">
 												<div class="col-auto">
-													<div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">${todayRegisterMemberTotalCount }명</div>
+													<div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">${AnimalDeadlineCount}마리</div>
 												</div>
 											</div>
 										</div>
@@ -74,7 +74,7 @@
 									<div class="row no-gutters align-items-center">
 										<div class="col mr-2">
 											<div class="text-xs font-weight-bold text-success text-uppercase mb-1">등록 보호소 수</div>
-											<div class="h5 mb-0 font-weight-bold text-gray-800">${todayBoardWriteTotalCount } 개</div>
+											<div class="h5 mb-0 font-weight-bold text-gray-800">${ShelterCount} 개</div>
 										</div>
 										<div class="col-auto">
 											<i class="fas fa-comments fa-2x text-gray-300"></i>
@@ -89,7 +89,7 @@
 									<div class="row no-gutters align-items-center">
 										<div class="col mr-2">
 											<div class="text-xs font-weight-bold text-primary text-uppercase mb-1">API 갱신일</div>
-											<div class="h5 mb-0 font-weight-bold text-gray-800">${todayProtectAbandonedAnimalTotalCount} 건 </div>
+											<div class="h5 mb-0 font-weight-bold text-gray-800">${ApiRenewalDate} </div>
 										</div>
 										<div class="col-auto">
 											<i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -110,11 +110,11 @@
 											<div class="text-xs font-weight-bold text-warning text-uppercase mb-1">보호중</div>
 											<div class="h5 mb-0 font-weight-bold text-gray-800">
 												<c:choose>
-													<c:when test="${todayAbandonedAnimalTotalCount ne null}">
-														<div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">${todayAbandonedAnimalTotalCount } 마리</div>
+													<c:when test="${AnimalProtectCount ne null}">
+														<div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">${AnimalProtectCount} 마리</div>
 													</c:when>
 													<c:otherwise>
-														<font size="2px;">오늘 등록된 유기동물이 없습니다.</font> 
+														<font size="2px;">보호중인 유기동물이 없습니다.</font> 
 													</c:otherwise>
 												</c:choose>
 											</div>
@@ -131,10 +131,10 @@
 								<div class="card-body">
 									<div class="row no-gutters align-items-center">
 										<div class="col mr-2">
-										<div class="text-xs font-weight-bold text-info text-uppercase mb-1">입양</div>
+										<div class="text-xs font-weight-bold text-info text-uppercase mb-1">입양(2주 내)</div>
 											<div class="row no-gutters align-items-center">
 												<div class="col-auto">
-													<div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">${todayRegisterMemberTotalCount } 건</div>
+													<div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">${AnimalAdoptionCount} 건</div>
 												</div>
 											</div>
 										</div>
@@ -150,8 +150,8 @@
 								<div class="card-body">
 									<div class="row no-gutters align-items-center">
 										<div class="col mr-2">
-											<div class="text-xs font-weight-bold text-success text-uppercase mb-1">반환</div>
-											<div class="h5 mb-0 font-weight-bold text-gray-800">${todayBoardWriteTotalCount } 건</div>
+											<div class="text-xs font-weight-bold text-success text-uppercase mb-1">반환(2주 내)</div>
+											<div class="h5 mb-0 font-weight-bold text-gray-800">${AnimalReturnCount} 건</div>
 										</div>
 										<div class="col-auto">
 											<i class="fas fa-comments fa-2x text-gray-300"></i>
@@ -165,8 +165,8 @@
 								<div class="card-body">
 									<div class="row no-gutters align-items-center">
 										<div class="col mr-2">
-											<div class="text-xs font-weight-bold text-primary text-uppercase mb-1">무지개다리</div>
-											<div class="h5 mb-0 font-weight-bold text-gray-800">${todayProtectAbandonedAnimalTotalCount} 건 </div>
+											<div class="text-xs font-weight-bold text-primary text-uppercase mb-1">무지개다리(2주 내)</div>
+											<div class="h5 mb-0 font-weight-bold text-gray-800">${AnimalDeathCount} 건 </div>
 										</div>
 										<div class="col-auto">
 											<i class="fas fa-calendar fa-2x text-gray-300"></i>
