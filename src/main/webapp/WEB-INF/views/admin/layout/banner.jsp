@@ -41,19 +41,19 @@
 		<div class="sidebar-heading">커뮤니티 관리</div>
 	</li>
 	<li class="nav-item">
-		<a class="nav-link" href="order">
+		<a class="nav-link" href="/admin/dictionary">
 			<i class="fas fa-fw fa-table"></i>
 			<span>지식백과</span>
 		</a>
 	</li>
 	<li class="nav-item">
-		<a class="nav-link" href="order">
+		<a class="nav-link" href="/admin/daily">
 			<i class="fas fa-fw fa-table"></i>
 			<span>일상 공유</span>
 		</a>
 	</li>
 	<li class="nav-item">
-		<a class="nav-link" href="order">
+		<a class="nav-link" href="/admin/info">
 			<i class="fas fa-fw fa-table"></i>
 			<span>정보 공유</span>
 		</a>
