@@ -332,42 +332,7 @@
 		});
 		
 		
-		$(function() {
-	    	setToCurrentPosition();
-	    	
-	    	// 회원이 선택한 보호소의 아이디값들을 쉘터DTO 리스트로 바꿔서 받아옴
-	    	$.ajax({
-	    		url: "/getShelterOfEmailConditionByMember",
-	    		type: "post",
-	    		success: function(shelterList) {
-    				// 주소-좌표 변환 객체를 생성합니다
-	    			var geocoder = new kakao.maps.services.Geocoder();
-    				
-	    			// 지도를 재설정할 범위정보를 가지고 있을 LatLngBounds 객체를 생성합니다
-    	        	var bounds = new kakao.maps.LatLngBounds(); 
-	    			
-	    			$(shelterList).each(function() {
-	    				console.log(this.care_nm);
-	    	        	// 주소로 좌표를 검색합니다
-	    	        	geocoder.addressSearch(this.care_addr, function(result, status) {
-	    	        		nowShelterCount = nowShelterCount + 1;
-	    	    	    	// 정상적으로 검색이 완료됐으면 
-	    	    	     	if (status === kakao.maps.services.Status.OK) {
-	    	        	        var targetPosition = new kakao.maps.LatLng(result[0].y, result[0].x);
-    							resultShelterId.push(this.aas_id);
-    							
-    	    					// 마커 생성
-    	    					displayMarker(targetPosition, this.care_nm);
-    	    					
-    	    					// 중심 좌표로 카메라 이동
-    							bounds.extend(targetPosition);
-    	    					map.setBounds(bounds);
-	    	        	    }
-	    	        	});
-	    			});
-	    		}
-	    	});
-		});
+		
 	
 		<%-- kakao map script section --%>
 		var container = document.getElementById('kakaoMap'); //지도를 담을 영역의 DOM 레퍼런스
@@ -567,9 +532,12 @@
 			markers.push(marker);
 			
 			marker.setMap(map);
-			
+			var style = "";
+			if(message.length >= 9) {
+				style = "width:200px;";
+			}
 			// 마커를 클릭했을 때 마커 위에 표시할 인포윈도우를 생성합니다
-			var iwContent = '<div style="padding:5px;">' + message + '</div>'; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+			var iwContent = '<div style="padding:5px;'+style+'">' + message + '</div>'; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
 			
 			// 인포윈도우를 생성합니다
 			var infowindow = new kakao.maps.InfoWindow({
@@ -578,13 +546,49 @@
 			});
 			
 			infowindows.push(infowindow);
-			
+			infowindow.open(map, marker);  
 			// 마커에 클릭이벤트를 등록합니다
 			kakao.maps.event.addListener(marker, 'click', function() {
 				// 마커 위에 인포윈도우를 표시합니다
 		    	infowindow.open(map, marker);  
 			});
         }     
+     	
+        $(function() {
+	    	setToCurrentPosition();
+	    	 
+	    	// 회원이 선택한 보호소의 아이디값들을 쉘터DTO 리스트로 바꿔서 받아옴
+	    	$.ajax({
+	    		url: "/getShelterOfEmailConditionByMember",
+	    		type: "post",
+	    		success: function(shelterList) {
+    				// 주소-좌표 변환 객체를 생성합니다
+	    			var geocoder = new kakao.maps.services.Geocoder();
+    				
+	    			// 지도를 재설정할 범위정보를 가지고 있을 LatLngBounds 객체를 생성합니다
+    	        	var bounds = new kakao.maps.LatLngBounds(); 
+	    			
+	    			$(shelterList).each(function() {
+	    				var shelter = this;
+	    	        	// 주소로 좌표를 검색합니다
+	    	        	geocoder.addressSearch(this.care_addr, function(result, status) {
+	    	        		nowShelterCount = nowShelterCount + 1;
+	    	    	    	// 정상적으로 검색이 완료됐으면 
+	    	    	     	if (status === kakao.maps.services.Status.OK) {
+	    	        	        var targetPosition = new kakao.maps.LatLng(result[0].y, result[0].x);
+    							resultShelterId.push(shelter.aas_id);
+    	    					// 마커 생성
+    	    					displayMarker(targetPosition, shelter.care_nm);
+    	    					
+    	    					// 중심 좌표로 카메라 이동
+    							bounds.extend(targetPosition);
+    	    					map.setBounds(bounds);
+	    	        	    }
+	    	        	});
+	    			});
+	    		}
+	    	});
+		});
 	</script>
 </body>
 </html>
