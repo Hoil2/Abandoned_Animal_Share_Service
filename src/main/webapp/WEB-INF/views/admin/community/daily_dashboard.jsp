@@ -39,30 +39,23 @@
 							</div>
 						</div>
 					</div>
-					<div class="row">
-						<div class="col">
-							<form action="/admin/memberSearchList" role="form" method="GET" class="form-inline">
-								<select class="form-control" id="searchCategory" name="searchCategory">
-									<option value="course_title">강의명</option>
-									<option value="teacher_name">강사명</option>
-									<option value="teacher_email">이메일</option>
-								</select>
-								<div class="ml-3">
-									<input type="text" id="searchKeyword " name="searchKeyword" placeholder="검색어를 입력하세요." class="form-control" required="required">
-									<button type="submit" class="btn px-3 btn-primary">
-										<i class="fas fa-search"></i>
-									</button>
-								</div>
-							</form>
-						</div>
-							
-						<div class="col">
-							<div class="d-flex">
-								<div class="ml-auto">
-									<button class="btn btn-primary mr-2" data-toggle="modal" data-target="#AdminSignUp">강의 등록</button>
-									
-								</div>
-							</div>
+					<div class="row mb-3">
+						<form action="/admin/memberSearchList" role="form" method="GET" class="form-inline">
+							<select class="form-control ml-3" id="searchCategory" name="searchCategory">
+								<option value="post_title">제목</option>
+								<option value="post_content">내용</option>
+								<option value="writer_name">작성자명</option>
+								<option value="writer_name">반려동물ID</option>
+							</select>
+							<input class="form-control ml-3" type="text" id="searchKeyword " name="searchKeyword" placeholder="검색어를 입력하세요." class="form-control" required="required">
+							<button type="submit" class="btn px-3 btn-primary">
+								<i class="fas fa-search"></i>
+							</button>
+						</form>
+						
+						<div class="d-flex ml-auto">
+							<button class="btn btn-primary mr-2" data-toggle="modal" data-target="#post_submit">게시물 등록</button>
+							<button class="btn btn-danger mr-2" data-toggle="modal" data-target="#post_delete">게시물 삭제</button>
 						</div>
 					</div>
 					<div>
@@ -72,29 +65,27 @@
 									<th>
 										<input id="allCheck" type="checkbox" name="allCheck">
 									</th>
-									<th>강의NO</th>
-									<th>ori No</th>
-									<th>강의명</th>
-									<th>강사명</th>
-									<th>요청날짜</th>
+									<th>NO</th>
+									<th>반려동물ID</th>
+									<th>작성자명</th>
+									<th>게시물명</th>
+									<th>등록일</th>
+									<th>조회수</th>
 									<th></th>
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach var="cr" items="${courseRequestList}">
+								<c:forEach var="dcl" items="${dailyCommunityList}">
 									<tr>
 										<td>
-											<input name="rowCheck" type="checkbox" value="${cr.olr_no}">			
+											<input name="rowCheck" type="checkbox" value="${dcl.cb_id}">			
 										</td>
-										<td>${cr.oli_no}</td>
-										<td>${cr.origin_oli_no}</td>
-										<td><a href="">${cr.course_title}</a></td>
-										<td>${cr.teacher_name}</td>
-										<td>${cr.request_datetime}</td>
-										<td>
-											<input type="button" class="btn btn-info" value="승인" onclick="approvalCourseRequest(${cr.olr_no});">
-											<button type="button" class="btn btn-secondary" onclick="rejectCourseRequest(${cr.olr_no});">거절</button>
-										</td>
+										<td>${dcl.cb_id}</td>
+										<td><a href="">${dcl.desertion_no}</a></td>
+										<td><a href="">${dcl.name}</a></td>
+										<td><a href="">${dcl.title}</a></td>
+										<td>${dcl.reg_date}</td>
+										<td>${dcl.hit}</td>
 									</tr>
 								</c:forEach>
 							</tbody>
@@ -109,12 +100,12 @@
 							<c:choose>
 								<c:when test="${Paging.pageNo eq Paging.firstPageNo }">
 									<li class="page-item disabled">
-										<a class="page-link" href="memberList?page=${Paging.prevPageNo}">Previus</a>
+										<a class="page-link" href="/admin/daily?page=${Paging.prevPageNo}">Previus</a>
 									</li>
 								</c:when>
 								<c:otherwise>
 									<li class="page-item">
-										<a class="page-link" href="memberList?page=${Paging.prevPageNo}">Previus</a>
+										<a class="page-link" href="/admin/daily?page=${Paging.prevPageNo}">Previus</a>
 									</li>
 								</c:otherwise>
 							</c:choose>
@@ -123,12 +114,12 @@
 								<c:choose>
 									<c:when test="${i eq Paging.pageNo }">
 										<li class="page-item disabled">
-											<a class="page-link" href="memberList?page=${i}"><c:out value="${i }"/></a>
+											<a class="page-link" href="/admin/daily?page=${i}"><c:out value="${i }"/></a>
 										</li>
 									</c:when>
 									<c:otherwise>
 										<li class="page-item">
-											<a class="page-link" href="memberList?page=${i}"><c:out value="${i }"/></a>
+											<a class="page-link" href="/admin/daily?page=${i}"><c:out value="${i }"/></a>
 										</li>
 									</c:otherwise>
 								</c:choose>
@@ -137,12 +128,12 @@
 							<c:choose>
 								<c:when test="${Paging.pageNo eq Paging.finalPageNo }">
 									<li class="page-item disabled">
-										<a class="page-link" href="memberList?page=${Paging.nextPageNo}">Next</a>
+										<a class="page-link" href="/admin/daily?page=${Paging.nextPageNo}">Next</a>
 									</li>
 								</c:when>
 								<c:otherwise>
 									<li class="page-item">
-										<a class="page-link" href="memberList?page=${Paging.nextPageNo}">Next</a>
+										<a class="page-link" href="/admin/daily?page=${Paging.nextPageNo}">Next</a>
 									</li>
 								</c:otherwise>
 							</c:choose>
@@ -158,7 +149,10 @@
 	</div>
     
     <script>
-    
+		// 전체 체크박스 클릭 이벤트
+		$("#allCheck").click(function () {
+		    $("[name='rowCheck']").prop('checked', $(this).prop('checked'));
+		});
     </script>
 </body>
 </html>
