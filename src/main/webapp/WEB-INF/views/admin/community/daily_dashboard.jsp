@@ -70,8 +70,8 @@
 									<th>작성자명</th>
 									<th>게시물명</th>
 									<th>등록일</th>
-									<th>조회수</th>
-									<th></th>
+									<th>조회</th>
+									<th>좋아요</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -83,9 +83,10 @@
 										<td>${dcl.cb_id}</td>
 										<td><a href="">${dcl.desertion_no}</a></td>
 										<td><a href="">${dcl.name}</a></td>
-										<td><a href="">${dcl.title}</a></td>
+										<td><a href="/admin/daily/${dcl.cb_id}">${dcl.title}</a></td>
 										<td>${dcl.reg_date}</td>
 										<td>${dcl.hit}</td>
+										<td>${dcl.good}</td>
 									</tr>
 								</c:forEach>
 							</tbody>
