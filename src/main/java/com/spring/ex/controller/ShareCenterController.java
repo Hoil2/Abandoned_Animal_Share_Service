@@ -56,24 +56,24 @@ public class ShareCenterController {
 		//String searchArea = request.getParameter("searchArea");
 		String searchAlignment = request.getParameter("alignment");
 		
-		if(StringUtils.isEmpty(searchTheme) || searchTheme == null) {
+		if(StringUtils.hasText(searchTheme)) {
 			searchTheme = "allTheme";
 			session.setAttribute("searchTheme", "allTheme");
 		} else if(!StringUtils.isEmpty(searchTheme)){
 			session.setAttribute("searchTheme", searchTheme);
 		}
 		
-		if(StringUtils.isEmpty(searchArea) || searchArea == null) {
+		if(StringUtils.hasText(searchArea)) {
 			searchArea = "allArea";
 			session.setAttribute("searchArea", "allArea");
 		} else if(!StringUtils.isEmpty(searchArea)){
 			session.setAttribute("searchArea", searchArea);
 		}
 		
-		if(StringUtils.isEmpty(searchAlignment)) {
+		if(StringUtils.hasText(searchAlignment)) {
 			searchAlignment = "alignmentDay";
 			session.setAttribute("alignment", "alignmentDay");
-		} else if(!StringUtils.isEmpty(searchAlignment)){
+		} else if(!StringUtils.hasText(searchAlignment)){
 			session.setAttribute("alignment", searchAlignment);
 		}
 		

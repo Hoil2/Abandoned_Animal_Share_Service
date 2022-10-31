@@ -120,17 +120,9 @@
 		</foreach> 
 		ON DUPLICATE KEY UPDATE
 			desertion_no=values(desertion_no),
-			filename=values(filename), 
-			happen_dt=values(happen_dt), 
-			happen_place= values(happen_place), 
-			kind_cd=values(kind_cd), 
-			color_cd= values(color_cd), 
-			age=values(age), 
 			weight=values(weight), 
-			notice_no=values(notice_no), 
 			notice_sdt=values(notice_sdt), 
 			notice_edt=values(notice_edt), 
-			popfile=values(popfile), 
 			process_state=values(process_state), 
 			sex_cd=values(sex_cd), 
 			neuter_yn=values(neuter_yn), 

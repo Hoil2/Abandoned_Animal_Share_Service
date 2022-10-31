@@ -179,8 +179,155 @@
 					
 					
 					<div class="row">
-					
+						<div class="col-sm-8">
+							<form action="/admin/memberSearchList" role="form" method="GET" class="form-inline">
+								<select class="form-control" id="searchCategory" name="searchCategory">
+									<option value="m_no">회원번호</option>
+									<option value="m_id">아이디</option>
+									<option value="m_name">이름</option>
+								</select>
+								<div class="col-sm-4">
+									<input type="text" id="searchKeyword " name="searchKeyword" placeholder="검색어를 입력하세요." class="form-control" required="required">
+									<button type="submit" class="btn px-3 btn-primary">
+										<i class="fas fa-search"></i>
+									</button>
+								</div>
+							</form>
+						</div>
+						
+									
+						<div class="d-flex flex-row justify-content-end"  style="margin: 10px 0px;">
+							<div class="col-lg-2 col-md-2" align="right" style="padding: 0px 10px 0px 0px;">
+								분류
+							</div>
+							<div class="col-lg-3 col-md-3" style="padding: 0px 0px;">
+								<select class="form-control" id="searchTheme">
+									<option value="allTheme" >전체</option>
+									<option value="개">개</option>
+									<option value="고양이">고양이</option>
+									<option value="기타축종">기타</option>
+								</select>
+							</div>
+							<div class="col-lg-2 col-md-2" align="right" style="padding: 0px 10px 0px 0px;">
+								지역
+							</div>
+							<div class="col-lg-3 col-md-3" style="padding: 0px 0px;">
+								<select class="form-control" id="searchArea" name="searchArea">
+									<option value="allArea" >전체</option>
+									<c:forEach var="areaList" items="${areaList}">
+										<c:choose>
+											<c:when test="${areaList.notice_no ne null}">
+												<option value="<c:out value='${areaList.notice_no}' />"><c:out value="${areaList.notice_no}" /></option>
+											</c:when>
+										</c:choose>
+									</c:forEach>
+								</select>
+							</div>
+							<div class="col-lg-2 col-md-2" align="right" style="padding: 0px 10px 0px 0px;">
+								보기
+							</div>
+							<div class="col-lg-3 col-md-3" align="right" style="padding: 0px 0px;">
+								<select class="form-control" id="category2">
+									<option value="alignmentDay" <c:if test="${alignment eq 'alignmentDay'}"> selected </c:if>>최신순</option>
+									<option value="alignmentHit" <c:if test="${alignment eq 'alignmentHit'}"> selected </c:if>>조회순</option>
+									<option value="alignmentGood" <c:if test="${alignment eq 'alignmentGood'}"> selected </c:if>>좋아요순</option>
+								</select>
+							</div>
+						</div>
 					</div>
+                    <br>
+					<table class="table table-hover table-white">
+						<thead>
+							<tr>
+								<th>
+									<input id="allCheck" type="checkbox" name="allCheck">
+								</th>
+								<th><font size="3">No</font></th>
+								<th><font size="3">종</font></th>
+								<th><font size="3">나이</font></th>
+								<th><font size="3">성별</font></th>
+								<th><font size="3">상태</font></th>
+								<th><font size="3">기간</font></th>
+								<th><font size="3">조회수</font></th>
+								<th><font size="3">좋아요</font></th>
+							</tr>
+						</thead>
+						<tbody>
+							<c:forEach items="${slist}" var="slist">
+								<tr>
+									<td>
+										<input name="RowCheck" type="checkbox" value="${slist.desertion_no}">			
+									</td>
+									<td><font size="3">${slist.desertion_no}</font></td>
+									<td><font size="3"><c:out value="${slist.kind_cd}"></c:out></font></td>
+									<td><font size="3"><c:out value="${slist.age}"></c:out></font></td>
+									<c:choose>
+										<c:when test="${slist.sex_cd eq 'M'}"> 
+											<font size="3px;" color="Blue">♂</font>
+										</c:when>
+										<c:when test="${slist.sex_cd eq 'F'}"> 
+											<font size="3px;" color="#FF7171;">♀</font>
+										</c:when>
+										<c:otherwise> 
+											<font size="1px;">(미상)</font>
+										 </c:otherwise>
+									</c:choose>
+									<td><font size="3"><c:out value="${slist.process_state}"></c:out></font></td>
+									<td><font size="3">${slist.notice_sdt} ~ ${slist.notice_edt} </font></td>
+									<td><font size="3">${slist.hit} </font></td>
+									<td><font size="3">${slist.good} </font></td>
+								</tr>
+							</c:forEach>
+						</tbody>
+					</table>
+					
+					<nav aria-label="Page navigation">
+						<ul class="pagination justify-content-center">
+					
+							<!-- 첫 페이지면 Disabled 아니라면 Enabled -->
+							<c:choose>
+								<c:when test="${Paging.pageNo eq Paging.firstPageNo }">
+									<li class="page-item disabled">
+										<a class="page-link" href="memberList?page=${Paging.prevPageNo}">Previus</a>
+									</li>
+								</c:when>
+								<c:otherwise>
+									<li class="page-item">
+										<a class="page-link" href="memberList?page=${Paging.prevPageNo}">Previus</a>
+									</li>
+								</c:otherwise>
+							</c:choose>
+							<!-- 페이지 갯수만큼 버튼 생성 -->
+							<c:forEach var="i" begin="${Paging.startPageNo }" end="${Paging.endPageNo }" step="1">
+								<c:choose>
+									<c:when test="${i eq Paging.pageNo }">
+										<li class="page-item disabled">
+											<a class="page-link" href="memberList?page=${i}"><c:out value="${i }"/></a>
+										</li>
+									</c:when>
+									<c:otherwise>
+										<li class="page-item">
+											<a class="page-link" href="memberList?page=${i}"><c:out value="${i }"/></a>
+										</li>
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
+							<!-- 마지막 페이지면 Disabled 아니라면 Enabled -->
+							<c:choose>
+								<c:when test="${Paging.pageNo eq Paging.finalPageNo }">
+									<li class="page-item disabled">
+										<a class="page-link" href="memberList?page=${Paging.nextPageNo}">Next</a>
+									</li>
+								</c:when>
+								<c:otherwise>
+									<li class="page-item">
+										<a class="page-link" href="memberList?page=${Paging.nextPageNo}">Next</a>
+									</li>
+								</c:otherwise>
+							</c:choose>
+						</ul>
+					</nav>
+					
 				</div>
 				<!-- 본문 -->
 			</div>
