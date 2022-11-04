@@ -188,14 +188,14 @@ public class CommunityController {
 		List<HashMap<String, Object>> commentList = communityService.selectCommentList(pageNo);
 		
 		if(memberDTO != null) {
-			EmailAlarmDTO emailAlarmDTO = new EmailAlarmDTO();
+			/*EmailAlarmDTO emailAlarmDTO = new EmailAlarmDTO();
 			emailAlarmDTO.setM_id(memberDTO.getM_id());
-			emailAlarmDTO.setDesertion_no(pageDetail.getDesertion_no());
+			emailAlarmDTO.setDesertion_no(pageDetail.getMp_id());*/
 			
 			boolean existLike = (communityService.existCommunityLike(pageNo, memberDTO.getM_id()) == 1) ? true : false;
-			boolean existAlarm = (emailAlarmService.existEmailAlarm(emailAlarmDTO) == 1) ? true : false;
+			//boolean existAlarm = (emailAlarmService.existEmailAlarm(emailAlarmDTO) == 1) ? true : false;
 			model.addAttribute("existLike", existLike);
-			model.addAttribute("existAlarm", existAlarm);
+			//model.addAttribute("existAlarm", existAlarm);
 		}
 		
 		model.addAttribute("memberService", memberService);
@@ -344,7 +344,7 @@ public class CommunityController {
 		String title = request.getParameter("title");
 		String content = request.getParameter("content");
 		int classify = Integer.parseInt(request.getParameter("classify"));
-		String desertion_no = request.getParameter("desertion_no");
+		String mp_id = request.getParameter("mp_id");
 		
 		// 등록 실패
 		if(title.equals("") || content.equals("")) { 
@@ -354,7 +354,7 @@ public class CommunityController {
 		CommunityDTO communityDTO = new CommunityDTO();
 		communityDTO.setCb_id(Integer.parseInt(pageNo));
 		communityDTO.setM_id(memberDTO.getM_id());
-		communityDTO.setDesertion_no(desertion_no);
+		communityDTO.setMp_id(Integer.parseInt(mp_id));
 		communityDTO.setTitle(title);
 		communityDTO.setContent(content);
 		communityDTO.setClassify(classify);
@@ -364,7 +364,7 @@ public class CommunityController {
 		
 		System.out.println("게시물 등록 성공");
 			
-		for(EmailAlarmDTO ead : emailAlarmService.getEmailAlarmList(desertion_no)) {
+		/*for(EmailAlarmDTO ead : emailAlarmService.getEmailAlarmList(desertion_no)) {
 			MemberDTO md = memberService.getMemberByM_id(ead.getM_id());
 			EmailDTO emailDTO = new EmailDTO(
 					emailService.getAdminEmailAddress(), 					// from
@@ -373,7 +373,7 @@ public class CommunityController {
 					"알림 설정하신 " + desertion_no + "의 새로운 소식이 등록되었습니다." // contents
 				);
 			emailService.sendEmail(emailDTO);
-		}
+		}*/
 		
 		String contextRoot = new HttpServletRequestWrapper(request).getRealPath("/");
 		

@@ -54,25 +54,25 @@ public class CommunityServiceImpl implements CommunityService {
 	
 	// 게시물 추가
 	@Override
-	public int insertPost(CommunityDTO dto) throws Exception {
+	public int insertPost(CommunityDTO dto) {
 		return communityDAO.insertPost(dto);
 	}
 	
 	//게시물 상세 페이지 가져오기
 	@Override
-	public CommunityDTO getPageDetail(int pageNo) throws Exception {
+	public CommunityDTO getPageDetail(int pageNo) {
 		return communityDAO.getPageDetail(pageNo);
 	}
 	
 	// 게시물 수정
 	@Override
-	public int updatePost(CommunityDTO dto) throws Exception {
+	public int updatePost(CommunityDTO dto) {
 		return communityDAO.updatePost(dto);
 	}
 
 	// 게시물 삭제
 	@Override
-	public int deletePost(int pageNo) throws Exception {
+	public int deletePost(int pageNo) {
 		return communityDAO.deletePost(pageNo);
 	}
 	

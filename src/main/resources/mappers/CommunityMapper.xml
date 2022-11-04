@@ -5,7 +5,7 @@
 	
 	<!-- 지식백과 게시판 부분 -->
 	<select id="getBoardPage" resultType="HashMap">
-		SELECT c.cb_id, c.desertion_no, c.title, c.content, c.hit, c.reg_date, m.name, 
+		SELECT c.cb_id, c.mp_id, c.title, c.content, c.hit, c.reg_date, m.name, 
 			(SELECT COUNT(*) FROM community_board_good cbg WHERE cbg.cb_id = c.cb_id) AS good
 		FROM community_board c, member m
 		<include refid="search"></include>
@@ -54,17 +54,17 @@
 	</select>
 	
 	<insert id="insertPost" useGeneratedKeys="true" keyProperty="cb_id">
-		INSERT INTO community_board(m_id, desertion_no, title, content, reg_date, classify, enable) 
-		VALUES(#{m_id}, #{desertion_no}, #{title}, #{content}, #{reg_date}, #{classify}, #{enable})
+		INSERT INTO community_board(m_id, mp_id, title, content, reg_date, classify, enable) 
+		VALUES(#{m_id}, #{mp_id}, #{title}, #{content}, NOW(), #{classify}, 1)
 	</insert>
 	
 	<update id="updatePost">
 		UPDATE community_board
-		SET desertion_no = #{desertion_no}, 
+		SET mp_id = #{mp_id}, 
 			title = #{title}, 
 			content = #{content},
 			classify = #{classify},
-			enable = #{enable}
+			enable = 1
 		WHERE cb_id = #{cb_id}
 	</update>
 	

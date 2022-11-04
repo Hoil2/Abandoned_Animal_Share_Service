@@ -220,7 +220,7 @@
 				type: 'post',
 				data: {
 					status: alarmStatus,
-					desertion_no: ${pageDetail.desertion_no}
+					mp_id: ${pageDetail.mp_id}
 				}
 			});
 		}

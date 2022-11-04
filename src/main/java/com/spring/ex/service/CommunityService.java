@@ -18,16 +18,16 @@ public interface CommunityService {
 	public int getCommunityBoardPostTotalCount(HashMap<String, Object> map) throws Exception;
 	
 	// 게시물 추가
-	public int insertPost(CommunityDTO dto) throws Exception;
+	public int insertPost(CommunityDTO dto);
 	
 	// 게시물 상세 페이지 가져오기 
-	public CommunityDTO getPageDetail(int pageNo) throws Exception;
+	public CommunityDTO getPageDetail(int pageNo);
 	
 	// 게시물 수정
-	public int updatePost(CommunityDTO dto) throws Exception;
+	public int updatePost(CommunityDTO dto);
 	
 	// 게시물 삭제
-	public int deletePost(int pageNo) throws Exception;
+	public int deletePost(int pageNo);
 	
 	// 게시물에 조회수 1 추가
 	public int addHitToBoardPage(int pageNo) throws Exception;

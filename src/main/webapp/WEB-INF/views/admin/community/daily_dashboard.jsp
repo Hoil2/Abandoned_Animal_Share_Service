@@ -3,8 +3,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>멍멍냥냥 일상 게시판 대시보드</title>
+	<meta charset="UTF-8">
+	<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet"> 
+	
+
+	<title>멍멍냥냥 일상 게시판 대시보드</title>
+	
+	<style>
+		.note-editable {
+			background-color: #fff;
+		}
+	</style>
 </head>
 <body id="page-top">
     <div id="wrapper">
@@ -55,7 +64,7 @@
 						
 						<div class="d-flex ml-auto">
 							<button class="btn btn-primary mr-2" data-toggle="modal" data-target="#post_submit">게시물 등록</button>
-							<button class="btn btn-danger mr-2" data-toggle="modal" data-target="#post_delete">게시물 삭제</button>
+							<button class="btn btn-danger mr-2" onclick="deletePosts()">게시물 선택 삭제</button>
 						</div>
 					</div>
 					<div>
@@ -81,7 +90,7 @@
 											<input name="rowCheck" type="checkbox" value="${dcl.cb_id}">			
 										</td>
 										<td>${dcl.cb_id}</td>
-										<td><a href="">${dcl.desertion_no}</a></td>
+										<td><a href="">${dcl.mp_id}</a></td>
 										<td><a href="">${dcl.name}</a></td>
 										<td><a href="/admin/daily/${dcl.cb_id}">${dcl.title}</a></td>
 										<td>${dcl.reg_date}</td>
@@ -149,11 +158,159 @@
 		</div>
 	</div>
     
+	<div class="modal fade" id="post_submit" tabindex="-1">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLabel">게시물 등록</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+		  <form id="postForm">
+		  	  <input type="hidden" name="classify" value="2">
+		      <div class="modal-body">
+		          <div class="input-group mb-2">
+		          	<div class="input-group-prepend">
+		            	<span class="input-group-text">제목</span>
+		            </div>
+		            <input type="text" class="form-control" name="title" required>
+		          </div>
+		          <div class="input-group mb-2">
+		          	<div class="input-group-prepend">
+		            	<span class="input-group-text"><a href="" target="_blank">반려동물ID</a></span>
+		            </div>
+		            <input type="text" class="form-control" name="mp_id" required>
+		          </div>
+		          
+		          <div class="form-group">
+		            <textarea class="summernote" name="content"></textarea>
+		          </div>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+		        <button type="button" class="btn btn-primary" onclick="submitPost();">게시물 등록</button>
+		      </div>
+          </form>
+	    </div>
+	  </div>
+	</div>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> 
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+    
     <script>
+    	// 게시물 등록
+	    function submitPost() {
+			var form = document.getElementById('postForm');
+			for(var i=0; i < form.elements.length; i++){
+			    if(form.elements[i].value === '' && form.elements[i].hasAttribute('required')){
+			      alert('There are some required fields!');
+			      return false;
+			    }
+			  }
+			
+			if ($('.summernote').summernote('isEmpty')) {
+				alert('editor content is empty');
+				return false;
+			}
+			
+			<c:if test="${member == null}">
+				alert('로그인이 필요합니다.');
+				return;
+			</c:if>
+			
+			
+			$.ajax({
+				url: "/admin/community/savePost",
+				type: "post",
+				data: $("#postForm").serialize(),
+				success: function() {
+					location.reload();
+				}
+			});
+		}
+		
+    	// 게시물 선택 삭제
+		function deletePosts() {
+    		var cb_idList = [];
+			$('input:checkbox[name=rowCheck]').each(function() {
+				if($(this).is(":checked")==true){
+					cb_idList.push($(this).val());
+			    }
+			});
+			
+			if(confirm("정말 " + cb_idList.join(",") + " 게시물을 삭제하시겠습니까?")) {
+				$.ajax({
+					url: "/admin/community/deletePosts",
+					type: "post",
+					traditional: true,
+					data: {
+						cb_idList: cb_idList
+					},
+					success: function() {
+						location.reload();
+					}
+				});
+			}
+		}
+    	
 		// 전체 체크박스 클릭 이벤트
 		$("#allCheck").click(function () {
 		    $("[name='rowCheck']").prop('checked', $(this).prop('checked'));
 		});
+		
+		$(function() {
+			// 섬머노트 텍스트 에디터 설정
+			$('.summernote').summernote({
+				placeholder: '',
+				tabsize: 2,
+				height: 300,
+				toolbar: [
+					['style', ['style']],
+					['font', ['bold', 'underline', 'clear']],
+					['color', ['color']],
+					['para', ['ul', 'ol', 'paragraph']],
+					['table', ['table']],
+					['insert', ['link', 'picture', 'video']],
+					['view', ['fullscreen', 'codeview', 'help']]
+				],
+
+				callbacks : { 
+					onImageUpload : function(files, editor, welEditable) {
+						// 파일 업로드(다중업로드를 위해 반복문 사용)
+						for (var i = files.length - 1; i >= 0; i--) {
+							uploadSummernoteImageFile(files[i], this);
+						}
+					}
+				}
+			});
+			
+			/* // select option drop box 옵션 설정
+			new Choices('#myPet', {
+			    removeItemButton: true,
+			    maxItemCount:1,
+			    searchResultLimit:10
+			    //renderChoiceLimit:10
+			}); */
+		});
+		
+		function uploadSummernoteImageFile(file, el) {
+			data = new FormData();
+			data.append("file", file);
+			$.ajax({
+				data : data,
+				type : "POST",
+				url : "/adminUploadSummernoteImageFile",
+				contentType : false,
+				enctype : 'multipart/form-data',
+				processData : false,
+				success : function(data) {
+					$(el).summernote('editor.insertImage', data.url);
+				}
+			});
+		}
     </script>
 </body>
 </html>
