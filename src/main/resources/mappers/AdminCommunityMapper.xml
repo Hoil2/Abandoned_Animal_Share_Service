@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spring.ex.AdminCommunityMapper">
+	<select id="getAdminBoardPage" resultType="HashMap">
+		SELECT cb_id, mp_id, m.name AS m_name, title, reg_date, hit,
+			(SELECT COUNT(*) FROM community_board_good cbg WHERE c.cb_id = cbg.cbg_id) AS goodCnt
+		<include refid="boardPageCondition"/>
+		LIMIT #{nowPage}, #{pageSize}
+	</select>
+	
+	<select id="getAdminBoardPageCount" resultType="int">
+		SELECT COUNT(*)
+		<include refid="boardPageCondition"/>
+	</select>
+	
+	<sql id="boardPageCondition">
+		FROM community_board c, member m
+		WHERE c.m_id = m.m_id AND classify = #{classify} AND ENABLE = 1
+		<if test="filter != null and search != null">
+			<choose>
+				<when test="filter.equals('post_title')">
+					AND c.title LIKE '%${search}%'
+				</when>
+				<when test="filter.equals('post_content')">
+				<![CDATA[
+					AND REGEXP_REPLACE(c.content, "<[^>]+>|(&nbsp;)", '') LIKE '%${search}%'
+				]]>
+				</when>
+				<when test="filter.equals('m_name')">
+					AND m.name LIKE '%${search}%'
+				</when>
+				<when test="filter.equals('mp_id')">
+					AND c.mp_id = #{search}
+				</when>
+			</choose>
+		</if>
+		ORDER BY cb_id DESC
+	</sql>
+	
+	<!-- 7일간 게시물 등록 개수 가져오기 -->
+	<select id="getPostCountBy7Day" resultType="HashMap">
+		SELECT b.selected_date, IFNULL(a.cnt, 0)
+		FROM
+			( 
+				SELECT reg_date AS yyyymmdd, COUNT(*) cnt 
+				FROM community_board 
+				WHERE reg_date BETWEEN DATE_ADD(CURDATE(), INTERVAL -6 DAY) AND CURDATE()
+				GROUP BY reg_date
+			) a  
+			RIGHT JOIN
+			( 
+				SELECT selected_date FROM 
+				(select adddate('1970-01-01',t4.i*10000 + t3.i*1000 + t2.i*100 + t1.i*10 + t0.i) selected_date from
+					(select 0 i union select 1 union select 2 union select 3 union select 4 union select 5 union select 6 union select 7 union select 8 union select 9) t0,
+					(select 0 i union select 1 union select 2 union select 3 union select 4 union select 5 union select 6 union select 7 union select 8 union select 9) t1,
+					(select 0 i union select 1 union select 2 union select 3 union select 4 union select 5 union select 6 union select 7 union select 8 union select 9) t2,
+					(select 0 i union select 1 union select 2 union select 3 union select 4 union select 5 union select 6 union select 7 union select 8 union select 9) t3,
+					(select 0 i union select 1 union select 2 union select 3 union select 4 union select 5 union select 6 union select 7 union select 8 union select 9) t4) v
+			where selected_date BETWEEN DATE_ADD(CURDATE(),INTERVAL -6 DAY) AND CURDATE()
+			) b ON a.yyyymmdd = b.selected_date 
+			ORDER BY b.selected_date ASC
+	</select>
+	
+	<!-- 7일간 특정 게시판의 게시물 등록 개수 가져오기 -->
+	<select id="getPostCountByClassifyAnd7Day" resultType="HashMap">
+		SELECT b.selected_date, IFNULL(a.cnt, 0)
+		FROM
+			( 
+				SELECT reg_date AS yyyymmdd, COUNT(*) cnt 
+				FROM community_board 
+				WHERE reg_date BETWEEN DATE_ADD(CURDATE(), INTERVAL -6 DAY) AND CURDATE() AND classify = #{classify}
+				GROUP BY reg_date
+			) a  
+			RIGHT JOIN
+			( 
+				SELECT selected_date FROM 
+				(select adddate('1970-01-01',t4.i*10000 + t3.i*1000 + t2.i*100 + t1.i*10 + t0.i) selected_date from
+					(select 0 i union select 1 union select 2 union select 3 union select 4 union select 5 union select 6 union select 7 union select 8 union select 9) t0,
+					(select 0 i union select 1 union select 2 union select 3 union select 4 union select 5 union select 6 union select 7 union select 8 union select 9) t1,
+					(select 0 i union select 1 union select 2 union select 3 union select 4 union select 5 union select 6 union select 7 union select 8 union select 9) t2,
+					(select 0 i union select 1 union select 2 union select 3 union select 4 union select 5 union select 6 union select 7 union select 8 union select 9) t3,
+					(select 0 i union select 1 union select 2 union select 3 union select 4 union select 5 union select 6 union select 7 union select 8 union select 9) t4) v
+			where selected_date BETWEEN DATE_ADD(CURDATE(),INTERVAL -6 DAY) AND CURDATE()
+			) b ON a.yyyymmdd = b.selected_date 
+			ORDER BY b.selected_date ASC
+	</select>
+	
+	<!-- 오늘의 게시물 등록 개수 가져오기 -->
+	<select id="getPostCountOfToday" resultType="int">
+		SELECT COUNT(*)
+		FROM community_board 
+		WHERE reg_date = CURDATE()
+	</select>
+	
+	<!-- 오늘의 특정 게시판의 게시물 등록 개수 가져오기 -->
+	<select id="getPostCountOfTodayByClassify" resultType="int">
+		SELECT COUNT(*)
+		FROM community_board 
+		WHERE reg_date = CURDATE() AND classify = #{classify}
+	</select>
+</mapper>

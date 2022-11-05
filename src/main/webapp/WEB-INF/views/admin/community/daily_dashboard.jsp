@@ -48,15 +48,29 @@
 							</div>
 						</div>
 					</div>
+					<div class="row">
+						<div class="col-xl-8 col-lg-7">
+							<div class="card shadow mb-4">
+								<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+									<h6 class="m-0 font-weight-bold text-primary">주간 게시글 작성 그래프</h6>
+								</div>
+								<div class="card-body">
+									<div class="chart-area">
+										<canvas id="myAreaChart"></canvas>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
 					<div class="row mb-3">
-						<form action="/admin/memberSearchList" role="form" method="GET" class="form-inline">
-							<select class="form-control ml-3" id="searchCategory" name="searchCategory">
-								<option value="post_title">제목</option>
-								<option value="post_content">내용</option>
-								<option value="writer_name">작성자명</option>
-								<option value="writer_name">반려동물ID</option>
+						<form action="/admin/${classify}" method="GET" class="form-inline">
+							<select class="form-control ml-3" name="filter">
+								<option value="post_title" <c:if test="${filter.equals('post_title')}">selected</c:if>>제목</option>
+								<option value="post_content" <c:if test="${filter.equals('post_content')}">selected</c:if>>내용</option>
+								<option value="m_name" <c:if test="${filter.equals('m_name')}">selected</c:if>>작성자명</option>
+								<option value="mp_id" <c:if test="${filter.equals('mp_id')}">selected</c:if>>반려동물ID</option>
 							</select>
-							<input class="form-control ml-3" type="text" id="searchKeyword " name="searchKeyword" placeholder="검색어를 입력하세요." class="form-control" required="required">
+							<input class="form-control ml-3" type="text" name="search" value="${search}" placeholder="검색어를 입력하세요." class="form-control">
 							<button type="submit" class="btn px-3 btn-primary">
 								<i class="fas fa-search"></i>
 							</button>
@@ -84,71 +98,73 @@
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach var="dcl" items="${dailyCommunityList}">
+								<c:forEach var="cl" items="${communityList}">
 									<tr>
 										<td>
-											<input name="rowCheck" type="checkbox" value="${dcl.cb_id}">			
+											<input name="rowCheck" type="checkbox" value="${cl.cb_id}">			
 										</td>
-										<td>${dcl.cb_id}</td>
-										<td><a href="">${dcl.mp_id}</a></td>
-										<td><a href="">${dcl.name}</a></td>
-										<td><a href="/admin/daily/${dcl.cb_id}">${dcl.title}</a></td>
-										<td>${dcl.reg_date}</td>
-										<td>${dcl.hit}</td>
-										<td>${dcl.good}</td>
+										<td>${cl.cb_id}</td>
+										<td><a href="">${cl.mp_id}</a></td>
+										<td><a href="">${cl.m_name}</a></td>
+										<td><a href="/admin/${classify}/${cl.cb_id}">${cl.title}</a></td>
+										<td>${cl.reg_date}</td>
+										<td>${cl.hit}</td>
+										<td>${cl.goodCnt}</td>
 									</tr>
 								</c:forEach>
 							</tbody>
 						</table>
 					</div>
-						
-					<!-- 게시글 페이징 처리(기준 10개) -->
-					<nav aria-label="Page navigation">
-						<ul class="pagination justify-content-center">
 					
-							<!-- 첫 페이지면 Disabled 아니라면 Enabled -->
-							<c:choose>
-								<c:when test="${Paging.pageNo eq Paging.firstPageNo }">
-									<li class="page-item disabled">
-										<a class="page-link" href="/admin/daily?page=${Paging.prevPageNo}">Previus</a>
-									</li>
-								</c:when>
-								<c:otherwise>
-									<li class="page-item">
-										<a class="page-link" href="/admin/daily?page=${Paging.prevPageNo}">Previus</a>
-									</li>
-								</c:otherwise>
-							</c:choose>
-							<!-- 페이지 갯수만큼 버튼 생성 -->
-							<c:forEach var="i" begin="${Paging.startPageNo }" end="${Paging.endPageNo }" step="1">
+					<c:if test="${Paging.totalCount > 10}">
+						<!-- 게시글 페이징 처리(기준 10개) -->
+						<nav aria-label="Page navigation">
+							<ul class="pagination justify-content-center">
+						
+								<!-- 첫 페이지면 Disabled 아니라면 Enabled -->
 								<c:choose>
-									<c:when test="${i eq Paging.pageNo }">
+									<c:when test="${Paging.pageNo eq Paging.firstPageNo }">
 										<li class="page-item disabled">
-											<a class="page-link" href="/admin/daily?page=${i}"><c:out value="${i }"/></a>
+											<a class="page-link" onclick="redirectPage(${Paging.prevPageNo})">Previus</a>
 										</li>
 									</c:when>
 									<c:otherwise>
 										<li class="page-item">
-											<a class="page-link" href="/admin/daily?page=${i}"><c:out value="${i }"/></a>
+											<a class="page-link" onclick="redirectPage(${Paging.prevPageNo})">Previus</a>
 										</li>
 									</c:otherwise>
 								</c:choose>
-							</c:forEach>
-							<!-- 마지막 페이지면 Disabled 아니라면 Enabled -->
-							<c:choose>
-								<c:when test="${Paging.pageNo eq Paging.finalPageNo }">
-									<li class="page-item disabled">
-										<a class="page-link" href="/admin/daily?page=${Paging.nextPageNo}">Next</a>
-									</li>
-								</c:when>
-								<c:otherwise>
-									<li class="page-item">
-										<a class="page-link" href="/admin/daily?page=${Paging.nextPageNo}">Next</a>
-									</li>
-								</c:otherwise>
-							</c:choose>
-						</ul>
-					</nav>
+								<!-- 페이지 갯수만큼 버튼 생성 -->
+								<c:forEach var="i" begin="${Paging.startPageNo }" end="${Paging.endPageNo }" step="1">
+									<c:choose>
+										<c:when test="${i eq Paging.pageNo }">
+											<li class="page-item disabled">
+												<a class="page-link" onclick="redirectPage(${i})"><c:out value="${i }"/></a>
+											</li>
+										</c:when>
+										<c:otherwise>
+											<li class="page-item">
+												<a class="page-link" onclick="redirectPage(${i})"><c:out value="${i }"/></a>
+											</li>
+										</c:otherwise>
+									</c:choose>
+								</c:forEach>
+								<!-- 마지막 페이지면 Disabled 아니라면 Enabled -->
+								<c:choose>
+									<c:when test="${Paging.pageNo eq Paging.finalPageNo }">
+										<li class="page-item disabled">
+											<a class="page-link" onclick="redirectPage(${Paging.nextPageNo})">Next</a>
+										</li>
+									</c:when>
+									<c:otherwise>
+										<li class="page-item">
+											<a class="page-link" onclick="redirectPage(${Paging.nextPageNo})">Next</a>
+										</li>
+									</c:otherwise>
+								</c:choose>
+							</ul>
+						</nav>
+					</c:if>
 				</div>
 				<!-- 본문 -->
 			</div>
@@ -199,6 +215,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> 
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+    
+    <!-- Chart -->
+	<script src='<c:url value="/resources/js/Chart.min.js"/>'></script>
     
     <script>
     	// 게시물 등록
@@ -256,6 +275,19 @@
 			}
 		}
     	
+    	function redirectPage(pageNo) {
+    		url = new URL(location.origin + location.pathname);
+    		<c:if test="${filter != null}">
+    			url.searchParams.set('filter', "${filter}");
+    		</c:if>
+    		<c:if test="${search != null}">
+				url.searchParams.set('search', "${search}");
+			</c:if>
+    		
+    		url.searchParams.set('page', pageNo);
+    		location.href = url;
+    	}
+    	
 		// 전체 체크박스 클릭 이벤트
 		$("#allCheck").click(function () {
 		    $("[name='rowCheck']").prop('checked', $(this).prop('checked'));
@@ -312,5 +344,142 @@
 			});
 		}
     </script>
+
+	<!-- 기간별 매출 Chart -->
+	<script>
+		Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+		Chart.defaults.global.defaultFontColor = '#858796';
+	
+		function number_format(number, decimals, dec_point, thousands_sep) {
+			// *     example: number_format(1234.56, 2, ',', ' ');
+			// *     return: '1 234,56'
+			number = (number + '').replace(',', '').replace(' ', '');
+			var n = !isFinite(+number) ? 0 : +number,
+				prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+				sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
+				dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
+				s = '',
+				toFixedFix = function(n, prec) {
+					var k = Math.pow(10, prec);
+					return '' + Math.round(n * k) / k;
+				};
+			// Fix for IE parseFloat(0.55).toFixed(0) = 0;
+			s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
+			if (s[0].length > 3) {
+				s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+			}
+			if ((s[1] || '').length < prec) {
+				s[1] = s[1] || '';
+				s[1] += new Array(prec - s[1].length + 1).join('0');
+			}
+			return s.join(dec);
+		}
+		var ctx = document.getElementById("myAreaChart");
+	
+		var OrderDate = new Array();
+		var Earnings = new Array();
+	
+		/* OrderDate.push("2022-11-02");
+		Earnings.push("1");
+		
+		OrderDate.push("2022-11-03");
+		Earnings.push("5");
+		
+		OrderDate.push("2022-11-04");
+		Earnings.push("4"); */
+		
+		<c:forEach items="${postCountBy7Day}" var="List">
+			OrderDate.push("${list.a_date}");
+			Earnings.push("${list.a}");
+		</c:forEach> 
+		var myLineChart = new Chart(ctx, {
+			type: 'line',
+			data: {
+				
+				labels: OrderDate,
+				datasets: [{
+					label: "작성 수",
+					lineTension: 0.3,
+					backgroundColor: "rgba(78, 115, 223, 0.05)",
+					borderColor: "rgba(78, 115, 223, 1)",
+					pointRadius: 3,
+					pointBackgroundColor: "rgba(78, 115, 223, 1)",
+					pointBorderColor: "rgba(78, 115, 223, 1)",
+					pointHoverRadius: 3,
+					pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+					pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+					pointHitRadius: 10,
+					pointBorderWidth: 2,
+					data: Earnings,
+				}],
+			},
+			options: {
+				maintainAspectRatio: false,
+				layout: {
+					padding: {
+						left: 10,
+						right: 25,
+						top: 25,
+						bottom: 0
+					}
+				},
+				scales: {
+					xAxes: [{
+						time: {
+							unit: 'date'
+						},
+						gridLines: {
+							display: false,
+							drawBorder: false
+						},
+						ticks: {
+							maxTicksLimit: 7
+						}
+					}],
+					yAxes: [{
+						ticks: {
+							maxTicksLimit: 5,
+							padding: 10,
+							// Include a dollar sign in the ticks
+							callback: function(value, index, values) {
+								return number_format(value);
+							}
+						},
+						gridLines: {
+							color: "rgb(234, 236, 244)",
+							zeroLineColor: "rgb(234, 236, 244)",
+							drawBorder: false,
+							borderDash: [2],
+							zeroLineBorderDash: [2]
+						}
+					}],
+				},
+				legend: {
+					display: false
+				},
+				tooltips: {
+					backgroundColor: "rgb(255,255,255)",
+					bodyFontColor: "#858796",
+					titleMarginBottom: 10,
+					titleFontColor: '#6e707e',
+					titleFontSize: 14,
+					borderColor: '#dddfeb',
+					borderWidth: 1,
+					xPadding: 15,
+					yPadding: 15,
+					displayColors: false,
+					intersect: false,
+					mode: 'index',
+					caretPadding: 10,
+					callbacks: {
+						label: function(tooltipItem, chart) {
+							var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+							return datasetLabel + " : " + number_format(tooltipItem.yLabel);
+						}
+					}
+				}
+			}
+		});
+	</script>
 </body>
 </html>
