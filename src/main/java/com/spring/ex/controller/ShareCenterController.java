@@ -70,14 +70,14 @@ public class ShareCenterController {
 			session.setAttribute("searchArea", searchArea);
 		}
 		
-		if(StringUtils.isEmpty(searchAlignment)) {
+		if(StringUtils.isEmpty(searchAlignment) || searchAlignment == null) {
 			searchAlignment = "alignmentDay";
 			session.setAttribute("alignment", "alignmentDay");
 		} else if(!StringUtils.isEmpty(searchAlignment)){
 			session.setAttribute("alignment", searchAlignment);
 		}
 		
-		HashMap<String, String> searchMap = new HashMap<String, String>();
+		HashMap<String, Object> searchMap = new HashMap<String, Object>();
 		searchMap.put("searchArea", (String) session.getAttribute("searchArea"));
 		searchMap.put("searchTheme", (String) session.getAttribute("searchTheme"));
 		searchMap.put("alignment", (String) session.getAttribute("alignment"));
@@ -204,7 +204,7 @@ public class ShareCenterController {
 		Date date = new Date();
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
 		String endApiRequest = formatter.format(date);
-		String startApiRequest = dateCalculation.addDate(endApiRequest, 0, -2, 0);
+		String startApiRequest = dateCalculation.addDate(endApiRequest, 0, -1, 0);
 		//String startApiRequest = "20220907";
 		int apiTotalCount = Integer.valueOf(abandonedAnimalApi.getTotalCountRequestApiAbandonedAnimal(startApiRequest, endApiRequest));
 		System.out.println(apiTotalCount);
@@ -220,8 +220,7 @@ public class ShareCenterController {
 			service.getShareCenterRequest(shelterDto, pageNum, startApiRequest, endApiRequest);
 		}
 		
-		
-		return "shereCenterTest"; 
+		return "redirect:/sTestPage"; 
 	}
 	
 

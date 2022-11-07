@@ -32,7 +32,7 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 	
 	//분양센터페이지 유기동물 목록 총 갯수 - 페이징
 	@Override
-	public int getShareCenterBoardViewTotalCount(HashMap<String, String> map) throws Exception {
+	public int getShareCenterBoardViewTotalCount(HashMap<String, Object> map) throws Exception {
 		return dao.getShareCenterBoardViewTotalCount(map);
 	}
 	@Override

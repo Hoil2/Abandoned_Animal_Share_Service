@@ -15,7 +15,7 @@
 		<div class="sidebar-heading">동물관련 관리</div>
 	</li>
 	<li class="nav-item">
-		<a class="nav-link" href="banner">
+		<a class="nav-link" href="shereCenter">
 			<i class="fas fa-fw fa-table"></i>
 			<span>분양센터</span>
 		</a>

@@ -28,4 +28,9 @@ public class AdminDashBoardDAOImpl implements AdminDashBoardDAO {
 	public int getTodayAbandonedAnimalTotalCount() throws Exception {
 		return sqlSession.selectOne(namespace + ".getTodayAbandonedAnimalTotalCount");
 	}
+	
+	//현재 보호중인 유기동물 수
+	public int getTodayProtectAbandonedAnimalTotalCount() throws Exception {
+		return sqlSession.selectOne(namespace + ".getTodayProtectAbandonedAnimalTotalCount");
+	}
 }
