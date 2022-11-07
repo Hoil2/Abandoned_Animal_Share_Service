@@ -28,7 +28,7 @@ public class ShareCenterDAOImpl implements ShareCenterDAO{
 
 	
 	@Override
-	public int getShareCenterBoardViewTotalCount(HashMap<String, String> map) throws Exception {
+	public int getShareCenterBoardViewTotalCount(HashMap<String, Object> map) throws Exception {
 		return sqlSession.selectOne(namespace + ".getShareCenterBoardViewTotalCount", map);
 	}
 

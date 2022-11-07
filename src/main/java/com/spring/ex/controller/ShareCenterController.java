@@ -77,7 +77,7 @@ public class ShareCenterController {
 			session.setAttribute("alignment", searchAlignment);
 		}
 		
-		HashMap<String, String> searchMap = new HashMap<String, String>();
+		HashMap<String, Object> searchMap = new HashMap<String, Object>();
 		searchMap.put("searchArea", (String) session.getAttribute("searchArea"));
 		searchMap.put("searchTheme", (String) session.getAttribute("searchTheme"));
 		searchMap.put("alignment", (String) session.getAttribute("alignment"));

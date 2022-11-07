@@ -1,11 +1,81 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<link rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
 <title>멍멍냥냥 관리자</title>
+<script>
+$(document).ready(function() {
+	
+	if(sessionStorage.getItem("searchTheme")==null){
+		sessionStorage.setItem("searchTheme", "allTheme"); 
+		$("#searchTheme").val("allTheme").prop("selected", true);
+	}else{
+		$("#searchTheme").val(sessionStorage.getItem("searchTheme")).prop("selected", true);
+	}
+	
+	if(sessionStorage.getItem("searchArea")==null){
+		sessionStorage.setItem("searchArea", "allArea"); 
+		$("#searchArea").val("allArea").prop("selected", true);
+	}else{
+		$("#searchArea").val(sessionStorage.getItem("searchArea")).prop("selected", true);
+	}
+	
+	if(sessionStorage.getItem("category2")==null){
+		$("#category2").val("alignmentDay").prop("selected", true);
+	}else{
+		$("#category2").val(sessionStorage.getItem("category2")).prop("selected", true);
+	}
+	
+	function pageRefresh() {
+		$.ajax({
+			url: "shereCenter",
+			type: "GET",
+			data: {'alignment':$("#category2").val(), 'searchTheme': $("#searchTheme").val(), 'searchArea':$("#searchArea").val()},
+			success: function(data) {
+				//location.href = "shereCenterPage?alignment="+sessionStorage.getItem("category2");
+				//location.href  = "shereCenterPage?searchTheme=" +sessionStorage.getItem("searchTheme") + "&searchArea=" + sessionStorage.getItem("searchArea") + "&alignment="+ sessionStorage.getItem("category2");
+				var shereCenterUrl = "shereCenter?searchTheme=" +sessionStorage.getItem("searchTheme") + "&searchArea=" + sessionStorage.getItem("searchArea") + "&alignment="+ sessionStorage.getItem("category2");
+				
+				$("#slistDiv").load(shereCenterUrl + " #slistDiv");
+				$("#pagination").load(shereCenterUrl + " #pagination");
+			}
+		});
+	}
+	
+	$("#category2").on("change", function() {
+		console.log($("#category2").val());
+		sessionStorage.setItem("category2", $(this).val()); 
+
+		pageRefresh();
+		console.log("2"+sessionStorage.getItem("category2"));
+	});
+	
+	$("#searchTheme").on("change", function() {
+		pageRefresh();
+		console.log("2")
+		console.log($("#searchTheme").val());
+		sessionStorage.setItem("searchTheme", $(this).val()); 
+	});
+	
+	$("#searchArea").on("change", function() {
+		pageRefresh();
+		sessionStorage.setItem("searchArea", $(this).val()); 
+		console.log($("#searchArea").val());
+		console.log("3")
+	});
+	
+});
+</script>
 </head>
 <body id="page-top">
     <div id="wrapper">
@@ -182,9 +252,8 @@
 						<div class="col-sm-8">
 							<form action="/admin/memberSearchList" role="form" method="GET" class="form-inline">
 								<select class="form-control" id="searchCategory" name="searchCategory">
-									<option value="m_no">회원번호</option>
-									<option value="m_id">아이디</option>
-									<option value="m_name">이름</option>
+									<option value="desertion_no">No</option>
+									<option value="kind_cd">종</option>
 								</select>
 								<div class="col-sm-4">
 									<input type="text" id="searchKeyword " name="searchKeyword" placeholder="검색어를 입력하세요." class="form-control" required="required">
@@ -236,64 +305,67 @@
 						</div>
 					</div>
                     <br>
-					<table class="table table-hover table-white">
-						<thead>
-							<tr>
-								<th>
-									<input id="allCheck" type="checkbox" name="allCheck">
-								</th>
-								<th><font size="3">No</font></th>
-								<th><font size="3">종</font></th>
-								<th><font size="3">나이</font></th>
-								<th><font size="3">성별</font></th>
-								<th><font size="3">상태</font></th>
-								<th><font size="3">기간</font></th>
-								<th><font size="3">조회수</font></th>
-								<th><font size="3">좋아요</font></th>
-							</tr>
-						</thead>
-						<tbody>
-							<c:forEach items="${slist}" var="slist">
+                    <div id="slistDiv">
+						<table class="table table-hover table-white">
+							<thead>
 								<tr>
-									<td>
-										<input name="RowCheck" type="checkbox" value="${slist.desertion_no}">			
-									</td>
-									<td><font size="3">${slist.desertion_no}</font></td>
-									<td><font size="3"><c:out value="${slist.kind_cd}"></c:out></font></td>
-									<td><font size="3"><c:out value="${slist.age}"></c:out></font></td>
-									<c:choose>
-										<c:when test="${slist.sex_cd eq 'M'}"> 
-											<font size="3px;" color="Blue">♂</font>
-										</c:when>
-										<c:when test="${slist.sex_cd eq 'F'}"> 
-											<font size="3px;" color="#FF7171;">♀</font>
-										</c:when>
-										<c:otherwise> 
-											<font size="1px;">(미상)</font>
-										 </c:otherwise>
-									</c:choose>
-									<td><font size="3"><c:out value="${slist.process_state}"></c:out></font></td>
-									<td><font size="3">${slist.notice_sdt} ~ ${slist.notice_edt} </font></td>
-									<td><font size="3">${slist.hit} </font></td>
-									<td><font size="3">${slist.good} </font></td>
+									<th>
+										<input id="allCheck" type="checkbox" name="allCheck">
+									</th>
+									<th><font size="3">No</font></th>
+									<th><font size="3">종</font></th>
+									<th><font size="3">나이</font></th>
+									<th><font size="3">성별</font></th>
+									<th><font size="3">지역</font></th>
+									<th><font size="3">상태</font></th>
+									<th><font size="3">기간</font></th>
+									<th><font size="3">조회수</font></th>
+									<th><font size="3">좋아요</font></th>
 								</tr>
-							</c:forEach>
-						</tbody>
-					</table>
-					
-					<nav aria-label="Page navigation">
+							</thead>
+							<tbody>
+								<c:forEach items="${slist}" var="slist">
+									<tr>
+										<td>
+											<input name="RowCheck" type="checkbox" value="${slist.desertion_no}">			
+										</td>
+										<td><font size="3">${slist.desertion_no}</font></td>
+										<td><font size="3"><c:out value="${slist.kind_cd}"></c:out></font></td>
+										<td><font size="3"><c:out value="${slist.age}"></c:out></font></td>
+										<c:choose>
+											<c:when test="${slist.sex_cd eq 'M'}"> 
+												<td><font size="3px;" color="Blue">♂</font></td>
+											</c:when>
+											<c:when test="${slist.sex_cd eq 'F'}"> 
+												<td><font size="3px;" color="#FF7171;">♀</font></td>
+											</c:when>
+											<c:otherwise> 
+												<td><font size="1px;">(미상)</font></td>
+											 </c:otherwise>
+										</c:choose>
+										<td><font size="3">${fn:substring(slist.notice_no,0,5)}</font></td>
+										<td><font size="3">${slist.process_state}</font></td>
+										<td><font size="3">${slist.notice_sdt} ~ ${slist.notice_edt} </font></td>
+										<td><font size="3">${slist.hit} </font></td>
+										<td><font size="3">${slist.good} </font></td>
+									</tr>
+								</c:forEach>
+							</tbody>
+						</table>
+					</div>
+					<nav aria-label="Page navigation" id="pagination">
 						<ul class="pagination justify-content-center">
 					
 							<!-- 첫 페이지면 Disabled 아니라면 Enabled -->
 							<c:choose>
 								<c:when test="${Paging.pageNo eq Paging.firstPageNo }">
 									<li class="page-item disabled">
-										<a class="page-link" href="memberList?page=${Paging.prevPageNo}">Previus</a>
+										<a class="page-link" href="shereCenter?page=${Paging.prevPageNo}">Previus</a>
 									</li>
 								</c:when>
 								<c:otherwise>
 									<li class="page-item">
-										<a class="page-link" href="memberList?page=${Paging.prevPageNo}">Previus</a>
+										<a class="page-link" href="shereCenter?page=${Paging.prevPageNo}&searchTheme=${searchTheme}&searchArea=${searchArea}&alignment=${alignment}">Previus</a>
 									</li>
 								</c:otherwise>
 							</c:choose>
@@ -302,12 +374,12 @@
 								<c:choose>
 									<c:when test="${i eq Paging.pageNo }">
 										<li class="page-item disabled">
-											<a class="page-link" href="memberList?page=${i}"><c:out value="${i }"/></a>
+											<a class="page-link" href="shereCenter?page=${i}"><c:out value="${i }"/></a>
 										</li>
 									</c:when>
 									<c:otherwise>
 										<li class="page-item">
-											<a class="page-link" href="memberList?page=${i}"><c:out value="${i }"/></a>
+											<a class="page-link" href="shereCenter?page=${i}&searchTheme=${searchTheme}&searchArea=${searchArea}&alignment=${alignment}"><c:out value="${i }"/></a>
 										</li>
 									</c:otherwise>
 								</c:choose>
@@ -316,12 +388,12 @@
 							<c:choose>
 								<c:when test="${Paging.pageNo eq Paging.finalPageNo }">
 									<li class="page-item disabled">
-										<a class="page-link" href="memberList?page=${Paging.nextPageNo}">Next</a>
+										<a class="page-link" href="shereCenter?page=${Paging.nextPageNo}">Next</a>
 									</li>
 								</c:when>
 								<c:otherwise>
 									<li class="page-item">
-										<a class="page-link" href="memberList?page=${Paging.nextPageNo}">Next</a>
+										<a class="page-link" href="shereCenter?page=${Paging.nextPageNo}&searchTheme=${searchTheme}&searchArea=${searchArea}&alignment=${alignment}">Next</a>
 									</li>
 								</c:otherwise>
 							</c:choose>

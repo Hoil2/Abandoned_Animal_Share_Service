@@ -16,7 +16,7 @@ public interface ShareCenterService {
 	public List<ShareCenterDTO> getShareCenterBoardPage(HashMap<String, Object> map) throws Exception;
 	
 	//분양센터페이지 유기동물 목록 총 갯수 - 페이징
-	public int getShareCenterBoardViewTotalCount(HashMap<String, String> map) throws Exception;
+	public int getShareCenterBoardViewTotalCount(HashMap<String, Object> map) throws Exception;
 	
 	//공공데이터 api 요청
 	public void getShareCenterRequest(ShelterDTO shelterDto, int pageNum, String startApiRequest, String endApiRequest) throws Exception;

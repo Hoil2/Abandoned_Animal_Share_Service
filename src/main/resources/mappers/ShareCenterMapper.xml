@@ -53,7 +53,7 @@
 	
 	<!-- 분양센터 게시판 전체 최신순 출력 -->
 	<select id="getShareCenterBoardPage" resultType="hashMap">
-		SELECT aai.desertion_no, aai.happen_dt, aai.sex_cd , aai.popfile, aai.hit, aai.kind_cd, 
+		SELECT aai.*,
 		 (SELECT COUNT(*) FROM abandoned_animal_good aag WHERE aai.desertion_no = aag.desertion_no) good
 		FROM abandoned_animal_info aai 
 		<include refid="Search"></include>
