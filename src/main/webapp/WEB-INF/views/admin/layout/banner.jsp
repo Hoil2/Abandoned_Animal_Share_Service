@@ -5,7 +5,7 @@
 		<hr class="sidebar-divider my-0">
 	</li>
 	<li class="nav-item active">
-		<a class="nav-link" href="main">
+		<a class="nav-link" href="/admin/main">
 			<i class="fas fa-fw fa-tachometer-alt"></i>
 			<span>Home</span>
 		</a>
@@ -15,7 +15,7 @@
 		<div class="sidebar-heading">동물관련 관리</div>
 	</li>
 	<li class="nav-item">
-		<a class="nav-link" href="shereCenter">
+		<a class="nav-link" href="/admin/shereCenter">
 			<i class="fas fa-fw fa-table"></i>
 			<span>분양센터</span>
 		</a>

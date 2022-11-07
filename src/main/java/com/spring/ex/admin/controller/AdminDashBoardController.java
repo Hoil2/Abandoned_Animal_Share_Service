@@ -33,9 +33,4 @@ public class AdminDashBoardController {
 		return "admin/";
 	}
 	
-	//관리자 회원목록
-	@RequestMapping(value = "/admin/member", method = RequestMethod.GET)
-	public String AdminMember(HttpSession session, Model model) throws Exception {
-		return "admin/";
-	}
 }

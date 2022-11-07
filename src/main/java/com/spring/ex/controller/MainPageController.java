@@ -26,7 +26,11 @@ public class MainPageController {
 	}
 	
 	@RequestMapping("/")
-	public String startPage() {
+	public String startPage(Model model) throws Exception{
+		model.addAttribute("pShareCenterList", service.getPopularityShareCenterList());
+		model.addAttribute("pDailyBoardList", service.getPopularityDailyCommunityBoardList(2));
+		model.addAttribute("slist", service.getMainPageLostAnimalBoardList());
+		
 		return "index";
 	}
 	
