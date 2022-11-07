@@ -31,9 +31,13 @@
 		<div class="sidebar-heading">회원 관리</div>
 	</li>
 	<li class="nav-item">
-		<a class="nav-link" href="member">
+		<a class="nav-link" href="/admin/member">
 			<i class="fas fa-fw fa-table"></i>
 			<span>회원 목록</span>
+		</a>
+		<a class="nav-link" href="/admin/member_pet">
+			<i class="fas fa-fw fa-table"></i>
+			<span>회원 펫 목록</span>
 		</a>
 	</li>
 	<li>
@@ -41,19 +45,19 @@
 		<div class="sidebar-heading">커뮤니티 관리</div>
 	</li>
 	<li class="nav-item">
-		<a class="nav-link" href="/admin/dictionary">
+		<a class="nav-link" href="/admin/community/dictionary">
 			<i class="fas fa-fw fa-table"></i>
 			<span>지식백과</span>
 		</a>
 	</li>
 	<li class="nav-item">
-		<a class="nav-link" href="/admin/daily">
+		<a class="nav-link" href="/admin/community/daily">
 			<i class="fas fa-fw fa-table"></i>
 			<span>일상 공유</span>
 		</a>
 	</li>
 	<li class="nav-item">
-		<a class="nav-link" href="/admin/info">
+		<a class="nav-link" href="/admin/community/info">
 			<i class="fas fa-fw fa-table"></i>
 			<span>정보 공유</span>
 		</a>

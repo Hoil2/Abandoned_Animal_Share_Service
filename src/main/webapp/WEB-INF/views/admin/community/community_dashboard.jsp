@@ -5,7 +5,6 @@
 <head>
 	<meta charset="UTF-8">
 	<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet"> 
-	
 
 	<title>멍멍냥냥 일상 게시판 대시보드</title>
 	
@@ -38,7 +37,7 @@
 									<div class="row no-gutters align-items-center">
 										<div class="col mr-2">
 											<div class="text-xs font-weight-bold text-success text-uppercase mb-1">오늘의 게시글 작성 수</div>
-											<div class="h5 mb-0 font-weight-bold text-gray-800">개</div>
+											<div class="h5 mb-0 font-weight-bold text-gray-800">${postCountOfToday}개</div>
 										</div>
 										<div class="col-auto">
 											<i class="fas fa-comments fa-2x text-gray-300"></i>
@@ -63,7 +62,7 @@
 						</div>
 					</div>
 					<div class="row mb-3">
-						<form action="/admin/${classify}" method="GET" class="form-inline">
+						<form action="/admin/community/${classify}" method="GET" class="form-inline">
 							<select class="form-control ml-3" name="filter">
 								<option value="post_title" <c:if test="${filter.equals('post_title')}">selected</c:if>>제목</option>
 								<option value="post_content" <c:if test="${filter.equals('post_content')}">selected</c:if>>내용</option>
@@ -89,7 +88,7 @@
 										<input id="allCheck" type="checkbox" name="allCheck">
 									</th>
 									<th>NO</th>
-									<th>반려동물ID</th>
+									<c:if test="${board == 2}"><th>반려동물ID</th></c:if>
 									<th>작성자명</th>
 									<th>게시물명</th>
 									<th>등록일</th>
@@ -104,7 +103,7 @@
 											<input name="rowCheck" type="checkbox" value="${cl.cb_id}">			
 										</td>
 										<td>${cl.cb_id}</td>
-										<td><a href="">${cl.mp_id}</a></td>
+										<c:if test="${board == 2}"><td><a href="">${cl.mp_id}</a></td></c:if>
 										<td><a href="">${cl.m_name}</a></td>
 										<td><a href="/admin/${classify}/${cl.cb_id}">${cl.title}</a></td>
 										<td>${cl.reg_date}</td>
@@ -184,7 +183,7 @@
 	        </button>
 	      </div>
 		  <form id="postForm">
-		  	  <input type="hidden" name="classify" value="2">
+		  	  <input type="hidden" name="classify" value="${board}">
 		      <div class="modal-body">
 		          <div class="input-group mb-2">
 		          	<div class="input-group-prepend">
@@ -192,12 +191,16 @@
 		            </div>
 		            <input type="text" class="form-control" name="title" required>
 		          </div>
-		          <div class="input-group mb-2">
-		          	<div class="input-group-prepend">
-		            	<span class="input-group-text"><a href="" target="_blank">반려동물ID</a></span>
-		            </div>
-		            <input type="text" class="form-control" name="mp_id" required>
-		          </div>
+		          
+		          <%-- 일상 게시판일 때만 반려동물 ID 입력 --%>
+		          <c:if test="${board == 2}">
+			          <div class="input-group mb-2">
+			          	<div class="input-group-prepend">
+			            	<span class="input-group-text"><a href="" target="_blank">반려동물ID</a></span>
+			            </div>
+			            <input type="text" class="form-control" name="mp_id" required>
+			          </div>
+		          </c:if>
 		          
 		          <div class="form-group">
 		            <textarea class="summernote" name="content"></textarea>
@@ -274,9 +277,11 @@
 				});
 			}
 		}
-    	
+		url = new URL(location.origin + location.pathname);
+		console.log(url.toString());
     	function redirectPage(pageNo) {
     		url = new URL(location.origin + location.pathname);
+    		
     		<c:if test="${filter != null}">
     			url.searchParams.set('filter', "${filter}");
     		</c:if>
@@ -388,10 +393,11 @@
 		OrderDate.push("2022-11-04");
 		Earnings.push("4"); */
 		
-		<c:forEach items="${postCountBy7Day}" var="List">
-			OrderDate.push("${list.a_date}");
-			Earnings.push("${list.a}");
+		<c:forEach items="${postCountBy7Day}" var="list">
+			OrderDate.push("${list.selected_date}");
+			Earnings.push("${list.postCnt}");
 		</c:forEach> 
+		
 		var myLineChart = new Chart(ctx, {
 			type: 'line',
 			data: {

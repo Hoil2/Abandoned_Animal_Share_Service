@@ -29,13 +29,13 @@ public class AdminCommunityServiceImpl implements AdminCommunityService {
 
 	// 7일간 게시물 등록 개수 가져오기
 	@Override
-	public Map<String, Integer> getPostCountBy7Day() {
+	public List<Map<String, Object>> getPostCountBy7Day() {
 		return adminCommunityDAO.getPostCountBy7Day();
 	}
 
 	// 7일간 특정 게시판의 게시물 등록 개수 가져오기
 	@Override
-	public Map<String, Integer> getPostCountBy7Day(int classify) {
+	public List<Map<String, Object>> getPostCountBy7Day(int classify) {
 		return adminCommunityDAO.getPostCountBy7Day(classify);
 	}
 

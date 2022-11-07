@@ -41,14 +41,14 @@ public class AdminCommunityDAOImpl implements AdminCommunityDAO {
 
 	// 7일간 게시물 등록 개수 가져오기
 	@Override
-	public Map<String, Integer> getPostCountBy7Day() {
-		return sql.selectOne(namespace + ".getPostCountBy7Day");
+	public List<Map<String, Object>> getPostCountBy7Day() {
+		return sql.selectList(namespace + ".getPostCountBy7Day");
 	}
 
 	// 7일간 특정 게시판의 게시물 등록 개수 가져오기
 	@Override
-	public Map<String, Integer> getPostCountBy7Day(int classify) {
-		return sql.selectOne(namespace + ".getPostCountByClassifyAnd7Day", classify);
+	public List<Map<String, Object>> getPostCountBy7Day(int classify) {
+		return sql.selectList(namespace + ".getPostCountByClassifyAnd7Day", classify);
 	}
 
 	// 오늘의 게시물 등록 개수 가져오기

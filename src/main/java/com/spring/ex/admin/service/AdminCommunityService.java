@@ -15,10 +15,10 @@ public interface AdminCommunityService {
 	public int getAdminBoardPageCount(String search, String filter, int classify);
 	
 	// 7일간 게시물 등록 개수 가져오기
-	public Map<String, Integer> getPostCountBy7Day();
+	public List<Map<String, Object>> getPostCountBy7Day();
 	
 	// 7일간 특정 게시판의 게시물 등록 개수 가져오기
-	public Map<String, Integer> getPostCountBy7Day(int classify);
+	public List<Map<String, Object>> getPostCountBy7Day(int classify);
 	
 	// 오늘의 게시물 등록 개수 가져오기
 	public int getPostCountOfToday();

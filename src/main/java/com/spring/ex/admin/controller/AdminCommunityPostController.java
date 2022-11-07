@@ -55,7 +55,7 @@ public class AdminCommunityPostController {
 		if(cb_id == null) {
 			CommunityDTO community = new CommunityDTO();
 			community.setM_id(member.getM_id());
-			community.setMp_id(Integer.parseInt(mp_id));
+			if(mp_id != null) community.setMp_id(Integer.parseInt(mp_id));
 			community.setTitle(title);
 			community.setContent(content);
 			community.setClassify(Integer.parseInt(classify));
@@ -64,7 +64,7 @@ public class AdminCommunityPostController {
 		// 기존 게시물 수정
 		else {
 			CommunityDTO community = communityService.getPageDetail(Integer.parseInt(cb_id)); 
-			community.setMp_id(Integer.parseInt(mp_id));
+			if(mp_id != null) community.setMp_id(Integer.parseInt(mp_id));
 			community.setTitle(title);
 			community.setContent(title);
 			community.setClassify(Integer.parseInt(classify));

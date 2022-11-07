@@ -73,7 +73,7 @@ public class CommunityController {
 	private EmailService emailService;
 	
 	// 지식백과 게시판 페이지
-	@RequestMapping("/dictionary")
+	@RequestMapping("/community/dictionary")
 	public String dictionary(Model model, HttpServletRequest request) throws Exception {
 		// null 값으로 mybatis에 들어가면 문자열과 비교하게 되므로 오류남. 따라서 null이면 ""으로 변환
 		String filter = request.getParameter("filter");
@@ -118,7 +118,7 @@ public class CommunityController {
 	}
 	
 	// 지식백과 상세 페이지
-	@RequestMapping("/dictionary/{pageNo}")
+	@RequestMapping("/community/dictionary/{pageNo}")
 	public String dictionaryDetail(Model model, HttpServletRequest request, @PathVariable("pageNo") int pageNo) throws Exception {
 		CommunityDTO pageDetail = communityService.getPageDetail(pageNo);
 		communityService.addHitToBoardPage(pageNo);
@@ -354,7 +354,7 @@ public class CommunityController {
 		CommunityDTO communityDTO = new CommunityDTO();
 		communityDTO.setCb_id(Integer.parseInt(pageNo));
 		communityDTO.setM_id(memberDTO.getM_id());
-		communityDTO.setMp_id(Integer.parseInt(mp_id));
+		if(mp_id != null) communityDTO.setMp_id(Integer.parseInt(mp_id));
 		communityDTO.setTitle(title);
 		communityDTO.setContent(content);
 		communityDTO.setClassify(classify);

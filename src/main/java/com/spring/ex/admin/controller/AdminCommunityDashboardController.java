@@ -36,9 +36,26 @@ public class AdminCommunityDashboardController {
 	//-------------------------------
 	// 관리자 대시보드 페이지 
 	//-------------------------------
-	@RequestMapping("/admin/{classify}")
-	public String communityDashboardPage(HttpServletRequest request, Model model, @PathVariable("classify") String classify) throws Exception {
-		
+	
+	// 지식백과 대시보드 페이지
+	@RequestMapping("/admin/community/dictionary")
+	public String dictionaryDashboardPage(HttpServletRequest request, Model model) throws Exception {
+		return communityDashboardPage(request, model, "dictionary");
+	}
+	
+	// 일상 대시보드 페이지
+	@RequestMapping("/admin/community/daily")
+	public String dailyDashboardPage(HttpServletRequest request, Model model) throws Exception {
+		return communityDashboardPage(request, model, "daily");
+	}
+	
+	// 정보공유 대시보드 페이지
+	@RequestMapping("/admin/community/info")
+	public String infoDashboardPage(HttpServletRequest request, Model model) throws Exception {
+		return communityDashboardPage(request, model, "info");
+	}
+	
+	public String communityDashboardPage(HttpServletRequest request, Model model, String classify) throws Exception {
 		// 커뮤니티 url 유효성 검사
 		if(!isClassifyVaild(classify))
 		{
@@ -65,26 +82,27 @@ public class AdminCommunityDashboardController {
 		
 		// 게시물 가져오기
 		List<Map<String, Object>> communityList = adminCommunityService.getAdminBoardPage(search, filter, board, pagingService.getNowPage(), pageSize);
+		List<Map<String, Object>> postCountBy7Day = adminCommunityService.getPostCountBy7Day(board);
+		System.out.println(postCountBy7Day);
+		
 		
 		model.addAttribute("communityList", communityList);
 		model.addAttribute("Paging", pagingService.getPaging());
 		model.addAttribute("classify", classify);
+		model.addAttribute("board", board);
 		model.addAttribute("filter", filter);
 		model.addAttribute("search", search);
 		
 		model.addAttribute("postCountOfToday", adminCommunityService.getPostCountOfToday(board));
-		model.addAttribute("postCountBy7Day", adminCommunityService.getPostCountBy7Day(board));
+		model.addAttribute("postCountBy7Day", postCountBy7Day);
 		
-		if(board == 1) return "admin/community/dictionary_dashboard";
-		else if(board == 2) return "admin/community/daily_dashboard";
-		else if(board == 3) return "admin/community/info_dashboard";
-		else return "error";
+		return "admin/community/community_dashboard";
 	}
 	
 	//-------------------------------
 	// 관리자 커뮤니티 상세 페이지
 	//-------------------------------
-	@RequestMapping("/admin/{classify}/{cb_id}")
+	@RequestMapping("/admin/community/{classify}/{cb_id}")
 	public String viewCommunity(HttpServletRequest request, Model model, @PathVariable("classify") String classify, @PathVariable("cb_id") int cb_id) throws Exception {
 		
 		// 커뮤니티 url 유효성 검사

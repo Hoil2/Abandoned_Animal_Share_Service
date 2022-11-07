@@ -58,13 +58,13 @@
 			<tbody>
 				<c:forEach var="list" items="${clist}"> 
 					<tr>
-						<td><a href="/dictionary/${list.cb_id}">${list.title}</a></td> <td>${list.name}</td> <td>${list.reg_date}</td> <td>${list.hit}</td>
+						<td><a href="/community/dictionary/${list.cb_id}">${list.title}</a></td> <td>${list.name}</td> <td>${list.reg_date}</td> <td>${list.hit}</td>
 					</tr>
 				</c:forEach>
 			</tbody>
 		</table>
 		
-		<c:if test="${member.grade == 'manager'}">
+		<c:if test="${member.grade == 'Admin'}">
 			<div class="d-flex flex-row-reverse pb-3">
 				<a class="btn border border-2" href="/writePost?classify=1">글쓰기</a>
 			</div>		
@@ -75,10 +75,10 @@
 			<!-- 첫 페이지면 Disabled 아니라면 Enabled -->
 			<c:choose>
 				<c:when test="${Paging.pageNo == Paging.firstPageNo }">
-					<a class="disabledLink" href="/dictionary?filter=${filter}&keyword=${keyword}&page=${Paging.prevPageNo}"><i class="fa fa-angle-left"></i></a>
+					<a class="disabledLink" href="/community/dictionary?filter=${filter}&keyword=${keyword}&page=${Paging.prevPageNo}"><i class="fa fa-angle-left"></i></a>
 				</c:when>
 				<c:otherwise>
-					<a class="page-link" href="/dictionary?filter=${filter}&keyword=${keyword}&page=${Paging.prevPageNo}"><i class="fa fa-angle-left"></i></a>
+					<a class="page-link" href="/community/dictionary?filter=${filter}&keyword=${keyword}&page=${Paging.prevPageNo}"><i class="fa fa-angle-left"></i></a>
 				</c:otherwise>
 			</c:choose>
 			
@@ -86,11 +86,11 @@
 	<c:forEach var="i" begin="${Paging.startPageNo }" end="${Paging.endPageNo }" step="1">
 		<c:choose>
 			<c:when test="${i == Paging.pageNo }">
-				<a class="active disabledLink" href="/dictionary?filter=${filter}&keyword=${keyword}&page=${i}"><c:out value="${i}"/></a>
+				<a class="active disabledLink" href="/community/dictionary?filter=${filter}&keyword=${keyword}&page=${i}"><c:out value="${i}"/></a>
 			</c:when>
 			
 			<c:otherwise>
-				<a href="/dictionary?filter=${filter}&keyword=${keyword}&page=${i}"><c:out value="${i}"/></a>
+				<a href="/community/dictionary?filter=${filter}&keyword=${keyword}&page=${i}"><c:out value="${i}"/></a>
 			</c:otherwise>
 		</c:choose>
 	</c:forEach>
@@ -98,10 +98,10 @@
 			<!-- 마지막 페이지면 Disabled 아니라면 Enabled -->
 			<c:choose>
 				<c:when test="${Paging.pageNo == Paging.finalPageNo }">
-					<a class="disabledLink" href="/dictionary?filter=${filter}&keyword=${keyword}&page=${Paging.nextPageNo}"><i class="fa fa-angle-right"></i></a>
+					<a class="disabledLink" href="/community/dictionary?filter=${filter}&keyword=${keyword}&page=${Paging.nextPageNo}"><i class="fa fa-angle-right"></i></a>
 				</c:when>
 				<c:otherwise>
-					<a href="/dictionary?filter=${filter}&keyword=${keyword}&page=${Paging.nextPageNo}"><i class="fa fa-angle-right"></i></a>
+					<a href="/community/dictionary?filter=${filter}&keyword=${keyword}&page=${Paging.nextPageNo}"><i class="fa fa-angle-right"></i></a>
 				</c:otherwise>
 			</c:choose>
 		</div>

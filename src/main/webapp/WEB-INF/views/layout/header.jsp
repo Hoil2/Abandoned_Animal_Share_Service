@@ -32,7 +32,7 @@
 							</li>
 							<li class="dropdown"><a href="/communityLostBoard" id="twayFont">실종동물</a>
 							</li>
-							<li class="dropdown"><a href="/dictionary" id="twayFont">지식백과</a>
+							<li class="dropdown"><a href="/community/dictionary" id="twayFont">지식백과</a>
 							</li>
 							<li class="dropdown"><a href="/community/daily" id="twayFont">소통해요</a>
 								<ul>

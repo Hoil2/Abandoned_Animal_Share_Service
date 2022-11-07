@@ -40,7 +40,7 @@
 	
 	<!-- 7일간 게시물 등록 개수 가져오기 -->
 	<select id="getPostCountBy7Day" resultType="HashMap">
-		SELECT b.selected_date, IFNULL(a.cnt, 0)
+		SELECT b.selected_date, IFNULL(a.cnt, 0) AS postCnt
 		FROM
 			( 
 				SELECT reg_date AS yyyymmdd, COUNT(*) cnt 
@@ -64,7 +64,7 @@
 	
 	<!-- 7일간 특정 게시판의 게시물 등록 개수 가져오기 -->
 	<select id="getPostCountByClassifyAnd7Day" resultType="HashMap">
-		SELECT b.selected_date, IFNULL(a.cnt, 0)
+		SELECT b.selected_date, IFNULL(a.cnt, 0) AS postCnt
 		FROM
 			( 
 				SELECT reg_date AS yyyymmdd, COUNT(*) cnt 
