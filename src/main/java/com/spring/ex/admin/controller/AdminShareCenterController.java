@@ -69,8 +69,8 @@ public class AdminShareCenterController {
 		map.put("searchTheme", session.getAttribute("searchTheme"));
 		map.put("alignment", session.getAttribute("alignment"));
 		
-		
-		pagingService = new PagingService(request, service.getShareCenterBoardViewTotalCount(map), 10);
+		int totolCount = service.getShareCenterBoardViewTotalCount(map);
+		pagingService = new PagingService(request, totolCount, 10);
 		map.put("Page", pagingService.getNowPage());
 		map.put("PageSize", 10);
 		
@@ -78,6 +78,7 @@ public class AdminShareCenterController {
 		List<ShareCenterDTO> slist = service.getShareCenterBoardPage(map);
 		List<String> seletedBoxList = service.getShareCenterAreaList();
 		
+		model.addAttribute("sTotolCount", totolCount);
 		model.addAttribute("slist", slist);
 		model.addAttribute("Paging", pagingService.getPaging());
 		model.addAttribute("areaList", seletedBoxList);

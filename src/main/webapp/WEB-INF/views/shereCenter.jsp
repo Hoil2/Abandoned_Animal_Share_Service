@@ -16,62 +16,26 @@
 <script>
 $(document).ready(function() {
 	
-	if(sessionStorage.getItem("searchTheme")==null){
-		sessionStorage.setItem("searchTheme", "allTheme"); 
-		$("#searchTheme").val("allTheme").prop("selected", true);
-	}else{
-		$("#searchTheme").val(sessionStorage.getItem("searchTheme")).prop("selected", true);
-	}
-	
-	if(sessionStorage.getItem("searchArea")==null){
-		sessionStorage.setItem("searchArea", "allArea"); 
-		$("#searchArea").val("allArea").prop("selected", true);
-	}else{
-		$("#searchArea").val(sessionStorage.getItem("searchArea")).prop("selected", true);
-	}
-	
-	if(sessionStorage.getItem("category2")==null){
-		$("#category2").val("alignmentDay").prop("selected", true);
-	}else{
-		$("#category2").val(sessionStorage.getItem("category2")).prop("selected", true);
-	}
-	
-	function pageRefresh() {
-		$.ajax({
-			url: "shereCenterPage",
-			type: "GET",
-			data: {'alignment':$("#category2").val(), 'searchTheme': $("#searchTheme").val(), 'searchArea':$("#searchArea").val()},
-			success: function(data) {
-				//location.href = "shereCenterPage?alignment="+sessionStorage.getItem("category2");
-				//location.href  = "shereCenterPage?searchTheme=" +sessionStorage.getItem("searchTheme") + "&searchArea=" + sessionStorage.getItem("searchArea") + "&alignment="+ sessionStorage.getItem("category2");
-				var shereCenterUrl = "shereCenterPage?searchTheme=" +sessionStorage.getItem("searchTheme") + "&searchArea=" + sessionStorage.getItem("searchArea") + "&alignment="+ sessionStorage.getItem("category2");
-				
-				$("#slistDiv").load(shereCenterUrl + " #slistDiv");
-				$("#pagination").load(shereCenterUrl + " #pagination");
-			}
-		});
-	}
-	
 	$("#category2").on("change", function() {
-		console.log($("#category2").val());
-		sessionStorage.setItem("category2", $(this).val()); 
-
-		pageRefresh();
-		console.log("2"+sessionStorage.getItem("category2"));
+		//location.href = "shereCenterPage?page=1&searchTheme=" + $("#searchTheme").val() + "&searchArea=" + $("#searchArea").val()  + "&alignment=" + $("#category2").val();
+		shereCenterUrl = "shereCenterPage?page=1&searchTheme=" +$("#searchTheme").val() + "&searchArea=" + $("#searchArea").val() + "&alignment=" + $("#category2").val();
+		$("#slistDiv").load(shereCenterUrl + " #slistDiv");
+		//$("#pagination").load(shereCenterUrl + " #pagination");
 	});
 	
 	$("#searchTheme").on("change", function() {
-		pageRefresh();
-		console.log("2")
-		console.log($("#searchTheme").val());
-		sessionStorage.setItem("searchTheme", $(this).val()); 
+		//pageRefresh();
+		//location.href = "shereCenterPage?page=1&searchTheme=" + $("#searchTheme").val() + "&searchArea=" + $("#searchArea").val()  + "&alignment=" + $("#category2").val();
+		shereCenterUrl = "shereCenterPage?page=1&searchTheme=" +$("#searchTheme").val() + "&searchArea=" + $("#searchArea").val() + "&alignment=" + $("#category2").val();
+		$("#slistDiv").load(shereCenterUrl + " #slistDiv");
+		//$("#pagination").load(shereCenterUrl + " #pagination");
 	});
 	
 	$("#searchArea").on("change", function() {
-		pageRefresh();
-		sessionStorage.setItem("searchArea", $(this).val()); 
-		console.log($("#searchArea").val());
-		console.log("3")
+		//pageRefresh();
+		shereCenterUrl = "shereCenterPage?page=1&searchTheme=" +$("#searchTheme").val() + "&searchArea=" + $("#searchArea").val() + "&alignment=" + $("#category2").val();
+		$("#slistDiv").load(shereCenterUrl + " #slistDiv");
+		//$("#pagination").load(shereCenterUrl + " #pagination");
 	});
 	
 });
@@ -110,10 +74,10 @@ $(document).ready(function() {
 					</div>
 					<div class="col-lg-1 col-md-1" style="padding: 0px 0px;">
 						<select class="form-control" id="searchTheme">
-							<option value="allTheme" >전체</option>
-							<option value="개">개</option>
-							<option value="고양이">고양이</option>
-							<option value="기타축종">기타</option>
+							<option value="allTheme" <c:if test="${searchTheme eq 'allTheme'}"> selected </c:if>>전체</option>
+							<option value="개" <c:if test="${searchTheme eq '개'}"> selected </c:if>>개</option>
+							<option value="고양이" <c:if test="${searchTheme eq '고양이'}"> selected </c:if>>고양이</option>
+							<option value="기타축종" <c:if test="${searchTheme eq '기타축종'}"> selected </c:if>>기타</option>
 						</select>
 					</div>
 					<div class="col-lg-1 col-md-1" align="right" style="padding: 0px 10px 0px 0px;">
@@ -121,11 +85,11 @@ $(document).ready(function() {
 					</div>
 					<div class="col-lg-1 col-md-1" style="padding: 0px 0px;">
 						<select class="form-control" id="searchArea" name="searchArea">
-							<option value="allArea" >전체</option>
+							<option value="allArea" <c:if test="${searchArea eq 'allArea'}"> selected </c:if>>전체</option>
 							<c:forEach var="areaList" items="${areaList}">
 								<c:choose>
 									<c:when test="${areaList.notice_no ne null}">
-										<option value="<c:out value='${areaList.notice_no}' />"><c:out value="${areaList.notice_no}" /></option>
+										<option value="${areaList.notice_no}" <c:if test="${searchArea eq areaList.notice_no}"> selected </c:if>>${areaList.notice_no}</option>
 									</c:when>
 								</c:choose>
 							</c:forEach>
@@ -144,91 +108,98 @@ $(document).ready(function() {
 				</div>
 				<div id="slistDiv">
 					<div class="row" >
-						<c:forEach var="slist" items="${slist}">
-						<div class="col-lg-3 col-md-6">
-							<div class="tour-one__single" >
-								<div class="tour-one__image">
-									<c:choose>
-										<c:when test="${slist.popfile eq null}">
-											<a href="#">
-												<img src='<c:url value="/resources/images/noImage.png"/>' width="200" height="200">
-											</a>
-										</c:when>
-										<c:otherwise>
-											<img src='<c:url value="${slist.popfile}"/>' alt="" width="200" height="200" onclick="location.href='shereCenterReadPage?desertion_no=${slist.desertion_no}'" >
-										</c:otherwise>
-									</c:choose>
-								</div>
-								<div class="tour-one__content" style="padding: 10px; ">
-										<div class="row" >
-											<div class="col-lg-12" align="center">
-												<font size="2px;"><c:out value="${slist.kind_cd}" /></font>
-												<c:choose>
-													<c:when test="${slist.sex_cd eq 'M'}"> 
-														<font size="3px;" color="Blue">♂</font>
-													</c:when>
-													<c:when test="${slist.sex_cd eq 'F'}"> 
-														<font size="3px;" color="#FF7171;">♀</font>
-													</c:when>
-													<c:otherwise> 
-														<font size="1px;">(미상)</font>
-													 </c:otherwise>
-												</c:choose>
-											</div>
+						<c:if test="${sTotolCount ne 0}">
+							<c:forEach var="slist" items="${slist}">
+								<div class="col-lg-3 col-md-6">
+									<div class="tour-one__single" >
+										<div class="tour-one__image">
+											<c:choose>
+												<c:when test="${slist.popfile eq null}">
+													<a href="#">
+														<img src='<c:url value="/resources/images/noImage.png"/>' width="200" height="200">
+													</a>
+												</c:when>
+												<c:otherwise>
+													<img src='<c:url value="${slist.popfile}"/>' alt="" width="200" height="200" onclick="location.href='shereCenterReadPage?desertion_no=${slist.desertion_no}'" >
+												</c:otherwise>
+											</c:choose>
 										</div>
-										<div class="row">
-											<div class="col-lg-5">
-												<font size="1px;" >
-													💕 <c:out value="${slist.good}" />&nbsp;
-													<i class="far fa-eye"></i> <c:out value="${slist.hit}"/>
-												</font>
-											
-											</div>
-											<div class="col-lg-7" align="right">
-												<font size="1px;">발견일 : <c:out value="${slist.happen_dt}"/></font>
-											</div>
+										<div class="tour-one__content" style="padding: 10px; ">
+												<div class="row" >
+													<div class="col-lg-12" align="center">
+														<font size="2px;"><c:out value="${slist.kind_cd}" /></font>
+														<c:choose>
+															<c:when test="${slist.sex_cd eq 'M'}"> 
+																<font size="3px;" color="Blue">♂</font>
+															</c:when>
+															<c:when test="${slist.sex_cd eq 'F'}"> 
+																<font size="3px;" color="#FF7171;">♀</font>
+															</c:when>
+															<c:otherwise> 
+																<font size="1px;">(미상)</font>
+															 </c:otherwise>
+														</c:choose>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-lg-5">
+														<font size="1px;" >
+															💕 <c:out value="${slist.good}" />&nbsp;
+															<i class="far fa-eye"></i> <c:out value="${slist.hit}"/>
+														</font>
+													
+													</div>
+													<div class="col-lg-7" align="right">
+														<font size="1px;">발견일 : <c:out value="${slist.happen_dt}"/></font>
+													</div>
+												</div>
 										</div>
+									</div>
 								</div>
-							</div>
-						</div>
-						</c:forEach>
+							</c:forEach>
+						</c:if>
+						<c:if test="${sTotolCount eq 0}">
+							<div align="center" class="col-lg-12" style="margin:  25% 0;">등록된 유기동물 정보가 없습니다</div>
+						</c:if>
 					</div>
+					<c:if test="${Paging.totalCount > 12}">
+						<div class="post-pagination" id="pagination">
+							<!-- 첫 페이지면 Disabled 아니라면 Enabled -->
+							<c:choose>
+								<c:when test="${Paging.pageNo eq Paging.firstPageNo }">
+									<a class="disabledLink" href="shereCenterPage?page=${Paging.prevPageNo}"><i class="fa fa-angle-left"></i></a>
+								</c:when>
+								<c:otherwise>
+									<a class="page-link" href="shereCenterPage?page=${Paging.prevPageNo}&searchTheme=${searchTheme}&searchArea=${searchArea}&alignment=${alignment}"><i class="fa fa-angle-left"></i></a>
+								</c:otherwise>
+							</c:choose>
+							<!-- 페이지 갯수만큼 버튼 생성 -->
+							<c:forEach var="i" begin="${Paging.startPageNo }" end="${Paging.endPageNo }" step="1">
+								<c:choose>
+									<c:when test="${i eq Paging.pageNo }">
+										<a class="active disabledLink" href="shereCenterPage?page=${i}"><c:out value="${i }"/></a>
+									</c:when>
+									<c:otherwise>
+										<a href="shereCenterPage?page=${i}&searchTheme=${searchTheme}&searchArea=${searchArea}&alignment=${alignment}"><c:out value="${i }"/></a>
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
+							<!-- 마지막 페이지면 Disabled 아니라면 Enabled -->
+							<c:choose>
+								<c:when test="${Paging.pageNo eq Paging.finalPageNo }">
+									<a class="disabledLink" href="shereCenterPage?page=${Paging.nextPageNo}&searchTheme=${searchTheme}&searchArea=${searchArea}&alignment=${alignment}"><i class="fa fa-angle-right"></i></a>
+								</c:when>
+								<c:otherwise>
+									<a href="shereCenterPage?page=${Paging.nextPageNo}"><i class="fa fa-angle-right"></i></a>
+								</c:otherwise>
+							</c:choose>
+						</div>
+					</c:if>
 				</div>
 			</div>
 		</section>
 		
-		<!-- 게시글 페이징 처리(기준 10개) -->
-		<div class="post-pagination" id="pagination">
-			<!-- 첫 페이지면 Disabled 아니라면 Enabled -->
-			<c:choose>
-				<c:when test="${Paging.pageNo eq Paging.firstPageNo }">
-					<a class="disabledLink" href="shereCenterPage?page=${Paging.prevPageNo}"><i class="fa fa-angle-left"></i></a>
-				</c:when>
-				<c:otherwise>
-					<a class="page-link" href="shereCenterPage?page=${Paging.prevPageNo}&searchTheme=${searchTheme}&searchArea=${searchArea}&alignment=${alignment}"><i class="fa fa-angle-left"></i></a>
-				</c:otherwise>
-			</c:choose>
-			<!-- 페이지 갯수만큼 버튼 생성 -->
-			<c:forEach var="i" begin="${Paging.startPageNo }" end="${Paging.endPageNo }" step="1">
-				<c:choose>
-					<c:when test="${i eq Paging.pageNo }">
-						<a class="active disabledLink" href="shereCenterPage?page=${i}"><c:out value="${i }"/></a>
-					</c:when>
-					<c:otherwise>
-						<a href="shereCenterPage?page=${i}&searchTheme=${searchTheme}&searchArea=${searchArea}&alignment=${alignment}"><c:out value="${i }"/></a>
-					</c:otherwise>
-				</c:choose>
-			</c:forEach>
-			<!-- 마지막 페이지면 Disabled 아니라면 Enabled -->
-			<c:choose>
-				<c:when test="${Paging.pageNo eq Paging.finalPageNo }">
-					<a class="disabledLink" href="shereCenterPage?page=${Paging.nextPageNo}&searchTheme=${searchTheme}&searchArea=${searchArea}&alignment=${alignment}"><i class="fa fa-angle-right"></i></a>
-				</c:when>
-				<c:otherwise>
-					<a href="shereCenterPage?page=${Paging.nextPageNo}"><i class="fa fa-angle-right"></i></a>
-				</c:otherwise>
-			</c:choose>
-		</div>
+
 		<br>
 		<jsp:include page="layout/footer.jsp"/>
 	</div>

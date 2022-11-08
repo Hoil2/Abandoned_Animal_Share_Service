@@ -15,63 +15,18 @@
 <title>멍멍냥냥 관리자</title>
 <script>
 $(document).ready(function() {
-	
-	if(sessionStorage.getItem("searchTheme")==null){
-		sessionStorage.setItem("searchTheme", "allTheme"); 
-		$("#searchTheme").val("allTheme").prop("selected", true);
-	}else{
-		$("#searchTheme").val(sessionStorage.getItem("searchTheme")).prop("selected", true);
-	}
-	
-	if(sessionStorage.getItem("searchArea")==null){
-		sessionStorage.setItem("searchArea", "allArea"); 
-		$("#searchArea").val("allArea").prop("selected", true);
-	}else{
-		$("#searchArea").val(sessionStorage.getItem("searchArea")).prop("selected", true);
-	}
-	
-	if(sessionStorage.getItem("category2")==null){
-		$("#category2").val("alignmentDay").prop("selected", true);
-	}else{
-		$("#category2").val(sessionStorage.getItem("category2")).prop("selected", true);
-	}
-	
-	function pageRefresh() {
-		$.ajax({
-			url: "shereCenter",
-			type: "GET",
-			data: {'alignment':$("#category2").val(), 'searchTheme': $("#searchTheme").val(), 'searchArea':$("#searchArea").val()},
-			success: function(data) {
-				//location.href = "shereCenterPage?alignment="+sessionStorage.getItem("category2");
-				//location.href  = "shereCenterPage?searchTheme=" +sessionStorage.getItem("searchTheme") + "&searchArea=" + sessionStorage.getItem("searchArea") + "&alignment="+ sessionStorage.getItem("category2");
-				var shereCenterUrl = "shereCenter?searchTheme=" +sessionStorage.getItem("searchTheme") + "&searchArea=" + sessionStorage.getItem("searchArea") + "&alignment="+ sessionStorage.getItem("category2");
-				
-				$("#slistDiv").load(shereCenterUrl + " #slistDiv");
-				$("#pagination").load(shereCenterUrl + " #pagination");
-			}
-		});
-	}
-	
 	$("#category2").on("change", function() {
-		console.log($("#category2").val());
-		sessionStorage.setItem("category2", $(this).val()); 
-
-		pageRefresh();
-		console.log("2"+sessionStorage.getItem("category2"));
+		location.href = "shereCenter?page=1&searchTheme=" + $("#searchTheme").val() + "&searchArea=" + $("#searchArea").val()  + "&alignment=" + $("#category2").val();
 	});
 	
 	$("#searchTheme").on("change", function() {
-		pageRefresh();
-		console.log("2")
-		console.log($("#searchTheme").val());
-		sessionStorage.setItem("searchTheme", $(this).val()); 
+		//pageRefresh();
+		location.href = "shereCenter?page=1&searchTheme=" + $("#searchTheme").val() + "&searchArea=" + $("#searchArea").val()  + "&alignment=" + $("#category2").val();
 	});
 	
 	$("#searchArea").on("change", function() {
-		pageRefresh();
-		sessionStorage.setItem("searchArea", $(this).val()); 
-		console.log($("#searchArea").val());
-		console.log("3")
+		//pageRefresh();
+		location.href = "shereCenter?page=1&searchTheme=" +$("#searchTheme").val() + "&searchArea=" + $("#searchArea").val() + "&alignment=" + $("#category2").val();
 	});
 	
 });
@@ -132,7 +87,7 @@ $(document).ready(function() {
 											</div>
 										</div>
 										<div class="col-auto">
-											<i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+											<i class="fas fa-calendar-times fa-2x text-gray-300"></i>
 										</div>
 									</div>
 								</div>
@@ -147,7 +102,7 @@ $(document).ready(function() {
 											<div class="h5 mb-0 font-weight-bold text-gray-800">${ShelterCount} 개</div>
 										</div>
 										<div class="col-auto">
-											<i class="fas fa-comments fa-2x text-gray-300"></i>
+											<i class="fas fa-hospital-alt fa-2x text-gray-300"></i>
 										</div>
 									</div>
 								</div>
@@ -162,7 +117,7 @@ $(document).ready(function() {
 											<div class="h5 mb-0 font-weight-bold text-gray-800">${ApiRenewalDate} </div>
 										</div>
 										<div class="col-auto">
-											<i class="fas fa-calendar fa-2x text-gray-300"></i>
+											<button style="border:none; background-color: white;"><i class="fas fa-sync-alt fa-2x text-gray-300"></i></button>
 										</div>
 									</div>
 								</div>
@@ -190,7 +145,7 @@ $(document).ready(function() {
 											</div>
 										</div>
 										<div class="col-auto">
-											<i class="fas fa-cat fa-2x text-gray-300"></i>
+											<i class="fas fa-dog fa-2x text-gray-300"></i>
 										</div>
 									</div>
 								</div>
@@ -209,7 +164,7 @@ $(document).ready(function() {
 											</div>
 										</div>
 										<div class="col-auto">
-											<i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+											<i class="fas fa-baby-carriage fa-2x text-gray-300"></i>
 										</div>
 									</div>
 								</div>
@@ -224,7 +179,7 @@ $(document).ready(function() {
 											<div class="h5 mb-0 font-weight-bold text-gray-800">${AnimalReturnCount} 건</div>
 										</div>
 										<div class="col-auto">
-											<i class="fas fa-comments fa-2x text-gray-300"></i>
+											<i class="fas fa-user-friends fa-2x text-gray-300"></i>
 										</div>
 									</div>
 								</div>
@@ -239,7 +194,7 @@ $(document).ready(function() {
 											<div class="h5 mb-0 font-weight-bold text-gray-800">${AnimalDeathCount} 건 </div>
 										</div>
 										<div class="col-auto">
-											<i class="fas fa-calendar fa-2x text-gray-300"></i>
+											<i class="fas fa-skull fa-2x text-gray-300"></i>
 										</div>
 									</div>
 								</div>
@@ -271,10 +226,10 @@ $(document).ready(function() {
 							</div>
 							<div class="col-lg-3 col-md-3" style="padding: 0px 0px;">
 								<select class="form-control" id="searchTheme">
-									<option value="allTheme" >전체</option>
-									<option value="개">개</option>
-									<option value="고양이">고양이</option>
-									<option value="기타축종">기타</option>
+									<option value="allTheme" <c:if test="${searchTheme eq 'allTheme'}"> selected </c:if>>전체</option>
+									<option value="개" <c:if test="${searchTheme eq '개'}"> selected </c:if>>개</option>
+									<option value="고양이" <c:if test="${searchTheme eq '고양이'}"> selected </c:if>>고양이</option>
+									<option value="기타축종" <c:if test="${searchTheme eq '기타축종'}"> selected </c:if>>기타</option>
 								</select>
 							</div>
 							<div class="col-lg-2 col-md-2" align="right" style="padding: 0px 10px 0px 0px;">
@@ -282,11 +237,11 @@ $(document).ready(function() {
 							</div>
 							<div class="col-lg-3 col-md-3" style="padding: 0px 0px;">
 								<select class="form-control" id="searchArea" name="searchArea">
-									<option value="allArea" >전체</option>
+									<option value="allArea" <c:if test="${searchArea eq 'allArea'}"> selected </c:if>>전체</option>
 									<c:forEach var="areaList" items="${areaList}">
 										<c:choose>
 											<c:when test="${areaList.notice_no ne null}">
-												<option value="<c:out value='${areaList.notice_no}' />"><c:out value="${areaList.notice_no}" /></option>
+												<option value="${areaList.notice_no}" <c:if test="${searchArea eq areaList.notice_no}"> selected </c:if>>${areaList.notice_no}</option>
 											</c:when>
 										</c:choose>
 									</c:forEach>
@@ -304,101 +259,108 @@ $(document).ready(function() {
 							</div>
 						</div>
 					</div>
-                    <br>
-                    <div id="slistDiv">
-						<table class="table table-hover table-white">
-							<thead>
-								<tr>
-									<th>
-										<input id="allCheck" type="checkbox" name="allCheck">
-									</th>
-									<th><font size="3">No</font></th>
-									<th><font size="3">종</font></th>
-									<th><font size="3">나이</font></th>
-									<th><font size="3">성별</font></th>
-									<th><font size="3">지역</font></th>
-									<th><font size="3">상태</font></th>
-									<th><font size="3">기간</font></th>
-									<th><font size="3">조회수</font></th>
-									<th><font size="3">좋아요</font></th>
-								</tr>
-							</thead>
-							<tbody>
-								<c:forEach items="${slist}" var="slist">
+					<br>
+					<c:if test="${sTotolCount ne 0}">
+						<div id="slistDiv">
+							<table class="table table-hover table-white">
+								<thead>
 									<tr>
-										<td>
-											<input name="RowCheck" type="checkbox" value="${slist.desertion_no}">			
-										</td>
-										<td><font size="3">${slist.desertion_no}</font></td>
-										<td><font size="3"><c:out value="${slist.kind_cd}"></c:out></font></td>
-										<td><font size="3"><c:out value="${slist.age}"></c:out></font></td>
-										<c:choose>
-											<c:when test="${slist.sex_cd eq 'M'}"> 
-												<td><font size="3px;" color="Blue">♂</font></td>
-											</c:when>
-											<c:when test="${slist.sex_cd eq 'F'}"> 
-												<td><font size="3px;" color="#FF7171;">♀</font></td>
-											</c:when>
-											<c:otherwise> 
-												<td><font size="1px;">(미상)</font></td>
-											 </c:otherwise>
-										</c:choose>
-										<td><font size="3">${fn:substring(slist.notice_no,0,5)}</font></td>
-										<td><font size="3">${slist.process_state}</font></td>
-										<td><font size="3">${slist.notice_sdt} ~ ${slist.notice_edt} </font></td>
-										<td><font size="3">${slist.hit} </font></td>
-										<td><font size="3">${slist.good} </font></td>
+										<th>
+											<input id="allCheck" type="checkbox" name="allCheck">
+										</th>
+										<th><font size="3">No</font></th>
+										<th><font size="3">종</font></th>
+										<th><font size="3">나이</font></th>
+										<th><font size="3">성별</font></th>
+										<th><font size="3">지역</font></th>
+										<th><font size="3">상태</font></th>
+										<th><font size="3">기간</font></th>
+										<th><font size="3">조회수</font></th>
+										<th><font size="3">좋아요</font></th>
 									</tr>
-								</c:forEach>
-							</tbody>
-						</table>
-					</div>
-					<nav aria-label="Page navigation" id="pagination">
-						<ul class="pagination justify-content-center">
+								</thead>
+								<tbody>
+									<c:forEach items="${slist}" var="slist">
+										<tr>
+											<td>
+												<input name="RowCheck" type="checkbox" value="${slist.desertion_no}">			
+											</td>
+											<td><font size="3">${slist.desertion_no}</font></td>
+											<td><font size="3"><c:out value="${slist.kind_cd}"></c:out></font></td>
+											<td><font size="3"><c:out value="${slist.age}"></c:out></font></td>
+											<c:choose>
+												<c:when test="${slist.sex_cd eq 'M'}"> 
+													<td><font size="3px;" color="Blue">♂</font></td>
+												</c:when>
+												<c:when test="${slist.sex_cd eq 'F'}"> 
+													<td><font size="3px;" color="#FF7171;">♀</font></td>
+												</c:when>
+												<c:otherwise> 
+													<td><font size="1px;">(미상)</font></td>
+												 </c:otherwise>
+											</c:choose>
+											<td><font size="3">${fn:substring(slist.notice_no,0,5)}</font></td>
+											<td><font size="3">${slist.process_state}</font></td>
+											<td><font size="3">${slist.notice_sdt} ~ ${slist.notice_edt} </font></td>
+											<td><font size="3">${slist.hit} </font></td>
+											<td><font size="3">${slist.good} </font></td>
+										</tr>
+									</c:forEach>
+								</tbody>
+							</table>
+						</div>
+					</c:if>
+					<c:if test="${sTotolCount eq 0}">
+						<div align="center" class="col-lg-12" style="margin:  25% 0;">등록된 유기동물 정보가 없습니다</div>
+					</c:if>
 					
-							<!-- 첫 페이지면 Disabled 아니라면 Enabled -->
-							<c:choose>
-								<c:when test="${Paging.pageNo eq Paging.firstPageNo }">
-									<li class="page-item disabled">
-										<a class="page-link" href="shereCenter?page=${Paging.prevPageNo}">Previus</a>
-									</li>
-								</c:when>
-								<c:otherwise>
-									<li class="page-item">
-										<a class="page-link" href="shereCenter?page=${Paging.prevPageNo}&searchTheme=${searchTheme}&searchArea=${searchArea}&alignment=${alignment}">Previus</a>
-									</li>
-								</c:otherwise>
-							</c:choose>
-							<!-- 페이지 갯수만큼 버튼 생성 -->
-							<c:forEach var="i" begin="${Paging.startPageNo }" end="${Paging.endPageNo }" step="1">
+					<c:if test="${Paging.totalCount > 10}">
+						<nav aria-label="Page navigation" id="pagination">
+							<ul class="pagination justify-content-center">
+								<!-- 첫 페이지면 Disabled 아니라면 Enabled -->
 								<c:choose>
-									<c:when test="${i eq Paging.pageNo }">
+									<c:when test="${Paging.pageNo eq Paging.firstPageNo }">
 										<li class="page-item disabled">
-											<a class="page-link" href="shereCenter?page=${i}"><c:out value="${i }"/></a>
+											<a class="page-link" href="shereCenter?page=${Paging.prevPageNo}">Previus</a>
 										</li>
 									</c:when>
 									<c:otherwise>
 										<li class="page-item">
-											<a class="page-link" href="shereCenter?page=${i}&searchTheme=${searchTheme}&searchArea=${searchArea}&alignment=${alignment}"><c:out value="${i }"/></a>
+											<a class="page-link" href="shereCenter?page=${Paging.prevPageNo}&searchTheme=${searchTheme}&searchArea=${searchArea}&alignment=${alignment}">Previus</a>
 										</li>
 									</c:otherwise>
 								</c:choose>
-							</c:forEach>
-							<!-- 마지막 페이지면 Disabled 아니라면 Enabled -->
-							<c:choose>
-								<c:when test="${Paging.pageNo eq Paging.finalPageNo }">
-									<li class="page-item disabled">
-										<a class="page-link" href="shereCenter?page=${Paging.nextPageNo}">Next</a>
-									</li>
-								</c:when>
-								<c:otherwise>
-									<li class="page-item">
-										<a class="page-link" href="shereCenter?page=${Paging.nextPageNo}&searchTheme=${searchTheme}&searchArea=${searchArea}&alignment=${alignment}">Next</a>
-									</li>
-								</c:otherwise>
-							</c:choose>
-						</ul>
-					</nav>
+								<!-- 페이지 갯수만큼 버튼 생성 -->
+								<c:forEach var="i" begin="${Paging.startPageNo }" end="${Paging.endPageNo }" step="1">
+									<c:choose>
+										<c:when test="${i eq Paging.pageNo }">
+											<li class="page-item disabled">
+												<a class="page-link" href="shereCenter?page=${i}"><c:out value="${i }"/></a>
+											</li>
+										</c:when>
+										<c:otherwise>
+											<li class="page-item">
+												<a class="page-link" href="shereCenter?page=${i}&searchTheme=${searchTheme}&searchArea=${searchArea}&alignment=${alignment}"><c:out value="${i }"/></a>
+											</li>
+										</c:otherwise>
+									</c:choose>
+								</c:forEach>
+								<!-- 마지막 페이지면 Disabled 아니라면 Enabled -->
+								<c:choose>
+									<c:when test="${Paging.pageNo eq Paging.finalPageNo }">
+										<li class="page-item disabled">
+											<a class="page-link" href="shereCenter?page=${Paging.nextPageNo}">Next</a>
+										</li>
+									</c:when>
+									<c:otherwise>
+										<li class="page-item">
+											<a class="page-link" href="shereCenter?page=${Paging.nextPageNo}&searchTheme=${searchTheme}&searchArea=${searchArea}&alignment=${alignment}">Next</a>
+										</li>
+									</c:otherwise>
+								</c:choose>
+							</ul>
+						</nav>
+					</c:if>
 					
 				</div>
 				<!-- 본문 -->
