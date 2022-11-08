@@ -1,12 +1,12 @@
 package com.spring.ex.dao;
 
 import java.util.HashMap;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 
 import com.spring.ex.dto.MemberDTO;
 
@@ -45,5 +45,11 @@ public class MemberDAOImpl implements MemberDAO {
 	@Override
 	public MemberDTO getMemberByM_id(int m_id) throws Exception {
 		return sql.selectOne(namespcae + ".getMemberByM_id", m_id);
+	}
+
+	// 멤버 리스트 가져오기
+	@Override
+	public List<MemberDTO> getMemberList() {
+		return sql.selectList(namespcae + ".getMemberList");
 	}
 }

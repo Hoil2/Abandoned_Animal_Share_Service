@@ -23,73 +23,58 @@
 						<h1 class="h3 mb-0 text-gray-800">Member Management</h1>
 					</div>
 					<hr>
-					<div class="row">
-						<div class="col-sm-8">
-							<form action="/admin/memberSearchList" role="form" method="GET" class="form-inline">
-								<select class="form-control" id="searchCategory" name="searchCategory">
-									<option value="m_no">회원번호</option>
-									<option value="m_id">아이디</option>
-									<option value="m_name">이름</option>
-								</select>
-								<div class="col-sm-4">
-									<input type="text" id="searchKeyword " name="searchKeyword" placeholder="검색어를 입력하세요." class="form-control" required="required">
-									<button type="submit" class="btn px-3 btn-primary">
-										<i class="fas fa-search"></i>
-									</button>
-								</div>
-							</form>
-						</div>
+					<div class="row mb-3">
+						<form action="/admin/member" role="form" method="GET" class="form-inline">
+							<select class="form-control ml-3" id="searchCategory" name="searchCategory">
+								<option value="m_id" <c:if test="${searchCategory.equals('m_id')}">selected</c:if>>회원번호</option>
+								<option value="m_email" <c:if test="${searchCategory.equals('m_email')}">selected</c:if>>이메일</option>
+								<option value="m_name" <c:if test="${searchCategory.equals('m_name')}">selected</c:if>>이름</option>
+							</select>
+							<input type="text" id="searchKeyword" name="searchKeyword" value="${searchKeyword}" placeholder="검색어를 입력하세요." class="form-control ml-2">
+							<button type="submit" class="btn px-3 btn-primary">
+								<i class="fas fa-search"></i>
+							</button>
+						</form>
 						
-						<div class="col-sm-4">
-							<div class="d-flex">
-								<div class="ml-auto">
-									<button class="btn btn-primary" data-toggle="modal" data-target="#AdminSignUp">회원등록</button>
-									<input type="button" class="btn btn-primary" value="선택삭제" onclick="deleteValue();">
-								</div>
-							</div>
+						<div class="d-flex ml-auto">
+							<button class="btn btn-primary mr-2" data-toggle="modal" data-target="#AdminSignUp">회원등록</button>
+							<input type="button" class="btn btn-primary mr-3" value="선택삭제" onclick="deleteValue();">
 						</div>
                     </div>
-                    <br>
-					<table class="table table-hover table-white">
+					<table class="table table-hover table-white text-center">
 						<thead>
 							<tr>
 								<th>
 									<input id="allCheck" type="checkbox" name="allCheck">
 								</th>
 								<th><font size="3">No</font></th>
-								<th><font size="3">ID</font></th>
+								<th><font size="3">이메일</font></th>
 								<th><font size="3">이름</font></th>
 								<th><font size="3">권한</font></th>
 								<th><font size="3">가입일자</font></th>
 							</tr>
 						</thead>
 						<tbody>
-							<c:forEach items="${adminMemberList}" var="memberData">
+							<c:forEach items="${memberBoard}" var="post">
 								<tr>
 									<td>
-										<input name="RowCheck" type="checkbox" value="${memberData.m_no}">			
+										<input name="RowCheck" type="checkbox" value="${post.m_id}">			
 									</td>
-									<td><font size="3">${memberData.m_no}</font></td>
-									<td><font size="3"><c:out value="${memberData.m_id}"></c:out></font></td>
-									<td><font size="3"><a href="javascript:void(window.open('/admin/memberDetail?m_no=${memberData.m_no}', '상세페이지' , 'width=1280px,height=840px,left=300,top=100, scrollbars=yes, resizable=no'));"><c:out value="${memberData.m_name}"></c:out></a></font></td>
+									<td><font size="3">${post.m_id}</font></td>
+									<td><font size="3"><c:out value="${post.email}"></c:out></font></td>
+									<td><font size="3"><a href="javascript:void(window.open('/admin/memberDetail?m_no=${post.m_id}', '상세페이지' , 'width=1280px,height=840px,left=300,top=100, scrollbars=yes, resizable=no'));"><c:out value="${post.name}"></c:out></a></font></td>
 									<c:choose>
-										<c:when test="${memberData.m_authority eq 0}">
-											<td><font size="3"></font></td>
-										</c:when>
-										<c:when test="${memberData.m_authority eq 1}">
+										<c:when test="${post.grade.equals('Admin')}">
 											<td><font size="3">관리자</font></td>
 										</c:when>
-										<c:when test="${memberData.m_authority eq 2}">
+										<c:when test="${post.grade.equals('user')}">
 											<td><font size="3">회원</font></td>
 										</c:when>
-										<c:when test="${memberData.m_authority eq 3}">
-											<td><font size="3">VIP</font></td>
-										</c:when>
-										<c:when test="${memberData.m_authority eq 4}">
+										<c:when test="${post.grade.equals('blacklist')}">
 											<td><font size="3">블랙리스트</font></td>
 										</c:when>
 									</c:choose>
-									<td><font size="3"><c:out value="${memberData.reg_date}"></c:out></font></td>
+									<td><font size="3"><c:out value="${post.signup_date}"></c:out></font></td>
 								</tr>
 							</c:forEach>
 						</tbody>
@@ -107,12 +92,12 @@
 						<c:choose>
 							<c:when test="${Paging.pageNo eq Paging.firstPageNo }">
 								<li class="page-item disabled">
-									<a class="page-link" href="memberList?page=${Paging.prevPageNo}">Previus</a>
+									<a class="page-link" onclick="redirectPage(${Paging.prevPageNo})">Previus</a>
 								</li>
 							</c:when>
 							<c:otherwise>
 								<li class="page-item">
-									<a class="page-link" href="memberList?page=${Paging.prevPageNo}">Previus</a>
+									<a class="page-link" onclick="redirectPage(${Paging.prevPageNo})">Previus</a>
 								</li>
 							</c:otherwise>
 						</c:choose>
@@ -121,12 +106,12 @@
 							<c:choose>
 								<c:when test="${i eq Paging.pageNo }">
 									<li class="page-item disabled">
-										<a class="page-link" href="memberList?page=${i}"><c:out value="${i }"/></a>
+										<a class="page-link" onclick="redirectPage(${i})"><c:out value="${i }"/></a>
 									</li>
 								</c:when>
 								<c:otherwise>
 									<li class="page-item">
-										<a class="page-link" href="memberList?page=${i}"><c:out value="${i }"/></a>
+										<a class="page-link" onclick="redirectPage(${i})"><c:out value="${i }"/></a>
 									</li>
 								</c:otherwise>
 							</c:choose>
@@ -135,12 +120,12 @@
 						<c:choose>
 							<c:when test="${Paging.pageNo eq Paging.finalPageNo }">
 								<li class="page-item disabled">
-									<a class="page-link" href="memberList?page=${Paging.nextPageNo}">Next</a>
+									<a class="page-link" onclick="redirectPage(${Paging.nextPageNo})">Next</a>
 								</li>
 							</c:when>
 							<c:otherwise>
 								<li class="page-item">
-									<a class="page-link" href="memberList?page=${Paging.nextPageNo}">Next</a>
+									<a class="page-link" onclick="redirectPage(${Paging.nextPageNo})">Next</a>
 								</li>
 							</c:otherwise>
 						</c:choose>
@@ -425,6 +410,20 @@
 		$('#m_id').prop('readonly', false);
 		$(this).find('form')[0].reset();
 	})
+	
+	function redirectPage(pageNo) {
+   		url = new URL(location.origin + location.pathname);
+   		
+   		<c:if test="${searchCategory != null}">
+   			url.searchParams.set('searchCategory', "${searchCategory}");
+   		</c:if>
+   		<c:if test="${searchKeyword != null}">
+			url.searchParams.set('searchKeyword', "${searchKeyword}");
+		</c:if>
+   		
+   		url.searchParams.set('page', pageNo);
+   		location.href = url;
+   	}
 </script>
 </body>
 </html>

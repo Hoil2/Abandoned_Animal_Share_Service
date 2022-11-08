@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spring.ex.AdminMemberMapper">
+	
+	<!-- 관리자 회원 게시판 가져오기 -->
+	<select id="getMemberBoard" resultType="HashMap">
+		SELECT *
+		<include refid="memberBoardSQL"/>
+		ORDER BY m_id DESC
+		LIMIT #{nowPage}, #{pageSize}
+	</select>
+	
+	<!-- 관리자 회원 게시물 총 개수 가져오기 -->
+	<select id="getMemberPostCount" resultType="int">
+		SELECT COUNT(*)
+		<include refid="memberBoardSQL"/>
+	</select>
+	
+	<sql id="memberBoardSQL">
+		FROM member
+		<if test="searchCategory != null and searchKeyword != null">
+			WHERE 
+			<choose>
+				<when test="searchCategory.equals('m_id')">
+					m_id = #{searchKeyword}
+				</when>
+				
+				<when test="searchCategory.equals('m_email')">
+					email LIKE '%${searchKeyword}%'
+				</when>
+				
+				<when test="searchCategory.equals('m_name')">
+					name LIKE '%${searchKeyword}%'
+				</when>
+			</choose>
+		</if>
+	</sql>
+</mapper>
