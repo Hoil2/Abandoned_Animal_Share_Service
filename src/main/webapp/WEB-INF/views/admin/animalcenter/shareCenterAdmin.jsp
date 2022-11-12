@@ -117,7 +117,7 @@ $(document).ready(function() {
 											<div class="h5 mb-0 font-weight-bold text-gray-800">${ApiRenewalDate} </div>
 										</div>
 										<div class="col-auto">
-											<button style="border:none; background-color: white;"><i class="fas fa-sync-alt fa-2x text-gray-300"></i></button>
+											<button style="border:none; background-color: white;" id="btnApiRequest"><i class="fas fa-sync-alt fa-2x text-gray-300"></i></button>
 										</div>
 									</div>
 								</div>
@@ -370,6 +370,34 @@ $(document).ready(function() {
     		<!-- 하단 푸터 부분 -->
 		</div>
 	</div>
-    
+
+<script type="text/javascript">
+
+
+$('#btnApiRequest').click(function() {
+		$.ajax({
+			url: "/abandonedAnimalApiRequest",
+			type: "GET",
+			success: function(data) {
+				console.log(data);
+				
+				if (data == 1) {
+					console.log("ok");
+				}
+				else {
+					console.log("no");
+				}
+			},
+			error: function() {
+				swal({
+					title: "멍멍냥냥",
+					text: "문제가 발생하였습니다.\n잠시 후 다시 시도해주세요.",
+					icon: "error",
+					timer: 3000
+				});
+			}
+		});
+})
+</script>
 </body>
 </html>

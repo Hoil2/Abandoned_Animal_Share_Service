@@ -36,26 +36,16 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 		return dao.getShareCenterBoardViewTotalCount(map);
 	}
 	@Override
-	public void getShareCenterRequest(ShelterDTO shelterDto, int pageLastNum, String startApiRequest, String endApiRequest) throws Exception {
+	public int getShareCenterRequest(ShelterDTO shelterDto, int pageLastNum, String startApiRequest, String endApiRequest) throws Exception {
 		List<ShareCenterDTO> shareCenterDtoList = new ArrayList<ShareCenterDTO>();
+		int resultDBApiResponse = 0;
 		//List<Map<String, Object>> shareCenterDtoList = new ArrayList<Map<String, Object>>();
 		for(int j = 1; j <= pageLastNum; j++) {
-			
 			JSONArray item = abandonedAnimalApi.getRequestApiAbandonedAnimal(startApiRequest, endApiRequest, j);
 			
-			//System.out.println( "카운트 수" +(String) body.get("totalCount").toString());
-			
-			//주의 : 다수 데이터 요청시 여기 부분 주석처리 안하면 이클립스 멈춤 
-			/*
-			System.out.println("JSON(obj) : " + obj);
-			System.out.println("JSON(response) : " + response);
-			System.out.println("JSON(body) : " + body);
-			System.out.println("JSON(items) : " + items);
-			System.out.println("JSON(item[]) : " + item);
-			*/
 			// 조회 데이터 크기만큼 for문 + 테이블저장
 			// dto에 담고 -> 등록된 보호소인지 확인 -> 기등록은 aas_id 값으로, 미등록은 보호소 등록후 값으로
-			for (int i=0;i< item.size();i++) {
+			for (int i=0; i< item.size();i++) {
 				
 				JSONObject eqData = (JSONObject) item.get(i);
 				
@@ -134,6 +124,7 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 				}
 				
 				
+				
 				//System.out.println(care_nm + "  "+ care_addr);
 				//System.out.println("서비스 for : " +dto.toString());
 				//System.out.println(dto.getDesertion_no());
@@ -145,8 +136,10 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 			}
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("list", shareCenterDtoList);
-			dao.setDbShareCenterApiResponse(map);
+			resultDBApiResponse = dao.setDbShareCenterApiResponse(map);
+			item.clear();
 		}
+		return resultDBApiResponse;
 	}
 	
 	

@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.spring.ex.dto.MemberDTO;
 import com.spring.ex.dto.PagingDTO;
@@ -172,28 +173,35 @@ public class ShareCenterController {
 	
 	
 	// api 데이터 요청
-	@RequestMapping(value = "/sTest", method = RequestMethod.GET)
-	public String DBConTest(ShareCenterDTO dto, ShelterDTO shelterDto, HttpServletRequest request) throws Exception {
+	@RequestMapping(value = "/abandonedAnimalApiRequest", method = RequestMethod.GET)
+	@ResponseBody
+	public int abandonedAnimalApiRequest(ShareCenterDTO dto, ShelterDTO shelterDto, HttpServletRequest request) throws Exception {
+		int resultDb = 0, result = 0;
 		Date date = new Date();
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
 		String endApiRequest = formatter.format(date);
-		String startApiRequest = dateCalculation.addDate(endApiRequest, 0, -1, 0);
-		//String startApiRequest = "20220907";
+		
+		String startApiRequest = dateCalculation.addDate(endApiRequest, 0, 0, -20);
 		int apiTotalCount = Integer.valueOf(abandonedAnimalApi.getTotalCountRequestApiAbandonedAnimal(startApiRequest, endApiRequest));
 		System.out.println(apiTotalCount);
 		System.out.println(apiTotalCount/1000);
 		int pageNum = apiTotalCount/1000;
 		int pageCalculation = apiTotalCount % 1000;
+		
 		if(pageCalculation > 0) {
-			
 			System.out.println("마지막페이지 데이터 수 : " + pageCalculation );
-			//service.getShareCenterRequest(dto, shelterDto, pageLastNum+1, startApiRequest, endApiRequest);
-			service.getShareCenterRequest(shelterDto, pageNum+1, startApiRequest, endApiRequest);
+			resultDb += service.getShareCenterRequest(shelterDto, pageNum+1, startApiRequest, endApiRequest);
+			
 		}else {
-			service.getShareCenterRequest(shelterDto, pageNum, startApiRequest, endApiRequest);
+			resultDb += service.getShareCenterRequest(shelterDto, pageNum, startApiRequest, endApiRequest);
 		}
 		
-		return "redirect:/sTestPage"; 
+		System.out.println(apiTotalCount + " / " + resultDb);
+		if (apiTotalCount == resultDb) {
+			result = 1;
+		}
+		
+		return result; 
 	}
 	
 
