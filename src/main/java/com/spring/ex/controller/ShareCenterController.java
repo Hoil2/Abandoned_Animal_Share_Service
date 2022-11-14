@@ -1,6 +1,7 @@
 package com.spring.ex.controller;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -176,30 +177,34 @@ public class ShareCenterController {
 	@RequestMapping(value = "/abandonedAnimalApiRequest", method = RequestMethod.GET)
 	@ResponseBody
 	public int abandonedAnimalApiRequest(ShareCenterDTO dto, ShelterDTO shelterDto, HttpServletRequest request) throws Exception {
-		int resultDb = 0, result = 0;
+		int resultDb = 0, result = 0, res = 0;
 		Date date = new Date();
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
 		String endApiRequest = formatter.format(date);
 		
-		String startApiRequest = dateCalculation.addDate(endApiRequest, 0, 0, -20);
+		String startApiRequest = dateCalculation.addDate(endApiRequest, 0, 0, -10);
 		int apiTotalCount = Integer.valueOf(abandonedAnimalApi.getTotalCountRequestApiAbandonedAnimal(startApiRequest, endApiRequest));
 		System.out.println(apiTotalCount);
 		System.out.println(apiTotalCount/1000);
 		int pageNum = apiTotalCount/1000;
 		int pageCalculation = apiTotalCount % 1000;
-		
 		if(pageCalculation > 0) {
 			System.out.println("마지막페이지 데이터 수 : " + pageCalculation );
-			resultDb += service.getShareCenterRequest(shelterDto, pageNum+1, startApiRequest, endApiRequest);
+			resultDb = service.getShareCenterRequest(shelterDto, pageNum+1, startApiRequest, endApiRequest);
+			if(resultDb == 1) {
+				res++;
+			}
+				
 			
 		}else {
 			resultDb += service.getShareCenterRequest(shelterDto, pageNum, startApiRequest, endApiRequest);
 		}
 		
-		System.out.println(apiTotalCount + " / " + resultDb);
-		if (apiTotalCount == resultDb) {
+		System.out.println(apiTotalCount + " /resultDb " + resultDb + " / res" + res);
+		if (apiTotalCount == res) {
 			result = 1;
 		}
+		resultDb = 0;
 		
 		return result; 
 	}

@@ -12,6 +12,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
 <link rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
+<link rel="stylesheet"href="/resources/css/loading.css" />
 <title>멍멍냥냥 관리자</title>
 <script>
 $(document).ready(function() {
@@ -31,6 +32,7 @@ $(document).ready(function() {
 	
 });
 </script>
+
 </head>
 <body id="page-top">
     <div id="wrapper">
@@ -114,9 +116,10 @@ $(document).ready(function() {
 									<div class="row no-gutters align-items-center">
 										<div class="col mr-2">
 											<div class="text-xs font-weight-bold text-primary text-uppercase mb-1">API 갱신일</div>
-											<div class="h5 mb-0 font-weight-bold text-gray-800">${ApiRenewalDate} </div>
+											<div class="h5 mb-0 font-weight-bold text-gray-800"><fmt:formatDate value="${ApiRenewalDate}" pattern="yyyy-MM-dd a h:mm"/></div>
 										</div>
 										<div class="col-auto">
+											<a href="/abandonedAnimalApiRequest">Test</a>
 											<button style="border:none; background-color: white;" id="btnApiRequest"><i class="fas fa-sync-alt fa-2x text-gray-300"></i></button>
 										</div>
 									</div>
@@ -367,26 +370,35 @@ $(document).ready(function() {
 			</div>
 			<!-- 하단 푸터 부분 -->
 			<jsp:include page="../layout/footer.jsp"/>
-    		<!-- 하단 푸터 부분 -->
+			<!-- 하단 푸터 부분 -->
 		</div>
 	</div>
-
+<div class="wrap-loading display-none">
+	<div><img src="/resources/images/loading.gif" /></div>
+</div>
 <script type="text/javascript">
 
 
 $('#btnApiRequest').click(function() {
+	var doubleSubmitFlag = false;
+	
+	if(doubleSubmitFlag){ // 더블써밋 플래그가 true가 되면 '처리중' 실행
+		alert('처리중입니다.');
+		return false;
+	}else{
+		
+	
 		$.ajax({
 			url: "/abandonedAnimalApiRequest",
 			type: "GET",
 			success: function(data) {
 				console.log(data);
-				
-				if (data == 1) {
-					console.log("ok");
-				}
-				else {
-					console.log("no");
-				}
+			},
+			beforeSend:function(){
+				$('.wrap-loading').removeClass('display-none');
+			},
+			complete:function(){
+				$('.wrap-loading').addClass('display-none');
 			},
 			error: function() {
 				swal({
@@ -397,6 +409,8 @@ $('#btnApiRequest').click(function() {
 				});
 			}
 		});
+		doubleSubmitFlag = false; 
+	}
 })
 </script>
 </body>

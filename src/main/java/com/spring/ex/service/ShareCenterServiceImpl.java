@@ -39,6 +39,7 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 	public int getShareCenterRequest(ShelterDTO shelterDto, int pageLastNum, String startApiRequest, String endApiRequest) throws Exception {
 		List<ShareCenterDTO> shareCenterDtoList = new ArrayList<ShareCenterDTO>();
 		int resultDBApiResponse = 0;
+		Map<String, Object> map = new HashMap<String, Object>();
 		//List<Map<String, Object>> shareCenterDtoList = new ArrayList<Map<String, Object>>();
 		for(int j = 1; j <= pageLastNum; j++) {
 			JSONArray item = abandonedAnimalApi.getRequestApiAbandonedAnimal(startApiRequest, endApiRequest, j);
@@ -106,7 +107,6 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 				
 				if(checkCareShelter != 0) {
 					dto.setAas_id(checkCareShelter);
-					//dao.setDbShareCenterApiResponse(shareCenterDtoList);
 					shareCenterDtoList.add(dto);
 				} else {
 					shelterDto.setCare_nm(care_nm);
@@ -119,26 +119,19 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 					dao.setCareShelter(shelterDto);
 					dto.setAas_id(shelterDto.getAas_id());
 					shareCenterDtoList.add(dto);
-					//dao.setDbShareCenterApiResponse(shareCenterDtoList);
-					//System.out.println("자동 증가된 값 오는지 test" + shelterDto.getAas_id());
 				}
 				
-				
-				
-				//System.out.println(care_nm + "  "+ care_addr);
-				//System.out.println("서비스 for : " +dto.toString());
-				//System.out.println(dto.getDesertion_no());
-				//System.out.println(dto.getHappen_place());
-				
-				// EarthquakeDAO dao = sqlSession.getMapper(EarthquakeDAO.class);
-				// cd = dao.saveEarthquake(eqSeq,eqPoint,noticeType,img,noticeTime,refSeq,eqTime,miSeq,lat,lng,addr,scale,intensity,deep,remarks,flagYN,issueID);
-				//System.out.println("cd : "+ cd);
 			}
-			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("list", shareCenterDtoList);
-			resultDBApiResponse = dao.setDbShareCenterApiResponse(map);
-			item.clear();
 		}
+		
+		try {
+			resultDBApiResponse = dao.setDbShareCenterApiResponse(map);
+		} finally {
+			map.clear();
+			shareCenterDtoList.clear();
+		}
+		
 		return resultDBApiResponse;
 	}
 	
