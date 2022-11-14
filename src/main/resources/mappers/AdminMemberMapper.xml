@@ -17,6 +17,30 @@
 		<include refid="memberBoardSQL"/>
 	</select>
 	
+	<!-- 회원 추가 -->
+	<insert id="insertMember">
+		INSERT INTO member(email, m_pw, name, region, phone, grade, comment, signup_date)
+		VALUES(#{email}, #{m_pw}, #{name}, #{region}, #{phone}, #{grade}, #{comment}, NOW())
+	</insert>
+	
+	<!-- 회원 수정 --> 
+	<update id="updateMember">
+		UPDATE member 
+		SET 
+			m_pw = #{m_pw},
+			region = #{region},
+			phone = #{phone},
+			grade = #{grade},
+			comment = #{comment}
+		WHERE m_id = #{m_id}
+	</update>
+	
+	<!-- 회원 삭제 --> 
+	<delete id="deleteMember">
+		DELETE FROM member
+		WHERE m_id = #{m_id}
+	</delete>
+	
 	<sql id="memberBoardSQL">
 		FROM member
 		<if test="searchCategory != null and searchKeyword != null">

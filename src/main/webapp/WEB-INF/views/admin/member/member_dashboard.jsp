@@ -388,14 +388,13 @@
 			
 			$.ajax({
 				cache : false,
-				url : "signUpAdminMember", 
+				url : "/admin/insertMember", 
 				processData: false,
 				contentType: false,
 				type : 'POST', 
 				data : formData, 
 				success : function(data = 1) {
 					location.reload();
-					
 				},
 				error : function(xhr, status) {
 					alert(xhr + " : " + status);

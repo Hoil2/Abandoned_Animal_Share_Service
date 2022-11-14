@@ -9,6 +9,8 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import com.spring.ex.dto.MemberDTO;
+
 @Repository
 public class AdminMemberDAOImpl implements AdminMemberDAO {
 
@@ -35,6 +37,24 @@ public class AdminMemberDAOImpl implements AdminMemberDAO {
 		map.put("searchCategory", searchCategory);
 		map.put("searchKeyword", searchKeyword);
 		return sql.selectOne(namespace + ".getMemberPostCount", map);
+	}
+
+	// 회원 추가
+	@Override
+	public int insertMember(MemberDTO dto) {
+		return sql.insert(namespace + ".insertMember", dto);
+	}
+
+	// 회원 수정
+	@Override
+	public int updateMember(MemberDTO dto) {
+		return sql.update(namespace + ".updateMember", dto);
+	}
+
+	// 회원 삭제
+	@Override
+	public int deleteMember(int m_id) {
+		return sql.delete(namespace + ".deleteMember", m_id);
 	}
 	
 }

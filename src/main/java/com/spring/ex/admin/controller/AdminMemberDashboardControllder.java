@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.spring.ex.admin.service.AdminMemberService;
 import com.spring.ex.service.MemberService;
@@ -45,7 +46,24 @@ public class AdminMemberDashboardControllder {
 	public String memberViewPage(HttpServletRequest request, Model model) {
 		request.getParameter("m_no");
 		
-		
 		return "admin/member/member_detail";
+	}
+	
+	@ResponseBody
+	@RequestMapping("admin/insertMember")
+	public void insertMember(HttpServletRequest request) {
+		
+	}
+	
+	@ResponseBody
+	@RequestMapping("admin/updateMember")
+	public void updateMember(HttpServletRequest request) {
+		
+	}
+	
+	@ResponseBody
+	@RequestMapping("admin/deleteMember")
+	public void deleteMember(HttpServletRequest request) {
+		
 	}
 }
