@@ -36,8 +36,9 @@ public class ShareCenterServiceImpl implements ShareCenterService{
 		return dao.getShareCenterBoardViewTotalCount(map);
 	}
 	@Override
-	public int getShareCenterRequest(ShelterDTO shelterDto, int pageLastNum, String startApiRequest, String endApiRequest) throws Exception {
+	public int getShareCenterRequest(int pageLastNum, String startApiRequest, String endApiRequest) throws Exception {
 		List<ShareCenterDTO> shareCenterDtoList = new ArrayList<ShareCenterDTO>();
+		ShelterDTO shelterDto = new ShelterDTO();
 		int resultDBApiResponse = 0;
 		Map<String, Object> map = new HashMap<String, Object>();
 		//List<Map<String, Object>> shareCenterDtoList = new ArrayList<Map<String, Object>>();

@@ -36,6 +36,22 @@
 		</choose>
 	</sql>
 	
+	<sql id="SearchAdmin">
+		<if test="searchKeyword != null and searchCategory != null">
+			<choose>
+				<when test="searchCategory == 'desertion_no'">
+					AND desertion_no = #{searchKeyword}
+				</when>
+				<when test="searchCategory == 'kind_cd'">
+					AND kind_cd LIKE CONCAT('%', #{searchKeyword}, '%')
+				</when>
+				<when test="searchCategory == 'notice_no'">
+					AND notice_no LIKE CONCAT('%', #{searchKeyword}, '%')
+				</when>
+			</choose>
+		</if>
+	</sql>
+	
 	<!-- 2022-08-27 김홍일 / 주소 조건 -->
 	<sql id="SearchByAddress">
 		AND aai.aas_id IN (SELECT aas.aas_id FROM abandoned_animal_shelter aas
@@ -57,6 +73,7 @@
 		 (SELECT COUNT(*) FROM abandoned_animal_good aag WHERE aai.desertion_no = aag.desertion_no) good
 		FROM abandoned_animal_info aai 
 		<include refid="Search"></include>
+		<include refid="SearchAdmin"></include>
 		<include refid="SearchAlignment"></include> LIMIT #{Page}, #{PageSize};
 	</select>
 	
@@ -74,6 +91,7 @@
 	<select id="getShareCenterBoardViewTotalCount" resultType="int">
 		SELECT COUNT(*) FROM abandoned_animal_info 
 		<include refid="Search"></include> 
+		<include refid="SearchAdmin"></include>
 	</select>
 	
 	<!-- 2022-08-27 김홍일 / 분양센터 게시글 총 갯수 + 주소 조건 -->
@@ -115,7 +133,7 @@
 				#{item.special_mark},
 				0,
 				#{item.aas_id},
-				CURDATE()
+				NOW()
 			)
 		</foreach> 
 		ON DUPLICATE KEY UPDATE

@@ -37,12 +37,17 @@ public class AdminShareCenterController {
 		model.addAttribute("AnimalReturnCount", adminService.getAnimalReturnCount());
 		model.addAttribute("AnimalDeathCount", adminService.getAnimalDeathCount());
 		
+		String searchCategory  = request.getParameter("searchCategory");
+		String searchKeyword = request.getParameter("searchKeyword");
 		
 		HttpSession session = request.getSession();
 		String searchTheme  = request.getParameter("searchTheme");
 		String searchArea = request.getParameter("searchArea");
 		String searchAlignment = request.getParameter("alignment");
-		
+		if(StringUtils.isEmpty(searchKeyword) || searchKeyword == null) {
+		} else if(!StringUtils.isEmpty(searchKeyword)){
+			session.setAttribute("searchKeyword", searchKeyword);
+		}
 		if(StringUtils.isEmpty(searchTheme) || searchTheme == null) {
 			searchTheme = "allTheme";
 			session.setAttribute("searchTheme", "allTheme");
@@ -68,6 +73,8 @@ public class AdminShareCenterController {
 		map.put("searchArea", session.getAttribute("searchArea"));
 		map.put("searchTheme", session.getAttribute("searchTheme"));
 		map.put("alignment", session.getAttribute("alignment"));
+		map.put("searchCategory", searchCategory);
+		map.put("searchKeyword", searchKeyword);
 		
 		int totolCount = service.getShareCenterBoardViewTotalCount(map);
 		pagingService = new PagingService(request, totolCount, 10);
@@ -78,6 +85,12 @@ public class AdminShareCenterController {
 		List<ShareCenterDTO> slist = service.getShareCenterBoardPage(map);
 		List<String> seletedBoxList = service.getShareCenterAreaList();
 		
+		if(StringUtils.isEmpty(searchCategory) || searchCategory == null) {
+			model.addAttribute("searchCategory", "no");
+		}else {
+			model.addAttribute("searchCategory", searchCategory);
+			model.addAttribute("searchKeyword", searchKeyword);
+		}
 		model.addAttribute("sTotolCount", totolCount);
 		model.addAttribute("slist", slist);
 		model.addAttribute("Paging", pagingService.getPaging());

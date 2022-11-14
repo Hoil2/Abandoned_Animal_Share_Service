@@ -173,11 +173,12 @@ public class ShareCenterController {
 	}
 	
 	
-	// api 데이터 요청
+	// api 데이터 요청  
+	// 참고) ON DUPLICATE KEY UPDATE에 걸려서 resultDb수가 평소에 다른 것처럼 안됩니다, DB에 아무것도 없을땐 같게 나옵니다
 	@RequestMapping(value = "/abandonedAnimalApiRequest", method = RequestMethod.GET)
 	@ResponseBody
-	public int abandonedAnimalApiRequest(ShareCenterDTO dto, ShelterDTO shelterDto, HttpServletRequest request) throws Exception {
-		int resultDb = 0, result = 0, res = 0;
+	public int abandonedAnimalApiRequest(HttpServletRequest request) throws Exception {
+		int resultDb = 0, result = 0;
 		Date date = new Date();
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
 		String endApiRequest = formatter.format(date);
@@ -188,23 +189,20 @@ public class ShareCenterController {
 		System.out.println(apiTotalCount/1000);
 		int pageNum = apiTotalCount/1000;
 		int pageCalculation = apiTotalCount % 1000;
-		if(pageCalculation > 0) {
-			System.out.println("마지막페이지 데이터 수 : " + pageCalculation );
-			resultDb = service.getShareCenterRequest(shelterDto, pageNum+1, startApiRequest, endApiRequest);
-			if(resultDb == 1) {
-				res++;
+		System.out.println("마지막페이지 데이터 수 : " + pageCalculation );
+		
+		try {
+			if(pageCalculation > 0) {
+				resultDb = service.getShareCenterRequest(pageNum+1, startApiRequest, endApiRequest);
+			}else {
+				resultDb = service.getShareCenterRequest(pageNum, startApiRequest, endApiRequest);
 			}
-				
-			
-		}else {
-			resultDb += service.getShareCenterRequest(shelterDto, pageNum, startApiRequest, endApiRequest);
+			result = 1;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
 		}
 		
-		System.out.println(apiTotalCount + " /resultDb " + resultDb + " / res" + res);
-		if (apiTotalCount == res) {
-			result = 1;
-		}
-		resultDb = 0;
+		//System.out.println(apiTotalCount + " /resultDb " + resultDb);
 		
 		return result; 
 	}
