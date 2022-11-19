@@ -1,48 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="X-UA-Compatible" content="ie=edge">
-<jsp:include page="../layout/libraries.jsp"/>
-<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
-<link rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
-<title>멍멍냥냥</title>
+<title>멍멍냥냥 관리자</title>
 </head>
-<body link="red">
-	<!-- 페이지 로딩 이미지 -->
-	<%-- Preloader --%>
-	<div class="preloader">
-		<img src='<c:url value="/resources/images/loader3.png"/>' class="preloader__image" alt="">
-	</div>
-	
-	<!-- 메인 영역 -->
-	<div class="page-wrapper">
+<body id="page-top">
+    <div id="wrapper">
+		<div class="container-fluid">
 		<jsp:include page="../layout/header.jsp"/>
-		<section class="page-header" style="background-image: url(<c:url value="/resources/images/banner_main/${BannerRespectivelyView.getS_file_name()}"/>);">
-			<div class="container">
-				<h2>실종동물</h2>
-				<ul class="thm-breadcrumb list-unstyled">
-				</ul>
+			<div align="center">
+				<h1 class="h3 mb-0 text-gray-800">실종동물 관리자 작성페이지</h1>
 			</div>
-		</section><br>
-		
-		<section class="blog-list" style="padding: 0px 0px;">
+			<section class="blog-list" style="padding: 0px 0px;">
 			<div class="container">
-				<div class="d-flex flex-row-reverse" id="heartDiv">
-					<ul class="list-unstyled blog-one__meta">
-						<li> <a href="javascript:window.history.back();"> 목록</a></li>
-					</ul>
-				</div><hr>
-				<form role="form" method="POST" id="myform" name="myform" enctype="multipart/form-data">
+				<hr>
+				<form  role="form" method="POST" id="myform" name="myform" enctype="multipart/form-data">
 					<!-- 사진 -->
 					<div class="form-group row">
 						<label class="col-sm-2 col-form-label">반려동물 이미지</label>
@@ -104,7 +78,6 @@
 										<span class="input-group-text"><b>성별</b></span>
 									</div>
 									<select class="form-control" id="sex_cd" name="sex_cd">
-										<option selected="selected" value="">선택해주세요</option>
 										<option value="M">수컷</option>
 										<option value="F">암컷</option>
 									</select>
@@ -158,17 +131,20 @@
 					<!-- 이전, 수정 버튼 -->
 					<div align="right">
 						<input class="btn btn-outline-warning" type="button" id="dowriteLostAnimalBoard" value="등록">
-						<input class="btn btn-outline-warning" id="list_btn"  onclick="history.back()" value="취소" style="width:60px;">		
+						<input class="btn btn-outline-warning" id="list_btn"  onclick="window.close()" value="취소" style="width:60px;">		
 					</div>
 				</form>
 				<br>
 				
 			</div>
-		</section>	
+	</section>	
+			<hr>
+			<jsp:include page="../layout/footer.jsp"/>
+		</div>
+			
 		
 	</div>
-	<br>
-	<jsp:include page="../layout/footer.jsp"/>
+	
 <script type="text/javascript">
 
 function chk_file_type(obj) {
@@ -283,14 +259,14 @@ $('#dowriteLostAnimalBoard').click(function() {
 		
 		$.ajax({
 			cache : false,
-			url : "dowriteLostAnimalBoard", 
+			url : "/dowriteLostAnimalBoard", 
 			processData: false,
 			contentType: false,
 			type : 'POST', 
 			data : formData, 
 			success : function(data = 1) {
-				//location.reload();
-				window.location.href = 'communityLostBoard';
+				opener.parent.location.reload();
+				window.close();
 			},
 			error : function(xhr, status) {
 				alert(xhr + " : " + status);

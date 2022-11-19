@@ -67,11 +67,10 @@ $(document).ready(function() {
 				<!-- 상단 헤더 부분 -->
 				<jsp:include page="../layout/header.jsp"/>
 				<!-- 상단 헤더 부분 -->
-				
 				<!-- 본문 -->
 				<div class="container-fluid">
 					<div class="d-sm-flex align-items-center justify-content-between mb-4">
-						<h1 class="h3 mb-0 text-gray-800"></h1>
+						<h1 class="h3 mb-0 text-gray-800">ShareCenter Management</h1>
 					</div>
 					
 					<div class="row">

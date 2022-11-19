@@ -6,7 +6,7 @@
 	<select id="getLostAnimalBoardList" resultType="hashMap">
 		SELECT lab.*, name
 		FROM lost_animal_board lab, member m
-		WHERE lab.m_id = m.m_id
+		WHERE lab.m_id = m.m_id <if test="checkBoard != 'admin'">AND enable = 1</if>
 		ORDER BY reg_date DESC
 		LIMIT #{Page}, #{PageSize}
 	</select>
@@ -14,7 +14,7 @@
 	<select id="getTotalCountLostAnimalBoardList" resultType="int">
 		SELECT count(*)
 		FROM lost_animal_board lab, member m
-		WHERE lab.m_id = m.m_id
+		WHERE lab.m_id = m.m_id <if test="checkBoard != 'admin'">AND enable = 1</if>
 	</select>
 	
 	<insert id="writeLostAnimalBoard">
@@ -27,13 +27,7 @@
 		WHERE alb_id = #{alb_id}
 	</delete>
 	
-	
-<!-- 	<update id="modifyLostAnimalBoard">
-		UPDATE lost_animal_board
-		SET title = #{title}, content = #{content}, classify = #{classify}
-		WHERE cb_no = #{cb_no}; 
-	</update> -->
-	
+	<!-- 실종동물 게시글 상세페이지 -->
 	<select id="getReadLostAnimal" resultType="hashMap">
 		SELECT lab.*, name, email, phone 
 		FROM lost_animal_board lab, member m
@@ -45,4 +39,26 @@
 		ORDER BY kind_cd ASC
 	</select>
 	
+	<!-- 게시글 게시 여부 수정 -->
+	<update id="modifyEnableLostAnimal">
+		UPDATE lost_animal_board
+		SET
+			<if test="enable == 1">
+				enable = 0
+			</if>
+			<if test="enable == 0">
+				enable = 1
+			</if>
+		WHERE alb_id = #{alb_id}; 
+	</update>
+	
+	<update id="modifyLostAnimalBoard">
+		UPDATE lost_animal_board
+		SET img_path = #{img_path},
+			kind_cd = #{kind_cd},
+			age = #{age},
+			color_cd = #{color_cd},
+			content = #{content}
+		WHERE alb_id = #{alb_id}; 
+	</update>
 </mapper>

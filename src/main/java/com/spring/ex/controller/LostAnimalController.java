@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.ex.dto.LostAnimalDTO;
@@ -83,7 +84,8 @@ public class LostAnimalController {
 	
 	//실종동물 게시글 글작성
 	@RequestMapping(value = "/dowriteLostAnimalBoard", method = RequestMethod.POST)
-	public String dowriteLostAnimalBoard(LostAnimalDTO dto, HttpServletRequest request, @RequestParam(value="file", required = false) MultipartFile file) throws Exception{
+	@ResponseBody
+	public int dowriteLostAnimalBoard(LostAnimalDTO dto, HttpServletRequest request, @RequestParam(value="file", required = false) MultipartFile file) throws Exception{
 		String img_path = null;
 		int res = 0;
 		if(file != null) { 
@@ -104,13 +106,13 @@ public class LostAnimalController {
 		//dto.setImg_path(img_path);
 		
 		res = lostAnimalService.writeLostAnimalBoard(laDTO);
-		
+		return res;
+		/*
 		if(res == 1) {
 			return "redirect:/communityLostBoard"; 
 		}else {
 			return "redirect:/error"; 
 		}
-		
-		
+		*/
 	}
 }

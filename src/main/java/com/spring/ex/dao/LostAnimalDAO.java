@@ -22,4 +22,9 @@ public interface LostAnimalDAO {
 	public Map<String, Object> getReadLostAnimal(int alb_id) throws Exception;
 	//실종 동물의 품종 겹치지 않게 가져오기
 	public List<String> getKindListWithDistinct();
+	
+	//실종 동물 게시판 게시여부 변경
+	public int modifyEnableLostAnimal(HashMap<String, Object> map) throws Exception;
+	//실동 게시글 수정
+	public int modifyLostAnimalBoard(LostAnimalDTO dto) throws Exception;
 }
