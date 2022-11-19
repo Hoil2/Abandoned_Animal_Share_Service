@@ -30,13 +30,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.google.gson.JsonObject;
 import com.spring.ex.dto.CommunityDTO;
-import com.spring.ex.dto.EmailAlarmDTO;
+import com.spring.ex.dto.MemberPetEmailAlarmDTO;
 import com.spring.ex.dto.EmailDTO;
 import com.spring.ex.dto.FileUploadDTO;
 import com.spring.ex.dto.MemberDTO;
 import com.spring.ex.dto.MemberPetDTO;
 import com.spring.ex.service.CommunityService;
-import com.spring.ex.service.EmailAlarmService;
+import com.spring.ex.service.MemberPetEmailAlarmService;
 import com.spring.ex.service.EmailService;
 import com.spring.ex.service.FileUploadService;
 import com.spring.ex.service.MemberPetService;
@@ -67,7 +67,7 @@ public class CommunityController {
 	private MemberPetService memberPetService;
 	
 	@Inject
-	private EmailAlarmService emailAlarmService;
+	private MemberPetEmailAlarmService emailAlarmService;
 	
 	@Inject
 	private EmailService emailService;
@@ -498,7 +498,7 @@ public class CommunityController {
 		MemberDTO member = (MemberDTO)request.getSession().getAttribute("member");
 		String status = request.getParameter("status");
 		
-		EmailAlarmDTO emailAlarmDTO = new EmailAlarmDTO();
+		MemberPetEmailAlarmDTO emailAlarmDTO = new MemberPetEmailAlarmDTO();
 		emailAlarmDTO.setM_id(member.getM_id());
 		emailAlarmDTO.setDesertion_no(desertion_no);
 		emailAlarmDTO.setEa_classify(2);

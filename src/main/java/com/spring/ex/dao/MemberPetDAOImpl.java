@@ -23,10 +23,15 @@ public class MemberPetDAOImpl implements MemberPetDAO {
 	}
 
 	@Override
-	public int deleteMemberPet(int m_id) {
-		return sqlSession.delete(namespace + ".deleteMemberPet", m_id);
+	public int deleteMemberPet(int mp_id) {
+		return sqlSession.delete(namespace + ".deleteMemberPet", mp_id);
 	}
 
+	@Override
+	public int updateMemberPet(MemberPetDTO dto) {
+		return sqlSession.update(namespace + ".updateMemberPet", dto);
+	}
+	
 	@Override
 	public List<MemberPetDTO> selectMemberPetList(int m_id) {
 		return sqlSession.selectList(namespace + ".selectMemberPetList", m_id);
@@ -36,5 +41,4 @@ public class MemberPetDAOImpl implements MemberPetDAO {
 	public MemberPetDTO getMemberPet(int mp_id) {
 		return sqlSession.selectOne(namespace + ".getMemberPet", mp_id);
 	}
-
 }

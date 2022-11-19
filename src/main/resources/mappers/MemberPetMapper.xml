@@ -3,14 +3,25 @@
 
 <mapper namespace="com.spring.ex.MemberPetMapper">
 	<insert id="insertMemberPet">
-		INSERT INTO member_pet(m_id, desertion_no, pet_name)
-		VALUES(#{m_id}, #{desertion_no}, #{pet_name})
+		INSERT INTO member_pet(m_id, name, sex, age, kind, breed, reg_date)
+		VALUES(#{m_id}, #{name}, #{sex}, #{age}, #{kind}, #{breed}, NOW())
 	</insert>
 	
 	<delete id="deleteMemberPet">
 		DELETE FROM member_pet
-		WHERE m_id = #{m_id}
+		WHERE mp_id = #{mp_id}
 	</delete>
+	
+	<update id="updateMemberPet">
+		UPDATE member_pet
+		SET 
+			name = #{name},
+			sex = #{sex},
+			age = #{age},
+			kind = #{kind},
+			breed = #{breed}
+		WHERE mp_id = #{mp_id}
+	</update>
 	
 	<select id="selectMemberPetList" resultType="MemberPetDTO">
 		SELECT * FROM member_pet

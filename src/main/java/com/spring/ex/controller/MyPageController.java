@@ -9,13 +9,13 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.spring.ex.dto.EmailAlarmConditionDTO;
-import com.spring.ex.dto.EmailAlarmDTO;
+import com.spring.ex.dto.MemberPetEmailAlarmDTO;
 import com.spring.ex.dto.MemberDTO;
 import com.spring.ex.dto.MemberPetDTO;
 import com.spring.ex.service.EmailAlarmConditionService;
-import com.spring.ex.service.EmailAlarmService;
+import com.spring.ex.service.MemberPetEmailAlarmService;
 import com.spring.ex.service.LostAnimalService;
 import com.spring.ex.service.MemberPetService;
 
@@ -25,7 +25,7 @@ public class MyPageController {
 	private MemberPetService memberPetService;
 	
 	@Inject
-	private EmailAlarmService emailAlarmService;
+	private MemberPetEmailAlarmService emailAlarmService;
 	
 	@Inject
 	private EmailAlarmConditionService emailAlarmConditionService;
@@ -44,35 +44,75 @@ public class MyPageController {
 		MemberDTO memberDTO = (MemberDTO)request.getSession().getAttribute("member");
 		
 		List<MemberPetDTO> memberPetList = memberPetService.selectMemberPetList(memberDTO.getM_id());
+		System.out.println(memberPetList);
 		model.addAttribute("memberPetList", memberPetList);
 		
 		return "mypage/manageMyPet";
 	}
 	
+	@RequestMapping("mypage/insertMemberPet")
+	public String insertMemberPet(HttpServletRequest request) {
+		MemberDTO member = (MemberDTO)request.getSession().getAttribute("member");
+		String name = request.getParameter("name");
+		String sex = request.getParameter("sex");
+		String age = request.getParameter("age");
+		String kind = request.getParameter("kind");
+		String breed = request.getParameter("breed");
+		
+		MemberPetDTO mp = new MemberPetDTO();
+		mp.setM_id(member.getM_id());
+		mp.setName(name);
+		mp.setSex(sex);
+		mp.setAge(age);
+		mp.setKind(kind);
+		mp.setBreed(breed);
+		
+		memberPetService.insertMemberPet(mp);
+		System.out.println("회원 펫 추가 : " + mp);
+		
+		return "redirect:/mypage/manageMyPet";
+	}
+	
 	// 나의 반려동물 수정
-	@RequestMapping("mypage/updateMyPet")
+	@RequestMapping("mypage/updateMemberPet")
 	public String updateMyPet(HttpServletRequest request) {
-		MemberDTO memberDTO = (MemberDTO)request.getSession().getAttribute("member");
-		String[] desertion_noList = request.getParameterValues("mp_id");
-		String[] nameList = request.getParameterValues("name");
+		MemberDTO member = (MemberDTO)request.getSession().getAttribute("member");
+		int mp_id = Integer.parseInt(request.getParameter("mp_id"));
+		String name = request.getParameter("name");
+		String sex = request.getParameter("sex");
+		String age = request.getParameter("age");
+		String kind = request.getParameter("kind");
+		String breed = request.getParameter("breed");
 		
-		/*
-		List<MemberPetDTO> memberPetList = new ArrayList<MemberPetDTO>();
-		System.out.println(memberDTO);
-		System.out.println(desertion_noList);
-		System.out.println(nameList);
-		if(desertion_noList != null) {
-			for(int i = 0; i < desertion_noList.length; i++) {
-				MemberPetDTO memberPetDTO = new MemberPetDTO();
-				memberPetDTO.setM_id(memberDTO.getM_id());
-				System.out.println(memberPetDTO);
-				memberPetList.add(memberPetDTO);
-			}
-		}
+		MemberPetDTO mp = memberPetService.getMemberPet(mp_id);
+		mp.setName(name);
+		mp.setSex(sex);
+		mp.setAge(age);
+		mp.setKind(kind);
+		mp.setBreed(breed);
 		
-		memberPetService.updateMemberPet(memberDTO.getM_id(), memberPetList);
-		*/
-		return "redirect:/mypage";
+		memberPetService.updateMemberPet(mp);
+		
+		return "redirect:/mypage/manageMyPet";
+	}
+	
+	// 수정을 위해 반려동물 정보 불러오기
+	@ResponseBody
+	@RequestMapping("mypage/updateMemberPet/getMemberPet")
+	public MemberPetDTO getMemberPet(HttpServletRequest request) {
+		int mp_id = Integer.parseInt(request.getParameter("mp_id"));
+		MemberPetDTO memberPet = memberPetService.getMemberPet(mp_id);
+		
+		return memberPet;
+	}
+	
+	@ResponseBody
+	@RequestMapping("mypage/deleteMemberPet")
+	public void deleteMemberPet(HttpServletRequest request) {
+		int mp_id = Integer.parseInt(request.getParameter("mp_id"));
+		
+		memberPetService.deleteMemberPet(mp_id);
+		System.out.println("반려동물 삭제 : " + mp_id);
 	}
 	
 	// 좋아요 표시한 동물 알람 관리 페이지
@@ -80,7 +120,7 @@ public class MyPageController {
 	public String manageMyEmailAlarm(HttpServletRequest request, Model model) {
 		MemberDTO memberDTO = (MemberDTO)request.getSession().getAttribute("member");
 		
-		List<EmailAlarmDTO> emailAlarmList = emailAlarmService.getEmailAlarmListByM_id(memberDTO.getM_id());
+		List<MemberPetEmailAlarmDTO> emailAlarmList = emailAlarmService.getEmailAlarmListByM_id(memberDTO.getM_id());
 		System.out.println(emailAlarmList);
 		
 		model.addAttribute("emailAlarmList", emailAlarmList);
@@ -94,13 +134,13 @@ public class MyPageController {
 		MemberDTO memberDTO = (MemberDTO)request.getSession().getAttribute("member");
 		String[] desertion_noList = request.getParameterValues("desertion_no");
 		
-		List<EmailAlarmDTO> emailAlarmList = new ArrayList<EmailAlarmDTO>();
+		List<MemberPetEmailAlarmDTO> emailAlarmList = new ArrayList<MemberPetEmailAlarmDTO>();
 		System.out.println(memberDTO);
 		System.out.println(desertion_noList);
 		
 		if(desertion_noList != null) {
 			for(int i = 0; i < desertion_noList.length; i++) {
-				EmailAlarmDTO emailAlarmDTO = new EmailAlarmDTO();
+				MemberPetEmailAlarmDTO emailAlarmDTO = new MemberPetEmailAlarmDTO();
 				emailAlarmDTO.setM_id(memberDTO.getM_id());
 				emailAlarmDTO.setDesertion_no(desertion_noList[i]);
 				emailAlarmDTO.setEa_classify(2);

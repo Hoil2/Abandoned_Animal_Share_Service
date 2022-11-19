@@ -38,7 +38,7 @@
 						
 						<div class="d-flex ml-auto">
 							<button class="btn btn-primary mr-2" data-toggle="modal" data-target="#AdminSignUp">회원등록</button>
-							<input type="button" class="btn btn-primary mr-3" value="선택삭제" onclick="deleteValue();">
+							<input type="button" class="btn btn-danger mr-3" value="선택삭제" onclick="deleteValue();">
 						</div>
                     </div>
 					<table class="table table-hover table-white text-center">
