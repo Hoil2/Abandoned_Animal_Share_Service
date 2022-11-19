@@ -50,6 +50,11 @@ public class MemberServiceImpl implements MemberService {
 		return dao.getMemberByM_id(m_id);
 	}
 
+	@Override
+	public MemberDTO getMemberByEmail(String email) {
+		return dao.getMemberByEmail(email);
+	}
+	
 	// 멤버 리스트 가져오기
 	@Override
 	public List<MemberDTO> getMemberList() {

@@ -16,4 +16,9 @@
 		SELECT * FROM member_pet
 		WHERE m_id = #{m_id}
 	</select>
+	
+	<select id="getMemberPet" resultType="MemberPetDTO">
+		SELECT * FROM member_pet
+		WHERE mp_id = #{mp_id}
+	</select>
 </mapper>

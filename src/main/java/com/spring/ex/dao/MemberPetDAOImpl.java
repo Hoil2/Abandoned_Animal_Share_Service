@@ -32,4 +32,9 @@ public class MemberPetDAOImpl implements MemberPetDAO {
 		return sqlSession.selectList(namespace + ".selectMemberPetList", m_id);
 	}
 
+	@Override
+	public MemberPetDTO getMemberPet(int mp_id) {
+		return sqlSession.selectOne(namespace + ".getMemberPet", mp_id);
+	}
+
 }

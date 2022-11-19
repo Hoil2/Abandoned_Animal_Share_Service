@@ -4,7 +4,7 @@
 <mapper namespace="com.spring.ex.AdminCommunityMapper">
 	<select id="getAdminBoardPage" resultType="HashMap">
 		SELECT cb_id, mp_id, m.name AS m_name, title, reg_date, hit,
-			(SELECT COUNT(*) FROM community_board_good cbg WHERE c.cb_id = cbg.cbg_id) AS goodCnt
+			(SELECT COUNT(*) FROM community_board_good cbg WHERE c.cb_id = cbg.cb_id) AS goodCnt
 		<include refid="boardPageCondition"/>
 		LIMIT #{nowPage}, #{pageSize}
 	</select>
@@ -99,4 +99,23 @@
 		FROM community_board 
 		WHERE reg_date = CURDATE() AND classify = #{classify}
 	</select>
+	
+	<!-- 멤버가 작성한 커뮤니티 게시물 리스트 가져오기 -->
+	<select id="getAdminMemberBoard" resultType="HashMap">
+		SELECT *, (SELECT COUNT(*) FROM community_board_good cbg WHERE c.cb_id = cbg.cb_id) AS goodCnt
+		<include refid="adminMemberBoardSQL"/>
+		ORDER BY cb_id DESC
+		LIMIT #{nowPage}, #{pageSize}
+	</select>
+	
+	<!-- 멤버가 작성한 커뮤니티 게시물 개수 가져오기 -->
+	<select id="getAdminMemberPostTotalCount" resultType="int">
+		SELECT COUNT(*)
+		<include refid="adminMemberBoardSQL"/>
+	</select>
+	
+	<sql id="adminMemberBoardSQL">
+		FROM community_board c
+		WHERE m_id = #{m_id}
+	</sql>
 </mapper>

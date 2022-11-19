@@ -63,4 +63,22 @@ public class AdminCommunityDAOImpl implements AdminCommunityDAO {
 		return sql.selectOne(namespace + ".getPostCountOfTodayByClassify", classify);
 	}
 
+	@Override
+	public List<Map<String, Object>> getAdminMemberBoard(int m_id, int nowPage, int pageSize) {
+		Map<String , Object> map = new HashMap<String, Object>();
+		map.put("m_id", m_id);
+		map.put("nowPage", nowPage);
+		map.put("pageSize", pageSize);
+		
+		return sql.selectList(namespace + ".getAdminMemberBoard", map);
+	}
+
+	@Override
+	public int getAdminMemberPostTotalCount(int m_id) {
+		Map<String , Object> map = new HashMap<String, Object>();
+		map.put("m_id", m_id);
+		
+		return sql.selectOne(namespace + ".getAdminMemberPostTotalCount", map);
+	}
+
 }

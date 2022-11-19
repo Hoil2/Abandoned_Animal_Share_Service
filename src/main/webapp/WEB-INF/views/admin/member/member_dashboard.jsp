@@ -62,12 +62,12 @@
 									</td>
 									<td><font size="3">${post.m_id}</font></td>
 									<td><font size="3"><c:out value="${post.email}"></c:out></font></td>
-									<td><font size="3"><a href="javascript:void(window.open('/admin/memberDetail?m_no=${post.m_id}', '상세페이지' , 'width=1280px,height=840px,left=300,top=100, scrollbars=yes, resizable=no'));"><c:out value="${post.name}"></c:out></a></font></td>
+									<td><font size="3"><a href="javascript:void(window.open('/admin/memberDetail?m_id=${post.m_id}', '상세페이지' , 'width=1280px,height=840px,left=300,top=100, scrollbars=yes, resizable=no'));"><c:out value="${post.name}"></c:out></a></font></td>
 									<c:choose>
 										<c:when test="${post.grade.equals('Admin')}">
 											<td><font size="3">관리자</font></td>
 										</c:when>
-										<c:when test="${post.grade.equals('user')}">
+										<c:when test="${post.grade.equals('User')}">
 											<td><font size="3">회원</font></td>
 										</c:when>
 										<c:when test="${post.grade.equals('blacklist')}">
@@ -152,20 +152,17 @@
 						<hr>
 					</div>
 					<div class="d-flex flex-column">
-						<form id="myform" role="form" method="POST"  enctype="multipart/form-data">
+						<form action="/admin/member/insertMember" id="signup_form" role="form" method="POST">
 							<!-- 아이디 & 비밀번호 -->
 							<div class="form-group row">
-								<div class="col-xs-12 col-md-12">
-									<input type="file" class="form-control" id="file" name="file">
-								</div>
 								<div class="col-xs-6 col-md-6">
 									<div class="input-group my-2 mb-1">
 										<div class="input-group-prepend">
-											<span class="input-group-text">아이디</span>
+											<span class="input-group-text">이메일</span>
 										</div>
-										<input type="text" name="m_id" id="m_id" class="form-control" required>
+										<input type="text" name="email" id="email" class="form-control" required>
 										<span class="input-group-btn">
-											<button class="btn btn-primary"  id="IDCheck" type="button">중복체크</button>
+											<button class="btn btn-primary" id="emailCheck" type="button">중복체크</button>
 										</span>
 									</div>
 								</div>
@@ -174,7 +171,7 @@
 										<div class="input-group-prepend">
 											<span class="input-group-text">비밀번호</span>
 										</div>
-										<input type="password" name="m_pw" id="m_pw" class="form-control" required>
+										<input type="password" name="pw" id="pw" class="form-control" required>
 									</div>
 								</div>
 							</div>
@@ -185,7 +182,7 @@
 										<div class="input-group-prepend">
 											<span class="input-group-text">이름</span>
 										</div>
-										<input type="text" id="m_name" name="m_name" class="form-control" required>
+										<input type="text" name="name" id="name" class="form-control" required>
 									</div>
 								</div>
 								<div class="col-xs-6 col-md-6">
@@ -193,22 +190,41 @@
 										<div class="input-group-prepend">
 											<span class="input-group-text">권한</span>
 										</div>
-										<select class="form-control" id="m_authority" name="m_authority">
-											<option value="1">관리자</option>
-											<option value="2">회원</option>
-											<option value="3">VIP</option>
-											<option value="4">블랙리스트</option>
+										<select class="form-control" name="grade" id="grade">
+											<option value="User">회원</option>
+											<option value="Admin">관리자</option>
 										</select>
 									</div>
 								</div>
 							</div>
+							
+							<!-- 지역  -->
+							<div class="form-group row">
+								<div class="col-xs-6 col-md-6">
+									<div class="input-group my-2 mb-1">
+										<div class="input-group-prepend">
+											<span class="input-group-text">지역</span>
+										</div>
+										<input type="text" name="region" id="region" class="form-control" required>
+									</div>
+								</div>
+								<div class="col-xs-6 col-md-6">
+									<div class="input-group my-2 mb-1">
+										<div class="input-group-prepend">
+											<span class="input-group-text">Tel</span>
+										</div>
+										<input type="text" name="tel" id="tel" class="form-control" required>
+									</div>
+								</div>
+							</div>
+							
 							<!-- 특이사항 -->
 							<div class="form-group">
 								<div class="input-group my-2 mb-1">
 									<div class="input-group-prepend">
 										<span class="input-group-text">특이사항</span>
 									</div>
-									<textarea rows="5" cols="25" name="m_comment" id="m_comment" class="form-control"></textarea>
+									<textarea rows="5" cols="25" name="comment" id="comment" class="form-control"></textarea>
 								</div>
 							</div>
 							
@@ -243,7 +259,7 @@
 	});
 	//삭제버튼 눌렀을 때 실행 
 	function deleteValue(){
-		var url = "/admin/memberSelectDelete";    // Controller로 보내고자 하는 URL
+		var url = "/admin/deleteMembers";    // Controller로 보내고자 하는 URL
 		var valueArr = new Array();
 	    var list = $("input[name='RowCheck']");
 	    for(var i = 0; i < list.length; i++){
@@ -273,7 +289,7 @@
 	  		  if (result.value) {
 		  			$.ajax({
 					    url : url,                    // 전송 URL
-					    type : 'GET',                // GET or POST 방식
+					    type : 'post',                // GET or POST 방식
 					    traditional : true,
 					    data : {
 					    	valueArr : valueArr        // 보내고자 하는 data 변수 설정
@@ -292,19 +308,19 @@
 	}
 	
 	//아이디 중복체크
-	$('#IDCheck').click(function() {
-		var param = {'m_id':$("#m_id").val()};
-		if ($("#m_id").val() == "") {
+	$('#emailCheck').click(function() {
+		var param = {'email':$("#email").val()};
+		if ($("#email").val() == "") {
 			swal({
 				title: "중복확인",
-				text: "아이디를 입력해주세요.",
+				text: "이메일을 입력해주세요.",
 				icon: "info",
 				timer: 3000
 			});
 		}
 		else {
 			$.ajax({
-				url: "idCheck",
+				url: "/admin/member/emailCheck",
 				type: "POST",
 				data: param,
 				success: function(data) {
@@ -312,7 +328,7 @@
 						console.log(data);
 						swal({
 							title: "중복확인",
-							text: "이미 사용중인 아이디입니다.",
+							text: "이미 사용중인 이메일입니다.",
 							icon: "error",
 							timer: 3000
 						});
@@ -321,11 +337,11 @@
 						console.log(data);
 						swal({
 							title: "중복확인",
-							text: "사용할 수 있는 아이디입니다.",
+							text: "사용할 수 있는 이메일입니다.",
 							icon: "success",
 						});
-						$('#IDCheck').attr('disabled', true);
-						$('#m_id').prop('readonly', true);
+						$('#emailCheck').attr('disabled', true);
+						$('#email').prop('readonly', true);
 					}
 				},
 				error: function() {
@@ -342,29 +358,31 @@
 	
 	//회원가입 실행 시
 	$('#btnAdminSignUp').click(function() {
-		var m_id = $("#m_id").val();
-		var m_pw = $("#m_pw").val();
-		var m_name = $("#m_name").val();
+		var email = $("#email").val();
+		var pw = $("#pw").val();
+		var name = $("#name").val();
+		var region = $("#region").val();
+		var tel = $("#tel").val();
 		
-		if(!m_id) {
+		if(!email) {
 			swal({
 				title: "회원등록",
-				text: "아이디가 입력되지 않았습니다.",
+				text: "이메일이 입력되지 않았습니다.",
 				icon: "warning",
 				timer: 3000
 			});
 			return false;
 		}
-		else if(!$('#m_id').prop("readonly")) {
+		else if(!$('#email').prop("readonly")) {
 			swal({
 				title: "회원등록",
-				text: "아이디 중복체크가 되지 않았습니다.",
+				text: "이메일 중복체크가 되지 않았습니다.",
 				icon: "warning",
 				timer: 3000
 			});
 			return false;
 		}
-		else if(!m_pw) {
+		else if(!pw) {
 			swal({
 				title: "회원등록",
 				text: "비밀번호가 입력되지 않았습니다.",
@@ -373,7 +391,7 @@
 			});
 			return false;
 		}
-		else if(!m_name) {
+		else if(!name) {
 			swal({
 				title: "회원등록",
 				text: "이름이 입력되지 않았습니다.",
@@ -382,8 +400,26 @@
 			});
 			return false;
 		}
+		else if(!region) {
+			swal({
+				title: "회원등록",
+				text: "지역이 입력되지 않았습니다.",
+				icon: "warning",
+				timer: 3000
+			});
+			return false;
+		}
+		else if(!tel) {
+			swal({
+				title: "회원등록",
+				text: "전화번호가 입력되지 않았습니다.",
+				icon: "warning",
+				timer: 3000
+			});
+			return false;
+		}
 		else {
-			var form = $("#myform")[0];
+			var form = $("#signup_form")[0];
 			var formData = new FormData(form);
 			
 			$.ajax({
@@ -405,7 +441,7 @@
 	
 	//모달 닫힐때 초기화
 	$('.modal').on('hidden.bs.modal', function(){
-		$('#IDCheck').attr('disabled', false);
+		$('#emailCheck').attr('disabled', false);
 		$('#m_id').prop('readonly', false);
 		$(this).find('form')[0].reset();
 	})

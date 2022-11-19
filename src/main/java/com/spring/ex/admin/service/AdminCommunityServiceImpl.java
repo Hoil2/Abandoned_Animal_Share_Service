@@ -51,4 +51,14 @@ public class AdminCommunityServiceImpl implements AdminCommunityService {
 		return adminCommunityDAO.getPostCountOfToday(classify);
 	}
 
+	@Override
+	public List<Map<String, Object>> getAdminMemberBoard(int m_id, int nowPage, int pageSize) {
+		return adminCommunityDAO.getAdminMemberBoard(m_id, nowPage, pageSize);
+	}
+
+	@Override
+	public int getAdminMemberPostTotalCount(int m_id) {
+		return adminCommunityDAO.getAdminMemberPostTotalCount(m_id);
+	}
+
 }

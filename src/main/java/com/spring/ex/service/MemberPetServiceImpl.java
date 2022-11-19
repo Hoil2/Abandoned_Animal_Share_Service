@@ -31,6 +31,11 @@ public class MemberPetServiceImpl implements MemberPetService {
 	}
 
 	@Override
+	public MemberPetDTO getMemberPet(int mp_id) {
+		return memberPetDAO.getMemberPet(mp_id);
+	}
+	
+	@Override
 	public int updateMemberPet(int m_id, List<MemberPetDTO> memberPetList) {
 		try {
 			memberPetDAO.deleteMemberPet(m_id);
@@ -44,5 +49,4 @@ public class MemberPetServiceImpl implements MemberPetService {
 		}
 		return 1;
 	}
-
 }

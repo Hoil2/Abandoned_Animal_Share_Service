@@ -70,7 +70,7 @@ public class AdminShareCenterController {
 		map.put("alignment", session.getAttribute("alignment"));
 		
 		
-		pagingService = new PagingService(request, service.getShareCenterBoardViewTotalCount(map), 10);
+		pagingService = new PagingService(request, service.getShareCenterBoardViewTotalCount(map), 10, "page");
 		map.put("Page", pagingService.getNowPage());
 		map.put("PageSize", 10);
 		

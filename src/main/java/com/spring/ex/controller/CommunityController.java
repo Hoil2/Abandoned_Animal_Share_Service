@@ -94,7 +94,7 @@ public class CommunityController {
 		
 		// 게시물 개수를 바탕으로 페이지 설정
 		int pageSize = 10;  
-		pagingService = new PagingService(request, totalCount, pageSize);
+		pagingService = new PagingService(request, totalCount, pageSize, "page");
 		
 		// 게시물 가져오기 위한 조건 맵
 		HashMap<String, Object> boardMap = new HashMap<String, Object>();
@@ -150,7 +150,7 @@ public class CommunityController {
 		
 		// 게시물 개수를 바탕으로 페이지 설정
 		int pageSize = 10;  
-		pagingService = new PagingService(request, totalCount, pageSize);
+		pagingService = new PagingService(request, totalCount, pageSize, "page");
 		
 		// 게시물 가져오기 위한 조건 맵
 		HashMap<String, Object> postMap = new HashMap<String, Object>();
@@ -229,7 +229,7 @@ public class CommunityController {
 		
 		// 게시물 개수를 바탕으로 페이지 설정
 		int pageSize = 10;  
-		pagingService = new PagingService(request, totalCount, pageSize);
+		pagingService = new PagingService(request, totalCount, pageSize, "page");
 		
 		// 게시물 가져오기 위한 조건 맵
 		HashMap<String, Object> postMap = new HashMap<String, Object>();

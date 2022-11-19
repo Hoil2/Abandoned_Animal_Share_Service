@@ -12,4 +12,5 @@ public interface MemberPetService {
 	public int deleteMemberPet(int m_id);
 	public List<MemberPetDTO> selectMemberPetList(int m_id);
 	public int updateMemberPet(int m_id, List<MemberPetDTO> memberPetList);
+	public MemberPetDTO getMemberPet(int mp_id);
 }

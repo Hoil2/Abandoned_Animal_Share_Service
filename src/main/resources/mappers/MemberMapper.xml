@@ -31,6 +31,11 @@
 		WHERE m_id = #{m_id}
 	</select>
 	
+	<select id="getMemberByEmail" resultType="MemberDTO">
+		SELECT * FROM member
+		WHERE email = #{email}
+	</select>
+	
 	<select id="getMemberList" resultType="MemberDTO">
 		SELECT * FROM member
 	</select>

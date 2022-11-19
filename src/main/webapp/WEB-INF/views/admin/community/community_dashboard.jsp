@@ -105,7 +105,7 @@
 										<td>${cl.cb_id}</td>
 										<c:if test="${board == 2}"><td><a href="">${cl.mp_id}</a></td></c:if>
 										<td><a href="">${cl.m_name}</a></td>
-										<td><a href="/admin/${classify}/${cl.cb_id}">${cl.title}</a></td>
+										<td><a href="/admin/community/${classify}/${cl.cb_id}">${cl.title}</a></td>
 										<td>${cl.reg_date}</td>
 										<td>${cl.hit}</td>
 										<td>${cl.goodCnt}</td>

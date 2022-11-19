@@ -43,7 +43,7 @@
 	
 	<sql id="memberBoardSQL">
 		FROM member
-		<if test="searchCategory != null and searchKeyword != null">
+		<if test="searchCategory != null and searchKeyword != null and searchKeyword != ''">
 			WHERE 
 			<choose>
 				<when test="searchCategory.equals('m_id')">

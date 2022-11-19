@@ -53,26 +53,25 @@ public class MyPageController {
 	@RequestMapping("mypage/updateMyPet")
 	public String updateMyPet(HttpServletRequest request) {
 		MemberDTO memberDTO = (MemberDTO)request.getSession().getAttribute("member");
-		String[] desertion_noList = request.getParameterValues("desertion_no");
-		String[] pet_nameList = request.getParameterValues("pet_name");
+		String[] desertion_noList = request.getParameterValues("mp_id");
+		String[] nameList = request.getParameterValues("name");
 		
+		/*
 		List<MemberPetDTO> memberPetList = new ArrayList<MemberPetDTO>();
 		System.out.println(memberDTO);
 		System.out.println(desertion_noList);
-		System.out.println(pet_nameList);
+		System.out.println(nameList);
 		if(desertion_noList != null) {
 			for(int i = 0; i < desertion_noList.length; i++) {
 				MemberPetDTO memberPetDTO = new MemberPetDTO();
 				memberPetDTO.setM_id(memberDTO.getM_id());
-				memberPetDTO.setDesertion_no(desertion_noList[i]);
-				memberPetDTO.setPet_name(pet_nameList[i]);
 				System.out.println(memberPetDTO);
 				memberPetList.add(memberPetDTO);
 			}
 		}
 		
 		memberPetService.updateMemberPet(memberDTO.getM_id(), memberPetList);
-		
+		*/
 		return "redirect:/mypage";
 	}
 	
