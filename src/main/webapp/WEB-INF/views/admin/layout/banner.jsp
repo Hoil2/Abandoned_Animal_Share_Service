@@ -21,7 +21,7 @@
 		</a>
 	</li>
 	<li class="nav-item">
-		<a class="nav-link" href="packageproduct">
+		<a class="nav-link" href="/admin/lostAnimalBoardAdmin">
 			<i class="fas fa-fw fa-table"></i>
 			<span>실종동물</span>
 		</a>
@@ -62,6 +62,7 @@
 			<span>정보 공유</span>
 		</a>
 	</li>
+	<!-- 
 	<li>
 		<hr class="sidebar-divider">
 		<div class="sidebar-heading">고객센터</div>
@@ -71,11 +72,6 @@
 			<i class="fas fa-fw fa-table"></i>
 			<span>1:1 문의</span>
 		</a>
-	</li>
-	<li class="nav-item">
-		<a class="nav-link" href="faq">
-			<i class="fas fa-fw fa-table"></i>
-			<span>FAQ 목록</span>
-		</a>
-	</li>
+	</li> 
+	-->
 </ul>

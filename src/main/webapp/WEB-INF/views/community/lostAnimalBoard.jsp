@@ -16,7 +16,7 @@
 <link rel="manifest" href='<c:url value="/resources/images/favicons/site.webmanifest"/>'>
 <jsp:include page="../layout/libraries.jsp"/>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=1d6c0ae7305fb9210dc71640a373972b"></script>
-<title>일상 공유 게시판</title>
+<title>멍멍냥냥</title>
 
 <style type="text/css">
 .preloader {

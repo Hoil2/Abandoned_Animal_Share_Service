@@ -1,6 +1,7 @@
 package com.spring.ex.controller;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -17,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.spring.ex.dto.MemberDTO;
 import com.spring.ex.dto.PagingDTO;
@@ -39,21 +41,10 @@ public class ShareCenterController {
 	//분양센터페이지 유기동물 목록 출력
 	@RequestMapping(value = "/shereCenterPage" , method = RequestMethod.GET)
 	public String shereCenterPage(Model model, HttpServletRequest request) throws Exception{
-		/*
-		pagingService.put("searchArea", "");
-		map.put("searchTheme", "");
-		map.put("alignment", "");
-		List<ShareCenterDTO> shareCenterList = service.getShareCenterBoardPage(pagingService.getMap());
 		
-		pagingService.PagingService(request, service.getShareCenterBoardViewTotalCount(map), 12, searchTheme, searchArea, searchAlignment);
-		
-		model.addAttribute("slist", shareCenterList);
-		model.addAttribute("Paging", pagingService.getPaging());*/
 		HttpSession session = request.getSession();
 		String searchTheme  = request.getParameter("searchTheme");
 		String searchArea = request.getParameter("searchArea");
-		//String searchTheme  = request.getParameter("searchTheme");
-		//String searchArea = request.getParameter("searchArea");
 		String searchAlignment = request.getParameter("alignment");
 		
 		if(StringUtils.isEmpty(searchTheme) || searchTheme == null) {
@@ -77,42 +68,26 @@ public class ShareCenterController {
 			session.setAttribute("alignment", searchAlignment);
 		}
 		
-		HashMap<String, Object> searchMap = new HashMap<String, Object>();
-		searchMap.put("searchArea", (String) session.getAttribute("searchArea"));
-		searchMap.put("searchTheme", (String) session.getAttribute("searchTheme"));
-		searchMap.put("alignment", (String) session.getAttribute("alignment"));
-		
-		//페이징
-		int totalCount = service.getShareCenterBoardViewTotalCount(searchMap);
-		int page = request.getParameter("page") == null ? 1 : Integer.parseInt(request.getParameter("page"));
-		
-		PagingDTO paging = new PagingDTO();
-		paging.setPageNo(page);
-		paging.setPageSize(12);
-		paging.setTotalCount(totalCount);
-		
-		page = (page - 1) * 12;
-		
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("Page", page);
-		map.put("PageSize", paging.getPageSize());
 		map.put("searchArea", session.getAttribute("searchArea"));
 		map.put("searchTheme", session.getAttribute("searchTheme"));
 		map.put("alignment", session.getAttribute("alignment"));
 		
-		//검색 및 결과값 담기
+		int totolCount = service.getShareCenterBoardViewTotalCount(map);
+		pagingService = new PagingService(request, totolCount, 12);
+		map.put("Page", pagingService.getNowPage());
+		map.put("PageSize", 12);
+		
+		
 		List<ShareCenterDTO> slist = service.getShareCenterBoardPage(map);
-		
-		model.addAttribute("slist", slist);
-		model.addAttribute("Paging", paging);
-		model.addAttribute("searchArea", searchArea);
-		model.addAttribute("searchTheme", searchTheme);
-		model.addAttribute("alignment", searchAlignment);
-		System.out.println("검색 지역/테마/정렬 : " + searchArea + ", " + searchTheme + ", " + searchAlignment);
-		
 		List<String> seletedBoxList = service.getShareCenterAreaList();
+		
+		
+		model.addAttribute("sTotolCount", totolCount);
+		model.addAttribute("slist", slist);
+		model.addAttribute("Paging", pagingService.getPaging());
 		model.addAttribute("areaList", seletedBoxList);
-		System.out.println(seletedBoxList);
+		System.out.println("검색 지역/테마/정렬 : " + searchArea + ", " + searchTheme + ", " + searchAlignment);
 		return "shereCenter";
 	}
 	
@@ -198,29 +173,38 @@ public class ShareCenterController {
 	}
 	
 	
-	// api 데이터 요청
-	@RequestMapping(value = "/sTest", method = RequestMethod.GET)
-	public String DBConTest(ShareCenterDTO dto, ShelterDTO shelterDto, HttpServletRequest request) throws Exception {
+	// api 데이터 요청  
+	// 참고) ON DUPLICATE KEY UPDATE에 걸려서 resultDb수가 평소에 다른 것처럼 안됩니다, DB에 아무것도 없을땐 같게 나옵니다
+	@RequestMapping(value = "/abandonedAnimalApiRequest", method = RequestMethod.GET)
+	@ResponseBody
+	public int abandonedAnimalApiRequest(HttpServletRequest request) throws Exception {
+		int resultDb = 0, result = 0;
 		Date date = new Date();
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
 		String endApiRequest = formatter.format(date);
-		String startApiRequest = dateCalculation.addDate(endApiRequest, 0, -1, 0);
-		//String startApiRequest = "20220907";
+		
+		String startApiRequest = dateCalculation.addDate(endApiRequest, 0, 0, -10);
 		int apiTotalCount = Integer.valueOf(abandonedAnimalApi.getTotalCountRequestApiAbandonedAnimal(startApiRequest, endApiRequest));
 		System.out.println(apiTotalCount);
 		System.out.println(apiTotalCount/1000);
 		int pageNum = apiTotalCount/1000;
 		int pageCalculation = apiTotalCount % 1000;
-		if(pageCalculation > 0) {
-			
-			System.out.println("마지막페이지 데이터 수 : " + pageCalculation );
-			//service.getShareCenterRequest(dto, shelterDto, pageLastNum+1, startApiRequest, endApiRequest);
-			service.getShareCenterRequest(shelterDto, pageNum+1, startApiRequest, endApiRequest);
-		}else {
-			service.getShareCenterRequest(shelterDto, pageNum, startApiRequest, endApiRequest);
+		System.out.println("마지막페이지 데이터 수 : " + pageCalculation );
+		
+		try {
+			if(pageCalculation > 0) {
+				resultDb = service.getShareCenterRequest(pageNum+1, startApiRequest, endApiRequest);
+			}else {
+				resultDb = service.getShareCenterRequest(pageNum, startApiRequest, endApiRequest);
+			}
+			result = 1;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
 		}
 		
-		return "redirect:/sTestPage"; 
+		//System.out.println(apiTotalCount + " /resultDb " + resultDb);
+		
+		return result; 
 	}
 	
 
