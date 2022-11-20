@@ -6,7 +6,9 @@
 	<select id="getLostAnimalBoardList" resultType="hashMap">
 		SELECT lab.*, name
 		FROM lost_animal_board lab, member m
-		WHERE lab.m_id = m.m_id <if test="checkBoard != 'admin'">AND enable = 1</if>
+		WHERE lab.m_id = m.m_id 
+				<if test="checkBoard != 'admin'">AND enable = 1</if>
+				<include refid="searchAdminLostAnimalBoard"></include> 
 		ORDER BY reg_date DESC
 		LIMIT #{Page}, #{PageSize}
 	</select>
@@ -14,7 +16,9 @@
 	<select id="getTotalCountLostAnimalBoardList" resultType="int">
 		SELECT count(*)
 		FROM lost_animal_board lab, member m
-		WHERE lab.m_id = m.m_id <if test="checkBoard != 'admin'">AND enable = 1</if>
+		WHERE lab.m_id = m.m_id
+				<if test="checkBoard != 'admin'">AND enable = 1</if>
+				<include refid="searchAdminLostAnimalBoard"></include> 
 	</select>
 	
 	<insert id="writeLostAnimalBoard">
@@ -65,4 +69,20 @@
 			content = #{content}
 		WHERE alb_id = #{alb_id}; 
 	</update>
+	
+	<sql id="searchAdminLostAnimalBoard">
+		<choose>
+			<when test="searchCategory == 'noSearch'">
+			</when>
+			<when test="searchCategory == 'alb_id'">
+				AND alb_id = #{searchKeyword}
+			</when>
+			<when test="searchCategory == 'm_id'">
+				AND lab.m_id = #{searchKeyword}
+			</when>
+			<when test="searchCategory == 'name'">
+				AND m.name LIKE  CONCAT('%', #{searchKeyword}, '%')
+			</when>
+		</choose>
+	</sql>
 </mapper>

@@ -39,20 +39,28 @@ public class AdminLostAnimalController {
 	// 실종 동물 게시판
 	@RequestMapping(value = "/admin/lostAnimalBoardAdmin" , method = RequestMethod.GET)
 	public String lostAnimalBoardAdmin(Model model, HttpServletRequest request) throws Exception {
-		// null 값으로 mybatis에 들어가면 문자열과 비교하게 되므로 오류남. 따라서 null이면 ""으로 변환
-		String keyword = request.getParameter("keyword");
-		keyword = keyword == null ? "" : keyword;
-		
-		// 게시물 총 개수를 가져오기 위한 조건 맵
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("checkBoard", "admin");
-		//postCountMap.put("keyword", keyword);
+		
+		String searchKeyword = request.getParameter("searchKeyword");
+		String searchCategory = request.getParameter("searchCategory");
+		
+		if (searchKeyword == null && searchCategory == null) {
+			model.addAttribute("searchCategory", "no");
+			model.addAttribute("searchKeyword", "no");
+			map.put("searchCategory", "noSearch");
+		}else {
+			model.addAttribute("searchCategory", searchCategory);
+			model.addAttribute("searchKeyword", searchKeyword);
+			map.put("searchCategory", searchCategory);
+			map.put("searchKeyword", searchKeyword);
+		}
 		
 		pagingService = new PagingService(request, lostAnimalService.getTotalCountLostAnimalBoardList(map), 10);
 		map.put("Page",  pagingService.getNowPage());
 		map.put("PageSize", 10);
-		List<LostAnimalDTO> sList = lostAnimalService.getLostAnimalBoardList(map);
 		
+		List<LostAnimalDTO> sList = lostAnimalService.getLostAnimalBoardList(map);
 		model.addAttribute("slist", sList);
 		model.addAttribute("Paging", pagingService.getPaging());
 		

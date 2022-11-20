@@ -24,14 +24,14 @@
 					<hr>
 					<div class="row">
 						<div class="col-sm-8">
-							<form action="/admin/memberSearchList" role="form" method="GET" class="form-inline">
+							<form action="/admin/lostAnimalBoardAdmin" role="form" method="GET" class="form-inline">
 								<select class="form-control" id="searchCategory" name="searchCategory">
-									<option value="alb_id">게시글번호</option>
-									<option value="m_id">회원번호</option>
-									<option value="name">작성자</option>
+									<option value="alb_id" <c:if test="${searchCategory eq 'alb_id'}">selected="selected"</c:if>>게시글번호</option>
+									<option value="m_id" <c:if test="${searchCategory eq 'm_id'}">selected="selected"</c:if>>회원번호</option>
+									<option value="name" <c:if test="${searchCategory eq 'name'}">selected="selected"</c:if>>작성자</option>
 								</select>
 								<div class="col-sm-4">
-									<input type="text" id="searchKeyword " name="searchKeyword" placeholder="검색어를 입력하세요." class="form-control" required="required">
+									<input type="text" id="searchKeyword " name="searchKeyword" <c:if test="${searchKeyword ne 'no'}"> value="${searchKeyword}"</c:if> placeholder="검색어를 입력하세요." class="form-control" required="required">
 									<button type="submit" class="btn px-3 btn-primary">
 										<i class="fas fa-search"></i>
 									</button>
@@ -106,55 +106,56 @@
 									</font></td>
 								</tr>
 							</c:forEach>
+							
+							<c:if test="${Paging.totalCount < 1}">
+								<tr align="center" >
+									<td rowspan="10" colspan="10"><div align="center" class="col-sm-12" style="margin: 20% 0;">게시글이 없습니다.</div></td>
+								</tr>
+							</c:if>
+							
 						</tbody>
+						
 					</table>
 				</div>
 				
 			</div>
 			
 			<c:if test="${ Paging.totalCount > 10}">
-				<!-- 게시글 페이징 처리(기준 10개) -->
 				<nav aria-label="Page navigation">
 					<ul class="pagination justify-content-center">
-						<!-- 첫 페이지면 Disabled 아니라면 Enabled -->
 						<c:choose>
 							<c:when test="${Paging.pageNo eq Paging.firstPageNo }">
-								<li class="page-item disabled">
-									<a class="page-link" href="lostAnimalBoardAdmin?page=${Paging.prevPageNo}">Previus</a>
-								</li>
+							</c:when>
+							<c:when test="${Paging.pageNo ne Paging.firstPageNo && searchCategory ne 'no' && searchKeyword ne 'no'}">
+								<li class="page-item"><a href="lostAnimalBoardAdmin?page=${Paging.prevPageNo}&searchCategory=${searchCategory}&searchKeyword=${searchKeyword}" class="page-link" aria-label="Previous">Previous</a></li>
 							</c:when>
 							<c:otherwise>
-								<li class="page-item">
-									<a class="page-link" href="lostAnimalBoardAdmin?page=${Paging.prevPageNo}">Previus</a>
-								</li>
+								<li class="page-item"><a href="lostAnimalBoardAdmin?page=${Paging.prevPageNo}" class="page-link" aria-label="Previous">Previous</a></li>
 							</c:otherwise>
 						</c:choose>
 						<!-- 페이지 갯수만큼 버튼 생성 -->
 						<c:forEach var="i" begin="${Paging.startPageNo }" end="${Paging.endPageNo }" step="1">
 							<c:choose>
 								<c:when test="${i eq Paging.pageNo }">
-									<li class="page-item disabled">
-										<a class="page-link" href="lostAnimalBoardAdmin?page=${i}"><c:out value="${i }"/></a>
-									</li>
+									<li class="page-item active disabled"> <a href="" class="page-link"><c:out value="${i }"/></a> </li>
+								</c:when>
+								<c:when test="${i ne Paging.pageNo && searchCategory ne 'no' && searchKeyword ne 'no'}">
+									<li class="page-item"> <a href="lostAnimalBoardAdmin?page=${i}&searchCategory=${searchCategory}&searchKeyword=${searchKeyword}" class="page-link"><c:out value="${i }"/></a> </li>
 								</c:when>
 								<c:otherwise>
-									<li class="page-item">
-										<a class="page-link" href="lostAnimalBoardAdmin?page=${i}"><c:out value="${i }"/></a>
-									</li>
+									<li class="page-item"> <a href="lostAnimalBoardAdmin?page=${i}" class="page-link"><c:out value="${i }"/></a> </li>
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>
 						<!-- 마지막 페이지면 Disabled 아니라면 Enabled -->
 						<c:choose>
 							<c:when test="${Paging.pageNo eq Paging.finalPageNo }">
-								<li class="page-item disabled">
-									<a class="page-link" href="lostAnimalBoardAdmin?page=${Paging.nextPageNo}">Next</a>
-								</li>
+							</c:when>
+							<c:when test="${Paging.pageNo ne Paging.finalPageNo && searchCategory ne 'no' && searchKeyword ne 'no'}">
+								<li class="page-item"><a href="lostAnimalBoardAdmin?page=${Paging.nextPageNo}&searchCategory=${searchCategory}&searchKeyword=${searchKeyword}" class="page-link" aria-label="Next"> Next</a></li>
 							</c:when>
 							<c:otherwise>
-								<li class="page-item">
-									<a class="page-link" href="lostAnimalBoardAdmin?page=${Paging.nextPageNo}">Next</a>
-								</li>
+								<li class="page-item"><a href="lostAnimalBoardAdmin?page=${Paging.nextPageNo}" class="page-link" aria-label="Next">Next</a></li>
 							</c:otherwise>
 						</c:choose>
 					</ul>
