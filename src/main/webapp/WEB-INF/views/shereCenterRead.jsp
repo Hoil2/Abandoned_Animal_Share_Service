@@ -40,7 +40,7 @@
 				<div class="d-flex flex-row-reverse" id="heartDiv">
 					<ul class="list-unstyled blog-one__meta">
 						<li> <a href="javascript:window.history.back();"> 목록</a></li>
-						<li><i class="far fa-clock"></i> ${scrReadPage.redate  }</li>
+						<li><i class="far fa-clock"></i> <fmt:formatDate value="${scrReadPage.redate }" pattern="yyyy-MM-dd a h:mm"/></li>
 						<li><i class="far fa-eye"></i>
 							<c:choose>
 								<c:when test="${hitReadPage eq 1}"> 

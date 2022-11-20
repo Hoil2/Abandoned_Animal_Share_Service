@@ -291,9 +291,6 @@ $(document).ready(function() {
 								<table class="table table-hover table-white">
 									<thead>
 										<tr>
-											<th>
-												<input id="allCheck" type="checkbox" name="allCheck">
-											</th>
 											<th><font size="3">No</font></th>
 											<th><font size="3">종</font></th>
 											<th><font size="3">나이</font></th>
@@ -308,10 +305,7 @@ $(document).ready(function() {
 									<tbody>
 										<c:forEach items="${slist}" var="slist">
 											<tr>
-												<td>
-													<input name="RowCheck" type="checkbox" value="${slist.desertion_no}">			
-												</td>
-												<td><font size="3">${slist.desertion_no}</font></td>
+												<td><font size="3"><a href="javascript:void(window.open('/admin/lostAnimalView?alb_id=${slist.desertion_no}', '상세페이지' , 'width=1280px,height=840px,left=300,top=100, scrollbars=yes, resizable=no'));">${slist.desertion_no}</a></font></td>
 												<td><font size="3"><c:out value="${slist.kind_cd}"></c:out></font></td>
 												<td><font size="3"><c:out value="${slist.age}"></c:out></font></td>
 												<c:choose>
@@ -422,8 +416,8 @@ $('#btnApiRequest').click(function() {
 			url: "/abandonedAnimalApiRequest",
 			type: "GET",
 			success: function(data) {
-				console.log(data);
-				//location.reload();
+				//console.log(data);
+				location.reload();
 			},
 			beforeSend:function(){
 				$('.wrap-loading').removeClass('display-none');
