@@ -67,7 +67,7 @@ public class CommunityController {
 	private MemberPetService memberPetService;
 	
 	@Inject
-	private MemberPetEmailAlarmService emailAlarmService;
+	private MemberPetEmailAlarmService memberPetEmailAlarmService;
 	
 	@Inject
 	private EmailService emailService;
@@ -164,10 +164,12 @@ public class CommunityController {
 		List<HashMap<String, Object>> communityList = communityService.getBoardPage(postMap);
 		for(int i = 0; i < communityList.size(); i++) 
 		{
-			Document doc = Jsoup.parseBodyFragment(communityList.get(i).get("content").toString());
-			Elements imgs = doc.getElementsByTag("img");
-			if(imgs.size() > 0) {
-				communityList.get(i).put("img_path", imgs.get(0).attr("src"));
+			if(communityList.get(i).get("content") != null) {
+				Document doc = Jsoup.parseBodyFragment(communityList.get(i).get("content").toString());
+				Elements imgs = doc.getElementsByTag("img");
+				if(imgs.size() > 0) {
+					communityList.get(i).put("img_path", imgs.get(0).attr("src"));
+				}
 			}
 		}
 		model.addAttribute("Paging", pagingService.getPaging());
@@ -181,21 +183,17 @@ public class CommunityController {
 	// 일상 공유 상세 페이지
 	@RequestMapping("/community/daily/{pageNo}")
 	public String dailyDetail(Model model, HttpServletRequest request, @PathVariable("pageNo") int pageNo) throws Exception {
-		MemberDTO memberDTO = (MemberDTO)request.getSession().getAttribute("member");
+		MemberDTO member = (MemberDTO)request.getSession().getAttribute("member");
 		CommunityDTO pageDetail = communityService.getPageDetail(pageNo);
 		communityService.addHitToBoardPage(pageNo);
 		int likeCnt = communityService.getCommunityLikeCount(pageNo);
 		List<HashMap<String, Object>> commentList = communityService.selectCommentList(pageNo);
 		
-		if(memberDTO != null) {
-			/*EmailAlarmDTO emailAlarmDTO = new EmailAlarmDTO();
-			emailAlarmDTO.setM_id(memberDTO.getM_id());
-			emailAlarmDTO.setDesertion_no(pageDetail.getMp_id());*/
-			
-			boolean existLike = (communityService.existCommunityLike(pageNo, memberDTO.getM_id()) == 1) ? true : false;
-			//boolean existAlarm = (emailAlarmService.existEmailAlarm(emailAlarmDTO) == 1) ? true : false;
+		if(member != null) {
+			boolean existLike = (communityService.existCommunityLike(pageNo, member.getM_id()) == 1) ? true : false;
+			boolean existAlarm = (memberPetEmailAlarmService.getMemberPetEmailAlarmByM_idAndMp_id(member.getM_id(), pageDetail.getMp_id()) != null) ? true : false;
 			model.addAttribute("existLike", existLike);
-			//model.addAttribute("existAlarm", existAlarm);
+			model.addAttribute("existAlarm", existAlarm);
 		}
 		
 		model.addAttribute("memberService", memberService);
@@ -363,18 +361,20 @@ public class CommunityController {
 		communityService.updatePost(communityDTO);
 		
 		System.out.println("게시물 등록 성공");
-			
-		/*for(EmailAlarmDTO ead : emailAlarmService.getEmailAlarmList(desertion_no)) {
-			MemberDTO md = memberService.getMemberByM_id(ead.getM_id());
-			EmailDTO emailDTO = new EmailDTO(
-					emailService.getAdminEmailAddress(), 					// from
-					md.getEmail(), 						 					// to
-					"유기동물 분양 센터 - 알림", 				 					// title
-					"알림 설정하신 " + desertion_no + "의 새로운 소식이 등록되었습니다." // contents
-				);
-			emailService.sendEmail(emailDTO);
-		}*/
 		
+		if(mp_id != null) {
+			for(MemberPetEmailAlarmDTO mpea : memberPetEmailAlarmService.getMemberPetEmailAlarmListByMp_id(Integer.parseInt(mp_id))) {
+				MemberDTO m = memberService.getMemberByM_id(mpea.getM_id());
+				EmailDTO emailDTO = new EmailDTO(
+						emailService.getAdminEmailAddress(), 					// from
+						m.getEmail(), 						 					// to
+						"유기동물 분양 센터 - 알림", 				 					// title
+						"알림 설정하신 " + mpea.getMp_id() + "의 새로운 소식이 등록되었습니다." // contents
+					);
+				emailService.sendEmail(emailDTO);
+				System.out.println(m.getEmail() + "로 소식을 전했습니다.");
+			}
+		}
 		String contextRoot = new HttpServletRequestWrapper(request).getRealPath("/");
 		
 		// html의 src값을 추출
@@ -494,24 +494,22 @@ public class CommunityController {
 	// 게시물의 알림버튼 클릭했을 때	
 	@RequestMapping("/communityClickedAlarm")
 	public String communityClickedAlarm(HttpServletRequest request) {
-		String desertion_no = request.getParameter("desertion_no");
+		int mp_id = Integer.parseInt(request.getParameter("mp_id"));
 		MemberDTO member = (MemberDTO)request.getSession().getAttribute("member");
 		String status = request.getParameter("status");
-		
-		MemberPetEmailAlarmDTO emailAlarmDTO = new MemberPetEmailAlarmDTO();
-		emailAlarmDTO.setM_id(member.getM_id());
-		emailAlarmDTO.setDesertion_no(desertion_no);
-		emailAlarmDTO.setEa_classify(2);
-		
+		MemberPetEmailAlarmDTO emailAlarm = memberPetEmailAlarmService.getMemberPetEmailAlarmByM_idAndMp_id(member.getM_id(), mp_id);
 		System.out.println(status);
 		
-		if(status.equals("true")) {
+		if(emailAlarm == null) {
+			emailAlarm = new MemberPetEmailAlarmDTO();
+			emailAlarm.setM_id(member.getM_id());
+			emailAlarm.setMp_id(mp_id);
+			memberPetEmailAlarmService.insertMemberPetEmailAlarm(emailAlarm);
 			System.out.println("알람 추가");
-			emailAlarmService.insertEmailAlarm(emailAlarmDTO);
 		}
 		else {
+			memberPetEmailAlarmService.deleteMemberPetEmailAlarm(emailAlarm.getMpea_id());
 			System.out.println("알람 삭제");
-			emailAlarmService.deleteEmailAlarm(emailAlarmDTO);
 		}
 	
 		return "redirect:" + request.getHeader("referer");

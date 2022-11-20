@@ -24,9 +24,35 @@
 		
 	<%-- main 영역 --%>
 	<div class="container">
-		<a href="mypage/manageMyPet">내 반려동물 관리</a><br/>
-		<a href="mypage/manageMyGoodAnimalEmailAlarm">좋아요한 알림 설정 관리</a><br>
-		<a href="mypage/manageMyEmailAlarmCondition">유기동물 등록 시 알림 설정 관리</a>
+		<div class="row">
+			<div class="col">
+				<div class="card" style="width: 18rem;">
+					<a class="stretched-link" href="mypage/manageMyPet"></a>
+			 	  	<img src="<c:url value='resources/images/profile.svg'/>" class="card-img-top" alt="...">
+				  	<div class="card-body">
+				    	<p class="card-text text-center"><b>내 반려동물</b></p>
+				  	</div>
+				</div>
+			</div>
+			<div class="col">
+				<div class="card" style="width: 18rem;">
+					<a class="stretched-link" href="mypage/memberPetEmailAlarm"></a>
+			 	  	<img src="<c:url value='resources/images/loader2.png'/>" class="card-img-top" alt="...">
+				  	<div class="card-body">
+				    	<p class="card-text text-center"><b>일상공유 알림 설정</b></p>
+				  	</div>
+				</div>
+			</div>
+			<div class="col">
+				<div class="card" style="width: 18rem;">
+					<a class="stretched-link" href="mypage/manageMyEmailAlarmCondition"></a>
+			 	  	<img src="<c:url value='resources/images/loader.png'/>" class="card-img-top" alt="...">
+				  	<div class="card-body">
+				    	<p class="card-text text-center"><b>맞춤 조건 알림 설정</b></p>
+				  	</div>
+				</div>
+			</div>
+		</div>
 	</div>
 	<%-- main 끝 --%>
 	

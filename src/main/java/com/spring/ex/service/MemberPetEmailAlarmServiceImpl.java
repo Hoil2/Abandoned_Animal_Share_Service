@@ -36,7 +36,17 @@ public class MemberPetEmailAlarmServiceImpl implements MemberPetEmailAlarmServic
 	}
 
 	@Override
+	public List<MemberPetEmailAlarmDTO> getMemberPetEmailAlarmListByMp_id(int mp_id) {
+		return memberPetEmailAlarmDAO.getMemberPetEmailAlarmListByMp_id(mp_id);
+	}
+	
+	@Override
 	public MemberPetEmailAlarmDTO getMemberPetEmailAlarm(int mpea_id) {
 		return memberPetEmailAlarmDAO.getMemberPetEmailAlarm(mpea_id);
+	}
+
+	@Override
+	public MemberPetEmailAlarmDTO getMemberPetEmailAlarmByM_idAndMp_id(int m_id, int mp_id) {
+		return memberPetEmailAlarmDAO.getMemberPetEmailAlarmByM_idAndMp_id(m_id, mp_id);
 	}
 }

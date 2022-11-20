@@ -25,8 +25,18 @@
 		WHERE m_id = #{m_id}
 	</select>
 	
+	<select id="getMemberPetEmailAlarmListByMp_id" resultType="MemberPetEmailAlarmDTO">
+		SELECT * FROM member_pet_email_alarm
+		WHERE mp_id = #{mp_id}
+	</select>
+	
 	<select id="getMemberPetEmailAlarm" resultType="MemberPetEmailAlarmDTO">
 		SELECT * FROM member_pet_email_alarm
 		WHERE mpea_id = #{mpea_id}
+	</select>
+	
+	<select id="getMemberPetEmailAlarmByM_idAndMp_id" resultType="MemberPetEmailAlarmDTO">
+		SELECT * FROM member_pet_email_alarm
+		WHERE m_id = #{m_id} AND mp_id = #{mp_id}
 	</select>
 </mapper>

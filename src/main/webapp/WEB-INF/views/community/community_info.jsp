@@ -107,19 +107,19 @@
 		<%-- Pagination 끝 --%>
 		
 		<%-- 검색창 --%>
-		<form action="info">
+		<form action="/community/info">
 			<div class="d-flex justify-content-center mb-3">
 				<div>
 					<select class="form-select form-select-sm border border-dark" style="height:40px;" name="filter" aria-label=".form-select-sm example">
-					  <option selected value="total">전체</option>
-					  <option value="title">제목</option>
-					  <option value="content">내용</option>
-					  <option value="title+content">제목+내용</option>
+					  <option value="total" <c:if test="${filter == 'total'}">selected</c:if>>전체</option>
+					  <option value="title" <c:if test="${filter == 'title'}">selected</c:if>>제목</option>
+					  <option value="content" <c:if test="${filter == 'content'}">selected</c:if>>내용</option>
+					  <option value="title+content" <c:if test="${filter == 'title+content'}">selected</c:if>>제목+내용</option>
 					</select>
 				</div>
 				<div>
 					<div class="form-group">
-						<input class="form-contorl" size=35 name="keyword" style="height:40px;"/>
+						<input class="form-contorl" size=35 name="keyword" value="${keyword}" style="height:40px;"/>
 					</div>
 				</div>
 				
