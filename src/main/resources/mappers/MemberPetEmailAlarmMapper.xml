@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spring.ex.MemberPetEmailAlarmMapper">
+	
+	<insert id="insertMemberPetEmailAlarm">
+		INSERT INTO member_pet_email_alarm(m_id, mp_id)
+		VALUES(#{m_id}, #{mp_id})
+	</insert>
+	
+	<update id="updateMemberPetEmailAlarm">
+		UPDATE member_pet_email_alarm
+		SET 
+			mp_id = #{mp_id}
+		WHERE mpea_id = #{mpea_id} 
+	</update>
+	
+	<delete id="deleteMemberPetEmailAlarm">
+		DELETE FROM member_pet_email_alarm
+		WHERE mpea_id = #{mpea_id}
+	</delete>
+	
+	<select id="getMemberPetEmailAlarmList" resultType="MemberPetEmailAlarmDTO">
+		SELECT * FROM member_pet_email_alarm
+		WHERE m_id = #{m_id}
+	</select>
+	
+	<select id="getMemberPetEmailAlarmListByMp_id" resultType="MemberPetEmailAlarmDTO">
+		SELECT * FROM member_pet_email_alarm
+		WHERE mp_id = #{mp_id}
+	</select>
+	
+	<select id="getMemberPetEmailAlarm" resultType="MemberPetEmailAlarmDTO">
+		SELECT * FROM member_pet_email_alarm
+		WHERE mpea_id = #{mpea_id}
+	</select>
+	
+	<select id="getMemberPetEmailAlarmByM_idAndMp_id" resultType="MemberPetEmailAlarmDTO">
+		SELECT * FROM member_pet_email_alarm
+		WHERE m_id = #{m_id} AND mp_id = #{mp_id}
+	</select>
+</mapper>

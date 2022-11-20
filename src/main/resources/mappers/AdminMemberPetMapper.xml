@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spring.ex.AdminMemberPetMapper">
+	
+	<select id="getAdminMemberPetBoard" resultType="MemberPetDTO">
+		SELECT * FROM member_pet
+		WHERE m_id = #{m_id}
+		ORDER BY mp_id ASC
+		LIMIT #{nowPage}, #{pageSize}
+	</select>
+	
+	<select id="getAdminMemberPetPostTotalCount" resultType="int">
+		SELECT COUNT(*) FROM member_pet
+		WHERE m_id = #{m_id}
+	</select>
+</mapper>

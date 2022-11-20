@@ -1,5 +1,7 @@
 package com.spring.ex.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.spring.ex.dto.MemberDTO;
@@ -21,4 +23,10 @@ public interface MemberService {
 	
 	// 아이디로 회원 정보 가져오기
 	public MemberDTO getMemberByM_id(int m_id) throws Exception;
+	
+	// 이메일로 회원 정보 가져오기
+	public MemberDTO getMemberByEmail(String email);
+	
+	// 멤버 리스트 가져오기
+	public List<MemberDTO> getMemberList();
 }

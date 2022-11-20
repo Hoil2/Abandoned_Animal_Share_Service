@@ -21,28 +21,22 @@ public class MemberPetServiceImpl implements MemberPetService {
 	}
 
 	@Override
-	public int deleteMemberPet(int m_id) {
-		return memberPetDAO.deleteMemberPet(m_id);
+	public int deleteMemberPet(int mp_id) {
+		return memberPetDAO.deleteMemberPet(mp_id);
 	}
 
+	@Override
+	public int updateMemberPet(MemberPetDTO dto) {
+		return memberPetDAO.updateMemberPet(dto);
+	}
+	
 	@Override
 	public List<MemberPetDTO> selectMemberPetList(int m_id) {
 		return memberPetDAO.selectMemberPetList(m_id);
 	}
 
 	@Override
-	public int updateMemberPet(int m_id, List<MemberPetDTO> memberPetList) {
-		try {
-			memberPetDAO.deleteMemberPet(m_id);
-			for(MemberPetDTO mp : memberPetList) {
-				memberPetDAO.insertMemberPet(mp);
-			}
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-			return 0;
-		}
-		return 1;
+	public MemberPetDTO getMemberPet(int mp_id) {
+		return memberPetDAO.getMemberPet(mp_id);
 	}
-
 }

@@ -1,6 +1,7 @@
 package com.spring.ex.service;
 
 import java.util.HashMap;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -47,5 +48,16 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public MemberDTO getMemberByM_id(int m_id) throws Exception {
 		return dao.getMemberByM_id(m_id);
+	}
+
+	@Override
+	public MemberDTO getMemberByEmail(String email) {
+		return dao.getMemberByEmail(email);
+	}
+	
+	// 멤버 리스트 가져오기
+	@Override
+	public List<MemberDTO> getMemberList() {
+		return dao.getMemberList();
 	}
 }

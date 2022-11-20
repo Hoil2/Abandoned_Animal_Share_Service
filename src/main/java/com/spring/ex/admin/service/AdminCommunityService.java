@@ -25,4 +25,10 @@ public interface AdminCommunityService {
 	
 	// 오늘의 특정 게시판의 게시물 등록 개수 가져오기
 	public int getPostCountOfToday(int classify);
+	
+	// 멤버가 작성한 커뮤니티 게시물 리스트 가져오기
+	public List<Map<String, Object>> getAdminMemberBoard(int m_id, int nowPage, int pageSize);
+	
+	// 멤버가 작성한 커뮤니티 게시물 개수 가져오기
+	public int getAdminMemberPostTotalCount(int m_id);
 }

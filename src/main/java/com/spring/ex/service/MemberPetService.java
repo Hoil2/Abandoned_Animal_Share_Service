@@ -9,7 +9,8 @@ import com.spring.ex.dto.MemberPetDTO;
 @Service
 public interface MemberPetService {
 	public int insertMemberPet(MemberPetDTO dto);
-	public int deleteMemberPet(int m_id);
+	public int deleteMemberPet(int mp_id);
+	public int updateMemberPet(MemberPetDTO dto);
 	public List<MemberPetDTO> selectMemberPetList(int m_id);
-	public int updateMemberPet(int m_id, List<MemberPetDTO> memberPetList);
+	public MemberPetDTO getMemberPet(int mp_id);
 }

@@ -69,9 +69,9 @@
 				<div class="form-group row">
 			  		<label class="col-sm-2 col-form-label">반려동물 id</label>
 			  		<div class="col-sm-10">
-						<select id="desertion_no" name="desertion_no" class="form-select form-select-sm border border-dark" style="height:40px;" name="filter" aria-label=".form-select-sm example" required>
+						<select id="mp_id" name="mp_id" class="form-control form-select-sm border border-dark" style="width:200px; height:40px;" name="filter" aria-label=".form-select-sm example" required>
 							<c:forEach var="memberPet" items="${memberPetList}">
-								<option value="${memberPet.desertion_no}" <c:if test="${memberPet.desertion_no == communityDTO.desertion_no}">selected</c:if>>${memberPet.pet_name} / id : ${memberPet.desertion_no}</option>
+								<option value="${memberPet.mp_id}" <c:if test="${memberPet.mp_id == communityDTO.mp_id}">selected</c:if>>name : ${memberPet.name} / id : ${memberPet.mp_id}</option>
 							</c:forEach>
 						</select>
 					</div>

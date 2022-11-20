@@ -78,7 +78,7 @@ public class AdminCommunityDashboardController {
 		
 		// 게시물 개수를 바탕으로 페이지 설정
 		final int pageSize = 10;  
-		pagingService = new PagingService(request, totalCount, pageSize);
+		pagingService = new PagingService(request, totalCount, pageSize, "page");
 		
 		// 게시물 가져오기
 		List<Map<String, Object>> communityList = adminCommunityService.getAdminBoardPage(search, filter, board, pagingService.getNowPage(), pageSize);

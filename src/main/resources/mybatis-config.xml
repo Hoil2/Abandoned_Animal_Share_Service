@@ -7,7 +7,7 @@
 		<typeAlias type="com.spring.ex.dto.CommunityDTO" alias="CommunityDTO"/>
 		<typeAlias type="com.spring.ex.dto.MemberDTO" alias="MemberDTO"/>
 		<typeAlias type="com.spring.ex.dto.MemberPetDTO" alias="MemberPetDTO"/>
-		<typeAlias type="com.spring.ex.dto.EmailAlarmDTO" alias="EmailAlarmDTO"/>
+		<typeAlias type="com.spring.ex.dto.MemberPetEmailAlarmDTO" alias="MemberPetEmailAlarmDTO"/>
 		<typeAlias type="com.spring.ex.dto.LostAnimalDTO" alias="LostAnimalDTO"/>
 		<typeAlias type="com.spring.ex.dto.CommentDTO" alias="CommentDTO"/>
 		<typeAlias type="com.spring.ex.dto.FileUploadDTO" alias="FileUploadDTO"/>

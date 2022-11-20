@@ -7,8 +7,8 @@ import com.spring.ex.dto.PagingDTO;
 public class PagingService {
 	private PagingDTO paging;
 	private int nowPage;
-	public PagingService(HttpServletRequest request, int totalCount, int pageSize) {
-		int page = request.getParameter("page") == null ? 1 : Integer.parseInt(request.getParameter("page"));
+	public PagingService(HttpServletRequest request, int totalCount, int pageSize, String name) {
+		int page = request.getParameter(name) == null ? 1 : Integer.parseInt(request.getParameter(name));
 		
 		paging = new PagingDTO();
 		paging.setPageNo(page);

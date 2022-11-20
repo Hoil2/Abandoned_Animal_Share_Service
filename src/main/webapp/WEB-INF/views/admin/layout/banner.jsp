@@ -35,10 +35,10 @@
 			<i class="fas fa-fw fa-table"></i>
 			<span>회원 목록</span>
 		</a>
-		<a class="nav-link" href="/admin/member_pet">
+		<!-- <a class="nav-link" href="/admin/member_pet">
 			<i class="fas fa-fw fa-table"></i>
 			<span>회원 펫 목록</span>
-		</a>
+		</a> -->
 	</li>
 	<li>
 		<hr class="sidebar-divider">

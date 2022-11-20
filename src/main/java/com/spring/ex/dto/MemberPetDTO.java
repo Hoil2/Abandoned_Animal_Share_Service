@@ -1,10 +1,16 @@
 package com.spring.ex.dto;
 
+import java.sql.Date;
+
 public class MemberPetDTO {
 	private int mp_id;
 	private int m_id;
-	private String desertion_no;
-	private String pet_name;
+	private String name;
+	private String sex;
+	private String age;
+	private String kind;
+	private String breed;
+	private Date reg_date;
 	
 	public int getMp_id() {
 		return mp_id;
@@ -18,21 +24,45 @@ public class MemberPetDTO {
 	public void setM_id(int m_id) {
 		this.m_id = m_id;
 	}
-	public String getDesertion_no() {
-		return desertion_no;
+	public String getName() {
+		return name;
 	}
-	public void setDesertion_no(String desertion_no) {
-		this.desertion_no = desertion_no;
+	public void setName(String name) {
+		this.name = name;
 	}
-	public String getPet_name() {
-		return pet_name;
+	public String getSex() {
+		return sex;
 	}
-	public void setPet_name(String pet_name) {
-		this.pet_name = pet_name;
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
+	public String getAge() {
+		return age;
+	}
+	public void setAge(String age) {
+		this.age = age;
+	}
+	public String getKind() {
+		return kind;
+	}
+	public void setKind(String kind) {
+		this.kind = kind;
+	}
+	public String getBreed() {
+		return breed;
+	}
+	public void setBreed(String breed) {
+		this.breed = breed;
+	}
+	public Date getReg_date() {
+		return reg_date;
+	}
+	public void setReg_date(Date reg_date) {
+		this.reg_date = reg_date;
 	}
 	@Override
 	public String toString() {
-		return "MemberPetDTO [mp_id=" + mp_id + ", m_id=" + m_id + ", desertion_no=" + desertion_no + ", pet_name="
-				+ pet_name + "]";
+		return "MemberPetDTO [mp_id=" + mp_id + ", m_id=" + m_id + ", name=" + name + ", sex=" + sex + ", age=" + age
+				+ ", kind=" + kind + ", breed=" + breed + ", reg_date=" + reg_date + "]";
 	}
 }

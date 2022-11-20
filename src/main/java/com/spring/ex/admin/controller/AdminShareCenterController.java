@@ -77,7 +77,8 @@ public class AdminShareCenterController {
 		map.put("searchKeyword", searchKeyword);
 		
 		int totolCount = service.getShareCenterBoardViewTotalCount(map);
-		pagingService = new PagingService(request, totolCount, 10);
+		pagingService = new PagingService(request, totolCount, 10, "page");
+
 		map.put("Page", pagingService.getNowPage());
 		map.put("PageSize", 10);
 		

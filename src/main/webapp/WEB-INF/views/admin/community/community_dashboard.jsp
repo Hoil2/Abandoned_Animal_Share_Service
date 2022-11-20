@@ -69,7 +69,7 @@
 								<option value="m_name" <c:if test="${filter.equals('m_name')}">selected</c:if>>작성자명</option>
 								<option value="mp_id" <c:if test="${filter.equals('mp_id')}">selected</c:if>>반려동물ID</option>
 							</select>
-							<input class="form-control ml-3" type="text" name="search" value="${search}" placeholder="검색어를 입력하세요." class="form-control">
+							<input class="form-control ml-2" type="text" name="search" value="${search}" placeholder="검색어를 입력하세요." class="form-control">
 							<button type="submit" class="btn px-3 btn-primary">
 								<i class="fas fa-search"></i>
 							</button>
@@ -77,7 +77,7 @@
 						
 						<div class="d-flex ml-auto">
 							<button class="btn btn-primary mr-2" data-toggle="modal" data-target="#post_submit">게시물 등록</button>
-							<button class="btn btn-danger mr-2" onclick="deletePosts()">게시물 선택 삭제</button>
+							<button class="btn btn-danger mr-3" onclick="deletePosts()">게시물 선택 삭제</button>
 						</div>
 					</div>
 					<div>
@@ -105,7 +105,7 @@
 										<td>${cl.cb_id}</td>
 										<c:if test="${board == 2}"><td><a href="">${cl.mp_id}</a></td></c:if>
 										<td><a href="">${cl.m_name}</a></td>
-										<td><a href="/admin/${classify}/${cl.cb_id}">${cl.title}</a></td>
+										<td><a href="/admin/community/${classify}/${cl.cb_id}">${cl.title}</a></td>
 										<td>${cl.reg_date}</td>
 										<td>${cl.hit}</td>
 										<td>${cl.goodCnt}</td>
