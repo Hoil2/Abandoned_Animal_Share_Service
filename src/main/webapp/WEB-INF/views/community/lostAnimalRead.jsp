@@ -29,7 +29,7 @@
 		<jsp:include page="../layout/header.jsp"/>
 		<section class="page-header" style="background-image: url(<c:url value="/resources/images/banner_main/${BannerRespectivelyView.getS_file_name()}"/>);">
 			<div class="container">
-				<h2>실종동물 ${sessionScope.member.getM_id()}</h2>
+				<h2>실종동물 </h2>
 				<ul class="thm-breadcrumb list-unstyled">
 				</ul>
 			</div>
@@ -41,7 +41,7 @@
 					<ul class="list-unstyled blog-one__meta">
 						<c:if test="${sessionScope.member.getM_id() eq lcbReadPage.m_id}"> 
 							<li> <a href="deleteLostAnimalBoard?alb_id=${lcbReadPage.alb_id}">삭제</a></li>
-							<li> <a href="">수정</a></li>
+							<li> <a href="javascript:void(window.open('/admin/modifyLostAnimalBoardPage?alb_id=${lcbReadPage.alb_id}', '상세페이지' , 'width=1280px,height=840px,left=300,top=100, scrollbars=yes, resizable=no'))">수정</a></li>
 						</c:if>
 						<li> <a href="javascript:window.history.back();"> 목록</a></li>
 						<li><i class="far fa-clock"></i> ${lcbReadPage.reg_date}</li>
