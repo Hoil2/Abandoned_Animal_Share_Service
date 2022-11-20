@@ -82,6 +82,25 @@ public class LostAnimalController {
 		return "community/lostAnimalWrite";
 	}
 	
+	//실종동물 게시글 수정
+	@RequestMapping(value = "/modifyLostAnimalBoard", method = RequestMethod.POST)
+	@ResponseBody
+	public int modifyLostAnimalBoard(HttpServletRequest request, LostAnimalDTO dto, MultipartFile file) throws Exception {
+		String fileName = null;
+		if(!file.isEmpty()) {
+			fileName = fileUploadService.uploadFile(file, "/images/uploaded_images");
+			//System.out.println(fileName);
+			dto.setImg_path(fileName);
+		}
+		int ajaxResult = lostAnimalService.modifyLostAnimalBoard(dto);
+	
+		if(ajaxResult != 1){
+			return 0;
+		}else {
+			return 1;
+		}
+	}
+	
 	//실종동물 게시글 글작성
 	@RequestMapping(value = "/dowriteLostAnimalBoard", method = RequestMethod.POST)
 	@ResponseBody

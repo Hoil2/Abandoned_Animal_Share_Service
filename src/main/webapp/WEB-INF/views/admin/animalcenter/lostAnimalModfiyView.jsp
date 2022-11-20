@@ -69,18 +69,17 @@
 									<tbody >
 										<tr >
 											<td><font size="3px;">이름 </font></td>
-											<td> ${lcbReadPage.pet_name}
-												<c:choose>
-													<c:when test="${lcbReadPage.sex_cd eq 'M'}"> 
-														<font size="3px;" color="Blue">♂</font>
-													</c:when>
-													<c:when test="${lcbReadPage.sex_cd eq 'F'}"> 
-														<font size="3px;" color="#FF7171;">♀</font>
-													</c:when>
-													<c:otherwise> 
-														<font size="1px;">(미상)</font>
-													 </c:otherwise>
-												</c:choose>
+											<td> 
+												<input type="text" id="pet_name" name="pet_name" value="${ lcbReadPage.pet_name}" class="form-control">
+												<div class="input-group my-2 mb-1">
+													<div class="input-group-prepend">
+														<span class="input-group-text"><b>성별</b></span>
+													</div>
+													<select class="form-control" id="sex_cd" name="sex_cd">
+														<option value="M">수컷</option>
+														<option value="F">암컷</option>
+													</select>
+												</div>
 											</td>
 										</tr>
 										<tr>
@@ -121,11 +120,11 @@
 										</tr>
 										<tr>
 											<td><font size="3px;">분실일</font></td>
-											<td><font size="2px;">${lcbReadPage.lost_date}</font></td>
+											<td><font size="2px;"><input type="date" class="form-control" id="lost_date" name="lost_date" value="${lcbReadPage.lost_date}" required></font></td>
 										</tr>
 										<tr>
 											<td><font size="3px;">분실장소</font></td>
-											<td><font size="2px;">${lcbReadPage.lost_place}</font></td>
+											<td><font size="2px;"><input type="text" id="lost_place" name="lost_place" value="${ lcbReadPage.lost_place}" class="form-control"></font></td>
 										</tr>
 									</tbody> 
 								</table><br>
@@ -155,6 +154,9 @@
 	</div>
 	
 <script type="text/javascript">
+$(document).ready(function(){
+	$("#sex_cd").val("${lcbReadPage.sex_cd}").prop("selected", true);
+})
 
 $('#btnAdminModify').click(function() {
 	var form = $("#form")[0];
@@ -162,7 +164,7 @@ $('#btnAdminModify').click(function() {
 	
 	$.ajax({
 		cache : false,
-		url : "modifyLostAnimalBoard", 
+		url : "/modifyLostAnimalBoard", 
 		processData: false,
 		contentType: false,
 		type : 'POST', 

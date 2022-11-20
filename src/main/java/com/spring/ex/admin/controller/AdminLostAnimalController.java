@@ -109,25 +109,6 @@ public class AdminLostAnimalController {
 		return "admin/animalcenter/lostAnimalModfiyView";
 	}
 	
-	//실종동물 게시글 수정
-	@RequestMapping(value = "/admin/modifyLostAnimalBoard", method = RequestMethod.POST)
-	@ResponseBody
-	public int modifyLostAnimalBoard(HttpServletRequest request, LostAnimalDTO dto, MultipartFile file) throws Exception {
-		String fileName = null;
-		if(!file.isEmpty()) {
-			fileName = fileUploadService.uploadFile(file, "/images/uploaded_images");
-			//System.out.println(fileName);
-			dto.setImg_path(fileName);
-		}
-		int ajaxResult = lostAnimalService.modifyLostAnimalBoard(dto);
-	
-		if(ajaxResult != 1){
-			return 0;
-		}else {
-			return 1;
-		}
-	}
-	
 	//실종동물 게시여부 변경
 	@RequestMapping(value = "/admin/modifyEnableLostAnimal", method = RequestMethod.GET)
 	@ResponseBody

@@ -55,7 +55,11 @@
 	<update id="modifyLostAnimalBoard">
 		UPDATE lost_animal_board
 		SET img_path = #{img_path},
+			pet_name = #{pet_name},
 			kind_cd = #{kind_cd},
+			lost_date = #{lost_date},
+			lost_place = #{lost_place},
+			sex_cd = #{sex_cd},
 			age = #{age},
 			color_cd = #{color_cd},
 			content = #{content}
