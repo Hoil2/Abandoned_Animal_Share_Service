@@ -74,7 +74,7 @@ public class ShareCenterController {
 		map.put("alignment", session.getAttribute("alignment"));
 		
 		int totolCount = service.getShareCenterBoardViewTotalCount(map);
-		pagingService = new PagingService(request, totolCount, 12);
+		pagingService = new PagingService(request, totolCount, 12, "page");
 		map.put("Page", pagingService.getNowPage());
 		map.put("PageSize", 12);
 		

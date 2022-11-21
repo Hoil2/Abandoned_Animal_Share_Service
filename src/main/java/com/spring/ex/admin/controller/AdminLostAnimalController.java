@@ -56,7 +56,7 @@ public class AdminLostAnimalController {
 			map.put("searchKeyword", searchKeyword);
 		}
 		
-		pagingService = new PagingService(request, lostAnimalService.getTotalCountLostAnimalBoardList(map), 10);
+		pagingService = new PagingService(request, lostAnimalService.getTotalCountLostAnimalBoardList(map), 10, "page");
 		map.put("Page",  pagingService.getNowPage());
 		map.put("PageSize", 10);
 		
