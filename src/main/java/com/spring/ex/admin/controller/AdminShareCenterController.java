@@ -134,72 +134,91 @@ public class AdminShareCenterController {
 		List<EmailAlarmConditionDTO> emailAlarmConditionList = emailAlarmConditionService.getEmailAlarmConditionList();
 		
 		for(ShareCenterDTO animal : todayInsertedAbandonedAnimals) {
-			String aniKind = animal.getKind_cd().substring(animal.getKind_cd().indexOf("["), animal.getKind_cd().indexOf("]")); 
-			String aniBreed = animal.getKind_cd().substring(animal.getKind_cd().indexOf("]")+1);
-			String age = animal.getAge().substring(0, 3);
+			String aniKind = animal.getKind_cd().substring(animal.getKind_cd().indexOf("[")+1, animal.getKind_cd().indexOf("]")); 
+			String aniBreed = animal.getKind_cd().substring(animal.getKind_cd().indexOf("]")+2);
+			String age = animal.getAge().substring(0, 4);
+			
+			System.out.println(animal);
 			
 			for(EmailAlarmConditionDTO condition : emailAlarmConditionList) {
 				String[] kinds = condition.getKinds().split(",");
-				String[] dog_breeds = condition.getDog_breeds().split(",");
-				String[] cat_breeds = condition.getCat_breeds().split(",");
-				String[] etc_breeds = condition.getEtc_breeds().split(",");
-				String[] ages = condition.getAges().split(",");
+				String[] dog_breeds = null;
+				String[] cat_breeds = null;
+				String[] etc_breeds = null;
+				String[] ages = null;
+				String[] shelter_ids = null;
+				
+				if(condition.getDog_breeds() != null) dog_breeds = condition.getDog_breeds().split(",");
+				if(condition.getCat_breeds() != null) cat_breeds = condition.getCat_breeds().split(",");
+				if(condition.getEtc_breeds() != null) etc_breeds = condition.getEtc_breeds().split(",");
+				if(condition.getAges() != null) ages = condition.getAges().split(",");
 				String[] sexs = condition.getSexs().split(",");
 				String[] neuterings = condition.getNeuterings().split(",");
-				String[] shelter_ids = condition.getShelter_ids().split(",");
-				
+				if(condition.getShelter_ids() != null) shelter_ids = condition.getShelter_ids().split(",");
 				
 				// 조건에 안맞는 품종 걸러내기 
 				if(Arrays.asList(kinds).contains(aniKind)) {
 					if(aniKind.equals("개")) {
 						if(dog_breeds != null) {
 							if(!Arrays.asList(dog_breeds).contains(aniBreed)) {
-								return;
+								System.out.println("회원 : " + Arrays.asList(dog_breeds));
+								System.out.println("공고 : " + aniBreed);
+								System.out.println("필터 : 개");
+								break;
 							}
 						}
 					}
 					else if(aniKind.equals("고양이")) {
 						if(cat_breeds != null) {
 							if(!Arrays.asList(cat_breeds).contains(aniBreed)) {
-								return;
+								System.out.println("필터 : 고양이");
+								break;
 							}
 						}
 					}
 					else if(aniKind.equals("기타축종")) {
 						if(etc_breeds != null) {
 							if(!Arrays.asList(etc_breeds).contains(aniBreed)) {
-								return;
+								System.out.println("필터 : 기타축종");
+								break;
 							}
 						}
 					}
 					else {
-						return;
+						break;
 					}
 				}
 				else {
-					return;
+					System.out.println("필터 : 품종이 다름");
+					break;
 				}
 				
 				// 나이 걸러내기
 				if(ages != null) {
 					if(!Arrays.asList(ages).contains(age)) {
-						return;
+						System.out.println("필터 : 나이");
+						break;
 					}
 				}
 				
 				// 성별 걸러내기
 				if(!Arrays.asList(sexs).contains(animal.getSex_cd())) {
-					return;
+					System.out.println("필터 : 성별");
+					break;
 				}
 				
 				// 중성화 걸러내기
 				if(!Arrays.asList(neuterings).contains(animal.getNeuter_yn())) {
-					return;
+					System.out.println("필터 : 중성화");
+					break;
 				}
 				
 				// 보호소 걸러내기
-				if(!Arrays.asList(shelter_ids).contains(Integer.toString(animal.getAas_id()))) {
-					return;
+				if(shelter_ids != null) {
+					if(!Arrays.asList(shelter_ids).contains(Integer.toString(animal.getAas_id()))) {
+						System.out.println("필터 : 보호소");
+						break;
+					}
 				}
 				
 				MemberDTO member = memberService.getMemberByM_id(condition.getM_id());
@@ -211,6 +230,9 @@ public class AdminShareCenterController {
 						"공고 기간은 " + animal.getNotice_sdt() + "~" + animal.getNotice_edt() + " 입니다."
 					);
 				emailService.sendEmail(emailDTO);
+				
+				System.out.println("member email : " + member.getEmail());
+				System.out.println(emailDTO.getContents());
 			}
 		}
 	}

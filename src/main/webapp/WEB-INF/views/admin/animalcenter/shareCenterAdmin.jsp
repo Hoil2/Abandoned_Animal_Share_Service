@@ -74,7 +74,7 @@ $(document).ready(function() {
 					</div>
 					<hr>
 					<div class="col-xl-12 col-md-6 mb-4" align="right">
-						<button class="btn btn-primary" id="btnLostAnimal">Email발송</button>
+						<button class="btn btn-primary" id="sendEmail">Email발송</button>
 					</div>
 					<div class="row">
 						<div class="col-xl-3 col-md-6 mb-4">
@@ -439,6 +439,19 @@ $('#btnApiRequest').click(function() {
 		doubleSubmitFlag = false; 
 	}
 })
+
+$("#sendEmail").click(function() {
+	$.ajax({
+		url: "/admin/sendConditionEmailToMember",
+		type: "post",
+		success: function() {
+			alert("회원분들께 이메일 전송을 완료했습니다.")
+		},
+		error: function() {
+			alert("이메일 전송을 실패했습니다.");
+		}
+	});
+});
 </script>
 </body>
 </html>
