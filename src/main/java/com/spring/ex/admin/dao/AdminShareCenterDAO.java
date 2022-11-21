@@ -30,4 +30,7 @@ public interface AdminShareCenterDAO {
 	// 2022-11-21 / 김홍일
 	// happen_dt가 오늘인 유기동물 정보 리스트 가져오기
 	public List<ShareCenterDTO> getTodayInsertedAbandonedAnimals();
+
+	//유기동물 정보(종, 색상) 수정
+	public int updateAbandonedAnimalInfo(ShareCenterDTO dto) throws Exception;
 }

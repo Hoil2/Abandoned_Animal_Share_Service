@@ -56,4 +56,9 @@ public class AdminShareCenterDAOImpl implements AdminShareCenterDAO {
 	public List<ShareCenterDTO> getTodayInsertedAbandonedAnimals() {
 		return sqlSession.selectList(namespace + ".getTodayInsertedAbandonedAnimals");
 	}
+	
+	@Override
+	public int updateAbandonedAnimalInfo(ShareCenterDTO dto) throws Exception {
+		return sqlSession.update(namespace + ".updateAbandonedAnimalInfo", dto);
+	}
 }

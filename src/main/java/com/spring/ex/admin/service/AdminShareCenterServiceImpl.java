@@ -62,4 +62,10 @@ public class AdminShareCenterServiceImpl implements AdminShareCenterService {
 		return dao.getTodayInsertedAbandonedAnimals();
 	}
 	
+	//유기동물 정보(종, 색상) 수정
+	@Override
+	public int updateAbandonedAnimalInfo(ShareCenterDTO dto) throws Exception {
+		return dao.updateAbandonedAnimalInfo(dto);
+	}
+	
 }

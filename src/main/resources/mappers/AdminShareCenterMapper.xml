@@ -7,7 +7,7 @@
 	<select id="getTodayRegistrationCount" resultType="int">
 		SELECT COUNT(*)
 		FROM abandoned_animal_info
-		WHERE notice_sdt = CURDATE()
+		WHERE happen_dt = CURDATE()
 	</select>
 
 	<!--  3일 이내 종료되는 유기동물 수-->
@@ -63,4 +63,12 @@
 		SELECT * FROM abandoned_animal_info
 		WHERE happen_dt = CURDATE()
 	</select>	
+	
+	<!-- 유기동물 정보(종, 색상) 수정  -->
+	<update id="updateAbandonedAnimalInfo">
+		UPDATE abandoned_animal_info
+		SET kind_cd = #{kind_cd},
+			color_cd = #{color_cd}
+		WHERE desertion_no = #{desertion_no}; 
+	</update>
 </mapper>
