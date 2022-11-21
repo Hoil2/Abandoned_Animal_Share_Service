@@ -53,7 +53,7 @@
 										<ul>
 											<li><a href="#" id="twayFont" data-toggle="modal" data-target="#loginModal">로그인</a></li>
 											<li><a href="#" id="twayFont" data-toggle="modal" data-target="#registerModal">회원가입</a></li>
-											<li><a href="/support" id="twayFont">고객센터</a></li>
+											<!-- <li><a href="/support" id="twayFont">고객센터</a></li> -->
 										</ul>
 									</c:when>
 									<c:when test="${member ne null }">
@@ -64,7 +64,7 @@
 											<c:if test="${member.getGrade() eq 'Admin' }">
 												<li><a href="/admin/main" id="twayFont">관리자페이지</a></li>
 											</c:if>
-											<li><a href="/support" id="twayFont">고객센터</a></li>
+											<!-- <li><a href="/support" id="twayFont">고객센터</a></li> -->
 										</ul>
 									</c:when>
 								</c:choose>

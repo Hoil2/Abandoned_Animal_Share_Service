@@ -127,7 +127,30 @@ public class AdminShareCenterController {
 		return "admin/animalcenter/shareCenterAdmin";
 	}
 	
-	// 유기동물 등록 시 맞춤 이메일 발송
+	//관리자 유기동물 게시글 상세페이지 출력
+	@RequestMapping(value = "/admin/shereCenterAdminRead" , method = RequestMethod.GET)
+	public String adminShereCenterReadPage(Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
+		String desertion_no = request.getParameter("desertion_no");
+		Map<String, Object> sReadPage = service.getShareCenterBoardReadPage(desertion_no);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("desertion_no", desertion_no);
+		
+		model.addAttribute("scrReadPage", sReadPage);
+		return "admin/animalcenter/shereCenterAdminRead";
+	}
+	
+	
+	//실종동물 게시글 수정
+	@RequestMapping(value = "/admin/updateAbandonedAnimalInfo", method = RequestMethod.POST)
+	@ResponseBody
+	public int updateAbandonedAnimalInfo(HttpServletRequest request, ShareCenterDTO dto) throws Exception {
+		int ajaxResult = adminShareCenterService.updateAbandonedAnimalInfo(dto);
+	
+		return ajaxResult;
+	}
+	
+	//홍일작성
+	// 유기동물 등록 시 맞춤 이메일 발송 
 	@ResponseBody
 	@RequestMapping("/admin/sendConditionEmailToMember")
 	public void sendConditionEmailToMember() throws Exception {
@@ -239,26 +262,5 @@ public class AdminShareCenterController {
 		}
 	}
 	
-	//관리자 유기동물 게시글 상세페이지 출력
-	@RequestMapping(value = "/admin/shereCenterAdminRead" , method = RequestMethod.GET)
-	public String adminShereCenterReadPage(Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
-		String desertion_no = request.getParameter("desertion_no");
-		Map<String, Object> sReadPage = service.getShareCenterBoardReadPage(desertion_no);
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("desertion_no", desertion_no);
-		
-		model.addAttribute("scrReadPage", sReadPage);
-		return "admin/animalcenter/shereCenterAdminRead";
-	}
-	
-	
-	//실종동물 게시글 수정
-	@RequestMapping(value = "/admin/updateAbandonedAnimalInfo", method = RequestMethod.POST)
-	@ResponseBody
-	public int updateAbandonedAnimalInfo(HttpServletRequest request, ShareCenterDTO dto) throws Exception {
-		int ajaxResult = adminShareCenterService.updateAbandonedAnimalInfo(dto);
-	
-		return ajaxResult;
-	}
 	
 }
