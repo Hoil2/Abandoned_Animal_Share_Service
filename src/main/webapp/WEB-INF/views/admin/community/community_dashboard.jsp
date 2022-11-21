@@ -103,8 +103,8 @@
 											<input name="rowCheck" type="checkbox" value="${cl.cb_id}">			
 										</td>
 										<td>${cl.cb_id}</td>
-										<c:if test="${board == 2}"><td><a href="">${cl.mp_id}</a></td></c:if>
-										<td><a href="">${cl.m_name}</a></td>
+										<c:if test="${board == 2}"><td><a onclick="openMemberPetPageToPopup(${cl.mp_id})" href="javascript:;">${cl.mp_id}</a></td></c:if>
+										<td><a href="javascript:void(window.open('/admin/memberDetail?m_id=${cl.m_id}', '상세페이지' , 'width=1280px,height=840px,left=300,top=100, scrollbars=yes, resizable=no'));">${cl.m_name}</a></td>
 										<td><a href="/admin/community/${classify}/${cl.cb_id}">${cl.title}</a></td>
 										<td>${cl.reg_date}</td>
 										<td>${cl.hit}</td>
@@ -292,6 +292,20 @@
     		url.searchParams.set('page', pageNo);
     		location.href = url;
     	}
+    	
+    	function openMemberPetPageToPopup(mp_id) {
+			// 창 크기 지정
+			var width = window.screen.width * 30 / 100;
+			var height = (window.screen.height * 43 / 100);
+
+			// pc화면기준 가운데 정렬
+			var left = (window.screen.width / 2) - (width / 2);
+			var top = (window.screen.height / 2) - (height / 2);
+
+			var url = "/admin/memberPetDetail?mp_id="+mp_id;
+			var option = "width = " + width + ", height = " + height + ", left=" + left + ", top = " + top;
+			window.open(url, "_blank", option);
+		}
     	
 		// 전체 체크박스 클릭 이벤트
 		$("#allCheck").click(function () {

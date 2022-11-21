@@ -3,7 +3,7 @@
 
 <mapper namespace="com.spring.ex.AdminCommunityMapper">
 	<select id="getAdminBoardPage" resultType="HashMap">
-		SELECT cb_id, mp_id, m.name AS m_name, title, reg_date, hit,
+		SELECT cb_id, mp_id, c.m_id, m.name AS m_name, title, reg_date, hit,
 			(SELECT COUNT(*) FROM community_board_good cbg WHERE c.cb_id = cbg.cb_id) AS goodCnt
 		<include refid="boardPageCondition"/>
 		LIMIT #{nowPage}, #{pageSize}
