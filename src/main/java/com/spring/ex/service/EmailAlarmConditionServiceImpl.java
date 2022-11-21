@@ -1,5 +1,7 @@
 package com.spring.ex.service;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
@@ -19,6 +21,11 @@ public class EmailAlarmConditionServiceImpl implements EmailAlarmConditionServic
 	}
 
 	@Override
+	public List<EmailAlarmConditionDTO> getEmailAlarmConditionList() {
+		return emailAlarmConditionDAO.getEmailAlarmConditionList();
+	}
+	
+	@Override
 	public int insertEmailAlarmCondition(EmailAlarmConditionDTO dto) {
 		return emailAlarmConditionDAO.insertEmailAlarmCondition(dto);
 	}
@@ -32,5 +39,4 @@ public class EmailAlarmConditionServiceImpl implements EmailAlarmConditionServic
 	public int deleteEmailAlarmCondition(int m_id) {
 		return emailAlarmConditionDAO.deleteEmailAlarmCondition(m_id);
 	}
-	
 }

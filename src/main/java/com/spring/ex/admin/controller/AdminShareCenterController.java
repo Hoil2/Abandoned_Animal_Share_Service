@@ -1,5 +1,6 @@
 package com.spring.ex.admin.controller;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -12,9 +13,16 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.spring.ex.admin.service.AdminShareCenterService;
+import com.spring.ex.dto.EmailAlarmConditionDTO;
+import com.spring.ex.dto.EmailDTO;
+import com.spring.ex.dto.MemberDTO;
 import com.spring.ex.dto.ShareCenterDTO;
+import com.spring.ex.service.EmailAlarmConditionService;
+import com.spring.ex.service.EmailService;
+import com.spring.ex.service.MemberService;
 import com.spring.ex.service.PagingService;
 import com.spring.ex.service.ShareCenterService;
 
@@ -23,6 +31,18 @@ public class AdminShareCenterController {
 	
 	@Inject AdminShareCenterService adminService;
 	@Inject ShareCenterService service;
+	
+	@Inject
+	private AdminShareCenterService adminShareCenterService;
+	
+	@Inject
+	private EmailAlarmConditionService emailAlarmConditionService;
+	
+	@Inject
+	private EmailService emailService;
+	
+	@Inject
+	private MemberService memberService;
 	
 	PagingService pagingService;
 	//관리자 페이지 분양센터
@@ -100,6 +120,96 @@ public class AdminShareCenterController {
 		
 		
 		return "admin/animalcenter/shareCenterAdmin";
+	}
+	
+	// 유기동물 등록 시 맞춤 이메일 발송
+	@ResponseBody
+	@RequestMapping("/admin/sendConditionEmailToMember")
+	public void sendConditionEmailToMember() throws Exception {
+		// 신규 등록된 유기동물들 조건에 맞춰 알림 설정한 회원들께 보내기
+		List<ShareCenterDTO> todayInsertedAbandonedAnimals = adminShareCenterService.getTodayInsertedAbandonedAnimals();
+		List<EmailAlarmConditionDTO> emailAlarmConditionList = emailAlarmConditionService.getEmailAlarmConditionList();
+		
+		for(ShareCenterDTO animal : todayInsertedAbandonedAnimals) {
+			String aniKind = animal.getKind_cd().substring(animal.getKind_cd().indexOf("["), animal.getKind_cd().indexOf("]")); 
+			String aniBreed = animal.getKind_cd().substring(animal.getKind_cd().indexOf("]")+1);
+			String age = animal.getAge().substring(0, 3);
+			
+			for(EmailAlarmConditionDTO condition : emailAlarmConditionList) {
+				String[] kinds = condition.getKinds().split(",");
+				String[] dog_breeds = condition.getDog_breeds().split(",");
+				String[] cat_breeds = condition.getCat_breeds().split(",");
+				String[] etc_breeds = condition.getEtc_breeds().split(",");
+				String[] ages = condition.getAges().split(",");
+				String[] sexs = condition.getSexs().split(",");
+				String[] neuterings = condition.getNeuterings().split(",");
+				String[] shelter_ids = condition.getShelter_ids().split(",");
+				
+				
+				// 조건에 안맞는 품종 걸러내기 
+				if(Arrays.asList(kinds).contains(aniKind)) {
+					if(aniKind.equals("개")) {
+						if(dog_breeds != null) {
+							if(!Arrays.asList(dog_breeds).contains(aniBreed)) {
+								return;
+							}
+						}
+					}
+					else if(aniKind.equals("고양이")) {
+						if(cat_breeds != null) {
+							if(!Arrays.asList(cat_breeds).contains(aniBreed)) {
+								return;
+							}
+						}
+					}
+					else if(aniKind.equals("기타축종")) {
+						if(etc_breeds != null) {
+							if(!Arrays.asList(etc_breeds).contains(aniBreed)) {
+								return;
+							}
+						}
+					}
+					else {
+						return;
+					}
+				}
+				else {
+					return;
+				}
+				
+				// 나이 걸러내기
+				if(ages != null) {
+					if(!Arrays.asList(ages).contains(age)) {
+						return;
+					}
+				}
+				
+				// 성별 걸러내기
+				if(!Arrays.asList(sexs).contains(animal.getSex_cd())) {
+					return;
+				}
+				
+				// 중성화 걸러내기
+				if(!Arrays.asList(neuterings).contains(animal.getNeuter_yn())) {
+					return;
+				}
+				
+				// 보호소 걸러내기
+				if(!Arrays.asList(shelter_ids).contains(Integer.toString(animal.getAas_id()))) {
+					return;
+				}
+				
+				MemberDTO member = memberService.getMemberByM_id(condition.getM_id());
+				EmailDTO emailDTO = new EmailDTO(
+						emailService.getAdminEmailAddress(), 					// from
+						member.getEmail(), 						 					// to
+						"유기동물 분양 센터 - 알림", 				 					// title
+						"조건에 맞는 유기동물 " + animal.getDesertion_no() + "이 접수되었습니다." +
+						"공고 기간은 " + animal.getNotice_sdt() + "~" + animal.getNotice_edt() + " 입니다."
+					);
+				emailService.sendEmail(emailDTO);
+			}
+		}
 	}
 	
 }

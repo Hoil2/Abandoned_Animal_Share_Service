@@ -1,9 +1,13 @@
 package com.spring.ex.admin.dao;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
+
+import com.spring.ex.dto.ShareCenterDTO;
 
 @Repository
 public class AdminShareCenterDAOImpl implements AdminShareCenterDAO {
@@ -44,5 +48,12 @@ public class AdminShareCenterDAOImpl implements AdminShareCenterDAO {
 	}
 	public int getAnimalDeathCount() throws Exception {
 		return sqlSession.selectOne(namespace + ".getAnimalDeathCount");
+	}
+	
+	// 2022-11-21 / 김홍일
+	// happen_dt가 오늘인 유기동물 정보 리스트 가져오기
+	@Override
+	public List<ShareCenterDTO> getTodayInsertedAbandonedAnimals() {
+		return sqlSession.selectList(namespace + ".getTodayInsertedAbandonedAnimals");
 	}
 }

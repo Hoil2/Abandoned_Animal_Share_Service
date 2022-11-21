@@ -1,7 +1,6 @@
 package com.spring.ex.controller;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.spring.ex.dto.MemberDTO;
-import com.spring.ex.dto.PagingDTO;
 import com.spring.ex.dto.ShareCenterDTO;
 import com.spring.ex.dto.ShelterDTO;
 import com.spring.ex.service.PagingService;
@@ -203,6 +201,7 @@ public class ShareCenterController {
 		}
 		
 		//System.out.println(apiTotalCount + " /resultDb " + resultDb);
+		
 		
 		return result; 
 	}

@@ -9,6 +9,11 @@
 		WHERE m_id = #{m_id}
 	</select>
 	
+	<!-- 모든 이메일 알람 조건 가져오기 -->
+	<select id="getEmailAlarmConditionList" resultType="EmailAlarmConditionDTO">
+		SELECT * FROM email_alarm_condition
+	</select>
+	
 	<!-- 이메일 알람 조건 추가 -->
 	<insert id="insertEmailAlarmCondition">
 		INSERT INTO email_alarm_condition 

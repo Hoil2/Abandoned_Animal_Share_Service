@@ -1,6 +1,10 @@
 package com.spring.ex.admin.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
+
+import com.spring.ex.dto.ShareCenterDTO;
 
 @Service
 public interface AdminShareCenterService {
@@ -22,4 +26,8 @@ public interface AdminShareCenterService {
 	public int getAnimalAdoptionCount() throws Exception;
 	public int getAnimalReturnCount() throws Exception;
 	public int getAnimalDeathCount() throws Exception;
+	
+	// 2022-11-21 / 김홍일
+	// happen_dt가 오늘인 유기동물 정보 리스트 가져오기
+	public List<ShareCenterDTO> getTodayInsertedAbandonedAnimals();
 }

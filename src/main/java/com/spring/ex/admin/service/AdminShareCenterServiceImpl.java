@@ -1,11 +1,13 @@
 package com.spring.ex.admin.service;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
-import com.spring.ex.admin.dao.AdminDashBoardDAO;
 import com.spring.ex.admin.dao.AdminShareCenterDAO;
+import com.spring.ex.dto.ShareCenterDTO;
 
 @Service
 public class AdminShareCenterServiceImpl implements AdminShareCenterService {
@@ -51,6 +53,13 @@ public class AdminShareCenterServiceImpl implements AdminShareCenterService {
 	@Override
 	public int getAnimalDeathCount() throws Exception {
 		return dao.getAnimalDeathCount();
+	}
+	
+	// 2022-11-21 / 김홍일
+	// happen_dt가 오늘인 유기동물 정보 리스트 가져오기
+	@Override
+	public List<ShareCenterDTO> getTodayInsertedAbandonedAnimals() {
+		return dao.getTodayInsertedAbandonedAnimals();
 	}
 	
 }

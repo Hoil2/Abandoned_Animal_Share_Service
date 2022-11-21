@@ -57,4 +57,10 @@
 		WHERE process_state LIKE "%사%" AND notice_edt BETWEEN CURDATE()-14 AND CURDATE()
 	</select>
 	
+	<!-- 2022-11-21 / 김홍일 -->
+	<!-- happen_dt가 오늘인 유기동물 정보 리스트 가져오기 -->
+	<select id="getTodayInsertedAbandonedAnimals" resultType="ShareCenterDTO">
+		SELECT * FROM abandoned_animal_info
+		WHERE happen_dt = CURDATE()
+	</select>	
 </mapper>

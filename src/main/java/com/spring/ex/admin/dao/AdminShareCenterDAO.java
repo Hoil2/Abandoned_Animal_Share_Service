@@ -1,6 +1,10 @@
 package com.spring.ex.admin.dao;
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
+
+import com.spring.ex.dto.ShareCenterDTO;
 
 @Repository
 public interface AdminShareCenterDAO {
@@ -23,5 +27,7 @@ public interface AdminShareCenterDAO {
 	public int getAnimalReturnCount() throws Exception;
 	public int getAnimalDeathCount() throws Exception;
 	
-	
+	// 2022-11-21 / 김홍일
+	// happen_dt가 오늘인 유기동물 정보 리스트 가져오기
+	public List<ShareCenterDTO> getTodayInsertedAbandonedAnimals();
 }
