@@ -2,9 +2,12 @@ package com.spring.ex.admin.controller;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.spring.ex.admin.service.AdminShareCenterService;
+import com.spring.ex.dto.MemberDTO;
 import com.spring.ex.dto.ShareCenterDTO;
 import com.spring.ex.service.PagingService;
 import com.spring.ex.service.ShareCenterService;
@@ -100,6 +104,21 @@ public class AdminShareCenterController {
 		
 		
 		return "admin/animalcenter/shareCenterAdmin";
+	}
+	
+	//관리자 유기동물 게시글 상세페이지 출력
+	@RequestMapping(value = "/admin/shereCenterAdminRead" , method = RequestMethod.GET)
+	public String adminShereCenterReadPage(Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
+		String desertion_no = request.getParameter("desertion_no");
+		Map<String, Object> sReadPage = service.getShareCenterBoardReadPage(desertion_no);
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("desertion_no", desertion_no);
+		
+		//model.addAttribute("boardLikeCheck", boardLikeCheck);
+		
+		model.addAttribute("scrReadPage", sReadPage);
+		return "admin/animalcenter/shereCenterAdminRead";
 	}
 	
 }

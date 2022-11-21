@@ -7,7 +7,7 @@
 	<select id="getTodayRegistrationCount" resultType="int">
 		SELECT COUNT(*)
 		FROM abandoned_animal_info
-		WHERE notice_sdt = CURDATE()
+		WHERE happen_dt = CURDATE()
 	</select>
 
 	<!--  3일 이내 종료되는 유기동물 수-->

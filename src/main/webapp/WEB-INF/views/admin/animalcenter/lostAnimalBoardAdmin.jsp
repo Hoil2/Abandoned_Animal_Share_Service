@@ -74,7 +74,7 @@
 									</td>
 									<td align="center"><font size="3">${slist.alb_id}</font></td>
 									<td align="center"><font size="3">${slist.name}</font></td>
-									<td align="center"><font size="3">${slist.m_id} </font></td>
+									<td align="center"><font size="3"><a href="javascript:void(window.open('/admin/memberDetail?m_id=${slist.m_id}', '상세페이지' , 'width=1280px,height=840px,left=300,top=100, scrollbars=yes, resizable=no'));">${slist.m_id}</a> </font></td>
 									<td align="center"><font size="3"><a href="javascript:void(window.open('/admin/lostAnimalView?alb_id=${slist.alb_id}', '상세페이지' , 'width=1280px,height=840px,left=300,top=100, scrollbars=yes, resizable=no'));"><c:out value="${slist.pet_name}"></c:out></a></font></td>
 									<td align="center">
 										<font size="3">${slist.age} /

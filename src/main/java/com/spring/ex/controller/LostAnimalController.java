@@ -46,7 +46,7 @@ public class LostAnimalController {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		//postCountMap.put("keyword", keyword);
 		
-		pagingService = new PagingService(request, lostAnimalService.getTotalCountLostAnimalBoardList(map), 10, "page");
+		pagingService = new PagingService(request, lostAnimalService.getTotalCountLostAnimalBoardList(map), 12, "page");
 		map.put("Page",  pagingService.getNowPage());
 		map.put("PageSize", 12);
 		List<LostAnimalDTO> sList = lostAnimalService.getLostAnimalBoardList(map);

@@ -5,13 +5,13 @@
 	<select id="getTodayRegisterMemberTotalCount" resultType="int">
 		SELECT COUNT(*)
 		FROM member
-		WHERE signup_date != CURDATE()
+		WHERE signup_date = CURDATE()
 	</select>
 	
 	<select id="getTodayBoardWriteTotalCount" resultType="int">
 		SELECT COUNT(*)
 		FROM community_board
-		WHERE reg_date != CURDATE();	
+		WHERE reg_date = CURDATE();	
 	</select>
 	
 	<select id="getTodayAbandonedAnimalTotalCount" resultType="int">

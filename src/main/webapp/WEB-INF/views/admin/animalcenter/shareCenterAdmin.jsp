@@ -72,7 +72,10 @@ $(document).ready(function() {
 					<div class="d-sm-flex align-items-center justify-content-between mb-4">
 						<h1 class="h3 mb-0 text-gray-800">ShareCenter Management</h1>
 					</div>
-					
+					<hr>
+					<div class="col-xl-12 col-md-6 mb-4" align="right">
+						<button class="btn btn-primary" id="btnLostAnimal">Email발송</button>
+					</div>
 					<div class="row">
 						<div class="col-xl-3 col-md-6 mb-4">
 							<div class="card border-left-warning shadow h-100 py-2">
@@ -305,7 +308,7 @@ $(document).ready(function() {
 									<tbody>
 										<c:forEach items="${slist}" var="slist">
 											<tr>
-												<td><font size="3"><a href="javascript:void(window.open('/admin/lostAnimalView?alb_id=${slist.desertion_no}', '상세페이지' , 'width=1280px,height=840px,left=300,top=100, scrollbars=yes, resizable=no'));">${slist.desertion_no}</a></font></td>
+												<td><font size="3"><a href="javascript:void(window.open('/admin/shereCenterAdminRead?desertion_no=${slist.desertion_no}', '상세페이지' , 'width=1280px,height=840px,left=300,top=100, scrollbars=yes, resizable=no'));">${slist.desertion_no}</a></font></td>
 												<td><font size="3"><c:out value="${slist.kind_cd}"></c:out></font></td>
 												<td><font size="3"><c:out value="${slist.age}"></c:out></font></td>
 												<c:choose>
