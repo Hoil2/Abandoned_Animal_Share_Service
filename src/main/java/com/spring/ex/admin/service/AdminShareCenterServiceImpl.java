@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.spring.ex.admin.dao.AdminDashBoardDAO;
 import com.spring.ex.admin.dao.AdminShareCenterDAO;
+import com.spring.ex.dto.ShareCenterDTO;
 
 @Service
 public class AdminShareCenterServiceImpl implements AdminShareCenterService {
@@ -51,6 +52,12 @@ public class AdminShareCenterServiceImpl implements AdminShareCenterService {
 	@Override
 	public int getAnimalDeathCount() throws Exception {
 		return dao.getAnimalDeathCount();
+	}
+	
+	//유기동물 정보(종, 색상) 수정
+	@Override
+	public int updateAbandonedAnimalInfo(ShareCenterDTO dto) throws Exception {
+		return dao.updateAbandonedAnimalInfo(dto);
 	}
 	
 }

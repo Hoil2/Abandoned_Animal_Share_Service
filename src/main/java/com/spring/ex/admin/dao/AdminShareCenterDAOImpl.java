@@ -5,6 +5,8 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import com.spring.ex.dto.ShareCenterDTO;
+
 @Repository
 public class AdminShareCenterDAOImpl implements AdminShareCenterDAO {
 
@@ -44,5 +46,10 @@ public class AdminShareCenterDAOImpl implements AdminShareCenterDAO {
 	}
 	public int getAnimalDeathCount() throws Exception {
 		return sqlSession.selectOne(namespace + ".getAnimalDeathCount");
+	}
+
+	@Override
+	public int updateAbandonedAnimalInfo(ShareCenterDTO dto) throws Exception {
+		return sqlSession.update(namespace + ".updateAbandonedAnimalInfo", dto);
 	}
 }

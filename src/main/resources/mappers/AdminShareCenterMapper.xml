@@ -57,4 +57,11 @@
 		WHERE process_state LIKE "%사%" AND notice_edt BETWEEN CURDATE()-14 AND CURDATE()
 	</select>
 	
+	<!-- 유기동물 정보(종, 색상) 수정  -->
+	<update id="updateAbandonedAnimalInfo">
+		UPDATE abandoned_animal_info
+		SET kind_cd = #{kind_cd},
+			color_cd = #{color_cd}
+		WHERE desertion_no = #{desertion_no}; 
+	</update>
 </mapper>

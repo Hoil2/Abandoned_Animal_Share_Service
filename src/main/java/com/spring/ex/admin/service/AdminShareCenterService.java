@@ -2,6 +2,8 @@ package com.spring.ex.admin.service;
 
 import org.springframework.stereotype.Service;
 
+import com.spring.ex.dto.ShareCenterDTO;
+
 @Service
 public interface AdminShareCenterService {
 	/*
@@ -22,4 +24,7 @@ public interface AdminShareCenterService {
 	public int getAnimalAdoptionCount() throws Exception;
 	public int getAnimalReturnCount() throws Exception;
 	public int getAnimalDeathCount() throws Exception;
+	
+	//유기동물 정보(종, 색상) 수정
+	public int updateAbandonedAnimalInfo(ShareCenterDTO dto) throws Exception;
 }

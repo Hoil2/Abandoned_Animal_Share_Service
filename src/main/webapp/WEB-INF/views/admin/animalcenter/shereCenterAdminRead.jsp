@@ -81,16 +81,19 @@
 										</td>
 									</tr>
 									<tr>
-										<td><font size="3px;">종</font></td>
-										<td>${scrReadPage.kind_cd}</td>
+										<td><font size="3px;">종 </font></td>
+										<td><input type="text" class="form contol" value="${scrReadPage.kind_cd}" id="kind_cd" name="kind_cd"></td>
 									</tr>
-									
+									<tr>
+										<td><font size="3px;">색상 </font></td>
+										<td><input type="text" class="form contol" value="${scrReadPage.color_cd}" id="kind_cd" name="kind_cd"></td>
+									</tr>
 									<tr>
 										<td><font size="3px;">특징</font></td>
 										<td><font size="2px;">${scrReadPage.special_mark}</font></td>
 									</tr>
 								</tbody> 
-							</table><br>
+							</table>
 						</div>
 						
 						<div class="col-md-6">
@@ -118,6 +121,10 @@
 									</tr>
 								</tbody> 
 							</table>
+						</div>
+						
+						<div class="col-md-12" align="right">
+							<button class="btn btn-primary" id="btnLostAnimal">수정</button>
 						</div>
 						<div class="col-md-12" style="margin-top: 15px;">
 							<table class="table">

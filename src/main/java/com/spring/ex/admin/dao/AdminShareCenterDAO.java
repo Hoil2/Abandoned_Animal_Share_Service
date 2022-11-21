@@ -2,6 +2,8 @@ package com.spring.ex.admin.dao;
 
 import org.springframework.stereotype.Repository;
 
+import com.spring.ex.dto.ShareCenterDTO;
+
 @Repository
 public interface AdminShareCenterDAO {
 	/*
@@ -22,6 +24,9 @@ public interface AdminShareCenterDAO {
 	public int getAnimalAdoptionCount() throws Exception;
 	public int getAnimalReturnCount() throws Exception;
 	public int getAnimalDeathCount() throws Exception;
+	
+	//유기동물 정보(종, 색상) 수정
+	public int updateAbandonedAnimalInfo(ShareCenterDTO dto) throws Exception;
 	
 	
 }
