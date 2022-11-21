@@ -8,11 +8,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
-<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
 <link rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
 <link rel="stylesheet" href='<c:url value="/resources/css/fontawesome-all.min.css"/>'>
 <link rel="stylesheet" href='<c:url value="/resources/css/style.css"/>'>
@@ -86,7 +85,7 @@
 									</tr>
 									<tr>
 										<td><font size="3px;">색상 </font></td>
-										<td><input type="text" class="form contol" value="${scrReadPage.color_cd}" id="kind_cd" name="kind_cd"></td>
+										<td><input type="text" class="form contol" value="${scrReadPage.color_cd}" id="color_cd" name="color_cd"></td>
 									</tr>
 									<tr>
 										<td><font size="3px;">특징</font></td>
@@ -124,7 +123,7 @@
 						</div>
 						
 						<div class="col-md-12" align="right">
-							<button class="btn btn-primary" id="btnLostAnimal">수정</button>
+							<button class="btn btn-primary" id="btnModtifyAnimalInfo">수정</button>
 						</div>
 						<div class="col-md-12" style="margin-top: 15px;">
 							<table class="table">
@@ -206,6 +205,63 @@
 	    } 
 	});    
 	
+	$('#btnModtifyAnimalInfo').click(function() {
+		var url = "/admin/updateAbandonedAnimalInfo";
+		var desertion_no = ${scrReadPage.desertion_no}
+		var kind_cd = $("#kind_cd").val();
+		var color_cd = $("#color_cd").val();
+		
+		if (!kind_cd){
+    		Swal.fire({
+	  			title: '유기동물 정보 수정.',
+		  		text: "유기동물 종 정보를 입력해주세요.",
+		  		icon: 'warning',
+				timer: 3000,
+		  		confirmButtonColor: '#3085d6',
+		  		confirmButtonText: '확인'
+		  	})
+	    }else if (!color_cd){
+    		Swal.fire({
+	  			title: '유기동물 정보 수정.',
+		  		text: "유기동물 색상 정보를 입력해주세요.",
+		  		icon: 'warning',
+		  		timer: 3000,
+		  		confirmButtonColor: '#3085d6',
+		  		confirmButtonText: '확인'
+		  	})
+	    }
+		else{
+	    	Swal.fire({
+	  		  	title: '유기동물 정보 수정',
+  		  		text: "유기동물 정보를 수정하시겠습니까?.",
+  		    	icon: 'warning',
+  		   		showCancelButton: true,
+  		   		confirmButtonColor: '#3085d6',
+  		   		cancelButtonColor: '#d33',
+  		  	 	confirmButtonText: '수정',
+  		  	 	cancelButtonText: '취소'
+	  		}).then((result) => {
+	  		  if (result.value) {
+	  			$.ajax({
+				    url : url,
+				    type : 'POST',
+				    traditional : true,
+				    data:  {'desertion_no': desertion_no, 'kind_cd':kind_cd, 'color_cd':color_cd},
+	                success: function(jdata){
+	                    if(jdata != 1) {
+	                    	alert("삭제 실패(문의전화 : 010-9748-5575 or 010-3266-5702)");
+	                    } else{
+	                    	location.reload();
+	                    }
+	                }
+				});
+	  		  }
+	  		})
+		}
+	})
+	
 </script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </body>
 </html>

@@ -69,6 +69,6 @@
 		UPDATE abandoned_animal_info
 		SET kind_cd = #{kind_cd},
 			color_cd = #{color_cd}
-		WHERE desertion_no = #{desertion_no}; 
+		WHERE desertion_no = #{desertion_no}
 	</update>
 </mapper>

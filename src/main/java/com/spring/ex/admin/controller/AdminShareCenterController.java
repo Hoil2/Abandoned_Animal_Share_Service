@@ -17,10 +17,12 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.ex.admin.service.AdminShareCenterService;
 import com.spring.ex.dto.EmailAlarmConditionDTO;
 import com.spring.ex.dto.EmailDTO;
+import com.spring.ex.dto.LostAnimalDTO;
 import com.spring.ex.dto.MemberDTO;
 import com.spring.ex.dto.ShareCenterDTO;
 import com.spring.ex.service.EmailAlarmConditionService;
@@ -242,14 +244,21 @@ public class AdminShareCenterController {
 	public String adminShereCenterReadPage(Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
 		String desertion_no = request.getParameter("desertion_no");
 		Map<String, Object> sReadPage = service.getShareCenterBoardReadPage(desertion_no);
-		
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("desertion_no", desertion_no);
 		
-		//model.addAttribute("boardLikeCheck", boardLikeCheck);
-		
 		model.addAttribute("scrReadPage", sReadPage);
 		return "admin/animalcenter/shereCenterAdminRead";
+	}
+	
+	
+	//실종동물 게시글 수정
+	@RequestMapping(value = "/admin/updateAbandonedAnimalInfo", method = RequestMethod.POST)
+	@ResponseBody
+	public int updateAbandonedAnimalInfo(HttpServletRequest request, ShareCenterDTO dto) throws Exception {
+		int ajaxResult = adminShareCenterService.updateAbandonedAnimalInfo(dto);
+	
+		return ajaxResult;
 	}
 	
 }
