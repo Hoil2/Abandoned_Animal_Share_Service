@@ -1,4 +1,4 @@
-# README.md
+# 유기동물 분양 서비스
 
 ## 프로젝트 개요
 
@@ -7,6 +7,11 @@
 ## 개발 환경
 
 Eclipse, Spring Framework Legacy, MariaDB, Java 1.8
+
+## 팀원
+[김요한](https://github.com/choum97)
+
+[김홍일](https://github.com/Hoil2)
 
 ## 활용방안 및 기대효과
 
