@@ -187,10 +187,10 @@ $(document).ready(function() {
 							<!-- 마지막 페이지면 Disabled 아니라면 Enabled -->
 							<c:choose>
 								<c:when test="${Paging.pageNo eq Paging.finalPageNo }">
-									<a class="disabledLink" href="shereCenterPage?page=${Paging.nextPageNo}&searchTheme=${searchTheme}&searchArea=${searchArea}&alignment=${alignment}"><i class="fa fa-angle-right"></i></a>
+									<a class="disabledLink" href="#"><i class="fa fa-angle-right"></i></a>
 								</c:when>
 								<c:otherwise>
-									<a href="shereCenterPage?page=${Paging.nextPageNo}"><i class="fa fa-angle-right"></i></a>
+									<a href="shereCenterPage?page=${Paging.nextPageNo}&searchTheme=${searchTheme}&searchArea=${searchArea}&alignment=${alignment}"><i class="fa fa-angle-right"></i></a>
 								</c:otherwise>
 							</c:choose>
 						</div>

@@ -66,7 +66,7 @@
 				</div><hr>
 				<div align="center" >
 					<c:if test="${scrReadPage.popfile ne null}">
-						<img src="${scrReadPage.popfile}" alt="" class="img-fluid" align="center">
+						<img src="${scrReadPage.popfile}" alt="" class="img-fluid" align="center" style="max-height: 500px;">
 					</c:if>
 				</div>
 				<div class="blog-details__content" style="border: 0px;">
