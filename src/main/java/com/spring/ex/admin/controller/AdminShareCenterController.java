@@ -50,18 +50,10 @@ public class AdminShareCenterController {
 	private MemberService memberService;
 	
 	PagingService pagingService;
+	
 	//관리자 페이지 분양센터
 	@RequestMapping(value = "/admin/shereCenter", method = RequestMethod.GET)
 	public String AdminShereCenter(Model model, HttpServletRequest request) throws Exception {
-		model.addAttribute("TodayRegistrationCount", adminService.getTodayRegistrationCount());
-		model.addAttribute("AnimalDeadlineCount", adminService.getAnimalDeadlineCount());
-		model.addAttribute("ShelterCount", adminService.getShelterCount());
-		model.addAttribute("ApiRenewalDate", adminService.getApiRenewalDate());
-		model.addAttribute("AnimalProtectCount", adminService.getAnimalProtectCount());
-		model.addAttribute("AnimalAdoptionCount", adminService.getAnimalAdoptionCount());
-		model.addAttribute("AnimalReturnCount", adminService.getAnimalReturnCount());
-		model.addAttribute("AnimalDeathCount", adminService.getAnimalDeathCount());
-		
 		String searchCategory  = request.getParameter("searchCategory");
 		String searchKeyword = request.getParameter("searchKeyword");
 		
@@ -69,6 +61,7 @@ public class AdminShareCenterController {
 		String searchTheme  = request.getParameter("searchTheme");
 		String searchArea = request.getParameter("searchArea");
 		String searchAlignment = request.getParameter("alignment");
+		
 		if(StringUtils.isEmpty(searchKeyword) || searchKeyword == null) {
 		} else if(!StringUtils.isEmpty(searchKeyword)){
 			session.setAttribute("searchKeyword", searchKeyword);
@@ -121,8 +114,16 @@ public class AdminShareCenterController {
 		model.addAttribute("slist", slist);
 		model.addAttribute("Paging", pagingService.getPaging());
 		model.addAttribute("areaList", seletedBoxList);
-		System.out.println("검색 지역/테마/정렬 : " + searchArea + ", " + searchTheme + ", " + searchAlignment);
+		System.out.println("지역/테마/정렬 : " + searchArea + ", " + searchTheme + ", " + searchAlignment);
 		
+		model.addAttribute("TodayRegistrationCount", adminService.getTodayRegistrationCount());
+		model.addAttribute("AnimalDeadlineCount", adminService.getAnimalDeadlineCount());
+		model.addAttribute("ShelterCount", adminService.getShelterCount());
+		model.addAttribute("ApiRenewalDate", adminService.getApiRenewalDate());
+		model.addAttribute("AnimalProtectCount", adminService.getAnimalProtectCount());
+		model.addAttribute("AnimalAdoptionCount", adminService.getAnimalAdoptionCount());
+		model.addAttribute("AnimalReturnCount", adminService.getAnimalReturnCount());
+		model.addAttribute("AnimalDeathCount", adminService.getAnimalDeathCount());
 		
 		return "admin/animalcenter/shareCenterAdmin";
 	}

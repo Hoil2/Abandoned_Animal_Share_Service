@@ -100,20 +100,21 @@ public class ShareCenterController {
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			map.put("m_id", memberDto.getM_id());
 			map.put("desertion_no", desertion_no);
-			System.out.println("좋아요 회원/게시글" + map);
 			
 			int boardLikeCheck = service.getGoodCheckShareCenterBoardReadPage(map);
 			model.addAttribute("boardLikeCheck", boardLikeCheck);
-			System.out.println("회원 번호 : " + memberDto.getM_id());
+			
+			//System.out.println("좋아요 회원/게시글" + map);
+			//System.out.println("회원 번호 : " + memberDto.getM_id());
 		}
-		System.out.println("상세페이지 데이터 : " + sReadPage);
+		//System.out.println("상세페이지 데이터 : " + sReadPage);
 		
 		Cookie viewCookie = null;
 		Cookie[] cookies = request.getCookies();
 		if(cookies !=null) {
 			for (int i = 0; i < cookies.length; i++) {
 				System.out.println("쿠키 이름 : "+cookies[i].getName());
-				//만들어진 쿠키들을 확인하며, 만약 들어온 적 있다면 생성되었을 쿠키가 있는지 확인
+				//만들어진 쿠키들을 확인하며, 만약 들어온 적 있다면 생성된 쿠키가 있는지 확인
 				if(cookies[i].getName().equals("|"+desertion_no+"|")) {
 					System.out.println("if문 쿠키 이름 : "+cookies[i].getName());
 					
@@ -126,7 +127,7 @@ public class ShareCenterController {
 		
 		if(viewCookie==null) {												//만들어진 쿠키가 없음을 확인
 			System.out.println("viewCookie 확인 로직 : 쿠키 없당");
-			Cookie newCookie=new Cookie("|"+desertion_no+"|","readCount");	//이 페이지에 왔다는 증거용(?) 쿠키 생성
+			Cookie newCookie=new Cookie("|"+desertion_no+"|","readCount");	//이 페이지에 왔다는 증거, 쿠키 생성
 			response.addCookie(newCookie);
 			service.addShareCenterBoardReadPageHit(desertion_no); 			//쿠키가 없으니 증가 로직 진행
 			model.addAttribute("hitReadPage", 1);
@@ -163,16 +164,8 @@ public class ShareCenterController {
 		return "shereCenterRead";
 	}
 	
-	
-	@RequestMapping(value = "/sTestPage",  method = RequestMethod.GET)
-	public String shereCenterPageView2(ShareCenterDTO dto, ShelterDTO shelterDto) throws Exception {
-		
-		return "shereCenterTest";
-	}
-	
-	
 	// api 데이터 요청  
-	// 참고) ON DUPLICATE KEY UPDATE에 걸려서 resultDb수가 평소에 다른 것처럼 안됩니다, DB에 아무것도 없을땐 같게 나옵니다
+	// ON DUPLICATE KEY UPDATE에 걸려서 DB에 아무것도 없을 경우 제외하고는 resultDb수가 정확하지 않아서 에러 없을때는 결과값 result을 1반환 시키게 해놨습니다.
 	@RequestMapping(value = "/abandonedAnimalApiRequest", method = RequestMethod.GET)
 	@ResponseBody
 	public int abandonedAnimalApiRequest(HttpServletRequest request) throws Exception {
@@ -199,9 +192,7 @@ public class ShareCenterController {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
-		
 		//System.out.println(apiTotalCount + " /resultDb " + resultDb);
-		
 		
 		return result; 
 	}

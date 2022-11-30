@@ -13,11 +13,12 @@ import org.json.simple.parser.JSONParser;
 
 public class AbandonedAnimalApi {
 
+	//startApiRequest부터 endApiRequest까지의 공공데이터 유기동물api 요청
+	//데이터 한페이지에 1000까지만 요청만 가능 
 	public JSONArray getRequestApiAbandonedAnimal(String startApiRequest, String endApiRequest, int pageNum) throws Exception {
 		// 1. URL을 만들기 위한 StringBuilder.
 		StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1543061/abandonmentPublicSrvc/abandonmentPublic"); /*URL*/
 		//Object totalCountCasting = 1000;
-		//String testCastingResult =String.valueOf(totalCountCasting);
 		String apiPageNum =String.valueOf(pageNum);
 		
 		// 2. 오픈 API의요청 규격에 맞는 파라미터 생성, 발급받은 인증키.
@@ -47,7 +48,7 @@ public class AbandonedAnimalApi {
 		// 6. 통신을 위한 Content-type SET. 
 		conn.setRequestProperty("Content-type", "application/json");
 		// 7. 통신 응답 코드 확인.
-		System.out.println("Response code: " + conn.getResponseCode() + " / 현재 api페이지:" + pageNum);
+		System.out.println("Response code: " + conn.getResponseCode() + " / 현재 요청중인 api페이지:" + pageNum);
 		// 8. 전달받은 데이터를 BufferedReader 객체로 저장
 		BufferedReader rd;
 		if(conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
@@ -68,7 +69,7 @@ public class AbandonedAnimalApi {
 		conn.disconnect();
 		
 		// json data parsing 
-		String responseBody = sb.toString(); // < 에러나서 여기에 넣고 다시 넣었습니다.
+		String responseBody = sb.toString(); // < 에러 발생: 변수하나 만들어서 다시 넣었습니다.
 		JSONParser parser	= new JSONParser(); 
 		JSONObject obj 		= (JSONObject)parser.parse(responseBody);
 		JSONObject response = (JSONObject)obj.get("response");
@@ -79,20 +80,18 @@ public class AbandonedAnimalApi {
 		return item;
 	}
 	
-	
+	//기간안에 있는 유기동물 api 데이터 총 갯수 반환
 	public String getTotalCountRequestApiAbandonedAnimal(String startApiRequest, String endApiRequest) throws Exception {
-		// 1. URL을 만들기 위한 StringBuilder.
-		StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1543061/abandonmentPublicSrvc/abandonmentPublic"); /*URL*/
+		StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1543061/abandonmentPublicSrvc/abandonmentPublic");
 		
-		// 2. 오픈 API의요청 규격에 맞는 파라미터 생성, 발급받은 인증키.
-		urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=Q84iTs0OivxYSzXgMqJWORyolBgT87Mu5lXE6sSWgEFI%2BhLRrMmdyfML5z3g6HYBCfWqS0YiGkrXpzfT07XhJg%3D%3D"); /*Service Key*/
-		urlBuilder.append("&" + URLEncoder.encode("bgnde","UTF-8") + "=" + URLEncoder.encode(startApiRequest, "UTF-8")); /*유기날짜(검색 시작일) (YYYYMMDD)*/
-		urlBuilder.append("&" + URLEncoder.encode("endde","UTF-8") + "=" + URLEncoder.encode(endApiRequest, "UTF-8")); /*유기날짜(검색 종료일) (YYYYMMDD)*/
-		urlBuilder.append("&" + URLEncoder.encode("upkind","UTF-8") + "=" + URLEncoder.encode("", "UTF-8")); /*축종코드 (개 : 417000, 고양이 : 422400, 기타 : 429900)*/
-		urlBuilder.append("&" + URLEncoder.encode("kind","UTF-8") + "=" + URLEncoder.encode("", "UTF-8")); /*품종코드 (품종 조회 OPEN API 참조)*/
-		urlBuilder.append("&" + URLEncoder.encode("upr_cd","UTF-8") + "=" + URLEncoder.encode("", "UTF-8")); /*시도코드 (시도 조회 OPEN API 참조)*/
-		urlBuilder.append("&" + URLEncoder.encode("org_cd","UTF-8") + "=" + URLEncoder.encode("", "UTF-8")); /*시군구코드 (시군구 조회 OPEN API 참조)*/
-		urlBuilder.append("&" + URLEncoder.encode("care_reg_no","UTF-8") + "=" + URLEncoder.encode("", "UTF-8")); /*보호소번호 (보호소 조회 OPEN API 참조)*/
+		urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=Q84iTs0OivxYSzXgMqJWORyolBgT87Mu5lXE6sSWgEFI%2BhLRrMmdyfML5z3g6HYBCfWqS0YiGkrXpzfT07XhJg%3D%3D");
+		urlBuilder.append("&" + URLEncoder.encode("bgnde","UTF-8") + "=" + URLEncoder.encode(startApiRequest, "UTF-8"));
+		urlBuilder.append("&" + URLEncoder.encode("endde","UTF-8") + "=" + URLEncoder.encode(endApiRequest, "UTF-8"));
+		urlBuilder.append("&" + URLEncoder.encode("upkind","UTF-8") + "=" + URLEncoder.encode("", "UTF-8"));
+		urlBuilder.append("&" + URLEncoder.encode("kind","UTF-8") + "=" + URLEncoder.encode("", "UTF-8"));
+		urlBuilder.append("&" + URLEncoder.encode("upr_cd","UTF-8") + "=" + URLEncoder.encode("", "UTF-8"));
+		urlBuilder.append("&" + URLEncoder.encode("org_cd","UTF-8") + "=" + URLEncoder.encode("", "UTF-8"));
+		urlBuilder.append("&" + URLEncoder.encode("care_reg_no","UTF-8") + "=" + URLEncoder.encode("", "UTF-8"));
 		urlBuilder.append("&" + URLEncoder.encode("state","UTF-8") + "=" + URLEncoder.encode("", "UTF-8")); 
 		urlBuilder.append("&" + URLEncoder.encode("neuter_yn","UTF-8") + "=" + URLEncoder.encode("", "UTF-8"));
 		urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); 
@@ -126,7 +125,7 @@ public class AbandonedAnimalApi {
 		JSONObject body 	= (JSONObject)response.get("body");
 		
 		String apiResultTotalCount = body.get("totalCount").toString();
-		System.out.println( "getTotalCountRequestApiAbandonedAnimal - 데이터 전체 카운트 : " +apiResultTotalCount);
+		System.out.println( "종료 : getTotalCountRequestApiAbandonedAnimal - 데이터 전체 카운트 : " +apiResultTotalCount);
 		return apiResultTotalCount;
 	}
 }
