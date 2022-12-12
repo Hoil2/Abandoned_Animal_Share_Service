@@ -25,13 +25,13 @@
 	<sql id="SearchAlignment">
 		<choose>
 			<when test="alignment == 'alignmentDay'">
-				ORDER BY happen_dt DESC
+				ORDER BY happen_dt DESC, good DESC, hit DESC
 			</when>
 			<when test="alignment == 'alignmentHit'">
-				ORDER BY hit DESC
+				ORDER BY hit DESC, good DESC, happen_dt DESC
 			</when>
 			<when test="alignment == 'alignmentGood'">
-				ORDER BY good DESC
+				ORDER BY good DESC, hit DESC, happen_dt DESC
 			</when>
 		</choose>
 	</sql>

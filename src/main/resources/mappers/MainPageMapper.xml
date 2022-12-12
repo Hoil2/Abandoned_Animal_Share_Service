@@ -20,7 +20,7 @@
 	<select id="getMainPageLostAnimalBoardList" resultType="hashMap">
 		SELECT lab.*, name
 		FROM lost_animal_board lab, member m
-		WHERE lab.m_id = m.m_id
+		WHERE lab.m_id = m.m_id AND lab.enable = 1
 		ORDER BY reg_date DESC
 		LIMIT 0, 8
 	</select>
