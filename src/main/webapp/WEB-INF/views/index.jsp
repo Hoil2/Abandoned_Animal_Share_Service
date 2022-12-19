@@ -172,6 +172,7 @@
 		</section>
 	
 		<!-- 분양후기 -->
+		<!--
 		<section class="testimonials-one">
 			<div class="container">
 				<div class="block-title text-center">
@@ -216,9 +217,9 @@
 				</div>
 			</div>
 		</section>
-	
+		-->
 		<!-- 실종 동물 -->
-		<section class="blog-one">
+		<section class="testimonials-one">
 			<div class="container">
 				<div class="block-title text-center">
 					<p>하나 밖에 없는</p>
