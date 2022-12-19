@@ -17,9 +17,9 @@ Eclipse, Spring Framework Legacy, MariaDB, Java 1.8
 
 보호소에 맡겨진 유기동물은 보호소의 사정에 따라 안락사를 당할 수 있습니다. 이 서비스를 통해 가까운 보호소에 유기동물이 들어왔을 때 알림을 받거나 사이트에서 확인을 해서 유기동물에 대한 접근성을 높여 죽어갈 유기동물들의 수를 줄일 수 있습니다.
 
-### 샘플 DB
+### 개발환경 세팅
 
-[aass.sql](aass.sql)
+[environment setting guide](https://hoiry.notion.site/5fed02a391b1422ab233e6e5880d9650)
 
 ## 스크린샷
 
