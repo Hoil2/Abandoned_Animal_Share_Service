@@ -19,7 +19,7 @@ Eclipse, Spring Framework Legacy, MariaDB, Java 1.8
 
 ### 샘플 DB
 
-[aass.sql](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/3b6aa5c0-5368-48a0-9061-d169c192d84b/aassdb2022-11-20_%EC%A0%84%EC%B2%B4DB.sql?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20221128%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20221128T014040Z&X-Amz-Expires=86400&X-Amz-Signature=607e39ef823d3def96d29692a125fbecd56081cad5b2806d30a41294bd477039&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22aassdb2022-11-20%2520%25EC%25A0%2584%25EC%25B2%25B4DB.sql%22&x-id=GetObject)
+[aass.sql](aass.sql)
 
 ## 스크린샷
 
