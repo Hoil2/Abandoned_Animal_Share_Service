@@ -364,12 +364,13 @@ public class CommunityController {
 		
 		if(mp_id != null) {
 			for(MemberPetEmailAlarmDTO mpea : memberPetEmailAlarmService.getMemberPetEmailAlarmListByMp_id(Integer.parseInt(mp_id))) {
+				MemberPetDTO memberPet = memberPetService.getMemberPet(mpea.getMp_id());
 				MemberDTO m = memberService.getMemberByM_id(mpea.getM_id());
 				EmailDTO emailDTO = new EmailDTO(
 						emailService.getAdminEmailAddress(), 					// from
 						m.getEmail(), 						 					// to
 						"유기동물 분양 센터 - 알림", 				 					// title
-						"알림 설정하신 " + mpea.getMp_id() + "의 새로운 소식이 등록되었습니다." // contents
+						"알림 설정하신 " + memberPet.getName() + "(" + memberPet.getBreed() + ")" + "의 새로운 소식이 등록되었습니다." // contents
 					);
 				emailService.sendEmail(emailDTO);
 				System.out.println(m.getEmail() + "로 소식을 전했습니다.");
