@@ -19,7 +19,7 @@ Eclipse, Spring Framework Legacy, MariaDB, Java 1.8
 
 ## 개발환경 세팅 가이드
 
-[Environment setting guide](https://www.notion.so/hoiry/5fed02a391b1422ab233e6e5880d9650)
+[Environment setting guide](https://hoiry.notion.site/5fed02a391b1422ab233e6e5880d9650)
 
 ## 스크린샷
 
